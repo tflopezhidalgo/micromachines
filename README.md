@@ -8,7 +8,7 @@
 # Reglas para código
 
 - Código lindo por favor
-- *Keep it siemple*
+- *Keep it simple*
 - Programar lo más genéricamente posible
 - Testear
 
