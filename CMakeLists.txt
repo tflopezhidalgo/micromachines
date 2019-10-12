@@ -3,7 +3,7 @@ project(Micromachines)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS -pthread)
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake) #not neccesary yet
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 include_directories(${PROJECT_SOURCE_DIR}/client)
