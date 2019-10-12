@@ -2,8 +2,8 @@
 // Created by leobellaera on 26/9/19.
 //
 
-#include "common_Socket.h"
-#include "common_SocketException.h"
+#include "Socket.h"
+#include "SocketException.h"
 #include <sys/socket.h>
 #include <iostream>
 #include <cstring>
