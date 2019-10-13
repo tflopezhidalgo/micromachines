@@ -2,6 +2,6 @@
 
 ### Tareas a realizar
 
-- [ ] task1
+- [x] task1 
 - [ ] task2
 - [ ] task3
