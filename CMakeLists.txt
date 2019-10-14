@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.9)
 project(Micromachines)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS -pthread)  # Tratar de evitar los flags globales, hacerlo por executable
+set(CMAKE_CXX_FLAGS "-ggdb -DDebug -fno-inline -O3")    # Flags de la cátedra
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build)  # Crear sobre build los ejecutables
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/client)
 include_directories(${PROJECT_SOURCE_DIR}/src/server)
@@ -15,4 +15,7 @@ file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES})
+target_link_libraries(Client SDL2 SDL2_image)
+
 add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES})
+target_link_libraries(Server -pthread)
