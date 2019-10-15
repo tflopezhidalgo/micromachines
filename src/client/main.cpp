@@ -3,10 +3,10 @@
 #include "Protocol.h"
 
 int main() {
-    Socket skt("localhost", "7777");
+    Socket skt("localhost", "1500");
     Protocol protocol(skt);
     nlohmann::json json;
-    json["mode"] = "create";
+    json["mode"] = "join";
     std::string json_dump = json.dump();
     protocol.sendMessage(json_dump);
     return 0;

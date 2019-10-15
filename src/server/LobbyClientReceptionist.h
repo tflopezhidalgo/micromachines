@@ -6,7 +6,7 @@
 #define MICROMACHINES_LOBBYCLIENTRECEPTIONIST_H
 
 #include "Thread.h"
-#include "LobbyGamesManager.h"
+#include "LobbyGamesOrganizer.h"
 #include "Protocol.h"
 #include <atomic>
 
@@ -14,9 +14,9 @@ class LobbyClientReceptionist : public Thread {
 private:
     Protocol protocol;
     std::atomic<bool> dead;
-    //LobbyGamesManager& gamesManager;
+    LobbyGamesOrganizer& gamesOrganizer;
 public:
-    LobbyClientReceptionist(Socket& socket/*, LobbyGamesManager& gamesManager*/);
+    LobbyClientReceptionist(Socket& socket, LobbyGamesOrganizer& gamesOrganizer);
     bool isDead();
     void run() override;
     void stop();

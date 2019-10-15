@@ -3,30 +3,38 @@
 //
 
 #include "LobbyClientReceptionist.h"
-#include "../../nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 #include <string>
-#include <iostream> // debugging
 
-LobbyClientReceptionist::LobbyClientReceptionist(Socket& socket/*, LobbyGamesManager& gamesManager*/) :
+#define CREATE_GAME "create"
+
+LobbyClientReceptionist::LobbyClientReceptionist(Socket& socket, LobbyGamesOrganizer& gamesOrganizer) :
     protocol(socket),
-    dead(false) {}
+    dead(false),
+    gamesOrganizer(gamesOrganizer) {}
 
 void LobbyClientReceptionist::run() {
-    //while (!gameJoined) {
-    //following line will be encapsulated by a clientProxy instance.
+    //following line will be encapsulated by a proxy instance.
     std::string clientInitiationMessage = protocol.receiveMessage();
     nlohmann::json initiationMsg = nlohmann::json::parse(clientInitiationMessage);
     std::string mode = initiationMsg["mode"].get<std::string>();
-    if (mode == "join") {
-        std::cout<<"Join mode!\n";
-        //gamesManager.createGame(5, "example", 3);
-        //gamesManager.getAvailableGames();
-    } else if (mode == "create") {
-        std::cout<<"Create mode!\n";
-        //gamesManager.joinClientToGame("example", "leonardo");
-        //gamesManager
+    std::string gameName = initiationMsg["gameName"].get<std::string>();
+    std::string clientId = initiationMsg["clientId"].get<std::string>();
+
+    if (mode == CREATE_GAME) {
+        int gamePlayersAmount = initiationMsg["playersAmount"].get<int>();
+        int raceLaps = initiationMsg["raceLaps"].get<int>();
+        std::string map = initiationMsg["map"].get<std::string>();
+        gamesOrganizer.createGame(clientId, gameName, map, gamePlayersAmount, raceLaps);
+    } else {  //client wants to join a game
+        dead = gamesOrganizer.joinClientToGame(gameName, clientId);
+        while (!dead) {
+            std::string availableGames = gamesOrganizer.getAvailableGames().dump();
+            protocol.sendMessage(availableGames);
+            nlohmann::json
+        }
     }
-    dead = true; //prev check if client couldn't join a game
+    dead = true;
 }
 
 bool LobbyClientReceptionist::isDead() {
@@ -34,7 +42,7 @@ bool LobbyClientReceptionist::isDead() {
 }
 
 void LobbyClientReceptionist::stop() {
-    //to do!!
+    //proxy.stop()
 }
 
 LobbyClientReceptionist::~LobbyClientReceptionist() {
