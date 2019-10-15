@@ -2,48 +2,48 @@
 // Created by leobellaera on 13/10/19.
 //
 
-#include "LobbyAcceptor.h"
+#include "LobbyClientAcceptor.h"
 #include "SocketException.h"
+#include "LobbyClientReceptionist.h"
 
-LobbyAcceptor::LobbyAcceptor(int backlog, const char* port) :
+LobbyClientAcceptor::LobbyClientAcceptor(int backlog, const char* port) :
         socketAcceptor(backlog, port),
         keepRunning(true) {}
 
-void LobbyAcceptor::run() {
+void LobbyClientAcceptor::run() {
     while (keepRunning) {
         Socket peerSocket = socketAcceptor.accept();
-        LobbyGamesManager* worker = new LobbyGamesManager(std::move(peerSocket));
-        worker->start();
-        workers.push_back(worker);
-        this->deleteDeadLobbyWorkers();
+        LobbyClientReceptionist* receptionist = new LobbyClientReceptionist(peerSocket);
+        receptionist->start();
+        receptionists.push_back(receptionist);
+        this->deleteDeadReceptionists();
     }
 }
 
-void LobbyAcceptor::deleteDeadLobbyWorkers() {
-    auto it = workers.begin();
-    while (it != workers.end()) {
+void LobbyClientAcceptor::deleteDeadReceptionists() {
+    auto it = receptionists.begin();
+    while (it != receptionists.end()) {
         if ((*it)->isDead()) {
             ++it;
         } else {
             (*it)->join();
             delete (*it);
-            it = workers.erase(it);
+            it = receptionists.erase(it);
         }
     }
 }
 
-void LobbyAcceptor::stop() {
-    int size = workers.size();
+void LobbyClientAcceptor::stop() {
+    int size = receptionists.size();
     for (int i = 0; i < size; i++) {
-        workers[i]->stop();
-        workers[i]->join();
-        delete workers[i];
+        receptionists[i]->stop();
+        receptionists[i]->join();
+        delete receptionists[i];
     }
     socketAcceptor.close();
     keepRunning = false;
 }
 
-LobbyAcceptor::~LobbyAcceptor() {
-    //delete all workers and close socket
+LobbyClientAcceptor::~LobbyClientAcceptor() {
+    //delete all receptionists and close socket
 }
-

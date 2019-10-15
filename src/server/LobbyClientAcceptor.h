@@ -2,27 +2,28 @@
 // Created by leobellaera on 13/10/19.
 //
 
-#ifndef MICROMACHINES_LOBBYACCEPTOR_H
-#define MICROMACHINES_LOBBYACCEPTOR_H
+#ifndef MICROMACHINES_LOBBYCLIENTACCEPTOR_H
+#define MICROMACHINES_LOBBYCLIENTACCEPTOR_H
 
 
 #include "Thread.h"
 #include "Socket.h"
 #include "LobbyGamesManager.h"
+#include "LobbyClientReceptionist.h"
 #include <atomic>
 #include <vector>
 
-class LobbyAcceptor : public Thread {
+class LobbyClientAcceptor : public Thread {
 private:
     std::atomic<bool> keepRunning;
     Socket socketAcceptor;
-    std::vector<LobbyGamesManager*> workers;
-    void deleteDeadLobbyWorkers();
+    std::vector<LobbyClientReceptionist*> receptionists;
+    void deleteDeadReceptionists();
 public:
-    LobbyAcceptor(int backlog, const char* port);
+    LobbyClientAcceptor(int backlog, const char* port);
     void run() override;
     void stop();
-    ~LobbyAcceptor() override;
+    ~LobbyClientAcceptor() override;
 };
 
-#endif //MICROMACHINES_LOBBYACCEPTOR_H
+#endif //MICROMACHINES_LOBBYCLIENTACCEPTOR_H
