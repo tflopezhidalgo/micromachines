@@ -6,7 +6,7 @@
 #include "SocketException.h"
 #include "LobbyClientReceptionist.h"
 
-LobbyClientAcceptor::LobbyClientAcceptor(int backlog, const char* port, LobbyGamesOrganizer& gamesOrganizer) :
+LobbyClientAcceptor::LobbyClientAcceptor(int backlog, const char* port, GamesAdministrator& gamesOrganizer) :
         socketAcceptor(backlog, port),
         gamesOrganizer(gamesOrganizer),
         keepRunning(true) {}

@@ -8,7 +8,7 @@
 
 #include "Thread.h"
 #include "Socket.h"
-#include "LobbyGamesOrganizer.h"
+#include "GamesAdministrator.h"
 #include "LobbyClientReceptionist.h"
 #include <atomic>
 #include <vector>
@@ -17,11 +17,11 @@ class LobbyClientAcceptor : public Thread {
 private:
     std::atomic<bool> keepRunning;
     Socket socketAcceptor;
-    LobbyGamesOrganizer& gamesOrganizer;
+    GamesAdministrator& gamesOrganizer;
     std::vector<LobbyClientReceptionist*> receptionists;
     void deleteDeadReceptionists();
 public:
-    LobbyClientAcceptor(int backlog, const char* port, LobbyGamesOrganizer& gamesOrganizer);
+    LobbyClientAcceptor(int backlog, const char* port, GamesAdministrator& gamesOrganizer);
     void run() override;
     void stop();
     ~LobbyClientAcceptor() override;

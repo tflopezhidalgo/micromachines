@@ -2,24 +2,25 @@
 // Created by leobellaera on 13/10/19.
 //
 
-#ifndef MICROMACHINES_LOBBYGAMESORGANIZER_H
-#define MICROMACHINES_LOBBYGAMESORGANIZER_H
+#ifndef MICROMACHINES_GAMESADMINISTRATOR_H
+#define MICROMACHINES_GAMESADMINISTRATOR_H
 
 #include <vector>
 #include <string>
 #include <mutex>
+#include "Game.h"
 
-class LobbyGamesOrganizer {
+class GamesAdministrator {
 private:
-    //std::vector<Game*> games;
+    std::vector<Game*> games;
     std::mutex mutex;
 public:
-    LobbyGamesOrganizer();
+    GamesAdministrator();
     void createGame(std::string& creatorId, std::string& gameName,
             std::string& mapName, int playersAmount, int raceLaps);
     void joinClientToGame(std::string& gameName, std::string& clientId);
-    ~LobbyGamesOrganizer();
+    ~GamesAdministrator();
 };
 
 
-#endif //MICROMACHINES_LOBBYGAMESORGANIZER_H
+#endif //MICROMACHINES_GAMESADMINISTRATOR_H
