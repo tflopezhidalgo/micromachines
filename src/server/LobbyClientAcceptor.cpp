@@ -6,16 +6,16 @@
 #include "SocketException.h"
 #include "LobbyClientReceptionist.h"
 
-LobbyClientAcceptor::LobbyClientAcceptor(int backlog, const char* port, GamesAdministrator& gamesOrganizer) :
+LobbyClientAcceptor::LobbyClientAcceptor(int backlog, const char* port, MatchesAdministrator& matchesAdministrator) :
         socketAcceptor(backlog, port),
-        gamesOrganizer(gamesOrganizer),
+        matchesAdministrator(matchesAdministrator),
         keepRunning(true) {}
 
 void LobbyClientAcceptor::run() {
     while (keepRunning) {
         try {
             Socket peerSocket = socketAcceptor.accept();
-            LobbyClientReceptionist* receptionist = new LobbyClientReceptionist(peerSocket, gamesOrganizer);
+            LobbyClientReceptionist* receptionist = new LobbyClientReceptionist(peerSocket, matchesAdministrator);
             receptionist->start();
             receptionists.push_back(receptionist);
             this->deleteDeadReceptionists();

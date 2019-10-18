@@ -3,16 +3,16 @@
 //
 
 #include "LobbyClientReceptionist.h"
-#include "GamesAdministratorException.h"
+#include "MatchesAdministratorException.h"
 #include <string>
 
-#define CREATE_GAME "create"
+#define CREATE_MATCH "create"
 #define VALID_INIT_MSG "valid"
 
-LobbyClientReceptionist::LobbyClientReceptionist(Socket& socket, GamesAdministrator& gamesAdministrator) :
+LobbyClientReceptionist::LobbyClientReceptionist(Socket& socket, MatchesAdministrator& matchesAdministrator) :
     protocol(socket),
     dead(false),
-    gamesAdministrator(gamesAdministrator) {}
+    matchesAdministrator(matchesAdministrator) {}
 
 void LobbyClientReceptionist::run() {
     //following code will be encapsulated by a client instance
@@ -20,43 +20,43 @@ void LobbyClientReceptionist::run() {
         std::string clientInitiationMessage = protocol.receiveMessage();
         nlohmann::json initiationMsg = nlohmann::json::parse(clientInitiationMessage);
         std::string mode = initiationMsg["mode"].get<std::string>();
-        if (mode == CREATE_GAME) {
-            createNewGame(initiationMsg);
-        } else {  //client wants to join a game
-            joinGame(initiationMsg);
+        if (mode == CREATE_MATCH) {
+            createNewMatch(initiationMsg);
+        } else {  //client wants to join a match
+            joinMatch(initiationMsg);
         }
     }
 }
 
-void LobbyClientReceptionist::createNewGame(nlohmann::json& initiationMsg) {
-    std::string gameName = initiationMsg["gameName"].get<std::string>();
+void LobbyClientReceptionist::createNewMatch(nlohmann::json& initiationMsg) {
+    std::string matchName = initiationMsg["matchName"].get<std::string>();
     std::string clientId = initiationMsg["clientId"].get<std::string>();
     std::string map = initiationMsg["map"].get<std::string>();
-    int gamePlayersAmount = initiationMsg["playersAmount"].get<int>();
+    int matchPlayersAmount = initiationMsg["playersAmount"].get<int>();
     int raceLaps = initiationMsg["raceLaps"].get<int>();
 
     nlohmann::json initiationResponse;
     try {
-        gamesAdministrator.createGame(clientId, gameName,
-                map, gamePlayersAmount, raceLaps);
+        matchesAdministrator.createMatch(clientId, matchName,
+                map, matchPlayersAmount, raceLaps);
         initiationResponse["status"] = VALID_INIT_MSG;
         dead = true;
-    } catch (const GamesAdministratorException& e) {
+    } catch (const MatchesAdministratorException& e) {
         initiationResponse["status"] = e.what();
     }
     std::string responseDumped = initiationResponse.dump();
     protocol.sendMessage(responseDumped);
 }
 
-void LobbyClientReceptionist::joinGame(nlohmann::json& initiationMsg) {
-    std::string gameName = initiationMsg["gameName"].get<std::string>();
+void LobbyClientReceptionist::joinMatch(nlohmann::json& initiationMsg) {
+    std::string matchName = initiationMsg["matchName"].get<std::string>();
     std::string clientId = initiationMsg["clientId"].get<std::string>();
     nlohmann::json initiationResponse;
     try {
-        gamesAdministrator.joinClientToGame(gameName, clientId);
+        matchesAdministrator.joinClientToMatch(matchName, clientId);
         initiationResponse["status"] = VALID_INIT_MSG;
         dead = true;
-    } catch (const GamesAdministratorException& e) {
+    } catch (const MatchesAdministratorException& e) {
         initiationResponse["status"] = e.what();
     }
     std::string responseDumped = initiationResponse.dump();
