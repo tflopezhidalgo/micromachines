@@ -98,23 +98,18 @@ void Juego::procesar_eventos() {
     while (ventana->pollEvent(*evento)) {
         switch (evento->type) {
             case Event::KeyPressed:
-
                 if (Keyboard::isKeyPressed(Keyboard::Left)) {
-                    car->updateTurn(LEFT);
+                    car->update(LEFT);
                 }
-
                 if (Keyboard::isKeyPressed(Keyboard::Right)) {
-                    car->updateTurn(RIGHT);
+                    car->update(RIGHT);
                 }
-
                 if (Keyboard::isKeyPressed(Keyboard::Up)) {
-                    car->updateDrive(UP);
+                    car->update(UP);
                 }
-
                 if (Keyboard::isKeyPressed(Keyboard::Down)) {
-                    car->updateDrive(DOWN);
+                    car->update(DOWN);
                 }
-                //car->updateFriction();
         }
     }
 }

@@ -10,17 +10,18 @@
 class Car {
 private:
     b2Body* body;
-    b2Vec2 getLateralVelocity();
-    b2Vec2 getForwardVelocity();
     float maxForwardSpeed;
     float maxBackwardSpeed;
     float maxDriveForce;
     float maxLateralImpulse;
-public:
-    Car(b2World* world);
-    void updateFriction();
+    b2Vec2 getLateralVelocity();
+    b2Vec2 getForwardVelocity();
     void updateDrive(int key);
     void updateTurn(int key);
+public:
+    Car(b2World* world);
+    void update(int key);
+    void updateFriction();
     b2Vec2 getPosition();
     float getAngle();
     ~Car();
