@@ -94,12 +94,15 @@ float Juego::rad2deg(float rad) {
 }
 
 void Juego::procesar_eventos() {
+    car->updateFriction();
     while (ventana->pollEvent(*evento)) {
         switch (evento->type) {
             case Event::KeyPressed:
+
                 if (Keyboard::isKeyPressed(Keyboard::Left)) {
                     car->updateTurn(LEFT);
                 }
+
                 if (Keyboard::isKeyPressed(Keyboard::Right)) {
                     car->updateTurn(RIGHT);
                 }
@@ -111,6 +114,7 @@ void Juego::procesar_eventos() {
                 if (Keyboard::isKeyPressed(Keyboard::Down)) {
                     car->updateDrive(DOWN);
                 }
+                //car->updateFriction();
         }
     }
 }

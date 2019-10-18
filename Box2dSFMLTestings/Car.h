@@ -15,6 +15,7 @@ private:
     float maxForwardSpeed;
     float maxBackwardSpeed;
     float maxDriveForce;
+    float maxLateralImpulse;
 public:
     Car(b2World* world);
     void updateFriction();

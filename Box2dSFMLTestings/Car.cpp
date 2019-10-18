@@ -28,16 +28,21 @@ Car::Car(b2World* world) {
     maxForwardSpeed = 100.f;
     maxBackwardSpeed = -20.f;
     maxDriveForce = 150.f;
+    maxLateralImpulse = 2.5f;
 }
 
 void Car::updateFriction() {
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
+    if (impulse.Length() > maxLateralImpulse)
+        impulse *= maxLateralImpulse / impulse.Length();
     body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
-    body->ApplyAngularImpulse( 0.1f * body->GetInertia() * -body->GetAngularVelocity(), true);
-    /*b2Vec2 currentForwardNormal = getForwardVelocity();
+
+    body->ApplyAngularImpulse(0.1f *body->GetInertia() * -body->GetAngularVelocity(), true);
+
+    b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -2 * currentForwardSpeed;
-    body->ApplyForce( dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true)*/;
+    body->ApplyForce( dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 b2Vec2 Car::getLateralVelocity() {
@@ -69,21 +74,19 @@ void Car::updateDrive(int key) {
         force = -maxDriveForce;
     else
         return;
-    updateFriction(); //dont know if its ok
     body->ApplyForce( force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Car::updateTurn(int key) {
-    if (body->GetLinearVelocity().Length() == 0) {
+    /*if (getForwardVelocity().Length() == 0) {
         return;
-    }
+    }*/
     float desiredTorque = 0;
     switch (key) {
-        case LEFT:  desiredTorque = -15;  break;
-        case RIGHT: desiredTorque = 15; break;
+        case LEFT:  desiredTorque = -20;  break;
+        case RIGHT: desiredTorque = 20; break;
         default: return;
     }
-    updateFriction(); //dont know if its ok
     body->ApplyTorque(desiredTorque, true);
 }
 
