@@ -4,6 +4,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Box2D/Box2D.h"
+#include "Car.h"
 
 using namespace sf;
 
@@ -36,15 +37,10 @@ private:
     Event* evento;
 
     b2World* mundo;
-
-    b2Body* body_auto;
-    b2BodyDef bodydef_auto;
-    b2Fixture* fix_auto;
-    b2FixtureDef fixdef_auto;
+    Car* car;
 
     float fps, tiempoFrame;
 
 };
-
 
 #endif //TESTING_JUEGO_H

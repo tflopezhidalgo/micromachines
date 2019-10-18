@@ -21,6 +21,6 @@ endif()
 add_subdirectory(Box2D)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable(Testing main.cpp Juego.cpp)
+add_executable(Testing main.cpp Juego.cpp Car.cpp)
 target_link_libraries (Testing sfml-graphics sfml-window sfml-system)
 target_link_libraries(Testing TG::Box2D)

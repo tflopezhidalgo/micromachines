@@ -4,6 +4,11 @@
 
 #include "Juego.h"
 
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
+
 Juego::Juego(Vector2i resolucion, std::string titulo) {
 
     fps = 60.f;
@@ -39,7 +44,8 @@ void Juego::cargarImagenes() {
     sprite_fondo->setPosition({50.f, 50.f});
     sprite_fondo->setScale({100.f/txt_fondo->getSize().x, 100.f/txt_fondo->getSize().y});
 
-    sprite_auto->setScale({10.f / txt_auto->getSize().x, 6.f / txt_fondo->getSize().y });
+    // Scales defined in Car.cpp
+    sprite_auto->setScale({3.f / txt_auto->getSize().x, 1.5f / txt_fondo->getSize().y });
 }
 
 void Juego::set_zoom() {
@@ -51,20 +57,7 @@ void Juego::set_zoom() {
 
 void Juego::iniciar_fisica() {
     mundo = new b2World(b2Vec2(0.f, 0.f));
-
-    bodydef_auto.type = b2BodyType::b2_dynamicBody;
-    bodydef_auto.position = b2Vec2(50.f, 50.f);
-
-    body_auto = mundo->CreateBody(&bodydef_auto);
-
-    b2PolygonShape shape_auto;
-    shape_auto.SetAsBox(5.f, 3.f);
-
-    fixdef_auto.shape = &shape_auto;
-    fixdef_auto.density = 1.f;
-
-    fix_auto = body_auto->CreateFixture(&fixdef_auto);
-
+    car = new Car(mundo);
 }
 
 void Juego::gameLoop() {
@@ -85,8 +78,8 @@ void Juego::actualizar_fisica() {
 void Juego::dibujar() {
     ventana->draw(*sprite_fondo);
 
-    sprite_auto->setPosition({body_auto->GetPosition().x, body_auto->GetPosition().y});
-    sprite_auto->setRotation(rad2deg(body_auto->GetAngle()));
+    sprite_auto->setPosition({car->getPosition().x, car->getPosition().y});
+    sprite_auto->setRotation(rad2deg(car->getAngle()));
     ventana->draw(*sprite_auto);
 }
 
@@ -105,12 +98,19 @@ void Juego::procesar_eventos() {
         switch (evento->type) {
             case Event::KeyPressed:
                 if (Keyboard::isKeyPressed(Keyboard::Left)) {
-                    body_auto->SetTransform(body_auto->GetPosition(), body_auto->GetAngle() + deg2rad(8));
+                    car->updateTurn(LEFT);
                 }
                 if (Keyboard::isKeyPressed(Keyboard::Right)) {
-                    body_auto->SetTransform(body_auto->GetPosition(), body_auto->GetAngle() - deg2rad(8));
+                    car->updateTurn(RIGHT);
                 }
 
+                if (Keyboard::isKeyPressed(Keyboard::Up)) {
+                    car->updateDrive(UP);
+                }
+
+                if (Keyboard::isKeyPressed(Keyboard::Down)) {
+                    car->updateDrive(DOWN);
+                }
         }
     }
 }
