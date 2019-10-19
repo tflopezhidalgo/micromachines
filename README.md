@@ -1,6 +1,6 @@
-# Status !https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=SDL-basics!:https://travis-ci.com/tomasLopezHidalgo/micromachines
+# Status 
 
-
+!https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=SDL-basics!:https://travis-ci.com/tomasLopezHidalgo/micromachines
 
 # Compile with CMake
 
