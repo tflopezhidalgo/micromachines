@@ -44,6 +44,8 @@ private:
     Time* tiempo1;
     float tiempo2;
 
+    bool updatee;
+
 };
 
 #endif //TESTING_JUEGO_H

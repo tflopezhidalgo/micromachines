@@ -94,16 +94,17 @@ float Car::getAngle() {
 void Car::update(int controlState) {
     for (int i = 0; i < tires.size(); i++)
         tires[i]->updateFriction();
-    for (int i = 0; i < tires.size(); i++)
+    for (int i = 0; i < tires.size(); i++) {
         tires[i]->updateDrive(controlState);
+    }
 
     float lockAngle = 35 * DEGTORAD;
     float turnSpeedPerSec = 160 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
     switch (controlState) {
-        case LEFT:  desiredAngle = lockAngle;  break;
-        case RIGHT: desiredAngle = -lockAngle; break;
+        case RIGHT:  desiredAngle = lockAngle;  break;
+        case LEFT: desiredAngle = -lockAngle; break;
         default: ;//nothing
     }
     float angleNow = flJoint->GetJointAngle();

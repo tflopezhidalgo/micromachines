@@ -2,6 +2,7 @@
 // Created by leobellaera on 17/10/19.
 //
 
+#include <iostream>
 #include "Juego.h"
 
 #define UP 1
@@ -10,6 +11,7 @@
 #define RIGHT 4
 
 Juego::Juego(Vector2i resolucion, std::string titulo) {
+    updatee = false;
 
     fps = 60.f;
     tiempoFrame = 1.f / fps;
@@ -48,7 +50,7 @@ void Juego::cargarImagenes() {
     sprite_fondo->setScale({100.f/txt_fondo->getSize().x, 100.f/txt_fondo->getSize().y});
 
     // Scales defined in Car.cpp
-    sprite_auto->setScale({3.5f / txt_auto->getSize().x, 4.8f / txt_fondo->getSize().y });
+    sprite_auto->setScale({2.f / txt_auto->getSize().x, 2.5f / txt_fondo->getSize().y });
 }
 
 void Juego::set_zoom() {
@@ -78,8 +80,10 @@ void Juego::gameLoop() {
 }
 
 void Juego::actualizar_fisica() {
+    if (!updatee) car->update(0);
     mundo->Step(tiempoFrame, 8, 8);
     mundo->ClearForces();
+    updatee = false;
 }
 
 void Juego::dibujar() {
@@ -101,22 +105,20 @@ float Juego::rad2deg(float rad) {
 }
 
 void Juego::procesar_eventos() {
-    while (ventana->pollEvent(*evento)) {
-        car->update(0); //invalid key
-        switch (evento->type) {
-            case Event::KeyPressed:
-                if (Keyboard::isKeyPressed(Keyboard::Left)) {
-                    car->update(LEFT);
-                }
-                if (Keyboard::isKeyPressed(Keyboard::Right)) {
-                    car->update(RIGHT);
-                }
-                if (Keyboard::isKeyPressed(Keyboard::Up)) {
-                    car->update(UP);
-                }
-                if (Keyboard::isKeyPressed(Keyboard::Down)) {
-                    car->update(DOWN);
-                }
+        if (Keyboard::isKeyPressed(Keyboard::Left)) {
+            car->update(LEFT);
+            updatee = true;
         }
-    }
+        if (Keyboard::isKeyPressed(Keyboard::Right)) {
+            car->update(RIGHT);
+            updatee = true;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Up)) {
+            car->update(UP);
+            updatee = true;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Down)) {
+            car->update(DOWN);
+            updatee = true;
+        }
 }
