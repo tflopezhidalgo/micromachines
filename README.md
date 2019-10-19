@@ -1,14 +1,6 @@
-# Compile with CMake
-
-```
-cd <PATH_TO_MICROMACHINES>/micromachines
-mkdir build
-cd build
-cmake ..
-make <CLIENT/SERVER>
-```
+Branch sobre el cual se inician las primeras pruebas sobre el motor Box2D
 
 ### Tareas a realizar
 
-- [x] Crear modelo del servidor (diagrama de clases)
-- [ ] Crear una primera versión estable del juego
+- [x] Tarea 1
+- [ ] Tarea 2
