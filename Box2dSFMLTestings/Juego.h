@@ -5,6 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include "Box2D/Box2D.h"
 #include "Car.h"
+#include "Border.h"
 
 using namespace sf;
 
@@ -28,9 +29,11 @@ public:
 private:
     Texture* txt_fondo;
     Texture* txt_auto;
+    Texture* txt_borde;
 
     Sprite* sprite_fondo;
     Sprite* sprite_auto;
+    Sprite* sprite_borde;
 
     RenderWindow* ventana;
     View* camara;
@@ -38,6 +41,7 @@ private:
 
     b2World* mundo;
     Car* car;
+    Border* borde;
 
     float fps, tiempoFrame;
 
