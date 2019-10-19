@@ -17,6 +17,7 @@
 Car::Car(b2World* world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
+    bodyDef.position = {30.f, 30.f}; //HARCODEADO! SE RECIBE X CONSTRUCTOR
     body = world->CreateBody(&bodyDef);
     body->SetAngularDamping(3);
 
