@@ -1,6 +1,4 @@
-# Status 
-
-!https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=SDL-basics!:https://travis-ci.com/tomasLopezHidalgo/micromachines
+# Status ![Build Status](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=SDL-basics)
 
 # Compile with CMake
 
@@ -11,8 +9,3 @@ cd build
 cmake ..
 make <CLIENT/SERVER>
 ```
-
-### Tareas a realizar
-
-- [x] Crear modelo del servidor (diagrama de clases)
-- [ ] Crear una primera versión estable del juego
