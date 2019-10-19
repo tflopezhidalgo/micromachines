@@ -70,8 +70,9 @@ void Juego::set_zoom() {
 
 void Juego::iniciar_fisica() {
     mundo = new b2World(b2Vec2(0.f, 0.f));
+    mundo->SetContactListener(&procesador);
     car = new Car(mundo);
-    borde = new Border(mundo, 50.f, 50.f, 5.f, 8.f);
+    borde = new Border(mundo, 50.f, 50.f, 5.f, 5.f);
 }
 
 void Juego::gameLoop() {
@@ -84,7 +85,6 @@ void Juego::gameLoop() {
             dibujar();
             ventana->display();
         }
-
     }
 }
 

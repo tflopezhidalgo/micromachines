@@ -11,7 +11,9 @@ class Border {
 private:
     b2Body* body;
 public:
-    Border(b2World* world, float pos_x, float pos_y, float box_x, float box_y);
+    Border(b2World* world, float pos_x, float pos_y, float len_x, float len_y);
+
+    ~Border();
 };
 
 

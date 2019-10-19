@@ -80,6 +80,9 @@ Car::Car(b2World* world) {
     jointDef.localAnchorA.Set( 3, 8.5f );
     frJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
     tires.push_back(tire);
+
+    body->SetUserData((void*)this);
+    fixture->SetUserData((void*)this);
 }
 
 
