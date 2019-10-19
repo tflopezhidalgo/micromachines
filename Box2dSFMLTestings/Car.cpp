@@ -42,11 +42,11 @@ void Car::updateFriction() {
         impulse *= maxLateralImpulse / impulse.Length();
     body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
 
-    body->ApplyAngularImpulse(0.1f *body->GetInertia() * -body->GetAngularVelocity(), true);
+    body->ApplyAngularImpulse(0.1f * body->GetInertia() * -body->GetAngularVelocity(), true);
 
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
-    float dragForceMagnitude = /*-2 * */ -currentForwardSpeed;
+    float dragForceMagnitude = -2 * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
