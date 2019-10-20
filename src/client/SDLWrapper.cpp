@@ -1,34 +1,28 @@
 #include "SDLWrapper.h"
+#include "Window.h"
+#include "BaseSprite.h"
+#include "Camera.h"
+#include "TileMap.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+SDLWrapper::SDLWrapper() {
+    SDL_Init(SDL_INIT_VIDEO);
+}
 
 void SDLWrapper::run() {
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* main = NULL;
-    SDL_Renderer* renderer = NULL;
-    SDL_Surface *track_surface = NULL, *car_surface = NULL;
-    SDL_Rect rect_img = {0, 0, 100, 200};
-    SDL_Point point = {50,0 };
+    Window mainW("Testing", 1200, 600);
+    BaseSprite car(mainW, "../media/sprites/pitstop_car_1.png", 100,100);
+    TileMap lazy_map(mainW, "../media/maps/lazy.map");
+    Camera cam(mainW, car);
 
-    main = SDL_CreateWindow("Testing",
-                            SDL_WINDOWPOS_UNDEFINED,
-                            SDL_WINDOWPOS_UNDEFINED,
-                            0,0,
-                            SDL_WINDOW_FULLSCREEN_DESKTOP);
-    renderer = SDL_CreateRenderer(main, -1,
-                                  SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
-
-    track_surface = IMG_Load("../media/sprites/test_map.png");
-    car_surface = IMG_Load("../media/sprites/pitstop_car_1.png");
-
-    SDL_Texture* track_sprite = SDL_CreateTextureFromSurface(renderer, track_surface);
-    SDL_Texture* car_sprite = SDL_CreateTextureFromSurface(renderer, car_surface);
     int velocityX = 0;
     int velocityY = 0;
     bool cont = true;
     SDL_Event e;
-    while (cont) {
-        while (SDL_PollEvent(&e)) {
+    while (cont){
+        if (SDL_PollEvent(&e)) {
+            mainW.clear();
+
             if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
                 switch (e.key.keysym.sym) {
                     case SDLK_w:
@@ -64,24 +58,14 @@ void SDLWrapper::run() {
                 }
             }
         }
-        rect_img.y += velocityY;
-        rect_img.x += velocityX;
-
-        if (rect_img.y < 0)
-            rect_img.y = 0;
-        if (rect_img.x < 0)
-            rect_img.x = 0;
-        if (rect_img.x > 700)
-            rect_img.x = 700;
-        if (rect_img.y > 400)
-            rect_img.y = 400;
-
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, track_sprite, &rect_img, NULL);
-        SDL_RenderCopy(renderer, car_sprite, NULL, &rect_img);
-        SDL_RenderPresent(renderer);
+        car.move(velocityX, velocityY, 0);
+        cam.update();
+        lazy_map.render();
+        car.render();
+        mainW.update();
     }
-    SDL_DestroyWindow(main);
-    SDL_Quit();
 }
 
+SDLWrapper::~SDLWrapper() {
+    SDL_Quit();
+}

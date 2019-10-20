@@ -12,8 +12,11 @@ class Texture {
         Window& window;
 
     public:
-        Texture(std::string file, Window);
-        void render();
+        Texture(SDL_Texture* txd,
+                Window& mainWindow);
+        Texture(Texture&& other);
+        Texture& operator=(Texture&& other);
+        void render(SDL_Rect& dimensions);
         ~Texture();
 };
 

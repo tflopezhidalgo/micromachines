@@ -5,8 +5,8 @@
 
 class SDLWrapper: public Thread{
     public:
-        SDLWrapper() { }
+        SDLWrapper();
         void run() override;
-        ~SDLWrapper() override { }
+        ~SDLWrapper();
 };
 #endif
