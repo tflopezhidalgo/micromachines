@@ -6,6 +6,7 @@
 #define TESTING_CRASHOBJECT_H
 
 enum CrashType {
+    PLAYER,
     CAR,
     BORDER,
     BOX,
@@ -14,9 +15,11 @@ enum CrashType {
 class CrashObject {
 private:
     CrashType type;
+    int health = 100;
 public:
-    CrashType getType();
-};
+    virtual CrashType getType() = 0;
 
+    virtual void getDamage(int damage) = 0;
+};
 
 #endif //TESTING_CRASHOBJECT_H

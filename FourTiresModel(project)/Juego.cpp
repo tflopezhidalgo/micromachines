@@ -32,23 +32,18 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
 
 void Juego::cargarImagenes() {
     txt_auto = new Texture;
-    txt_borde = new Texture;
     txt_fondo = new Texture;
 
     txt_auto->loadFromFile("auto.png");
-    txt_borde->loadFromFile("fix.png");
     txt_fondo->loadFromFile("fondo.jpg");
 
     sprite_auto = new Sprite;
-    sprite_borde = new Sprite;
     sprite_fondo = new Sprite;
 
     sprite_auto->setTexture(*txt_auto);
-    sprite_borde->setTexture(*txt_borde);
     sprite_fondo->setTexture(*txt_fondo);
 
     sprite_auto->setOrigin({txt_auto->getSize().x / 2.f, txt_auto->getSize().y / 2.f});
-    sprite_borde->setOrigin({txt_borde->getSize().x / 2.f, txt_borde->getSize().y / 2.f});
     sprite_fondo->setOrigin({txt_fondo->getSize().x / 2.f, txt_fondo->getSize().y / 2.f});
 
     sprite_fondo->setPosition({50.f, 50.f});
@@ -56,9 +51,6 @@ void Juego::cargarImagenes() {
 
     // Scales defined in Car.cpp
     sprite_auto->setScale({2.f / txt_auto->getSize().x, 2.5f / txt_fondo->getSize().y });
-
-    sprite_borde->setPosition({50.f, 50.f});
-    sprite_borde->setScale({10.f /txt_borde->getSize().x, 10.f /txt_borde->getSize().y });
 }
 
 void Juego::set_zoom() {
@@ -70,9 +62,12 @@ void Juego::set_zoom() {
 
 void Juego::iniciar_fisica() {
     mundo = new b2World(b2Vec2(0.f, 0.f));
-    mundo->SetContactListener(&procesador);
-    car = new Car(mundo);
-    borde = new Border(mundo, 50.f, 50.f, 5.f, 5.f);
+    //mundo->SetContactListener(&procesador);
+    car = new Car(mundo, 50.f, 50.f, CrashType::PLAYER);
+    Border* borde1 = new Border(mundo, 0.f, 0.f, 100.f, 0.1f); // arriba
+    Border* borde2 = new Border(mundo, 0.f, 0.f, 0.1f, 100.f); // izquierda
+    Border* borde3 = new Border(mundo, 0.f, 100.f, 100.f, 0.1f); // abajo
+    Border* borde4 = new Border(mundo, 100.f, 100.f, 0.1f, 100.f); // derecha
 }
 
 void Juego::gameLoop() {
@@ -101,9 +96,6 @@ void Juego::dibujar() {
     sprite_auto->setPosition({car->getPosition().x, car->getPosition().y});
     sprite_auto->setRotation(rad2deg(car->getAngle()));
     ventana->draw(*sprite_auto);
-
-    ventana->draw(*sprite_borde);
-
 }
 
 float Juego::deg2rad(float deg) {

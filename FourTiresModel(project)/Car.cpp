@@ -14,10 +14,13 @@
 #define LEFT 3
 #define RIGHT 4
 
-Car::Car(b2World* world) {
+Car::Car(b2World* world, float pos_x, float pos_y, CrashType type) :
+    type(type),
+    health(100),
+    is_dead(false) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position = {30.f, 30.f}; //HARCODEADO! SE RECIBE X CONSTRUCTOR
+    bodyDef.position = {pos_x, pos_y}; //HARCODEADO! SE RECIBE X CONSTRUCTOR
     body = world->CreateBody(&bodyDef);
     body->SetAngularDamping(3);
 
@@ -85,7 +88,20 @@ Car::Car(b2World* world) {
     fixture->SetUserData((void*)this);
 }
 
+void Car::getDamage(int damage) {
+    health = health - damage;
+    if (health <= 0) {
+        is_dead = true;
+    }
+}
 
+bool Car::isDead() {
+    return is_dead;
+}
+
+CrashType Car::getType() {
+    return type;
+}
 
 b2Vec2 Car::getPosition() {
     return body->GetPosition();

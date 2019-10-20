@@ -30,11 +30,9 @@ public:
 private:
     Texture* txt_fondo;
     Texture* txt_auto;
-    Texture* txt_borde;
 
     Sprite* sprite_fondo;
     Sprite* sprite_auto;
-    Sprite* sprite_borde;
 
     RenderWindow* ventana;
     View* camara;
@@ -42,7 +40,6 @@ private:
 
     b2World* mundo;
     Car* car;
-    Border* borde;
 
     float fps, tiempoFrame;
     Clock* reloj;

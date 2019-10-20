@@ -6,14 +6,19 @@
 #define MICROMACHINES_BORDER_H
 
 #include "Box2D/Box2D.h"
+#include "CrashObject.h"
 
-class Border {
+class Border : public CrashObject {
 private:
     b2Body* body;
+    CrashType type;
 public:
     Border(b2World* world, float pos_x, float pos_y, float len_x, float len_y);
 
+    CrashType getType();
     ~Border();
+
+    void getDamage(int damage);
 };
 
 
