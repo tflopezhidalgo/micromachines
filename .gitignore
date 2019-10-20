@@ -1,14 +1,13 @@
 cmake-build-debug/
 build/
 .idea/
-Box2dSFMLTestings/Box2D
+Box2dSFMLTestings/Testing
 Box2dSFMLTestings/CMakeCache.txt
 Box2dSFMLTestings/CMakeFiles/
 Box2dSFMLTestings/Makefile
 Box2dSFMLTestings/cmake_install.cmake
-CMakeCache.txt
 CMakeFiles/
 Makefile
-
+FourTiresModel(project)/Testing
 cmake_install.cmake
 hello
