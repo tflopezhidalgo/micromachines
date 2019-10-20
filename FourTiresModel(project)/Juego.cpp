@@ -50,7 +50,7 @@ void Juego::cargarImagenes() {
     sprite_fondo->setScale({100.f/txt_fondo->getSize().x, 100.f/txt_fondo->getSize().y});
 
     // Scales defined in Car.cpp
-    sprite_auto->setScale({2.f / txt_auto->getSize().x, 2.5f / txt_fondo->getSize().y });
+    sprite_auto->setScale({5.f / txt_auto->getSize().x, 5.f / txt_fondo->getSize().y });
 }
 
 void Juego::set_zoom() {
@@ -62,7 +62,6 @@ void Juego::set_zoom() {
 
 void Juego::iniciar_fisica() {
     mundo = new b2World(b2Vec2(0.f, 0.f));
-    //mundo->SetContactListener(&procesador);
     car = new Car(mundo, 50.f, 50.f, CrashType::PLAYER);
     Border* borde1 = new Border(mundo, 0.f, 0.f, 100.f, 0.1f); // arriba
     Border* borde2 = new Border(mundo, 0.f, 0.f, 0.1f, 100.f); // izquierda
@@ -87,6 +86,7 @@ void Juego::actualizar_fisica() {
     if (!updatee) car->update(0);
     mundo->Step(tiempoFrame, 8, 8);
     mundo->ClearForces();
+    mundo->SetContactListener(&procesador);
     updatee = false;
 }
 

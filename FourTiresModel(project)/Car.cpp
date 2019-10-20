@@ -84,14 +84,14 @@ Car::Car(b2World* world, float pos_x, float pos_y, CrashType type) :
     frJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
     tires.push_back(tire);
 
-    body->SetUserData((void*)this);
-    fixture->SetUserData((void*)this);
+    body->SetUserData(this);
 }
 
 void Car::getDamage(int damage) {
     health = health - damage;
     if (health <= 0) {
         is_dead = true;
+        body->GetWorld()->DestroyBody( this->body );
     }
 }
 

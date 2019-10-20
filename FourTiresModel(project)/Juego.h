@@ -6,7 +6,7 @@
 #include "Box2D/Box2D.h"
 #include "Car.h"
 #include "Border.h"
-#include "ProccessContact.h"
+#include "ProcessContact.h"
 
 using namespace sf;
 
@@ -46,7 +46,7 @@ private:
     Time* tiempo1;
     float tiempo2;
 
-    ProccessContact procesador;
+    ProcessContact procesador;
     bool updatee;
 
 };

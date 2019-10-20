@@ -14,6 +14,7 @@ Border::Border(b2World *world, float pos_x, float pos_y, float len_x, float len_
 
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(len_x, len_y);
+   // polygonShape.setFillColor(Color::Red);
     b2Fixture* fixture = body->CreateFixture(&polygonShape, 0.1f);
 
     body->SetUserData(this);
