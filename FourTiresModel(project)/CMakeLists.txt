@@ -23,7 +23,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cpp")
 
-add_executable(Testing ${sources})
-# add_executable(Testing main.cpp Juego.cpp Car.cpp Tire.cpp Border.cpp ProccessContact.cpp)
+#add_executable(Testing ${sources})
+add_executable(Testing main.cpp Juego.cpp Car.cpp Tire.cpp Border.cpp CrashObject.cpp ProccessContact.cpp)
 target_link_libraries (Testing sfml-graphics sfml-window sfml-system)
 target_link_libraries(Testing TG::Box2D)
