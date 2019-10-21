@@ -18,10 +18,8 @@ class BaseSprite {
                    const std::string& path,
                    int height, int width);
         void move(int diff_x, int diff_y, int diff_ang);
-        int getXPos() {
-            return textureInfo.x + textureInfo.w / 2; }
-        int getYPos() {
-            return textureInfo.y + textureInfo.h / 2; }
+        int getXPos();
+        int getYPos();
         void render();
         ~BaseSprite();
 };

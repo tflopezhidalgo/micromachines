@@ -15,14 +15,9 @@ class Tile {
     public:
         Tile(Window& window,
              const std::string& img,
-             int x, int y, int h, int w) :
-             texture(window.createTextureFrom(img), window),
-             box{x, y, w, h} {
-        }
+             int x, int y, int h, int w);
 
-        void render(){
-            this->texture.render(box);
-        }
+        void render();
 
 };
 

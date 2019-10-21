@@ -15,7 +15,6 @@ class Texture {
         Texture(SDL_Texture* txd,
                 Window& mainWindow);
         Texture(Texture&& other);
-        Texture& operator=(Texture&& other);
         void render(SDL_Rect& dimensions);
         ~Texture();
 };
