@@ -36,7 +36,7 @@ void ProcessContact::crash(CrashObject &object1, CrashObject &object2) {
                 std::cout << "error";
                 object1.getDamage(BOX_DAMAGE);
                 break;
-            case CrashType::BOX:
+            case CrashType::STONE:
                 // una caja golpea con menos fuerza que auto
                 // quitar % vida auto
                 // premio o lo que sea

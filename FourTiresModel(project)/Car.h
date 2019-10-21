@@ -20,10 +20,11 @@ private:
     bool is_dead;
 public:
     Car(b2World* world, float  pos_x, float pos_y, CrashType type);
+    //Car(b2World* world, b2Vec2 pos, CrashType type);
     void update(int key);
-    b2Vec2 getPosition();
+    const b2Vec2 getPosition();
     float getAngle();
-    void getDamage(int damage);
+    void getDamage(int damage) override;
     bool isDead();
     ~Car();
 

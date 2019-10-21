@@ -14,12 +14,14 @@
 #define LEFT 3
 #define RIGHT 4
 
+//Car::Car(b2World* world, b2Vec2 pos, CrashType type) :
 Car::Car(b2World* world, float pos_x, float pos_y, CrashType type) :
     type(type),
     health(100),
     is_dead(false) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
+    // bodyDef.position = pos; //b2Vec2 pos
     bodyDef.position = {pos_x, pos_y}; //HARCODEADO! SE RECIBE X CONSTRUCTOR
     body = world->CreateBody(&bodyDef);
     body->SetAngularDamping(3);
@@ -35,7 +37,13 @@ Car::Car(b2World* world, float pos_x, float pos_y, CrashType type) :
     vertices[7].Set(-1.5,   0);
     b2PolygonShape polygonShape;
     polygonShape.Set(vertices, 8);
-    b2Fixture* fixture = body->CreateFixture(&polygonShape, 0.1f);
+
+    b2FixtureDef fixture_def;
+    fixture_def.shape = &polygonShape;
+    fixture_def.density = 0.1f;
+    fixture_def.isSensor = true;
+    fixture_def.shape = &polygonShape;
+    b2Fixture* fixture = body->CreateFixture(&fixture_def);
 
     //prepare common joint parameters
     b2RevoluteJointDef jointDef;

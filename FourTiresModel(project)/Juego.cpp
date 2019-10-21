@@ -63,10 +63,16 @@ void Juego::set_zoom() {
 void Juego::iniciar_fisica() {
     mundo = new b2World(b2Vec2(0.f, 0.f));
     car = new Car(mundo, 50.f, 50.f, CrashType::PLAYER);
-    Border* borde1 = new Border(mundo, 0.f, 0.f, 100.f, 0.1f); // arriba
-    Border* borde2 = new Border(mundo, 0.f, 0.f, 0.1f, 100.f); // izquierda
-    Border* borde3 = new Border(mundo, 0.f, 100.f, 100.f, 0.1f); // abajo
-    Border* borde4 = new Border(mundo, 100.f, 100.f, 0.1f, 100.f); // derecha
+//    car = new Car(mundo, {50.f, 50.f}, CrashType::PLAYER);
+    b2Vec2 pos = {0.f,0.f};
+    b2Vec2 pos1 = {0.f,100.f};
+    b2Vec2 pos2 = {100.f, 100.f};
+    b2Vec2 horizontal = {100.f, 0.1f};
+    b2Vec2 vertical = {0.1f, 100.f};
+    Border* borde1 = new Border(mundo, pos, horizontal); // arriba
+    Border* borde2 = new Border(mundo, pos, vertical); // izquierda
+    Border* borde3 = new Border(mundo, pos1, horizontal); // abajo
+    Border* borde4 = new Border(mundo, pos2, vertical); // derecha
 }
 
 void Juego::gameLoop() {

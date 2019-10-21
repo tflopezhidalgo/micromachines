@@ -5,20 +5,25 @@
 #include "Border.h"
 #include "Box2D/Box2D.h"
 
-Border::Border(b2World *world, float pos_x, float pos_y, float len_x, float len_y) :
+Border::Border(b2World *world, b2Vec2 &pos, b2Vec2 &len) :
     type(CrashType::BORDER){
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
-    bodyDef.position.Set(pos_x, pos_y);
+    bodyDef.position.Set(pos.x, pos.y);
     body = world->CreateBody(&bodyDef);
 
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(len_x, len_y);
+    polygonShape.SetAsBox(len.x, len.y);
    // polygonShape.setFillColor(Color::Red);
-    b2Fixture* fixture = body->CreateFixture(&polygonShape, 0.1f);
+
+    b2FixtureDef fixture_def;
+    fixture_def.shape = &polygonShape;
+    fixture_def.density = 0.1f;
+    fixture_def.isSensor = true;
+    b2Fixture* fixture = body->CreateFixture(&fixture_def);
 
     body->SetUserData(this);
-    fixture->SetUserData((void*)this);
+    fixture->SetUserData(this);
 }
 
 CrashType Border::getType() {

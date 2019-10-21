@@ -5,11 +5,17 @@
 #ifndef TESTING_CRASHOBJECT_H
 #define TESTING_CRASHOBJECT_H
 
+#include <Box2D/Common/b2Math.h>
+
 enum CrashType {
     PLAYER,
     CAR,
     BORDER,
-    BOX,
+    HEALTHBOX,
+    OIL,
+    BOOSTS,
+    STONE,
+    MUD,
 };
 
 class CrashObject {
@@ -20,6 +26,8 @@ public:
     virtual CrashType getType() = 0;
 
     virtual void getDamage(int damage) = 0;
+
+    const b2Vec2 getPosition();
 };
 
 #endif //TESTING_CRASHOBJECT_H

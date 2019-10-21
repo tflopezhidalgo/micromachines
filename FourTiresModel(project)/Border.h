@@ -13,12 +13,12 @@ private:
     b2Body* body;
     CrashType type;
 public:
-    Border(b2World* world, float pos_x, float pos_y, float len_x, float len_y);
+    Border(b2World* world, b2Vec2 &pos, b2Vec2 &len);
 
-    CrashType getType();
+    CrashType getType() override;
     ~Border();
 
-    void getDamage(int damage);
+    void getDamage(int damage) override;
 };
 
 
