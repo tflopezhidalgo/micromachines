@@ -18,6 +18,8 @@ class BaseSprite {
                    const std::string& path,
                    int height, int width);
         void move(int diff_x, int diff_y, int diff_ang);
+        //Eliminar las refencias a velocidades
+        void handle(SDL_Event& e, int& , int&);
         int getXPos();
         int getYPos();
         void render();
