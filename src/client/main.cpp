@@ -11,6 +11,5 @@ int main() {
     } catch(std::runtime_error e) {
         std::cout << e.what() << std::endl;
     }
-    return 0;
+   return 0;
 }
-
