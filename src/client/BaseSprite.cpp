@@ -4,7 +4,7 @@
 BaseSprite::BaseSprite(Window& main,
                        const std::string& path,
                        int height, int width) :
-                       texture(main.createTextureFrom(path),main) {
+                       texture(main.createTextureFrom(path)) {
     this->textureInfo.x = 0;
     this->textureInfo.y = 0;
     this->textureInfo.h = height;

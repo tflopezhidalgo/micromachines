@@ -1,10 +1,10 @@
 #ifndef MICROMACHINES_TEXTURE_H
 #define MICROMACHINES_TEXTURE_H
 
+#include "Window.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
-#include "Window.h"
 
 class Texture {
     private:

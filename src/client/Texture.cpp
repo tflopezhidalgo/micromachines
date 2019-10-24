@@ -1,5 +1,4 @@
 #include "Texture.h"
-#include "Window.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -19,6 +18,6 @@ void Texture::render(SDL_Rect& dimensions) {
 }
 
 Texture::~Texture() {
-    if (texture != nullptr)
-        SDL_DestroyTexture(this->texture);
+    SDL_DestroyTexture(this->texture);
+
 }

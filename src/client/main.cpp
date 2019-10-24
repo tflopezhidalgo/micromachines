@@ -6,7 +6,6 @@ int main() {
     try {
         SDLWrapper SDL;
         SDL.start();
-        std::cout << "Se lanzo thread SDL...\n";
         SDL.join();
     } catch(std::runtime_error e) {
         std::cout << e.what() << std::endl;

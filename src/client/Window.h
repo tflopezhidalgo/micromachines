@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 
+class Texture;  //TODO: Solucionar esto
+
 class Window {
     private:
         SDL_Window* window;
@@ -15,11 +17,12 @@ class Window {
     public:
         explicit Window(std::string title);
         Window(std::string title, int w, int h);
-        SDL_Texture* createTextureFrom(std::string img);
+        Texture& createTextureFrom(std::string img);
         void render(SDL_Texture *texture, SDL_Rect& rect);
         void setCamera(int x, int y, int scale);
         int getHeight();
         int getWidth();
+        SDL_Renderer* getRenderer();
         void update();
         void clear();
         ~Window();

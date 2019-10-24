@@ -1,6 +1,6 @@
 #include "Window.h"
+#include "TextureRepository.h"
 #include <SDL2/SDL.h>
-#include <stdexcept>
 #include <string>
 
 Window::Window(std::string title) {
@@ -20,16 +20,9 @@ Window::Window(std::string title, int w, int h) {
         throw std::runtime_error("no se pudo crear ventana");
 }
 
-SDL_Texture* Window::createTextureFrom(std::string img) {
-    IMG_Init(IMG_INIT_PNG);
-    SDL_Surface* aux = IMG_Load(img.c_str());
-    SDL_Texture* text_ptr = SDL_CreateTextureFromSurface(this->renderer, aux);
-    SDL_FreeSurface(aux);
-    IMG_Quit();
-    if (!aux || !text_ptr)
-        throw std::runtime_error("No se pudo crear textura");
-
-    return text_ptr;
+Texture& Window::createTextureFrom(std::string img) {
+    Texture& texture = TextureRepository::getTexture(img, *this);
+    return texture;
 }
 
 void Window::render(SDL_Texture *texture, SDL_Rect &rect) {
@@ -57,6 +50,11 @@ int Window::getWidth(){
     SDL_GetRendererOutputSize(this->renderer, &w, 0);
     return w;
 }
+
+SDL_Renderer* Window::getRenderer(){
+    return this->renderer;
+}
+
 
 void Window::update() {
     SDL_RenderPresent(this->renderer);

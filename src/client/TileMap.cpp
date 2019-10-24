@@ -10,17 +10,22 @@ TileMap::TileMap(Window& window, const std::string& mapFile)
         for (int j = 0; j < 16; ++j) {
             int type = -1;
             in >> type;
-            this->tiles.push_back(new Tile(window, GRASS_TILE, x, y, TILE_HEIGHT, TILE_WIDTH));
-            if (type == 1)
-                this->tiles.push_back(new Tile(window, TILE_1, x, y, TILE_HEIGHT, TILE_WIDTH));
-            else if (type == 2)
-                this->tiles.push_back(new Tile(window, TILE_2, x, y, TILE_HEIGHT, TILE_WIDTH));
-            else if (type == 3)
-                this->tiles.push_back(new Tile(window, TILE_3, x, y, TILE_HEIGHT, TILE_WIDTH));
-            else if (type == 4)
-                this->tiles.push_back(new Tile(window, TILE_4, x, y, TILE_HEIGHT, TILE_WIDTH));
-            else if (type == 5)
-                this->tiles.push_back(new Tile(window, TILE_5, x, y, TILE_HEIGHT, TILE_WIDTH));
+            this->tiles.emplace_back(std::move(Tile(window, GRASS_TILE, x, y, TILE_HEIGHT, TILE_WIDTH)));
+            if (type == 1) {
+                tiles.emplace_back(std::move(Tile(window, TILE_1, x, y, TILE_HEIGHT, TILE_WIDTH)));
+            }
+            else if (type == 2) {
+                tiles.emplace_back(std::move(Tile(window, TILE_2, x, y, TILE_HEIGHT, TILE_WIDTH)));
+            }
+            else if (type == 3) {
+                tiles.emplace_back(std::move(Tile(window, TILE_3, x, y, TILE_HEIGHT, TILE_WIDTH)));
+            }
+            else if (type == 4) {
+                tiles.emplace_back(std::move(Tile(window, TILE_4, x, y, TILE_HEIGHT, TILE_WIDTH)));
+            }
+            else if (type == 5) {
+                tiles.emplace_back(std::move(Tile(window, TILE_5, x, y, TILE_HEIGHT, TILE_WIDTH)));
+            }
             x += TILE_WIDTH;
         }
         y += TILE_HEIGHT;
@@ -30,11 +35,8 @@ TileMap::TileMap(Window& window, const std::string& mapFile)
 
 
 void TileMap::render(){
-    for (Tile* tile : this->tiles)
-        tile->render();
+    for (Tile &tile : this->tiles)
+        tile.render();
 }
 
-TileMap::~TileMap(){
-    for (Tile* tile : this->tiles)
-        delete tile;
-}
+TileMap::~TileMap() { }

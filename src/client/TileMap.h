@@ -23,7 +23,7 @@
 
 class TileMap {
     private:
-        std::vector<Tile*> tiles;
+        std::vector<Tile> tiles;
         Window& window;
 
     public:

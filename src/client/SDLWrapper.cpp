@@ -25,12 +25,13 @@ void SDLWrapper::run() {
             mainW.clear();
             car.handle(e, velocityX, velocityY);
 
-            if (e.key.keysym.sym == SDLK_q)
+            if (e.key.keysym.sym == SDLK_q) {
                 cont = false;
+            }
         }
         car.move(velocityX, velocityY, 0);
-        cam.update();
         lazy_map.render();
+        cam.update();
         car2.render();
         car.render();
         mainW.update();

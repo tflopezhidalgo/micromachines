@@ -4,9 +4,13 @@
 #include "../common/Thread.h"
 #include "../common/Socket.h"
 
-class Receiver {
+class Receiver: public Thread {
+    private:
+
+    public:
+        Receiver();
+        void start();
 
 };
-
 
 #endif
