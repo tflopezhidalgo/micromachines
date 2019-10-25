@@ -19,7 +19,6 @@ public:
     Juego(Vector2i resolucion, std::string titulo);
     void cargarImagenes();
     void set_zoom();
-    void iniciar_fisica();
     void actualizar_fisica();
     void gameLoop();
     void dibujar();
@@ -31,9 +30,11 @@ private:
     std::map<std::string, float> config;
     Texture* txt_fondo;
     Texture* txt_auto;
+    Texture* txt_caja;
 
     Sprite* sprite_fondo;
     Sprite* sprite_auto;
+    Sprite* sprite_caja;
 
     RenderWindow* ventana;
     View* camara;
@@ -41,7 +42,7 @@ private:
 
     World* world;
     Car* car;
-
+    HealthBooster* box;
     float fps;
     Clock* reloj;
     Time* tiempo1;

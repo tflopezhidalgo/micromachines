@@ -24,52 +24,56 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     tiempo1 = new Time();
 
     config.emplace("maxForwardSpeed", 800.f);
-    config.emplace("maxBackwardSpeed", 40.f);
+    config.emplace("maxBackwardSpeed", -40.f);
     config.emplace("maxDriveForce", 400.f);
     config.emplace("maxLateralImpulse", 40.f);
     config.emplace("framesPerSecond", 60.f);
 
     world = new World(100.f, 100.f, config);
     car = world->addCar(50.f, 50.f);
+    box = world->addHealthBooster(10.f, 10.f);
 
     cargarImagenes();
     set_zoom();
-    iniciar_fisica();
     gameLoop();
 }
 
 void Juego::cargarImagenes() {
     txt_auto = new Texture;
     txt_fondo = new Texture;
+    txt_caja = new Texture;
 
     txt_auto->loadFromFile("auto.png");
     txt_fondo->loadFromFile("fondo.jpg");
+    txt_caja->loadFromFile("MetalBox.png");
 
     sprite_auto = new Sprite;
     sprite_fondo = new Sprite;
+    sprite_caja = new Sprite;
 
     sprite_auto->setTexture(*txt_auto);
     sprite_fondo->setTexture(*txt_fondo);
+    sprite_caja->setTexture(*txt_caja);
 
     sprite_auto->setOrigin({txt_auto->getSize().x / 2.f, txt_auto->getSize().y / 2.f});
     sprite_fondo->setOrigin({txt_fondo->getSize().x / 2.f, txt_fondo->getSize().y / 2.f});
+    sprite_caja->setOrigin({txt_caja->getSize().x / 2.f, txt_caja->getSize().y / 2.f});
 
     sprite_fondo->setPosition({50.f, 50.f});
-    sprite_fondo->setScale({500.f/txt_fondo->getSize().x, 500.f/txt_fondo->getSize().y});
+    sprite_fondo->setScale({100.f/txt_fondo->getSize().x, 100.f/txt_fondo->getSize().y});
+
+    sprite_caja->setScale({10.f/txt_caja->getSize().x, 10.f/txt_caja->getSize().y});
 
     // Scales defined in Car.cpp
-    sprite_auto->setScale({12.f / txt_auto->getSize().x, 20.f / txt_fondo->getSize().y });
+    sprite_auto->setScale({6.f / txt_auto->getSize().x, 15.f / txt_auto->getSize().y});
+
 }
 
 void Juego::set_zoom() {
     camara = new View;
-    camara->setSize({500.f, 500.f});
+    camara->setSize({100.f, 100.f});
     camara->setCenter({50.f, 50.f});
     ventana->setView(*camara);
-}
-
-void Juego::iniciar_fisica() {
-
 }
 
 void Juego::gameLoop() {
@@ -90,13 +94,16 @@ void Juego::actualizar_fisica() {
     //QUE EL AUTO RECIBA SU CARBODY POR PUNTERO!
     world->step();
     updatee = false;
+    std::cout<<car->getHealth()<<std::endl;
 }
 
 void Juego::dibujar() {
     ventana->draw(*sprite_fondo);
     sprite_auto->setPosition({car->getPosition().x, car->getPosition().y});
     sprite_auto->setRotation(rad2deg(car->getAngle()));
+    sprite_caja->setPosition({box->getPosition().x, box->getPosition().y});
     ventana->draw(*sprite_auto);
+    ventana->draw(*sprite_caja);
 }
 
 float Juego::deg2rad(float deg) {

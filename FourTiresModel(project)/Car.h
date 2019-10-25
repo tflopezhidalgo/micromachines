@@ -23,6 +23,7 @@ public:
     void move(int action);
     void collide(Entity* object) override;
     void receiveHealing(int healingPoints);
+    int getHealth();
     ~Car();
 };
 

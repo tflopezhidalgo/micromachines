@@ -7,11 +7,13 @@
 
 class Health {
 private:
-    int health;
+    int actualHealth;
+    int maximumHealth;
 public:
     Health(int initialHealth);
     void receiveDamage(int damage);
     void receiveHealing(int healingPoints);
+    int getHealth();
     bool isDead();
 };
 

@@ -10,9 +10,7 @@
 Car::Car(b2World* world, b2Body* body, std::map<std::string, float>& config) :
         Entity(Identifier::CAR, body),
         carBody(world, body, config),
-        health(INITIAL_HEALTH) {
-    body->SetUserData(this);
-}
+        health(INITIAL_HEALTH) {}
 
 void Car::move(int action) {
     //if status..
@@ -32,6 +30,10 @@ void Car::collide(Entity* object) {
 
 void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);
+}
+
+int Car::getHealth() {
+    return health.getHealth();
 }
 
 Car::~Car() {}

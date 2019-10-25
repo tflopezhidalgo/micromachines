@@ -3,7 +3,6 @@
 //
 
 #include "CarTire.h"
-#include "Car.h"
 
 #define FORWARD 1
 #define BACKWARD 2

@@ -4,7 +4,7 @@
 
 #include "World.h"
 
-#define BOX_SIZE 2
+#define BOX_SIZE 10
 
 #define FPS_KEY "framesPerSecond"
 
@@ -46,9 +46,10 @@ b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
 }
 
 HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
-    b2Body* boxBody = addBox({x_pos, y_pos},
-                             {BOX_SIZE, BOX_SIZE}, true);
-    HealthBooster* healthBooster = new HealthBooster(boxBody);
+    b2Body* body = addBox({x_pos, y_pos},
+                             {BOX_SIZE, BOX_SIZE}, false);
+    HealthBooster* healthBooster = new HealthBooster(body);
+    body->SetUserData(healthBooster);
     return healthBooster;
 }
 
@@ -56,13 +57,14 @@ Car* World::addCar(float x_pos, float y_pos) {
     //stage tendra un hash con carId como clave de la forma (carId, Car)
     b2Body* body = addBody({x_pos, y_pos}, true);
     Car* car = new Car(world, body, config);
+    body->SetUserData(car);
     return car;
 }
 
 void World::step() {
     float timeStep = 1.f / config.find(FPS_KEY)->second;
     int velocityIterations = 8;
-    int positionIterations = 8; //should be 3
+    int positionIterations = 3; //should be 3
     world->Step(timeStep, velocityIterations, positionIterations);
     //world->ClearForces(); neccesary?
 }

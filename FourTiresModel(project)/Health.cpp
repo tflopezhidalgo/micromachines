@@ -5,16 +5,29 @@
 #include "Health.h"
 
 Health::Health(int initialHealth) : //throw exception if health < 0
-        health(initialHealth) {}
+        actualHealth(initialHealth),
+        maximumHealth(initialHealth) {}
 
 void Health::receiveDamage(int damagePoints) {
-    health -= damagePoints;
+    if (actualHealth - damagePoints < 0) {
+        actualHealth = 0;
+    } else {
+        actualHealth -= damagePoints;
+    }
 }
 
 void Health::receiveHealing(int healingPoints) {
-    health += healingPoints;
+    if (actualHealth + healingPoints > maximumHealth) {
+        actualHealth = maximumHealth;
+    } else {
+        actualHealth += healingPoints;
+    }
 }
 
 bool Health::isDead() {
-    return (health < 0);
+    return (actualHealth == 0);
+}
+
+int Health::getHealth() {
+    return actualHealth;
 }
