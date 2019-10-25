@@ -4,6 +4,7 @@
 
 #include "World.h"
 
+#define ANGULAR_DAMPING 3
 #define BOX_SIZE 20
 #define STONE_SIZE 10
 
@@ -56,9 +57,44 @@ HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
 
 Car* World::addCar(float x_pos, float y_pos) {
     //stage tendra un hash con carId como clave de la forma (carId, Car)
-    b2Body* body = addBody({x_pos, y_pos}, true);
-    Car* car = new Car(world, body, config);
-    body->SetUserData(car);
+    b2Body* carBody = addBody({x_pos, y_pos}, true);
+    carBody->SetAngularDamping(ANGULAR_DAMPING);
+    createCarChassisFixture(carBody);
+
+    b2RevoluteJointDef jointDef;
+    jointDef.bodyA = carBody;
+    jointDef.enableLimit = true;
+    jointDef.lowerAngle = 0;
+    jointDef.upperAngle = 0;
+    jointDef.localAnchorB.SetZero();
+
+    std::vector<Tire*> tires;
+
+    b2Body* body = createTireBody();
+    Tire* tire = new Tire(body, config);
+    joinTireToChassis(world, &jointDef, body, {-3.f, 0.75f});
+    tires.push_back(tire);
+
+    //back right tire
+    body = createTireBody();
+    tire = new Tire(body, config);
+    joinTireToChassis(world, &jointDef, body, {3.f, 0.75f});
+    tires.push_back(tire);
+
+    //front left tire
+    body = createTireBody();
+    tire = new Tire(body, config);
+    b2RevoluteJoint* flJoint = joinTireToChassis(world, &jointDef, body, {-3.f, 13.5f});
+    tires.push_back(tire);
+
+    //front right tire
+    body = createTireBody();
+    tire = new Tire(body, config);
+    b2RevoluteJoint* frJoint = joinTireToChassis(world, &jointDef, body, {3.f, 13.5f});
+    tires.push_back(tire);
+
+    Car* car = new Car(carBody, tires, flJoint, frJoint);
+    carBody->SetUserData(car);
     return car;
 }
 
@@ -68,6 +104,44 @@ void World::step() {
     int positionIterations = 3; //should be 3
     world->Step(timeStep, velocityIterations, positionIterations);
     //world->ClearForces(); neccesary?
+}
+
+void World::createCarChassisFixture(b2Body* body) {
+    b2Vec2 vertices[4];
+    vertices[0].Set(-3,   0);
+    vertices[1].Set(3, 0);
+    vertices[2].Set(-3, 15);
+    vertices[3].Set(3,  15);
+
+    b2PolygonShape polygonShape;
+    polygonShape.Set(vertices, 4);
+
+    b2FixtureDef fixture_def;
+    fixture_def.shape = &polygonShape;
+    fixture_def.density = 0.1f;
+    fixture_def.isSensor = true;
+    fixture_def.shape = &polygonShape;
+
+    body->CreateFixture(&fixture_def);
+}
+
+b2Body* World::createTireBody() {
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox(0.5f, 1.25f);
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    b2Body* body = world->CreateBody(&bodyDef);
+    body->CreateFixture(&polygonShape, 1);
+    return body;
+}
+
+b2RevoluteJoint* World::joinTireToChassis(b2World* world,
+                                            b2RevoluteJointDef* jointDef,
+                                            b2Body* tireBody, b2Vec2 pos) {
+    jointDef->bodyB = tireBody;
+    jointDef->localAnchorA.Set(pos.x, pos.y);
+    auto joint = (b2RevoluteJoint*)world->CreateJoint(jointDef);
+    return joint;
 }
 
 World::~World() {
