@@ -4,6 +4,7 @@
 #include <string>
 
 Window::Window(std::string title) {
+    this->camera = {0,0 ,0,0};
     this->window = SDL_CreateWindow(title.c_str(), 0, 0, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
     this->renderer = SDL_CreateRenderer(this->window, -1,
                                   SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
@@ -12,6 +13,7 @@ Window::Window(std::string title) {
 }
 
 Window::Window(std::string title, int w, int h) {
+    this->camera = {0,0 ,0,0};
     this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN);
     this->renderer =
             SDL_CreateRenderer(this->window,-1,
@@ -26,10 +28,12 @@ Texture& Window::createTextureFrom(std::string img) {
 }
 
 void Window::render(SDL_Texture *texture, SDL_Rect &rect) {
-    SDL_Rect drawingRect = { rect.x - camera.x,
-                             rect.y - camera.y,
-                             rect.h - camera.w,
-                             rect.w - camera.w };
+    SDL_Rect drawingRect = {0,0,0,0};
+    drawingRect.x = rect.x - camera.x;
+    drawingRect.y = rect.y - camera.y;
+    drawingRect.h = rect.h - camera.w;
+    drawingRect.w = rect.w - camera.w;
+
     SDL_RenderCopy(this->renderer, texture, NULL, &drawingRect);
 }
 

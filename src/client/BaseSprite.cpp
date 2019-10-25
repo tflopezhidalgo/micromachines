@@ -12,10 +12,10 @@ BaseSprite::BaseSprite(Window& main,
     this->angle = 0;
 }
 
-void BaseSprite::move(int diff_x, int diff_y, int diff_ang) {
-    this->textureInfo.x += diff_x;
-    this->textureInfo.y += diff_y;
-    this->angle += diff_ang;
+void BaseSprite::move(int new_x, int new_y, int new_angle) {
+    this->textureInfo.x = new_x;
+    this->textureInfo.y = new_y;
+    this->angle = new_angle;
 }
 
 void BaseSprite::handle(SDL_Event& e, int& velocityX,

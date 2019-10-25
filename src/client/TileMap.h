@@ -2,11 +2,11 @@
 #define MICROMACHINES_TILEMAP_H
 
 #include "Tile.h"
+#include "Entity.h"
 #include <vector>
 #include <fstream>
 #include <string>
 #include <iostream>
-
 //TODO: Falta pista recta en | |
 
 #define TILE_1 "../media/tiles/01_Road.png"
@@ -21,7 +21,7 @@
 #define TILE_HEIGHT 700
 #define TILE_WIDTH 700
 
-class TileMap {
+class TileMap: public Entity{
     private:
         std::vector<Tile> tiles;
         Window& window;

@@ -3,23 +3,24 @@
 
 #include "BaseSprite.h"
 #include "Window.h"
+#include "Entity.h"
 
 static const int CAMERA_SCALE = 0;  /*  Ojo que afecta como se
                                      *  unen los tiles :(
                                      */
 
 
-class Camera {
+class Camera: public Entity {
     private:
         Window& mainW;
-        BaseSprite& e;
+        Entity& e;
 
     public:
-        Camera(Window& new_w, BaseSprite& e) :
+        Camera(Window& new_w, Entity& e) :
             mainW(new_w), e(e){
         }
 
-        void update(){
+        void render(){
             int h = mainW.getHeight();
             int w = mainW.getWidth();
             mainW.setCamera(

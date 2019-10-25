@@ -10,15 +10,13 @@ SDLWrapper::SDLWrapper() {
 }
 
 void SDLWrapper::run() {
-    Window mainW("Testing", 1200, 600);
+/*    Window mainW("Testing", 1200, 600);
     BaseSprite car(mainW, "../media/sprites/pitstop_car_1.png", 100,100);
     BaseSprite car2(mainW, "../media/sprites/pitstop_car_1.png", 100,100);
     TileMap lazy_map(mainW, "../media/maps/lazy.map");
     Camera cam(mainW, car);
 
     bool cont = true;
-    int velocityX = 0;
-    int velocityY = 0;
     SDL_Event e;
     while (cont){
         while (SDL_PollEvent(&e)) {
@@ -29,13 +27,13 @@ void SDLWrapper::run() {
                 cont = false;
             }
         }
-        car.move(velocityX, velocityY, 0);
+        car.move(x += velocityX, y += velocityY, 0);
         lazy_map.render();
         cam.update();
         car2.render();
         car.render();
         mainW.update();
-    }
+    }*/
 }
 
 SDLWrapper::~SDLWrapper() {

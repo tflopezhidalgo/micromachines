@@ -4,14 +4,17 @@
 #include <queue>
 #include <mutex>
 #include <stdexcept>
+#include <thread>
+#include <condition_variable>
+
+// Implementa cola bloqueante sólo para el pop
 
 template <class T>
 class ProtectedQueue {
     private:
         std::queue<T> q;
         std::mutex m;
-        int maxSize;
-        int actualSize;
+        std::condition_variable cv;
 
     public:
         ProtectedQueue(int maxSize) {
@@ -21,19 +24,15 @@ class ProtectedQueue {
 
         void push(T object){
             std::unique_lock<std::mutex> lck(m);
-            if (actualSize >= maxSize)
-                throw std::runtime_error("Limite de cola excedida");
-
-            actualSize += 1;
             q.push(std::move(object));
+            cv.notify_all();
         }
 
         T pop() {
-            std::unique_lock<std::mutex> lck(m);
-            if (actualSize == 0)
-                throw std::runtime_error("Cola vacia");
+            std::unique_lock<std::mutex> lck(this->m);
+            while (q.empty())
+                cv.wait(lck);
 
-            actualSize -= 1;
             T returnValue(std::move(q.front()));
             q.pop();
             return returnValue;
