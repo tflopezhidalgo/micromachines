@@ -2,7 +2,7 @@
 #include "World.h"
 
 int main() {
-    Juego partida({1920, 1080}, "example");
+    Juego partida({1920, 1920}, "example");
     /*std::map<std::string, float> config;
     config.emplace("maxForwardSpeed", 220.f);
     config.emplace("maxBackwardSpeed", 40.f);

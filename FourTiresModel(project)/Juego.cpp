@@ -23,9 +23,9 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     reloj = new Clock();
     tiempo1 = new Time();
 
-    config.emplace("maxForwardSpeed", 220.f);
+    config.emplace("maxForwardSpeed", 800.f);
     config.emplace("maxBackwardSpeed", 40.f);
-    config.emplace("maxDriveForce", 40.f);
+    config.emplace("maxDriveForce", 400.f);
     config.emplace("maxLateralImpulse", 40.f);
     config.emplace("framesPerSecond", 60.f);
 
@@ -55,15 +55,15 @@ void Juego::cargarImagenes() {
     sprite_fondo->setOrigin({txt_fondo->getSize().x / 2.f, txt_fondo->getSize().y / 2.f});
 
     sprite_fondo->setPosition({50.f, 50.f});
-    sprite_fondo->setScale({100.f/txt_fondo->getSize().x, 100.f/txt_fondo->getSize().y});
+    sprite_fondo->setScale({500.f/txt_fondo->getSize().x, 500.f/txt_fondo->getSize().y});
 
     // Scales defined in Car.cpp
-    sprite_auto->setScale({6.f / txt_auto->getSize().x, 15.f / txt_fondo->getSize().y });
+    sprite_auto->setScale({12.f / txt_auto->getSize().x, 20.f / txt_fondo->getSize().y });
 }
 
 void Juego::set_zoom() {
     camara = new View;
-    camara->setSize({100.f, 100.f});
+    camara->setSize({500.f, 500.f});
     camara->setCenter({50.f, 50.f});
     ventana->setView(*camara);
 }
@@ -75,7 +75,7 @@ void Juego::iniciar_fisica() {
 void Juego::gameLoop() {
     while (ventana->isOpen()) {
         *tiempo1 = reloj->getElapsedTime();
-        if (tiempo2 + 1.f/60.f < tiempo1->asSeconds()) {
+        if (tiempo2 + (1.f/fps) < tiempo1->asSeconds()) {
             ventana->clear();
             procesar_eventos();
             actualizar_fisica();
