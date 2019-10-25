@@ -32,6 +32,7 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     world = new World(100.f, 100.f, config);
     car = world->addCar(50.f, 50.f);
     box = world->addHealthBooster(10.f, 10.f);
+    Stone* stone = world->addStone(50.f, 50.f);
 
     car->receiveDamage(50);
 
