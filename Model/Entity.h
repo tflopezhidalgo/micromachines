@@ -7,6 +7,11 @@
 
 #include "Box2D/Box2D.h"
 
+enum Status {
+    ALIVE,
+    DEAD
+};
+
 enum Identifier {
     CAR,
     HEALTHBOOSTER,

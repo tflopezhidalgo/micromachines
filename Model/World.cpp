@@ -37,6 +37,7 @@ b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
     b2Body* boxBody = addBody(pos, dynamic);
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(size.x / 2, size.y / 2);
+
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
     fixture_def.density = 1.f; //density should be variable
