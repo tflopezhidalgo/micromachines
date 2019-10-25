@@ -5,8 +5,8 @@
 #include "SFML/Graphics.hpp"
 #include "Box2D/Box2D.h"
 #include "Car.h"
-#include "Border.h"
-#include "ProcessContact.h"
+#include "CollisionsProcessor.h"
+#include "World.h"
 
 using namespace sf;
 
@@ -28,6 +28,7 @@ public:
     void procesar_eventos();
 
 private:
+    std::map<std::string, float> config;
     Texture* txt_fondo;
     Texture* txt_auto;
 
@@ -38,15 +39,14 @@ private:
     View* camara;
     Event* evento;
 
-    b2World* mundo;
+    World* world;
     Car* car;
 
-    float fps, tiempoFrame;
+    float fps;
     Clock* reloj;
     Time* tiempo1;
     float tiempo2;
 
-    ProcessContact procesador;
     bool updatee;
 
 };

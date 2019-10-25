@@ -5,7 +5,7 @@
 #ifndef TESTING_STONE_H
 #define TESTING_STONE_H
 
-#include "CrashObject.h"
+#include "Entity.h"
 
 class Stone : public CrashObject {
 private:

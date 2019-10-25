@@ -5,7 +5,7 @@
 #ifndef TESTING_OIL_H
 #define TESTING_OIL_H
 
-#include "CrashObject.h"
+#include "Entity.h"
 
 class Oil : public CrashObject {
 private:

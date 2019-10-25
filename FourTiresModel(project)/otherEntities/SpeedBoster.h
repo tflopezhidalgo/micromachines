@@ -5,7 +5,7 @@
 #ifndef TESTING_BOOSTS_H
 #define TESTING_BOOSTS_H
 
-#include "CrashObject.h"
+#include "CollidableObject.h"
 
 class Boosts : public CrashObject {
 private:

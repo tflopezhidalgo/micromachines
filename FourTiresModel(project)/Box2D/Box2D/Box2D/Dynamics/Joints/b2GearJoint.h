@@ -90,8 +90,8 @@ protected:
 	b2JointType m_typeA;
 	b2JointType m_typeB;
 
-	// Body A is connected to body C
-	// Body B is connected to body D
+	// Entity A is connected to body C
+	// Entity B is connected to body D
 	b2Body* m_bodyC;
 	b2Body* m_bodyD;
 

@@ -14,7 +14,6 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     updatee = false;
 
     fps = 60.f;
-    tiempoFrame = 1.f / fps;
 
     ventana = new RenderWindow(VideoMode(resolucion.x, resolucion.y), titulo);
     ventana->setFramerateLimit(fps);
@@ -23,6 +22,15 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
 
     reloj = new Clock();
     tiempo1 = new Time();
+
+    config.emplace("maxForwardSpeed", 220.f);
+    config.emplace("maxBackwardSpeed", 40.f);
+    config.emplace("maxDriveForce", 40.f);
+    config.emplace("maxLateralImpulse", 40.f);
+    config.emplace("framesPerSecond", 60.f);
+
+    world = new World(100.f, 100.f, config);
+    car = world->addCar(50.f, 50.f);
 
     cargarImagenes();
     set_zoom();
@@ -50,7 +58,7 @@ void Juego::cargarImagenes() {
     sprite_fondo->setScale({100.f/txt_fondo->getSize().x, 100.f/txt_fondo->getSize().y});
 
     // Scales defined in Car.cpp
-    sprite_auto->setScale({5.f / txt_auto->getSize().x, 5.f / txt_fondo->getSize().y });
+    sprite_auto->setScale({6.f / txt_auto->getSize().x, 15.f / txt_fondo->getSize().y });
 }
 
 void Juego::set_zoom() {
@@ -61,24 +69,13 @@ void Juego::set_zoom() {
 }
 
 void Juego::iniciar_fisica() {
-    mundo = new b2World(b2Vec2(0.f, 0.f));
-    car = new Car(mundo, 50.f, 50.f, CrashType::PLAYER);
-//    car = new Car(mundo, {50.f, 50.f}, CrashType::PLAYER);
-    b2Vec2 pos = {0.f,0.f};
-    b2Vec2 pos1 = {0.f,100.f};
-    b2Vec2 pos2 = {100.f, 100.f};
-    b2Vec2 horizontal = {100.f, 0.1f};
-    b2Vec2 vertical = {0.1f, 100.f};
-    Border* borde1 = new Border(mundo, pos, horizontal); // arriba
-    Border* borde2 = new Border(mundo, pos, vertical); // izquierda
-    Border* borde3 = new Border(mundo, pos1, horizontal); // abajo
-    Border* borde4 = new Border(mundo, pos2, vertical); // derecha
+
 }
 
 void Juego::gameLoop() {
     while (ventana->isOpen()) {
         *tiempo1 = reloj->getElapsedTime();
-        if (tiempo2 + tiempoFrame < tiempo1->asSeconds()) {
+        if (tiempo2 + 1.f/60.f < tiempo1->asSeconds()) {
             ventana->clear();
             procesar_eventos();
             actualizar_fisica();
@@ -89,16 +86,14 @@ void Juego::gameLoop() {
 }
 
 void Juego::actualizar_fisica() {
-    if (!updatee) car->update(0);
-    mundo->Step(tiempoFrame, 8, 8);
-    mundo->ClearForces();
-    mundo->SetContactListener(&procesador);
+    if (!updatee) car->move(0);
+    //QUE EL AUTO RECIBA SU CARBODY POR PUNTERO!
+    world->step();
     updatee = false;
 }
 
 void Juego::dibujar() {
     ventana->draw(*sprite_fondo);
-
     sprite_auto->setPosition({car->getPosition().x, car->getPosition().y});
     sprite_auto->setRotation(rad2deg(car->getAngle()));
     ventana->draw(*sprite_auto);
@@ -116,19 +111,19 @@ float Juego::rad2deg(float rad) {
 
 void Juego::procesar_eventos() {
         if (Keyboard::isKeyPressed(Keyboard::Left)) {
-            car->update(LEFT);
+            car->move(LEFT);
             updatee = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Right)) {
-            car->update(RIGHT);
+            car->move(RIGHT);
             updatee = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            car->update(UP);
+            car->move(UP);
             updatee = true;
         }
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            car->update(DOWN);
+            car->move(DOWN);
             updatee = true;
         }
 }
