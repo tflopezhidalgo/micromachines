@@ -4,7 +4,8 @@
 
 #include "World.h"
 
-#define BOX_SIZE 10
+#define BOX_SIZE 20
+#define STONE_SIZE 10
 
 #define FPS_KEY "framesPerSecond"
 

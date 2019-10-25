@@ -32,6 +32,10 @@ void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);
 }
 
+void Car::receiveDamage(int damagePoints) {
+    health.receiveDamage(damagePoints);
+}
+
 int Car::getHealth() {
     return health.getHealth();
 }

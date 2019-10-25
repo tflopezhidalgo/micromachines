@@ -33,6 +33,8 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     car = world->addCar(50.f, 50.f);
     box = world->addHealthBooster(10.f, 10.f);
 
+    car->receiveDamage(50);
+
     cargarImagenes();
     set_zoom();
     gameLoop();
