@@ -17,10 +17,7 @@ class ProtectedQueue {
         std::condition_variable cv;
 
     public:
-        ProtectedQueue(int maxSize) {
-            this->maxSize = maxSize;
-            this->actualSize = 0;
-        }
+        ProtectedQueue() {}
 
         void push(T object){
             std::unique_lock<std::mutex> lck(m);
