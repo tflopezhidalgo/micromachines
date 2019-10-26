@@ -17,6 +17,10 @@ void Client::run() {
     //handle errors like socket exceptions (client disconnected)
 }
 
+void Client::sendMessage(std::string message) {
+    proxy.sendMessage(message);
+}
+
 void Client::stop() {
     proxy.stop();
     finished = true;

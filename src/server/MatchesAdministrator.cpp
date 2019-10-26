@@ -34,8 +34,7 @@ bool MatchesAdministrator::createMatch(std::string& creatorNickname,
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json initiationResponse;
 
-    if (matches.find(matchName) == matches.end()) {
-
+    if (matches.count(matchName) > 0) {
         initiationResponse["status"] = MATCH_EQUAL_NAMED;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
@@ -45,7 +44,6 @@ bool MatchesAdministrator::createMatch(std::string& creatorNickname,
         initiationResponse["status"] = VALID;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
-
         auto match = new Match(mapName, playersAmount, raceLaps, config);
         auto client = new Client(std::move(clientProxy), match->getEventsQueue());
         match->addPlayer(creatorNickname, client); //addClient() { if matchIsFull() match.run()

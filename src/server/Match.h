@@ -22,6 +22,7 @@ private:
     std::atomic<bool> matchFinished;
     ProtectedQueue<std::string> eventsQueue;
     std::map<std::string, Car*> cars;
+    std::map<std::string, Client*> clients;
     int playersAmount;
     int raceLaps;
 public:

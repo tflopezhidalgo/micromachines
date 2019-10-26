@@ -5,9 +5,9 @@
 #include "LobbyClientAcceptor.h"
 #include <iostream>
 
-int main() {
+int main(int argc, char* argv[]) {
     MatchesAdministrator matchesAdministrator;
-    auto acceptor = new LobbyClientAcceptor(5, "1500", matchesAdministrator);
+    auto acceptor = new LobbyClientAcceptor(5, argv[1], matchesAdministrator);
     acceptor->start();
     char c = '\0';
     while (c != 'q') {

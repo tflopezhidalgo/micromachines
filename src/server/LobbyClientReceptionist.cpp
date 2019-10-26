@@ -43,6 +43,7 @@ void LobbyClientReceptionist::createNewMatch(nlohmann::json& initiationMsg) {
 void LobbyClientReceptionist::joinMatch(nlohmann::json& initiationMsg) {
     std::string matchName = initiationMsg["matchName"].get<std::string>();
     std::string clientId = initiationMsg["clientId"].get<std::string>();
+    //ojo, si falla el join perdi el ownship del proxy
     finished = matchesAdministrator.addClientToMatch(clientId,
             std::move(proxy), matchName);
 }

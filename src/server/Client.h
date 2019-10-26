@@ -18,6 +18,7 @@ private:
     std::atomic<bool> finished;
 public:
     Client(Proxy proxy, ProtectedQueue<std::string> &eventsQueue);
+    void sendMessage(std::string message);
     void run() override;
     void stop();
     ~Client() override;
