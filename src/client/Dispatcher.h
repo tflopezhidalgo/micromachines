@@ -4,7 +4,7 @@
 #include <../common/Action.h>
 #include "../common/Thread.h"
 #include "../common/Socket.h"
-#include "../common/ProtectedQueue.h"
+#include "ProtectedQueue.h"
 
 class Dispatcher: public Thread {
     private:
