@@ -17,7 +17,13 @@
 /*al construir la clase matchesAdministrator deberia leerse el archivo config y pasarselo a las partidas
  por referencia cuando se crean! ----> new Match(matchname, ..., config) */
 
-MatchesAdministrator::MatchesAdministrator() {}
+MatchesAdministrator::MatchesAdministrator() {
+    config.emplace("maxForwardSpeed", 500.f);
+    config.emplace("maxBackwardSpeed", -100.f);
+    config.emplace("maxDriveForce", 200.f);
+    config.emplace("maxLateralImpulse", 40.f);
+    config.emplace("framesPerSecond", 60.f);
+}
 
 bool MatchesAdministrator::createMatch(std::string& creatorNickname,
         Proxy clientProxy,
@@ -40,7 +46,7 @@ bool MatchesAdministrator::createMatch(std::string& creatorNickname,
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
 
-        auto match = new Match(mapName, playersAmount, raceLaps);
+        auto match = new Match(mapName, playersAmount, raceLaps, config);
         auto client = new Client(std::move(clientProxy), match->getEventsQueue());
         match->addPlayer(creatorNickname, client); //addClient() { if matchIsFull() match.run()
         matches.insert({matchName, match});
@@ -74,7 +80,7 @@ bool MatchesAdministrator::addClientToMatch(std::string& clientNickname,
         initiationResponse["status"] = VALID;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
-        Client* client = new Client(std::move(clientProxy), match->getEventsQueue());
+        auto client = new Client(std::move(clientProxy), match->getEventsQueue());
         match->addPlayer(clientNickname, client);
         matches.insert({matchName, match});
         return true;

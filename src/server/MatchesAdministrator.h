@@ -14,6 +14,7 @@
 class MatchesAdministrator {
 private:
     std::map<std::string, Match*> matches;
+    std::map<std::string, float> config;
     std::mutex mutex;
 public:
     MatchesAdministrator();

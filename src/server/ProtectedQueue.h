@@ -28,6 +28,11 @@ public:
         return std::move(returnValue);
     }
 
+    bool isEmpty() {
+        std::unique_lock<std::mutex> lck(m);
+        return q.empty();
+    }
+
     ~ProtectedQueue() {}
 };
 

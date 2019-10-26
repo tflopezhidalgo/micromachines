@@ -2,18 +2,25 @@
 // Created by leobellaera on 15/10/19.
 //
 
+#include "nlohmann/json.hpp"
 #include "Match.h"
 
-Match::Match(std::string& mapName, int playersAmount, int raceLaps) :
+Match::Match(std::string& mapName, int playersAmount, int raceLaps, std::map<std::string,float> &config) :
     matchStarted(false),
     matchFinished(false),
     playersAmount(playersAmount),
-    raceLaps(raceLaps) {
+    raceLaps(raceLaps),
+    world(500, 500, config) {
     //cargar mapa
 }
 
-bool Match::addPlayer(std::string nickname, Client* client) {
-    return true;
+void Match::addPlayer(std::string nickname, Client* client) {
+    Car* car = world.addCar(100.f, 100.f);
+    cars.emplace(nickname, car);
+    if (cars.size() == playersAmount) {
+        start();
+    }
+    //ver que hacer con el argumento client
 }
 
 bool Match::hasStarted() {
@@ -29,7 +36,11 @@ ProtectedQueue<std::string>& Match::getEventsQueue() {
 }
 
 void Match::run() {
-
+    cars.find("tomas")->second->move(1);
+    /*while (!eventsQueue.isEmpty()) {
+        std::string action = eventsQueue.pop();
+        nlohmann::json
+    }*/
 }
 
 void Match::stop() {

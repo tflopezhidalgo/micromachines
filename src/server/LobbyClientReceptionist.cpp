@@ -23,6 +23,7 @@ void LobbyClientReceptionist::run() {
         if (mode == CREATE_MATCH) {
             createNewMatch(initiationMsg);
         } else {  //client wants to join a match
+            //mandar partidas disponibles al chaboncito
             joinMatch(initiationMsg);
         }
     }

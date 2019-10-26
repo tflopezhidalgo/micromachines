@@ -6,13 +6,14 @@
 #include <iostream>
 
 int main() {
-    /*LobbyClientAcceptor acceptor(5, "1500");
-    //acceptor.start();
+    MatchesAdministrator matchesAdministrator;
+    auto acceptor = new LobbyClientAcceptor(5, "1500", matchesAdministrator);
+    acceptor->start();
     char c = '\0';
     while (c != 'q') {
         std::cin >> c;
     }
-    acceptor.stop();
-    acceptor.join();*/
+    acceptor->stop();
+    acceptor->join();
     return 0;
 }

@@ -9,11 +9,15 @@
 #include <ProtectedQueue.h>
 #include <atomic>
 #include <map>
+#include <string>
 #include "Thread.h"
 #include "Client.h"
+#include "Car.h"
+#include "World.h"
 
 class Match : public Thread {
 private:
+    World world;
     std::atomic<bool> matchStarted;
     std::atomic<bool> matchFinished;
     ProtectedQueue<std::string> eventsQueue;
@@ -21,8 +25,8 @@ private:
     int playersAmount;
     int raceLaps;
 public:
-    Match(std::string& mapName, int playersAmount, int raceLaps);
-    bool addPlayer(std::string nickname, Client* client);
+    Match(std::string& mapName, int playersAmount, int raceLaps, std::map<std::string, float> &config);
+    void addPlayer(std::string nickname, Client* client);
     bool hasStarted();
     bool nicknameIsAvailable(std::string nickname);
     ProtectedQueue<std::string>& getEventsQueue();
