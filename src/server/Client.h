@@ -19,6 +19,7 @@ private:
 public:
     Client(Proxy proxy, ProtectedQueue<std::string> &eventsQueue);
     void sendMessage(std::string message);
+    std::string receiveMessage();
     void run() override;
     void stop();
     ~Client() override;

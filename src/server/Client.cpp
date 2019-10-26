@@ -21,6 +21,10 @@ void Client::sendMessage(std::string message) {
     proxy.sendMessage(message);
 }
 
+std::string Client::receiveMessage() {
+    return std::move(proxy.receiveMessage());
+}
+
 void Client::stop() {
     proxy.stop();
     finished = true;

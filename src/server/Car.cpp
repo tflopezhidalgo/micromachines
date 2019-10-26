@@ -8,8 +8,8 @@
 
 #define INITIAL_HEALTH 100
 #define DEGTORAD 0.017453292f
-#define LEFT 3
-#define RIGHT 4
+#define LEFT 'L'
+#define RIGHT 'R'
 
 Car::Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint) :
         Entity(Identifier::CAR, body),
@@ -18,7 +18,7 @@ Car::Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2Rev
         frontLeftJoint(flJoint),
         frontRightJoint(frJoint) {}
 
-void Car::move(int action) {
+void Car::move(char action) {
     //if status EXPLODING ...
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateFriction();

@@ -13,11 +13,8 @@
 #define MATCH_EQUAL_NAMED 2
 #define CLIENT_EQUAL_NAMED 3
 
-//IMPORTANTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/*al construir la clase matchesAdministrator deberia leerse el archivo config y pasarselo a las partidas
- por referencia cuando se crean! ----> new Match(matchname, ..., config) */
-
-MatchesAdministrator::MatchesAdministrator() {
+MatchesAdministrator::MatchesAdministrator(/*std::string configPath*/) {
+    //readConfig(configPath)
     config.emplace("maxForwardSpeed", 500.f);
     config.emplace("maxBackwardSpeed", -100.f);
     config.emplace("maxDriveForce", 200.f);
@@ -44,16 +41,16 @@ bool MatchesAdministrator::createMatch(std::string& creatorNickname,
         initiationResponse["status"] = VALID;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
-        auto match = new Match(mapName, playersAmount, raceLaps, config);
+        auto match = new Match(mapName, matchName, playersAmount, raceLaps, config);
         auto client = new Client(std::move(clientProxy), match->getEventsQueue());
-        match->addPlayer(creatorNickname, client); //addClient() { if matchIsFull() match.run()
+        match->addPlayer(creatorNickname, client);
         matches.insert({matchName, match});
         return true;
     }
 }
 
 bool MatchesAdministrator::addClientToMatch(std::string& clientNickname,
-        Proxy clientProxy, std::string& matchName) {
+        Proxy& clientProxy, std::string& matchName) {
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json initiationResponse;
 
@@ -87,15 +84,12 @@ bool MatchesAdministrator::addClientToMatch(std::string& clientNickname,
 }
 
 std::string MatchesAdministrator::getAvailableMatches() {
-    //HACEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER!!!!!!!!!!!!!!!!!!!
-    /*std::unique_lock<std::mutex> lck(mutex);
+    std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json availableMatches;
-    //availableMatches.
-    "availablematches" : {
-        "MatchName1": map, raceLaps, playersAmount
-        "MatchName2": map, ...
-    }*/
-    return "harcodeo";
+    for (auto it = matches.begin(); it != matches.end(); ++it) {
+        availableMatches.push_back(it->second->getMatchInfo());
+    }
+    return std::move(availableMatches.dump());
 }
 
 MatchesAdministrator::~MatchesAdministrator() {

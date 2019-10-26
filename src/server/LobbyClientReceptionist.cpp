@@ -21,10 +21,20 @@ void LobbyClientReceptionist::run() {
         nlohmann::json initiationMsg = nlohmann::json::parse(clientInitiationMessage);
         std::string mode = initiationMsg["mode"].get<std::string>();
         if (mode == CREATE_MATCH) {
+
             createNewMatch(initiationMsg);
+
         } else {  //client wants to join a match
-            //mandar partidas disponibles al chaboncito
-            joinMatch(initiationMsg);
+
+            nlohmann::json availableMatches(matchesAdministrator.getAvailableMatches());
+            std::string availableMatchesDump = availableMatches.dump();
+            proxy.sendMessage(availableMatchesDump);
+
+            std::string message = proxy.receiveMessage();
+            nlohmann::json matchInfo = nlohmann::json::parse(message);
+
+            joinMatch(matchInfo);
+
         }
     }
 }
@@ -43,9 +53,9 @@ void LobbyClientReceptionist::createNewMatch(nlohmann::json& initiationMsg) {
 void LobbyClientReceptionist::joinMatch(nlohmann::json& initiationMsg) {
     std::string matchName = initiationMsg["matchName"].get<std::string>();
     std::string clientId = initiationMsg["clientId"].get<std::string>();
-    //ojo, si falla el join perdi el ownship del proxy
+    //if client added, proxy is moved to a Client instance
     finished = matchesAdministrator.addClientToMatch(clientId,
-            std::move(proxy), matchName);
+            proxy, matchName);
 }
 
 bool LobbyClientReceptionist::isDead() {

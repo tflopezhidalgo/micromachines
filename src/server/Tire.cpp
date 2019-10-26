@@ -4,8 +4,8 @@
 
 #include "Tire.h"
 
-#define FORWARD 1
-#define BACKWARD 2
+#define FORWARD 'F'
+#define BACKWARD 'B'
 
 #define FSPEED_KEY "maxForwardSpeed"
 #define BSPEED_KEY "maxBackwardSpeed"
@@ -46,7 +46,7 @@ void Tire::updateFriction() {
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
-void Tire::updateDrive(int controlState) {
+void Tire::updateDrive(char controlState) {
     float desiredSpeed = 0;
     switch (controlState) {
         case FORWARD: desiredSpeed = maxForwardSpeed;  break;

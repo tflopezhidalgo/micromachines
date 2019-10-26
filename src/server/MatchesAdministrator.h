@@ -25,7 +25,7 @@ public:
             int playersAmount,
             int raceLaps);
     bool addClientToMatch(std::string& clientNickname,
-                          Proxy clientProxy,
+                          Proxy& clientProxy,
                           std::string& matchName);
     std::string getAvailableMatches();
     ~MatchesAdministrator();
