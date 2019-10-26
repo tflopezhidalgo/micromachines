@@ -20,7 +20,7 @@ bool Match::hasStarted() {
     return matchStarted;
 }
 
-bool Match::nicknameIsAvailable(std::string& nickname) {
+bool Match::nicknameIsAvailable(std::string nickname) {
     return true;
 }
 

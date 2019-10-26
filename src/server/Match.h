@@ -8,6 +8,7 @@
 
 #include <ProtectedQueue.h>
 #include <atomic>
+#include <map>
 #include "Thread.h"
 #include "Client.h"
 
@@ -16,13 +17,14 @@ private:
     std::atomic<bool> matchStarted;
     std::atomic<bool> matchFinished;
     ProtectedQueue<std::string> eventsQueue;
+    std::map<std::string, Car*> cars;
     int playersAmount;
     int raceLaps;
 public:
     Match(std::string& mapName, int playersAmount, int raceLaps);
     bool addPlayer(std::string nickname, Client* client);
     bool hasStarted();
-    bool nicknameIsAvailable(std::string& nickname);
+    bool nicknameIsAvailable(std::string nickname);
     ProtectedQueue<std::string>& getEventsQueue();
     void run() override;
     void stop();
