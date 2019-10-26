@@ -42,22 +42,29 @@ ProtectedQueue<std::string>& Match::getEventsQueue() {
 }
 
 void Match::run() {
+    clients.find("tomas")->second->start();
+    bool updatee = false;
     while (!matchFinished) {
-        usleep(100);
-
-        std::string aux = clients.find("tomas")->second->receiveMessage();
-        nlohmann::json action = nlohmann::json::parse(aux);
-
-        char accionDeTomas = action["action"].get<char>();
-        std::cout<<accionDeTomas<<std::endl;
-        cars.find("tomas")->second->move(accionDeTomas);
-
+        usleep(20000);
+        std::vector<std::string> actions = eventsQueue.emptyQueue();
+        for (std::string actionDumped: actions) {
+            nlohmann::json action = nlohmann::json::parse(actionDumped);
+            char accionDeTomas = action["action"].get<char>();
+            cars.find("tomas")->second->move(accionDeTomas);
+            updatee = true;
+            std::cout<<"NO SALI\n";
+        }
+        if (!updatee) {
+            cars.find("tomas")->second->move('O');
+        }
         world.step();
         b2Vec2 position = cars.find("tomas")->second->getPosition();
         nlohmann::json response;
         response["x"] = int(position.x);
         response["y"] = int(position.y);
+        response["angle"] = int(cars.find("tomas")->second->getAngle()*100);
         clients.find("tomas")->second->sendMessage(response.dump());
+        updatee = false;
         /*while (!eventsQueue.isEmpty()) {
             std::string action = eventsQueue.pop();
             nlohmann::json

@@ -15,10 +15,10 @@
 
 MatchesAdministrator::MatchesAdministrator(/*std::string configPath*/) {
     //readConfig(configPath)
-    config.emplace("maxForwardSpeed", 500.f);
-    config.emplace("maxBackwardSpeed", -100.f);
-    config.emplace("maxDriveForce", 200.f);
-    config.emplace("maxLateralImpulse", 40.f);
+    config.emplace("maxForwardSpeed", 15000.f);
+    config.emplace("maxBackwardSpeed", -2000.f);
+    config.emplace("maxDriveForce", 3000.f);
+    config.emplace("maxLateralImpulse", 1000.f);
     config.emplace("framesPerSecond", 60.f);
 }
 

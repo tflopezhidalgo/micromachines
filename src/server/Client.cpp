@@ -2,6 +2,7 @@
 // Created by leobellaera on 25/10/19.
 //
 
+#include <iostream>
 #include "Client.h"
 
 Client::Client(Proxy proxy, ProtectedQueue<std::string>& eventsQueue) :
@@ -12,6 +13,7 @@ Client::Client(Proxy proxy, ProtectedQueue<std::string>& eventsQueue) :
 void Client::run() {
     while (!finished) {
         std::string action = proxy.receiveMessage();
+        std::cout<<action<<std::endl;
         eventsQueue.push(action);
     }
     //handle errors like socket exceptions (client disconnected)
@@ -19,10 +21,6 @@ void Client::run() {
 
 void Client::sendMessage(std::string message) {
     proxy.sendMessage(message);
-}
-
-std::string Client::receiveMessage() {
-    return std::move(proxy.receiveMessage());
 }
 
 void Client::stop() {

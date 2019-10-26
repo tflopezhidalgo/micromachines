@@ -1,3 +1,5 @@
 cmake-build-debug/
 build/
 .idea/
+src/server/CMakeFiles/*
+src/server/Box2D-cmake.cbp
