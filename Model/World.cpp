@@ -7,6 +7,7 @@
 #define ANGULAR_DAMPING 3
 #define BOX_SIZE 20
 #define STONE_SIZE 10
+#define FLOOR_OIL_SIZE 20
 
 #define FPS_KEY "framesPerSecond"
 
@@ -41,7 +42,7 @@ b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
     fixture_def.density = 1.f; //density should be variable
-    fixture_def.isSensor = true;
+    //fixture_def.isSensor = true;
     boxBody->CreateFixture(&fixture_def);
 
     return boxBody;
@@ -105,6 +106,28 @@ Car* World::addCar(float x_pos, float y_pos) {
     return car;
 }
 
+b2Body* World::addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic) {
+    b2Body* boxBody = addBody(pos, dynamic);
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox(size.x / 2, size.y / 2);
+
+    b2FixtureDef fixture_def;
+    fixture_def.shape = &polygonShape;
+    fixture_def.density = 0.f; // textura del piso, se tiene que atravezar
+    fixture_def.friction = 0.9f; // para que vaya mas lento
+    fixture_def.isSensor = true;
+    boxBody->CreateFixture(&fixture_def);
+
+    return boxBody;
+}
+
+Oil* World::addOil(float x_pos, float y_pos) {
+    b2Body* body = addFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE}, false);
+    Oil *oil = new Oil(OIL, body);
+    body->SetUserData(oil);
+    return oil;
+}
+
 void World::step() {
     float timeStep = 1.f / config.find(FPS_KEY)->second;
     int velocityIterations = 8;
@@ -115,10 +138,10 @@ void World::step() {
 
 void World::createCarChassisFixture(b2Body* body) {
     b2Vec2 vertices[4];
-    vertices[0].Set(-3,   0);
+    vertices[0].Set(-3, 0);
     vertices[1].Set(3, 0);
     vertices[2].Set(-3, 15);
-    vertices[3].Set(3,  15);
+    vertices[3].Set(3, 15);
 
     b2PolygonShape polygonShape;
     polygonShape.Set(vertices, 4);
@@ -159,3 +182,4 @@ World::~World() {
         world->DestroyBody(actualBody);
     }
 }
+

@@ -16,6 +16,7 @@ private:
     float maxBackwardSpeed;
     float maxDriveForce;
     float maxLateralImpulse;
+    float frictionFactor;
     b2Body* body;
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
@@ -26,6 +27,10 @@ public:
     void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed,
             float maxDriveForce, float maxLateralImpulse);
     ~Tire();
+
+    void setFrictionFactor(float newFriction);
+
+    float getFriction();
 };
 
 #endif //TESTING_TIRE_H

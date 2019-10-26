@@ -23,10 +23,15 @@ public:
     Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint);
     void move(int action);
     void collide(Entity* object) override;
+    void collideEnd(Entity* object) override;
     void receiveHealing(int healingPoints);
     void receiveDamage(int damagePoints);
     int getHealth();
     ~Car();
+
+    void setTiresFriction(int newFriction);
+
+    float getFriction();
 };
 
 #endif //TESTING_CAR_H

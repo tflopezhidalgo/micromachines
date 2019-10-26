@@ -6,7 +6,8 @@
 
 Entity::Entity(Identifier identifier, b2Body* body) :
     identifier(identifier),
-    body(body) {}
+    body(body),
+    status(Status::ALIVE) {}
 
 Identifier Entity::getIdentifier() {
     return identifier;
@@ -18,6 +19,10 @@ b2Vec2 Entity::getPosition() {
 
 float Entity::getAngle() {
     return body->GetAngle();
+}
+
+Status Entity::getStatus() {
+    return status;
 }
 
 Entity::~Entity() {}

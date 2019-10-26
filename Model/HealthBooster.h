@@ -15,6 +15,7 @@ private:
 public:
     explicit HealthBooster(b2Body* body);
     void collide(Entity* entity) override;
+    void collideEnd(Entity* entity) override;
     void boost(Car* car);
 };
 

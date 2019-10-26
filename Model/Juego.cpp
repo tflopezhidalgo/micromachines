@@ -31,8 +31,9 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
 
     world = new World(100.f, 100.f, config);
     car = world->addCar(50.f, 50.f);
-    box = world->addHealthBooster(10.f, 10.f);
-    Stone* stone = world->addStone(50.f, 50.f);
+    box = world->addHealthBooster(70.f, 70.f);
+    //Stone* stone = world->addStone(50.f, 50.f);
+    Oil* oil = world->addOil(50.f, 50.f);
 
     car->receiveDamage(50);
 
@@ -97,7 +98,9 @@ void Juego::actualizar_fisica() {
     //QUE EL AUTO RECIBA SU CARBODY POR PUNTERO!
     world->step();
     updatee = false;
-    std::cout<<car->getHealth()<<std::endl;
+    //ºstd::cout<<car->getHealth()<<std::endl;
+    std::cout<<car->getFriction();
+
 }
 
 void Juego::dibujar() {

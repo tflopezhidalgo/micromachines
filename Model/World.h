@@ -12,6 +12,7 @@
 #include "HealthBooster.h"
 #include "CollisionsProcessor.h"
 #include "Stone.h"
+#include "Oil.h"
 
 class World {
 private:
@@ -44,6 +45,10 @@ public:
     void step();
 
     ~World();
+
+    b2Body *addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic);
+
+    Oil *addOil(float x_pos, float y_pos);
 };
 
 #endif //TESTING_WORLD_H

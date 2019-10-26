@@ -9,6 +9,7 @@
 
 enum Status {
     ALIVE,
+    SEVERALDAMAGED,
     DEAD
 };
 
@@ -25,6 +26,7 @@ class Entity {
 private:
     Identifier identifier;
     b2Body* body;
+    Status status;
 public:
     Entity(Identifier identifier, b2Body* body);
     virtual void collide(Entity* entity) = 0;
@@ -32,7 +34,8 @@ public:
     float getAngle();
     Identifier getIdentifier();
     ~Entity();
-
+    virtual void collideEnd(Entity* entity) = 0;
+    Status getStatus();
 };
 
 #endif //TESTING_ENTITY_H

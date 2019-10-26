@@ -14,3 +14,13 @@ void CollisionsProcessor::BeginContact(b2Contact* contact) {
         entityA->collide(entityB);
     }
 }
+
+void CollisionsProcessor::EndContact(b2Contact *contact) {
+    void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+    void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+    if (userDataA != nullptr && userDataB != nullptr) {
+        auto entityA = static_cast<Entity*>(userDataA);
+        auto entityB = static_cast<Entity*>(userDataB);
+        entityA->collideEnd(entityB);
+    }
+}

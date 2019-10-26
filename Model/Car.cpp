@@ -2,9 +2,11 @@
 // Created by leobellaera on 18/10/19.
 //
 
+#include <iostream>
 #include "Car.h"
 #include "HealthBooster.h"
 #include "Stone.h"
+#include "Oil.h"
 
 #define INITIAL_HEALTH 100
 #define DEGTORAD 0.017453292f
@@ -44,6 +46,11 @@ void Car::move(int action) {
     frontRightJoint->SetLimits(newAngle, newAngle);
 }
 
+void Car::setTiresFriction(int newFriction) {
+    for (auto tire : tires) {
+        tire->setFrictionFactor(newFriction);
+    }
+}
 /*void Car::setStatus() {
     status = EXPLODING, etc
 }*/
@@ -57,7 +64,21 @@ void Car::collide(Entity* object) {
         //stone->setDead() EL METODO setDead IRA EN LA CLASE ENTITY PARA Q SEA GENERICO
         //if !stone->isDead()
         stone->damageCar(this);
+    } else if (object->getIdentifier() == OIL) {
+        auto oil = dynamic_cast<Oil*>(object);
+        oil->setFriction(this);
     }
+}
+
+void Car::collideEnd(Entity *object) {
+    if (object->getIdentifier() == OIL) {
+        auto oil = dynamic_cast<Oil*>(object);
+        oil->resetFriction(this);
+    }
+}
+
+float Car::getFriction() {
+    return tires[0]->getFriction();
 }
 
 void Car::receiveHealing(int healingPoints) {
@@ -73,6 +94,7 @@ int Car::getHealth() {
 }
 
 Car::~Car() {
+    std::cout << "actualizo";
     for (size_t i = 0; i < tires.size(); i++) {
         delete tires[i];
     }
