@@ -22,6 +22,10 @@ class BaseSprite {
         int getXPos();
         int getYPos();
         void render();
+        void setPos(int x, int y){
+            this->textureInfo.x = x;
+            this->textureInfo.y = y;
+        }
         ~BaseSprite();
 };
 #endif

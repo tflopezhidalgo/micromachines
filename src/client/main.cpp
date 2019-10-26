@@ -6,25 +6,24 @@
 #include "Camera.h"
 #include "TileMap.h"
 #include "Drawer.h"
+#include "ProtectedModel.h"
 
 int main() {
     SDL_Init(SDL_INIT_VIDEO);
 
     Window main("Game", 1200, 600);
 
-    Car oneCar("../media/sprites/pitstop_car_1.png", 100, 100, main);
-    Car otherCar("../media/sprites/pitstop_car_1.png", 100, 100, main);
-    TileMap lazy_map(main, "../media/maps/lazy.map");
-    Camera cam(main, oneCar);
 
-    Drawer drawer(main);
+    //TileMap lazy_map(main, "../media/maps/lazy.map");
+    //Camera cam(main, oneCar);
 
-    drawer.addEntity(lazy_map);
-    drawer.addEntity(cam);
-    drawer.addEntity(otherCar);
-    drawer.addEntity(oneCar);
+    ProtectedModel model(main);
+    model.updateEntity("ahre", 0, 0, 100);
+    model.updateEntity("ahrwwwe2", 10, 10, 100);
+    model.updateEntity("ahre", 10, 150, 100);
+    Drawer drawer(main, model);
 
-    drawer.run();
+    drawer.start();
 
     /*try {
         SDLWrapper SDL;

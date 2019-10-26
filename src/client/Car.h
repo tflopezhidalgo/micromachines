@@ -14,7 +14,7 @@ private:
 
 public:
     Car(const std::string& file, int h, int w, Window& win);
-    void setPos(int x, int y);
+    void setPos(int x, int y) override;
     int getXPos() override {
         return x;
     }

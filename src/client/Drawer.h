@@ -2,19 +2,18 @@
 #define MICROMACHINES_DRAWER_H
 
 #include "../common/Thread.h"
-#include "Entity.h"
 #include <vector>
 #include "Window.h"
+#include "ProtectedModel.h"
 
 class Drawer: public Thread {
 private:
-    std::vector<std::reference_wrapper<Entity>> entities;
     bool running;
     Window& main;
+    ProtectedModel& model;
 
 public:
-    Drawer(Window& main);
-    void addEntity(Entity& entity);
+    Drawer(Window& main, ProtectedModel& model);
     void run();
     void stop();
     ~Drawer() {

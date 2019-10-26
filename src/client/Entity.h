@@ -11,6 +11,11 @@ public:
     virtual int getYPos() {
         return 0;
     }
+
+    virtual void setPos(int x, int y){
+
+    }
+
     ~Entity(){
 
     }

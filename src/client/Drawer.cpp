@@ -1,20 +1,15 @@
 #include "Drawer.h"
 #include "Window.h"
+#include "ProtectedModel.h"
 
-Drawer::Drawer(Window& main) : main(main){
+Drawer::Drawer(Window& main, ProtectedModel& model) :
+main(main), model(model){
     this->running = true;
-}
-
-void Drawer::addEntity(Entity &entity) {
-    this->entities.push_back(entity);
 }
 
 void Drawer::run() {
     while (running){
-        for (Entity& e : entities) {
-            e.render();
-        }
-
+        this->model.renderAll();
         this->main.update();
     }
 }

@@ -10,8 +10,8 @@ Car::Car(const std::string &file, int h, int w, Window& win) :
 }
 
 void Car::setPos(int x, int y) {
-    this->x = x;
-    this->y = y;
+    this->sprite.setPos(x, y);
+    std::cout << "Se llama a setPos de car \n";
 }
 
 void Car::render() {

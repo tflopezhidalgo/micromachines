@@ -2,19 +2,21 @@
 #define MICROMACHINES_PROTECTEDMODEL_H
 
 #include <mutex>
-#include <vector>
+#include <map>
+#include "Entity.h"
+#include "Window.h"
 
 class ProtectedModel {
 private:
     std::mutex m;
-    std::vector<<std::reference_wrapper<Entities>> entities;
+    std::map<std::string, Entity*> entities;
+    Window& main;
 
 public:
-    
-
-
-
-
+    ProtectedModel(Window& main);
+    void updateEntity(std::string, int x, int y, int health);
+    void renderAll();
+    ~ProtectedModel();
 };
 
 #endif
