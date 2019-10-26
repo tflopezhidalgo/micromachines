@@ -6,7 +6,9 @@
 #include "SocketException.h"
 #include "LobbyClientReceptionist.h"
 
-LobbyClientAcceptor::LobbyClientAcceptor(int backlog, const char* port, MatchesAdministrator& matchesAdministrator) :
+LobbyClientAcceptor::LobbyClientAcceptor(int backlog,
+        const char* port,
+        MatchesAdministrator& matchesAdministrator) :
         socketAcceptor(backlog, port),
         matchesAdministrator(matchesAdministrator),
         keepRunning(true) {}
@@ -15,7 +17,9 @@ void LobbyClientAcceptor::run() {
     while (keepRunning) {
         try {
             Socket peerSocket = socketAcceptor.accept();
-            LobbyClientReceptionist* receptionist = new LobbyClientReceptionist(peerSocket, matchesAdministrator);
+            auto receptionist = new LobbyClientReceptionist(
+                    std::move(peerSocket),
+                    matchesAdministrator);
             receptionist->start();
             receptionists.push_back(receptionist);
             this->deleteDeadReceptionists();

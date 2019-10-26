@@ -5,20 +5,28 @@
 #ifndef MICROMACHINES_MATCHESADMINISTRATOR_H
 #define MICROMACHINES_MATCHESADMINISTRATOR_H
 
-#include <vector>
+#include <map>
 #include <string>
 #include <mutex>
 #include "Match.h"
+#include "Proxy.h"
 
 class MatchesAdministrator {
 private:
-    std::vector<Match*> matches;
+    std::map<std::string, Match*> matches;
     std::mutex mutex;
 public:
     MatchesAdministrator();
-    void createMatch(std::string& creatorId, std::string& matchName,
-            std::string& mapName, int playersAmount, int raceLaps);
-    void joinClientToMatch(std::string& matchName, std::string& clientId);
+    bool createMatch(std::string& creatorNickname,
+            Proxy clientProxy,
+            std::string& matchName,
+            std::string& mapName,
+            int playersAmount,
+            int raceLaps);
+    bool addClientToMatch(std::string& clientNickname,
+                          Proxy clientProxy,
+                          std::string& matchName);
+    std::string getAvailableMatches();
     ~MatchesAdministrator();
 };
 

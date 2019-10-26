@@ -7,19 +7,19 @@
 
 #include "Thread.h"
 #include "MatchesAdministrator.h"
-#include "Protocol.h"
+#include "Proxy.h"
 #include <atomic>
 #include "nlohmann/json.hpp"
 
 class LobbyClientReceptionist : public Thread {
 private:
-    Protocol protocol;
-    std::atomic<bool> dead;
+    Proxy proxy;
+    std::atomic<bool> finished;
     MatchesAdministrator& matchesAdministrator;
     void createNewMatch(nlohmann::json& initiationMsg);
     void joinMatch(nlohmann::json& initiationMsg);
 public:
-    LobbyClientReceptionist(Socket& socket, MatchesAdministrator& matchesAdministrator);
+    LobbyClientReceptionist(Socket socket, MatchesAdministrator& matchesAdministrator);
     bool isDead();
     void run() override;
     void stop();

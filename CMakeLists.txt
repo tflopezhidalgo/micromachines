@@ -21,6 +21,6 @@ target_include_directories(Client PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 #target_link_libraries(Client SDL2 SDL2_image)
 target_link_libraries(Client -pthread)
 
-add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES})
+add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES} src/common/ProtectedQueue.h)
 target_include_directories(Server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Server -pthread)

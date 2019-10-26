@@ -2,38 +2,96 @@
 // Created by leobellaera on 13/10/19.
 //
 
+#include "ProtectedQueue.h"
 #include "nlohmann/json.hpp"
+#include "Proxy.h"
 #include "MatchesAdministrator.h"
-#include "MatchesAdministratorException.h"
+#include "Client.h"
 
-#define MATCH_EQUAL_NAMED "There is already a match with that name"
-#define CLIENT_EQUAL_NAMED "There is already a client with that name"
-#define FULL_MATCH "Match is already full"
+#define VALID 0
+#define MATCH_HAS_STARTED 1
+#define MATCH_EQUAL_NAMED 2
+#define CLIENT_EQUAL_NAMED 3
+
+//IMPORTANTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*al construir la clase matchesAdministrator deberia leerse el archivo config y pasarselo a las partidas
+ por referencia cuando se crean! ----> new Match(matchname, ..., config) */
 
 MatchesAdministrator::MatchesAdministrator() {}
 
-//en lugar de un creatorId podria ser un objeto Player
+bool MatchesAdministrator::createMatch(std::string& creatorNickname,
+        Proxy clientProxy,
+        std::string& matchName,
+        std::string& mapName,
+        int playersAmount,
+        int raceLaps) {
+    std::unique_lock<std::mutex> lck(mutex);
+    nlohmann::json initiationResponse;
 
-void MatchesAdministrator::createMatch(std::string& creatorId, std::string& matchName,
-                                      std::string& mapName, int playersAmount, int raceLaps) {
-    for (auto it = matches.begin() ; it != matches.end(); ++it) {
-        if ((*it)->compareName(matchName)) {
-            throw MatchesAdministratorException(MATCH_EQUAL_NAMED);
-        }
+    if (matches.find(matchName) == matches.end()) {
+
+        initiationResponse["status"] = MATCH_EQUAL_NAMED;
+        std::string response = initiationResponse.dump();
+        clientProxy.sendMessage(response);
+        return false;
+
+    } else {
+        initiationResponse["status"] = VALID;
+        std::string response = initiationResponse.dump();
+        clientProxy.sendMessage(response);
+
+        auto match = new Match(mapName, playersAmount, raceLaps);
+        auto client = new Client(std::move(clientProxy), match->getEventsQueue());
+        match->addPlayer(creatorNickname, client); //addClient() { if matchIsFull() match.run()
+        matches.insert({matchName, match});
+        return true;
     }
-    //Match* match = new Match ... //habria que lanzar la partida si la cant de jugadores es 1
 }
 
-void MatchesAdministrator::joinClientToMatch(std::string& matchName, std::string& clientId) {
-    //puede joinear, partida llena o ya hay un cliente con ese nombre
+bool MatchesAdministrator::addClientToMatch(std::string& clientNickname,
+        Proxy clientProxy, std::string& matchName) {
+    std::unique_lock<std::mutex> lck(mutex);
+    nlohmann::json initiationResponse;
+
+    Match* match = matches.find(matchName)->second;
+
+    if (match->hasStarted()) {
+
+        initiationResponse["status"] = MATCH_HAS_STARTED;
+        std::string response = initiationResponse.dump();
+        clientProxy.sendMessage(response);
+        return false;
+
+    } else if (!match->nicknameIsAvailable(clientNickname)) {
+
+        initiationResponse["status"] = CLIENT_EQUAL_NAMED;
+        std::string response = initiationResponse.dump();
+        clientProxy.sendMessage(response);
+        return false;
+
+    } else {
+
+        initiationResponse["status"] = VALID;
+        std::string response = initiationResponse.dump();
+        clientProxy.sendMessage(response);
+        Client* client = new Client(std::move(clientProxy), match->getEventsQueue());
+        match->addPlayer(clientNickname, client);
+        matches.insert({matchName, match});
+        return true;
+
+    }
 }
 
-nlohmann::json getAvailablematches() {
-    //to do
-    /*"availablematches" : {
-        "MatchName1": gameLaps
-        "MatchName2": gameLaps
+std::string MatchesAdministrator::getAvailableMatches() {
+    //HACEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER!!!!!!!!!!!!!!!!!!!
+    /*std::unique_lock<std::mutex> lck(mutex);
+    nlohmann::json availableMatches;
+    //availableMatches.
+    "availablematches" : {
+        "MatchName1": map, raceLaps, playersAmount
+        "MatchName2": map, ...
     }*/
+    return "harcodeo";
 }
 
 MatchesAdministrator::~MatchesAdministrator() {

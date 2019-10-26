@@ -1,0 +1,34 @@
+//
+// Created by leobellaera on 26/10/19.
+//
+
+#ifndef MICROMACHINES_PROTECTEDQUEUE_H
+#define MICROMACHINES_PROTECTEDQUEUE_H
+
+#include <queue>
+#include <mutex>
+
+template <class T>
+class ProtectedQueue {
+private:
+    std::queue<T> q;
+    std::mutex m;
+public:
+    ProtectedQueue() {}
+
+    void push(T object){
+        std::unique_lock<std::mutex> lck(m);
+        q.push(std::move(object));
+    }
+
+    T pop() {
+        std::unique_lock<std::mutex> lck(m);
+        T returnValue(std::move(q.front()));
+        q.pop();
+        return std::move(returnValue);
+    }
+
+    ~ProtectedQueue() {}
+};
+
+#endif //MICROMACHINES_PROTECTEDQUEUE_H
