@@ -29,9 +29,9 @@ public:
     int getHealth();
     ~Car();
 
-    void setTiresFriction(int newFriction);
-
     float getFriction();
+
+    void setTiresFriction(float newFriction);
 };
 
 #endif //TESTING_CAR_H

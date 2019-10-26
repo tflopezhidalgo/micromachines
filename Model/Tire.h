@@ -31,6 +31,8 @@ public:
     void setFrictionFactor(float newFriction);
 
     float getFriction();
+
+    void setMaxForwardSpeed(float newForwardSpeed);
 };
 
 #endif //TESTING_TIRE_H

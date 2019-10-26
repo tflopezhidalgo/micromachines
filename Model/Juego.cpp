@@ -3,12 +3,27 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "Juego.h"
 
 #define UP 1
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
+
+void Juego::readFile(std::string config_file) {
+    std::ifstream configFile(config_file);
+    std::string line;
+
+    while (getline(configFile, line)) {
+        auto delimiter = line.find("=");
+        std::string comand = line.substr(0, delimiter);
+        std::string message = line.substr(delimiter + 1);
+        float value = std::stof(message);
+        config[comand] = value;
+    }
+    configFile.close();
+}
 
 Juego::Juego(Vector2i resolucion, std::string titulo) {
     updatee = false;
@@ -23,11 +38,19 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     reloj = new Clock();
     tiempo1 = new Time();
 
-    config.emplace("maxForwardSpeed", 500.f);
-    config.emplace("maxBackwardSpeed", -100.f);
-    config.emplace("maxDriveForce", 200.f);
+    //readFile("config.cfg");
+
+    config.emplace("maxForwardSpeed", 100.f);
+    config.emplace("maxBackwardSpeed", -50.f);
+    config.emplace("maxDriveForce", 50.f);
     config.emplace("maxLateralImpulse", 40.f);
     config.emplace("framesPerSecond", 60.f);
+    config.emplace("tireStartFriction", 0.f);
+    config.emplace("oilFriction", 9.f);
+    config.emplace("boxSize", 10.f);
+    config.emplace("stoneSize", 10.f);
+    config.emplace("oilSize", 20.f);
+    config.emplace("boosterSpeed", 200.f);
 
     world = new World(100.f, 100.f, config);
     car = world->addCar(50.f, 50.f);

@@ -4,6 +4,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Box2D/Box2D.h"
+#include <string>
 #include "Car.h"
 #include "CollisionsProcessor.h"
 #include "World.h"
@@ -50,6 +51,7 @@ private:
 
     bool updatee;
 
+    void readFile(std::string config_file);
 };
 
 #endif //TESTING_JUEGO_H

@@ -14,7 +14,7 @@
 #define DRIVEFORCE_KEY "maxDriveForce"
 #define LATIMPULSE_KEY "maxLateralImpulse"
 
-#define FRICTIONFACTOR 0
+#define TIRESTARTFRICTION "startTireFriction"
 
 Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
     maxForwardSpeed(config.find(FSPEED_KEY)->second),
@@ -22,7 +22,7 @@ Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
     maxDriveForce(config.find(DRIVEFORCE_KEY)->second),
     maxLateralImpulse(config.find(LATIMPULSE_KEY)->second),
     body(body),
-    frictionFactor(FRICTIONFACTOR){}
+    frictionFactor(config.find(TIRESTARTFRICTION)->second){}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
@@ -52,10 +52,15 @@ void Tire::updateFriction() {
 }
 
 void Tire::setFrictionFactor(float newFriction) {
-    frictionFactor =  newFriction;
+    frictionFactor = newFriction;
+}
+
+void Tire::setMaxForwardSpeed(float newForwardSpeed) {
+    maxForwardSpeed = newForwardSpeed;
 }
 
 float Tire::getFriction() {
+    // eliminar despues
     return frictionFactor;
 }
 

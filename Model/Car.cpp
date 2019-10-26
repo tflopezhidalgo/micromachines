@@ -46,7 +46,7 @@ void Car::move(int action) {
     frontRightJoint->SetLimits(newAngle, newAngle);
 }
 
-void Car::setTiresFriction(int newFriction) {
+void Car::setTiresFriction(float newFriction) {
     for (auto tire : tires) {
         tire->setFrictionFactor(newFriction);
     }
@@ -78,6 +78,7 @@ void Car::collideEnd(Entity *object) {
 }
 
 float Car::getFriction() {
+    // eliminar despues
     return tires[0]->getFriction();
 }
 
