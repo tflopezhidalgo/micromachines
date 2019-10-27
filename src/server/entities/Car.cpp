@@ -96,6 +96,17 @@ int Car::getHealth() {
     return health.getHealth();
 }
 
+int Car::getRacePosition() {
+    // depende de cuantos juegados hay y cuantas vueltas dio
+    return 1;
+}
+
+void Car::setMaxForwardSpeed(float newSpeed) {
+    for (auto tire : tires) {
+        tire->setMaxForwardSpeed(newSpeed);
+    }
+}
+
 Car::~Car() {
     for (size_t i = 0; i < tires.size(); i++) {
         delete tires[i];

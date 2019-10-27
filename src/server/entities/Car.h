@@ -31,6 +31,10 @@ public:
 
     float getFriction(); // para prueba-eliminar
     ~Car();
+
+    void setMaxForwardSpeed(float newSpeed);
+
+    int getRacePosition();
 };
 
 #endif //TESTING_CAR_H
