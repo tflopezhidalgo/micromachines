@@ -13,8 +13,8 @@
 #include <nlohmann/json.hpp>
 #include "Thread.h"
 #include "Client.h"
-#include "Car.h"
-#include "World.h"
+#include "entities/Car.h"
+#include "entities/World.h"
 
 class Match : public Thread {
 private:
