@@ -10,8 +10,8 @@
 #include <atomic>
 #include <map>
 #include <string>
-#include <nlohmann/json.hpp>
-#include "Thread.h"
+#include "../../nlohmann/json.hpp"
+#include "../common/Thread.h"
 #include "Client.h"
 #include "entities/Car.h"
 #include "entities/World.h"
