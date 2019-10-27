@@ -1,6 +1,15 @@
-Branch sobre el cual se inician las primeras pruebas sobre el motor Box2D
+# Reglas para el repo
 
-### Tareas a realizar
+- Mantener siempre un branch *master* con una versión estable (y aprobada por todos)
+- Mantener un branch *development* en el cuál se ve el histórico de los desarrollos
+- **Hacer pull antes que push** 
+- Resolver los conflictos de merge localmente
 
-- [x] Tarea 1
-- [ ] Tarea 2
+# Reglas para código
+
+- Código lindo por favor
+- *Keep it simple*
+- Programar lo más genéricamente posible
+- Testear
+
+
