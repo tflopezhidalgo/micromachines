@@ -20,6 +20,12 @@ before_script:
 script:
     - make  
 
+branches:
+    only:
+        - master
+        - development
+
+
 notifications:
     email:
         recipients:
