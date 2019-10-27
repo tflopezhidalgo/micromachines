@@ -1,4 +1,4 @@
-dist: trusty
+dist: bionic
 sudo: require
 
 language: cpp
@@ -6,8 +6,11 @@ compiler: gcc
 
 before_install:
     - sudo add-apt-repository -y ppa:team-xbmc/ppa
-    - sudo apt-get update -qq
-    - sudo apt-get install -y  libegl1-mesa-dev libgles2-mesa-dev libsdl2-dev libsdl2-image-dev nlohmann-json-dev 
+    - sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev 
+                                                      libgles2-mesa-dev 
+                                                      libsdl2-dev 
+                                                      libsdl2-image-dev 
+                                                      nlohmann-json-dev 
     
 before_script:
     - mkdir build
