@@ -8,6 +8,16 @@
 #define BOX_SIZE 20
 #define STONE_SIZE 10
 
+/* obtener config.file
+#define BOX_SIZE "boxSize"
+#define STONE_SIZE "stoneSize"
+#define FLOOR_OIL_SIZE "oilSize"
+#define OILFRICTION "oilFriction"
+#define CURVE_SIZE "curveSize"
+#define CURVE_RADIUS "curveRadius"
+*/
+
+#define DEGTORAD 20 // no se cual es un buen valor
 #define FPS_KEY "framesPerSecond"
 
 World::World(float height, float width, std::map<std::string, float> &config) :
@@ -41,13 +51,14 @@ b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
     fixture_def.density = 1.f; //density should be variable
-    fixture_def.isSensor = true;
+    //fixture_def.isSensor = true;
     boxBody->CreateFixture(&fixture_def);
 
     return boxBody;
 }
 
 HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
+    // float box_size = config.find(BOX_SIZE)->second;
     b2Body* body = addBox({x_pos, y_pos},
                              {BOX_SIZE, BOX_SIZE}, false);
     HealthBooster* healthBooster = new HealthBooster(body);
@@ -56,6 +67,7 @@ HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
 }
 
 Stone* World::addStone(float x_pos, float y_pos) {
+    // float stone_size = config.find(STONE_SIZE)->second;
     b2Body* body = addBox({x_pos, y_pos}, {STONE_SIZE, STONE_SIZE}, false);
     auto stone = new Stone(body);
     body->SetUserData(stone);
@@ -103,6 +115,58 @@ Car* World::addCar(float x_pos, float y_pos) {
     Car* car = new Car(carBody, tires, flJoint, frJoint);
     carBody->SetUserData(car);
     return car;
+}
+
+b2Body* World::addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic) {
+    b2Body* boxBody = addBody(pos, dynamic);
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox(size.x / 2, size.y / 2);
+
+    b2FixtureDef fixture_def;
+    fixture_def.shape = &polygonShape;
+    //fixture_def.density = 0.f; // textura del piso, se tiene que atravezar
+    //fixture_def.friction = 0.9f; // para que vaya mas lento
+    fixture_def.isSensor = true;
+    boxBody->CreateFixture(&fixture_def);
+
+    return boxBody;
+}
+
+b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size, bool dynamic) {
+    b2Vec2 vertices[8];
+    vertices[0].Set(0,size.y); // deberia ser el contrario de la esquina
+    for (int i = 0; i < 7; i++) {
+        float angle = i / 6.0 * 90 * DEGTORAD;
+        vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
+    }
+    b2Body* curveBody = addBody(pos, dynamic);
+    b2FixtureDef fixture_def;
+    b2PolygonShape polygonShape;
+    polygonShape.Set(vertices, 8);
+    fixture_def.shape = &polygonShape;
+    fixture_def.isSensor = true;
+    curveBody->CreateFixture(&fixture_def);
+
+    // make the body rotate at 45 degrees per second
+    //curveBody->SetAngularVelocity(45 * DEGTORAD);
+    return curveBody;
+}
+
+Curve* World::addStreetCurve(float x_pos, float y_pos) {
+    float curveSize = config.find(CURVE_SIZE)->second;
+    float radius = config.find(CURVE_RADIUS)->second;
+    b2Body* body = addCurve({x_pos, y_pos}, radius, {curveSize, curveSize}, false);
+    Curve *curve = new Curve(body);
+    body->SetUserData(curve);
+    return curve;
+}
+
+Oil* World::addOil(float x_pos, float y_pos) {
+    float oilSize = config.find(FLOOR_OIL_SIZE)->second;
+    b2Body* body = addFloor({x_pos, y_pos}, {oilSize, oilSize}, false);
+    Oil *oil = new Oil(OIL, body, config);
+    body->SetUserData(oil);
+    return oil;
 }
 
 void World::step() {

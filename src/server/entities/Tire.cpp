@@ -11,13 +11,15 @@
 #define BSPEED_KEY "maxBackwardSpeed"
 #define DRIVEFORCE_KEY "maxDriveForce"
 #define LATIMPULSE_KEY "maxLateralImpulse"
+#define TIRESTARTFRICTION "startTireFriction"
 
 Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
     maxForwardSpeed(config.find(FSPEED_KEY)->second),
     maxBackwardSpeed(config.find(BSPEED_KEY)->second),
     maxDriveForce(config.find(DRIVEFORCE_KEY)->second),
     maxLateralImpulse(config.find(LATIMPULSE_KEY)->second),
-    body(body) {}
+    body(body),
+    frictionFactor(config.find(TIRESTARTFRICTION)->second) {}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
@@ -42,8 +44,21 @@ void Tire::updateFriction() {
     //forward linear velocity
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
-    float dragForceMagnitude = -2 * currentForwardSpeed;
+    float dragForceMagnitude = -frictionFactor * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
+}
+
+void Tire::setFrictionFactor(float newFriction) {
+    frictionFactor = newFriction;
+}
+
+void Tire::setMaxForwardSpeed(float newForwardSpeed) {
+    maxForwardSpeed = newForwardSpeed;
+}
+
+float Tire::getFriction() {
+    // eliminar despues
+    return frictionFactor;
 }
 
 void Tire::updateDrive(char controlState) {

@@ -12,6 +12,8 @@
 #include "HealthBooster.h"
 #include "CollisionsProcessor.h"
 #include "Stone.h"
+#include "Curve.h"
+#include "Oil.h"
 
 class World {
 private:
@@ -40,6 +42,14 @@ public:
     HealthBooster* addHealthBooster(float x_pos, float y_pos);
 
     Stone* addStone(float x_pos, float y_pos);
+
+    b2Body *addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic);
+
+    Oil *addOil(float x_pos, float y_pos);
+
+    Curve *addStreetCurve(float x_pos, float y_pos);
+
+    b2Body *addCurve(b2Vec2 pos, float radius, b2Vec2 size, bool dynamic);
 
     void step();
 
