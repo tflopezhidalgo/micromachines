@@ -5,7 +5,7 @@
 #ifndef TESTING_HEALTHBOOSTER_H
 #define TESTING_HEALTHBOOSTER_H
 
-#include "Box2D/Box2D.h"
+#include "../Box2D/Box2D.h"
 #include "Entity.h"
 #include "Car.h"
 
@@ -15,6 +15,7 @@ private:
 public:
     explicit HealthBooster(b2Body* body);
     void collide(Entity* entity) override;
+    void collideEnd(Entity* entity) override;
     void boost(Car* car);
 };
 

@@ -15,6 +15,7 @@ private:
 public:
     Stone(b2Body* body);
     void collide(Entity* entity) override;
+    void collideEnd(Entity* entity) override;
     void damageCar(Car* car);
 };
 

@@ -21,3 +21,7 @@ void HealthBooster::collide(Entity* entity) {
 void HealthBooster::boost(Car* car) {
     car->receiveHealing(healthBoost);
 }
+
+void HealthBooster::collideEnd(Entity *entity) {
+    // pass
+}

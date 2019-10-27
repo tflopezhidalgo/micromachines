@@ -20,3 +20,7 @@ void Stone::collide(Entity* entity) {
 void Stone::damageCar(Car* car) {
     car->receiveDamage(damage);
 }
+
+void Stone::collideEnd(Entity *entity) {
+    // pass
+}

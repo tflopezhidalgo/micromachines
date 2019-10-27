@@ -5,7 +5,7 @@
 #ifndef TESTING_TIRE_H
 #define TESTING_TIRE_H
 
-#include "Box2D/Box2D.h"
+#include "../Box2D/Box2D.h"
 #include "Entity.h"
 #include <map>
 #include <string>
