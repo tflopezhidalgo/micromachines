@@ -12,6 +12,12 @@
 #define FPS_KEY "framesPerSecond"
 #define OILFRICTION "oilFriction"
 
+#define DEGTORAD 20
+
+#define CURVE_SIZE "curveSize"
+
+#define CURVE_RADIUS "curveRadius"
+
 World::World(float height, float width, std::map<std::string, float> &config) :
     height(height),
     width(width),
@@ -122,6 +128,35 @@ b2Body* World::addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic) {
     boxBody->CreateFixture(&fixture_def);
 
     return boxBody;
+}
+
+b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size, bool dynamic) {
+    b2Vec2 vertices[8];
+    vertices[0].Set(0,size.y); // deberia ser el contrario de la esquina
+    for (int i = 0; i < 7; i++) {
+        float angle = i / 6.0 * 90 * DEGTORAD;
+        vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
+    }
+    b2Body* curveBody = addBody(pos, dynamic);
+    b2FixtureDef fixture_def;
+    b2PolygonShape polygonShape;
+    polygonShape.Set(vertices, 8);
+    fixture_def.shape = &polygonShape;
+    fixture_def.isSensor = true;
+    curveBody->CreateFixture(&fixture_def);
+
+    // make the body rotate at 45 degrees per second
+    //curveBody->SetAngularVelocity(45 * DEGTORAD);
+    return curveBody;
+}
+
+Curve* World::addStreetCurve(float x_pos, float y_pos) {
+    float curveSize = config.find(CURVE_SIZE)->second;
+    float radius = config.find(CURVE_RADIUS)->second;
+    b2Body* body = addCurve({x_pos, y_pos}, radius, {curveSize, curveSize}, false);
+    Curve *curve = new Curve(body);
+    body->SetUserData(curve);
+    return curve;
 }
 
 Oil* World::addOil(float x_pos, float y_pos) {

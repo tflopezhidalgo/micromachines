@@ -20,6 +20,7 @@ enum Identifier {
     SPEEDBOOSTER,
     STONE,
     MUD,
+    CURVE,
 };
 
 class Entity {

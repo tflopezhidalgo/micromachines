@@ -51,6 +51,8 @@ Juego::Juego(Vector2i resolucion, std::string titulo) {
     config.emplace("stoneSize", 10.f);
     config.emplace("oilSize", 20.f);
     config.emplace("boosterSpeed", 200.f);
+    config.emplace("curveSize", 50.f);
+    config.emplace("curveRadius", 50.f);
 
     world = new World(100.f, 100.f, config);
     car = world->addCar(50.f, 50.f);
