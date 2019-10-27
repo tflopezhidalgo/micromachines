@@ -17,3 +17,14 @@ before_script:
 script:
     - make  
 
+notifications:
+    email:
+        recipients:
+            - fedee962@outlook.com
+            - elianagam2@gmail.com
+            - leobellaera@gmail.com
+
+        on_success: never
+        on_failure: always
+
+
