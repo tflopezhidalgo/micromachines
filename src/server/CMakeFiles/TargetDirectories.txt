@@ -1,3 +1,0 @@
-/home/leobellaera/Documentos/FIUBA/Taller/TPS/micromachines/src/server/CMakeFiles/rebuild_cache.dir
-/home/leobellaera/Documentos/FIUBA/Taller/TPS/micromachines/src/server/CMakeFiles/Box2D-cmake.dir
-/home/leobellaera/Documentos/FIUBA/Taller/TPS/micromachines/src/server/CMakeFiles/edit_cache.dir

@@ -55,6 +55,5 @@ int main(int argc, char* argv[]) {
     dispatcher.join();
 
     SDL_Quit();
->>>>>>> SDL-basics
     return 0;
 }

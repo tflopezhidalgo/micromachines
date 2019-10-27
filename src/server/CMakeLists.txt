@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 3.5)
-project (Box2D-cmake)
+project (Box2D)
 
 set(SOURCES
         ${PROJECT_SOURCE_DIR}/Box2D/Collision/b2BroadPhase.cpp
@@ -51,8 +51,5 @@ set(SOURCES
         ${PROJECT_SOURCE_DIR}/Box2D/Rope/b2Rope.cpp
         )
 
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
-add_library(Box2D ALIAS ${PROJECT_NAME})
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
+add_library(Box2D STATIC ${SOURCES})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
