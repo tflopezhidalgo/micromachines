@@ -4,7 +4,7 @@
 
 #include <zconf.h> //borrar
 #include <iostream>
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include "Match.h"
 
 Match::Match(std::string mapName, std::string matchName,

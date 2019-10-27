@@ -11,11 +11,13 @@
 /* obtener config.file
 #define BOX_SIZE "boxSize"
 #define STONE_SIZE "stoneSize"
-#define FLOOR_OIL_SIZE "oilSize"
 #define OILFRICTION "oilFriction"
+*/
+
+#define FLOOR_OIL_SIZE "oilSize"
+
 #define CURVE_SIZE "curveSize"
 #define CURVE_RADIUS "curveRadius"
-*/
 
 #define DEGTORAD 20 // no se cual es un buen valor
 #define FPS_KEY "framesPerSecond"

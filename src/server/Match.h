@@ -10,7 +10,7 @@
 #include <atomic>
 #include <map>
 #include <string>
-#include "../../nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include "../common/Thread.h"
 #include "Client.h"
 #include "entities/Car.h"
