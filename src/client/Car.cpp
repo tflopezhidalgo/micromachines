@@ -9,9 +9,8 @@ Car::Car(const std::string &file, int h, int w, Window& win) :
         this->health = 0;
 }
 
-void Car::setPos(int x, int y) {
-    this->sprite.setPos(x, y);
-    std::cout << "Se llama a setPos de car \n";
+void Car::setPos(int x, int y, int angle) {
+    this->sprite.move(x, y, angle);
 }
 
 void Car::render() {

@@ -14,7 +14,7 @@ private:
 
 public:
     ProtectedModel(Window& main);
-    void updateEntity(std::string, int x, int y, int health);
+    void updateEntity(std::string, int x, int y, int angle, int health);
     void renderAll();
     ~ProtectedModel();
 };

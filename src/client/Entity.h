@@ -12,7 +12,7 @@ public:
         return 0;
     }
 
-    virtual void setPos(int x, int y){
+    virtual void setPos(int x, int y, int angle){
 
     }
 

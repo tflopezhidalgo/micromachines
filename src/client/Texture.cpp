@@ -13,8 +13,8 @@ Texture::Texture(Texture&& other) :
         other.texture = NULL;
 }
 
-void Texture::render(SDL_Rect& dimensions) {
-    this->window.render(this->texture, dimensions);
+void Texture::render(SDL_Rect& dimensions, int angle) {
+    this->window.render(this->texture, dimensions, angle);
 }
 
 Texture::~Texture() {

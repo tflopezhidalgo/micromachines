@@ -15,7 +15,7 @@ class Texture {
         Texture(SDL_Texture* txd,
                 Window& mainWindow);
         Texture(Texture&& other);
-        void render(SDL_Rect& dimensions);
+        void render(SDL_Rect& dimensions, int angle);
         ~Texture();
 };
 

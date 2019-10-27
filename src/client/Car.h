@@ -14,13 +14,13 @@ private:
 
 public:
     Car(const std::string& file, int h, int w, Window& win);
-    void setPos(int x, int y) override;
+    void setPos(int x, int y, int angle);
     int getXPos() override {
-        return x;
+        return sprite.getXPos();
     }
 
     int getYPos() override {
-        return y;
+        return sprite.getYPos();
     }
     void render();
     ~Car() {

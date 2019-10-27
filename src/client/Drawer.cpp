@@ -9,6 +9,7 @@ main(main), model(model){
 
 void Drawer::run() {
     while (running){
+        this->main.clear();
         this->model.renderAll();
         this->main.update();
     }

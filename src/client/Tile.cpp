@@ -12,5 +12,5 @@ Tile::Tile(Tile&& other) :
 }
 
 void Tile::render(){
-    this->texture.render(box);
+    this->texture.render(box, 0);
 }

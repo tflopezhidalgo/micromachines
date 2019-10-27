@@ -27,14 +27,25 @@ Texture& Window::createTextureFrom(std::string img) {
     return texture;
 }
 
-void Window::render(SDL_Texture *texture, SDL_Rect &rect) {
+void Window::render(SDL_Texture *texture, SDL_Rect &rect, int angle) {
     SDL_Rect drawingRect = {0,0,0,0};
     drawingRect.x = rect.x - camera.x;
     drawingRect.y = rect.y - camera.y;
     drawingRect.h = rect.h - camera.w;
     drawingRect.w = rect.w - camera.w;
 
-    SDL_RenderCopy(this->renderer, texture, NULL, &drawingRect);
+    double pi = 3.14;
+    angle = (angle/pi) * 1.8;
+
+    SDL_Point point = {100,100};
+    SDL_RenderCopyEx(this->renderer,
+                     texture,
+                     NULL,
+                     &drawingRect,
+                     angle,
+                     &point,
+                     SDL_FLIP_NONE
+    );
 }
 
 void Window::setCamera(int x, int y, int scale){
@@ -58,7 +69,6 @@ int Window::getWidth(){
 SDL_Renderer* Window::getRenderer(){
     return this->renderer;
 }
-
 
 void Window::update() {
     SDL_RenderPresent(this->renderer);

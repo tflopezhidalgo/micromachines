@@ -4,14 +4,17 @@
 
 #include <arpa/inet.h>
 #include <vector>
-#include "Protocol.h"
+#include "Proxy.h"
 
 #define UINT32_SIZE 4
 
-Protocol::Protocol(Socket& socket) :
+Proxy::Proxy(Socket socket) :
     socket(std::move(socket)) {}
 
-std::string Protocol::receiveMessage() {
+Proxy::Proxy(Proxy&& other) noexcept :
+    socket(std::move(other.socket)) {}
+
+std::string Proxy::receiveMessage() {
     uint32_t msgLength = 0;
     socket.recvMessage((char*)&msgLength, UINT32_SIZE);
     msgLength = ntohl(msgLength);
@@ -22,12 +25,16 @@ std::string Protocol::receiveMessage() {
     return std::move(msg);
 }
 
-void Protocol::sendMessage(std::string& msg) {
+void Proxy::sendMessage(std::string& msg) {
     uint32_t length = htonl(msg.length());
     socket.sendMessage((char*)&length, UINT32_SIZE);
     socket.sendMessage(msg.c_str(), msg.length());
 }
 
-Protocol::~Protocol() {
-    //close socket
+void Proxy::stop() {
+    socket.close();
+}
+
+Proxy::~Proxy() {
+    socket.close();
 }

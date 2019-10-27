@@ -18,7 +18,6 @@ class BaseSprite {
                    const std::string& path,
                    int height, int width);
         void move(int new_x, int new_y, int new_angle);
-        void handle(SDL_Event& e, int& , int&);
         int getXPos();
         int getYPos();
         void render();

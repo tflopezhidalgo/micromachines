@@ -3,13 +3,21 @@
 
 #include "../common/Thread.h"
 #include "../common/Socket.h"
+#include "ProtectedModel.h"
+#include "Proxy.h"
 
 class Receiver: public Thread {
     private:
+        ProtectedModel& model;
+        bool alive;
+        Proxy& proxy;
 
     public:
-        Receiver();
-        void start();
+        explicit Receiver(ProtectedModel& model,
+                          Proxy& proxy);
+        explicit Receiver(ProtectedModel& model);
+        void run();
+        void stop();
 
 };
 
