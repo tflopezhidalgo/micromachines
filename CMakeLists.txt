@@ -19,10 +19,10 @@ set(SOURCE CMAKE_SOURCE_DIR)
 add_subdirectory(src/server)
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES})
-target_include_directories(Client PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-#target_link_libraries(Client SDL2 SDL2_image)
-target_link_libraries(Client -pthread)
+target_link_libraries(Client SDL2 SDL2_image pthread)
 
 add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES})
+<<<<<<< HEAD
 target_include_directories(Server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Server Box2D pthread)
+
