@@ -14,11 +14,12 @@ file(GLOB SERVER_SRC_FILES "src/server/*.cpp")
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
 file(GLOB ENTITIES_SRC_FILES "src/server/entities/*.cpp")
-file(GLOB ENTITIES_SRC_FILES "src/server/plugins/*.cpp")
+file(GLOB PLUGINS_SRC_FILES "src/server/plugins/*.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 
-add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES})
+add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES}
+        ${COMMON_SRC_FILES} ${ENTITIES_SRC_FILES} ${PLUGINS_SRC_FILES})
 target_link_libraries(Client SDL2 SDL2_image pthread)
 
 add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES} ${ENTITIES_SRC_FILES})
