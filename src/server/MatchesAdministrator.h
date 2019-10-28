@@ -10,14 +10,15 @@
 #include <mutex>
 #include "Match.h"
 #include "../common/Proxy.h"
+#include "ConfigMapBuilder.h"
 
 class MatchesAdministrator {
 private:
     std::map<std::string, Match*> matches;
-    std::map<std::string, float> config;
+    ConfigMapBuilder configMapBuilder;
     std::mutex mutex;
 public:
-    MatchesAdministrator();
+    MatchesAdministrator(const char* configPath);
     bool createMatch(std::string& creatorNickname,
             Proxy clientProxy,
             std::string& matchName,
@@ -27,6 +28,7 @@ public:
     bool addClientToMatch(std::string& clientNickname,
                           Proxy& clientProxy,
                           std::string& matchName);
+    void deleteFinishedMatches();
     std::string getAvailableMatches();
     ~MatchesAdministrator();
 };
