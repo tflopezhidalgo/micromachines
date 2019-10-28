@@ -6,8 +6,8 @@
 #define PLUGINS_INCREASESPEED_H
 
 #include "Plugin.h"
-#include "../entities/World.h"
-#include "../entities/Car.h"
+#include "entities/World.h"
+#include "entities/Car.h"
 
 #define NEWFORDWARDSPEED 150
 

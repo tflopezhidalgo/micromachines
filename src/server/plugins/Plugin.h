@@ -6,8 +6,8 @@
 #define MICROMACHINES_PLUGIN_H
 
 #include <string>
-#include "../entities/Car.h"
-#include "../entities/World.h"
+#include "entities/Car.h"
+#include "entities/World.h"
 
 enum PluginType {
     INCREASE_VELOCITY,

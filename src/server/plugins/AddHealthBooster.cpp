@@ -7,8 +7,8 @@
 
 #include <stdlib.h>
 #include "Plugin.h"
-#include "../entities/Car.h"
-#include "../entities/World.h"
+#include "entities/Car.h"
+#include "entities/World.h"
 
 class AddHealthBooster : public Plugin {
 public:
