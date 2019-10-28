@@ -48,7 +48,7 @@ void Car::move(char action) {
 
 void Car::setTiresFriction(float newFriction) {
     for (auto tire : tires) {
-        tire->setFrictionFactor(newFriction);
+        tire->setFriction(newFriction);
     }
 }
 
@@ -71,18 +71,12 @@ void Car::collide(Entity* object) {
     }
 }
 
-void Car::collideEnd(Entity *object) {
+void Car::endCollision(Entity *object) {
     if (object->getIdentifier() == OIL) {
         auto oil = dynamic_cast<Oil*>(object);
         oil->resetFriction(this);
     }
 }
-
-float Car::getFriction() {
-    // eliminar despues
-    return tires[0]->getFriction();
-}
-
 
 void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);

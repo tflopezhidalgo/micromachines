@@ -21,6 +21,6 @@ void CollisionsProcessor::EndContact(b2Contact *contact) {
     if (userDataA != nullptr && userDataB != nullptr) {
         auto entityA = static_cast<Entity*>(userDataA);
         auto entityB = static_cast<Entity*>(userDataB);
-        entityA->collideEnd(entityB);
+        entityA->endCollision(entityB);
     }
 }

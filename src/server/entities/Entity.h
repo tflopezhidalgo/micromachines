@@ -31,7 +31,7 @@ private:
 public:
     Entity(Identifier identifier, b2Body* body);
     virtual void collide(Entity* entity) = 0;
-    virtual void collideEnd(Entity* entity) = 0;
+    virtual void endCollision(Entity* entity) = 0;
     Status getStatus();
     b2Vec2 getPosition();
     float getAngle();

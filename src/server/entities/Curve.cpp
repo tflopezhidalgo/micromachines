@@ -12,6 +12,6 @@ void Curve::collide(Entity *entity) {
 
 }
 
-void Curve::collideEnd(Entity *entity) {
+void Curve::endCollision(Entity *entity) {
 
 }
