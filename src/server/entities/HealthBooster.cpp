@@ -5,16 +5,17 @@
 #include "HealthBooster.h"
 #include "Car.h"
 
-#define HEALTH_BOOST 40
+#define HEALTH_BOOST "healthBoost"
 
-HealthBooster::HealthBooster(b2Body* body) :
-    Entity(Identifier::HEALTHBOOSTER, body),
-    healthBoost(HEALTH_BOOST) {}
+HealthBooster::HealthBooster(b2Body* body, std::map<std::string, float>& config) :
+    Entity(HEALTHBOOSTER, body),
+    healthBoost(config.find(HEALTH_BOOST)->second) {}
 
 void HealthBooster::collide(Entity* entity) {
-    if (entity->getIdentifier() == Identifier::CAR) {
+    if (entity->getIdentifier() == CAR) {
         Car* car = dynamic_cast<Car*>(entity);
         this->boost(car);
+        //die
     }
 }
 
@@ -22,6 +23,4 @@ void HealthBooster::boost(Car* car) {
     car->receiveHealing(healthBoost);
 }
 
-void HealthBooster::collideEnd(Entity *entity) {
-    // pass
-}
+void HealthBooster::endCollision(Entity *entity) {}

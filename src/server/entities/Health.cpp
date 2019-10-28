@@ -4,7 +4,7 @@
 
 #include "Health.h"
 
-Health::Health(int initialHealth) : //throw exception if health < 0
+Health::Health(int initialHealth) :
         actualHealth(initialHealth),
         maximumHealth(initialHealth) {}
 

@@ -7,19 +7,19 @@
 #define FORWARD 'F'
 #define BACKWARD 'B'
 
-#define FSPEED_KEY "maxForwardSpeed"
-#define BSPEED_KEY "maxBackwardSpeed"
-#define DRIVEFORCE_KEY "maxDriveForce"
-#define LATIMPULSE_KEY "maxLateralImpulse"
-#define TIRESTARTFRICTION "startTireFriction"
+#define FORWARD_SPEED "maxForwardSpeed"
+#define BACKWARD_SPEED "maxBackwardSpeed"
+#define DRIVE_FORCE "maxDriveForce"
+#define LATERAL_IMPULSE "maxLateralImpulse"
+#define TIRES_FRICTION "tiresFriction"
 
 Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
-    maxForwardSpeed(config.find(FSPEED_KEY)->second),
-    maxBackwardSpeed(config.find(BSPEED_KEY)->second),
-    maxDriveForce(config.find(DRIVEFORCE_KEY)->second),
-    maxLateralImpulse(config.find(LATIMPULSE_KEY)->second),
-    body(body),
-    frictionFactor(config.find(TIRESTARTFRICTION)->second) {}
+    maxForwardSpeed(config.find(FORWARD_SPEED)->second),
+    maxBackwardSpeed(config.find(BACKWARD_SPEED)->second),
+    maxDriveForce(config.find(DRIVE_FORCE)->second),
+    maxLateralImpulse(config.find(LATERAL_IMPULSE)->second),
+    frictionFactor(config.find(TIRES_FRICTION)->second),
+    body(body) {}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
@@ -48,17 +48,12 @@ void Tire::updateFriction() {
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
-void Tire::setFrictionFactor(float newFriction) {
+void Tire::setFriction(float newFriction) {
     frictionFactor = newFriction;
 }
 
 void Tire::setMaxForwardSpeed(float newForwardSpeed) {
     maxForwardSpeed = newForwardSpeed;
-}
-
-float Tire::getFriction() {
-    // eliminar despues
-    return frictionFactor;
 }
 
 void Tire::updateDrive(char controlState) {
@@ -81,14 +76,6 @@ void Tire::updateDrive(char controlState) {
         return;
     }
     body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
-}
-
-void Tire::setCharacteristics(float maxFSpeed, float maxBSpeed,
-                              float maxDForce, float maxLatImpulse) {
-    maxForwardSpeed = maxFSpeed;
-    maxBackwardSpeed = maxBSpeed;
-    maxDriveForce = maxDForce;
-    maxLateralImpulse = maxLatImpulse;
 }
 
 Tire::~Tire() {}

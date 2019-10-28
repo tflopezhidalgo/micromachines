@@ -13,16 +13,13 @@
 #define MATCH_EQUAL_NAMED 2
 #define CLIENT_EQUAL_NAMED 3
 
-MatchesAdministrator::MatchesAdministrator(/*std::string configPath*/) {
-    //readConfig(configPath)
-    config.emplace("maxForwardSpeed", 15000.f);
-    config.emplace("maxBackwardSpeed", -2000.f);
-    config.emplace("maxDriveForce", 3000.f);
-    config.emplace("maxLateralImpulse", 1000.f);
-    config.emplace("framesPerSecond", 60.f);
+MatchesAdministrator::MatchesAdministrator(const char* configPath) :
+    configMapBuilder(configPath) {
+
 }
 
-bool MatchesAdministrator::createMatch(std::string& creatorNickname,
+bool MatchesAdministrator::createMatch(
+        std::string& creatorNickname,
         Proxy clientProxy,
         std::string& matchName,
         std::string& mapName,
@@ -41,7 +38,8 @@ bool MatchesAdministrator::createMatch(std::string& creatorNickname,
         initiationResponse["status"] = VALID;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
-        auto match = new Match(mapName, matchName, playersAmount, raceLaps, config);
+        auto match = new Match(mapName, matchName, playersAmount, raceLaps,
+                configMapBuilder.getConfigMap());
         auto client = new Client(std::move(clientProxy), match->getEventsQueue());
         match->addPlayer(creatorNickname, client);
         matches.insert({matchName, match});
@@ -49,11 +47,12 @@ bool MatchesAdministrator::createMatch(std::string& creatorNickname,
     }
 }
 
-bool MatchesAdministrator::addClientToMatch(std::string& clientNickname,
-        Proxy& clientProxy, std::string& matchName) {
+bool MatchesAdministrator::addClientToMatch(
+        std::string& clientNickname,
+        Proxy& clientProxy,
+        std::string& matchName) {
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json initiationResponse;
-
     Match* match = matches.find(matchName)->second;
 
     if (match->hasStarted()) {
@@ -83,6 +82,21 @@ bool MatchesAdministrator::addClientToMatch(std::string& clientNickname,
     }
 }
 
+//No lock till unique thread delete finished matches
+void MatchesAdministrator::deleteFinishedMatches() {
+    auto it = matches.begin();
+    while (it != matches.end()) {
+        auto matchIterator = it++;
+        auto match = matchIterator->second;
+        if (match->finished()) {
+            match->stop();
+            match->join();
+            delete match;
+            matches.erase(matchIterator);
+        }
+    }
+}
+
 std::string MatchesAdministrator::getAvailableMatches() {
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json availableMatches;
@@ -93,5 +107,9 @@ std::string MatchesAdministrator::getAvailableMatches() {
 }
 
 MatchesAdministrator::~MatchesAdministrator() {
-    //to do
+    for (auto it = matches.begin(); it != matches.end(); ++it) {
+        it->second->stop();
+        it->second->join();
+        delete (it->second);
+    }
 }

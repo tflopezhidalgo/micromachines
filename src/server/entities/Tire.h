@@ -24,11 +24,8 @@ public:
     Tire(b2Body* body, std::map<std::string, float>& config);
     void updateDrive(char action);
     void updateFriction();
-    void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed,
-            float maxDriveForce, float maxLateralImpulse);
-    void setFrictionFactor(float newFriction);
-    float getFriction(); // para test-eliminar
-    void setMaxForwardSpeed(float newForwardSpeed);
+    void setFriction(float newFriction);
+    void setMaxForwardSpeed(float newMaxForwardSpeed);
     ~Tire();
 };
 
