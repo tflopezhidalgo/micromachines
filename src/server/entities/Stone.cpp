@@ -4,23 +4,27 @@
 
 #include "Stone.h"
 
-#define STONE_DAMAGE "stoneDamage"
 
-Stone::Stone(b2Body* body, std::map<std::string, float>& config) :
+Stone::Stone(b2Body *body, float damage, float minForwardSpeed) :
     Entity(STONE, body),
-    damage(config.find(STONE_DAMAGE)->second) {}
+    damage(damage),
+    minForwardSpeed(minForwardSpeed) {}
 
 void Stone::collide(Entity* entity) {
     if (entity->getIdentifier() == CAR) {
         Car* car = dynamic_cast<Car*>(entity);
         damageCar(car);
-        //die
+        this->exploit();
     }
 }
 
 void Stone::damageCar(Car* car) {
     car->receiveDamage(damage);
+    car->setMaxForwardSpeed(minForwardSpeed);
 }
 
-void Stone::endCollision(Entity *entity) {}
+void Stone::endCollision(Entity *entity) {
+    this->die();
+}
+
 

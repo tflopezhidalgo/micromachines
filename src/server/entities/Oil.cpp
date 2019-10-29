@@ -5,13 +5,10 @@
 #include <iostream>
 #include "Oil.h"
 
-#define INITIAL_FRICTION "tiresFriction"
-#define OIL_FRICTION "oilFriction"
-
-Oil::Oil(b2Body *body, std::map<std::string, float>& config) :
+Oil::Oil(b2Body *body, float initialFriction, float friction) :
         Entity(OIL, body),
-        initialFriction(config.find(INITIAL_FRICTION)->second),
-        friction(config.find(OIL_FRICTION)->second) {}
+        initialFriction(initialFriction),
+        friction(friction) {}
 
 void Oil::collide(Entity *entity) {
     if (entity->getIdentifier() == CAR) {

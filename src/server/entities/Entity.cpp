@@ -7,7 +7,7 @@
 Entity::Entity(Identifier identifier, b2Body* body) :
     identifier(identifier),
     body(body),
-    status(Status::ALIVE) {}
+    status(ALIVE) {}
 
 Identifier Entity::getIdentifier() {
     return identifier;
@@ -19,6 +19,14 @@ b2Vec2 Entity::getPosition() {
 
 float Entity::getAngle() {
     return body->GetAngle();
+}
+
+void Entity::exploit() {
+    status = EXPLOITED;
+}
+
+void Entity::die() {
+    status = DEAD;
 }
 
 Status Entity::getStatus() {

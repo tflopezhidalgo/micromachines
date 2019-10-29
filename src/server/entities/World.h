@@ -35,9 +35,9 @@ private:
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2 pos);
 
-    b2Body *addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic);
+    b2Body *addFloor(b2Vec2 pos, b2Vec2 size);
 
-    b2Body *addCurve(b2Vec2 pos, float radius, b2Vec2 size, bool dynamic);
+    b2Body *addCurve(b2Vec2 pos, float radius, b2Vec2 size);
 public:
     World(float height, float width, std::map<std::string, float> &config);
 
@@ -50,10 +50,7 @@ public:
     Oil *addOil(float x_pos, float y_pos);
     SpeedBooster* addSpeedBooster(float x_pos, float y_pos);
 
-    b2Body* addFloor(b2Vec2 pos, b2Vec2 size);
     Curve* addStreetCurve(float x_pos, float y_pos);
-
-    b2Body* addCurve(b2Vec2 pos, float radius, b2Vec2 size);
 
     //addVerticalTrack
     //addHorizontalTrack

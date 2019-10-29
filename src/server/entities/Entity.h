@@ -10,6 +10,7 @@
 enum Status {
     ALIVE,
     SEVERALDAMAGED,
+    EXPLOITED,
     DEAD
 };
 
@@ -36,6 +37,8 @@ public:
     b2Vec2 getPosition();
     float getAngle();
     Identifier getIdentifier();
+    void exploit();
+    void die();
     ~Entity();
 
 };

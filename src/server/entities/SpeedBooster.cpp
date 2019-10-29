@@ -4,18 +4,20 @@
 
 #include "SpeedBooster.h"
 
-#define INITIAL_MAX_SPEED "maxForwardSpeed"
-#define SPEED_BOOST "speedBoost"
 
-SpeedBooster::SpeedBooster(
-        b2Body *body, std::map<std::string, float> &config) :
+SpeedBooster::SpeedBooster(b2Body *body, float initialMaxSpeed, float speedBoost) :
         Entity(SPEEDBOOSTER, body),
-        initialMaxSpeed(config.find(INITIAL_MAX_SPEED)->second),
-        speedBoost(config.find(SPEED_BOOST)->second) {}
+        initialMaxSpeed(initialMaxSpeed),
+        speedBoost(speedBoost) {}
 
 void SpeedBooster::collide(Entity *entity) {
-
+    // time
+    // updateMaxForwardVelocity
+    this->exploit();
 }
 
-void SpeedBooster::endCollision(Entity *entity) {}
+void SpeedBooster::endCollision(Entity *entity) {
+    this->die();
+}
+
 

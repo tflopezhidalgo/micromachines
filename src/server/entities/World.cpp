@@ -12,7 +12,20 @@
 #define CURVE_RADIUS 5
 
 #define FPS_KEY "framesPerSecond"
+#define STONE_DAMAGE "stoneDamage"
+#define MIN_FORWARD_SPEED "minForwardSpeed"
+#define HEALTH_BOOST "healthBoost"
+#define INITIAL_MAX_SPEED "maxForwardSpeed"
+#define SPEED_BOOST "speedBoost"
+#define INITIAL_FRICTION "tiresFriction"
+#define OIL_FRICTION "oilFriction"
+#define FORWARD_SPEED "maxForwardSpeed"
+#define BACKWARD_SPEED "maxBackwardSpeed"
+#define DRIVE_FORCE "maxDriveForce"
+#define LATERAL_IMPULSE "maxLateralImpulse"
+#define TIRES_FRICTION "tiresFriction"
 
+#define EDGE_THICKNESS 0.1
 #define DEGTORAD 20 //no se cual es un buen valor
 
 World::World(float height, float width, std::map<std::string, float> &config) :
@@ -23,6 +36,23 @@ World::World(float height, float width, std::map<std::string, float> &config) :
     world->SetContactListener(&collisionsProcessor);
     //b2Body* leftLimitBody = addBody(width/2);
     //agregar bordes del mapa
+
+    //edges addition
+
+    b2Vec2 horizontalEdgeSize = {width, EDGE_THICKNESS};
+    b2Vec2 verticalEdgeSize = {EDGE_THICKNESS, height};
+
+    //top edge
+    addBox({0.f, height/2.f}, horizontalEdgeSize, false);
+
+    //down edge
+    addBox({0.f, -height/2.f}, horizontalEdgeSize, false);
+
+    //left edge
+    addBox({-width/2.f, 0.f}, verticalEdgeSize, false);
+
+    //right edge
+    addBox({width/2.f, 0.f}, verticalEdgeSize, false);
 }
 
 //private method that generates a new body in the physical world
@@ -54,14 +84,15 @@ b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
 HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
     b2Body* body = addBox({x_pos, y_pos},
                              {BOX_SIZE, BOX_SIZE}, false);
-    auto healthBooster = new HealthBooster(body, config);
+    auto healthBooster = new HealthBooster(body, config.find(HEALTH_BOOST)->second);
     body->SetUserData(healthBooster);
     return healthBooster;
 }
 
 Stone* World::addStone(float x_pos, float y_pos) {
     b2Body* body = addBox({x_pos, y_pos}, {STONE_SIZE, STONE_SIZE}, false);
-    auto stone = new Stone(body, config);
+    auto stone = new Stone(body, config.find(STONE_DAMAGE)->second,
+                           config.find(MIN_FORWARD_SPEED)->second);
     body->SetUserData(stone);
     return stone;
 }
@@ -78,28 +109,38 @@ Car* World::addCar(float x_pos, float y_pos) {
     jointDef.upperAngle = 0;
     jointDef.localAnchorB.SetZero();
 
+    float maxForwardSpeed = config.find(FORWARD_SPEED)->second;
+    float maxBackwardSpeed = config.find(BACKWARD_SPEED)->second;
+    float maxDriveForce = config.find(DRIVE_FORCE)->second;
+    float maxLateralImpulse = config.find(LATERAL_IMPULSE)->second;
+    float frictionFactor(config.find(TIRES_FRICTION)->second;
+
     std::vector<Tire*> tires;
 
     b2Body* body = createTireBody();
-    Tire* tire = new Tire(body, config);
+    Tire* tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+            maxDriveForce, maxLateralImpulse, frictionFactor);
     joinTireToChassis(&jointDef, body, {-3.f, 0.75f});
     tires.push_back(tire);
 
     //back right tire
     body = createTireBody();
-    tire = new Tire(body, config);
+    tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+                    maxDriveForce, maxLateralImpulse, frictionFactor);
     joinTireToChassis(&jointDef, body, {3.f, 0.75f});
     tires.push_back(tire);
 
     //front left tire
     body = createTireBody();
-    tire = new Tire(body, config);
+    tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+                    maxDriveForce, maxLateralImpulse, frictionFactor);
     b2RevoluteJoint* flJoint = joinTireToChassis(&jointDef, body, {-3.f, 13.5f});
     tires.push_back(tire);
 
     //front right tire
     body = createTireBody();
-    tire = new Tire(body, config);
+    tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+                    maxDriveForce, maxLateralImpulse, frictionFactor);
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, {3.f, 13.5f});
     tires.push_back(tire);
 
@@ -123,7 +164,7 @@ b2Body* World::addFloor(b2Vec2 pos, b2Vec2 size) {
 
 b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
     b2Vec2 vertices[8];
-    vertices[0].Set(0,size.y); // deberia ser el contrario de la esquina
+    vertices[0].Set(0,0); // deberia ser el contrario de la esquina
     for (int i = 0; i < 7; i++) {
         float angle = i / 6.0 * 90 * DEGTORAD;
         vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
@@ -150,21 +191,24 @@ Curve* World::addStreetCurve(float x_pos, float y_pos) {
 
 Oil* World::addOil(float x_pos, float y_pos) {
     b2Body* body = addFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE});
-    auto oil = new Oil(body, config);
+    auto oil = new Oil(body, config.find(INITIAL_FRICTION)->second,
+                            config.find(OIL_FRICTION)->second);
     body->SetUserData(oil);
     return oil;
 }
 
 SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
     b2Body* body = addBody({x_pos,y_pos}, false);
-    auto speedBooster = new SpeedBooster(body, config);
+    auto speedBooster = new SpeedBooster(body,
+                config.find(INITIAL_MAX_SPEED)->second,
+                config.find(SPEED_BOOST)->second);
     return speedBooster;
 }
 
 void World::createCarChassisFixture(b2Body* body) {
     b2Vec2 vertices[4];
-    vertices[0].Set(-3,   0);
-    vertices[1].Set(3, 0);
+    vertices[0].Set(-3, 0);
+    vertices[1].Set(3,  0);
     vertices[2].Set(-3, 15);
     vertices[3].Set(3,  15);
 

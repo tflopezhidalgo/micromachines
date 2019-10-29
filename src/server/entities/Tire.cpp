@@ -7,19 +7,14 @@
 #define FORWARD 'F'
 #define BACKWARD 'B'
 
-#define FORWARD_SPEED "maxForwardSpeed"
-#define BACKWARD_SPEED "maxBackwardSpeed"
-#define DRIVE_FORCE "maxDriveForce"
-#define LATERAL_IMPULSE "maxLateralImpulse"
-#define TIRES_FRICTION "tiresFriction"
-
-Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
-    maxForwardSpeed(config.find(FORWARD_SPEED)->second),
-    maxBackwardSpeed(config.find(BACKWARD_SPEED)->second),
-    maxDriveForce(config.find(DRIVE_FORCE)->second),
-    maxLateralImpulse(config.find(LATERAL_IMPULSE)->second),
-    frictionFactor(config.find(TIRES_FRICTION)->second),
-    body(body) {}
+Tire::Tire(b2Body *body, float maxForwardSpeed, float maxBackwardSpeed,
+        float maxDriveForce, float maxLateralImpulse, float frictionFactor) :
+        maxForwardSpeed(maxForwardSpeed),
+        maxBackwardSpeed(maxBackwardSpeed),
+        maxDriveForce(maxDriveForce),
+        maxLateralImpulse(maxLateralImpulse),
+        frictionFactor(frictionFactor),
+        body(body) {}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
@@ -79,3 +74,5 @@ void Tire::updateDrive(char controlState) {
 }
 
 Tire::~Tire() {}
+
+

@@ -1,6 +1,8 @@
 #ifndef MICROMACHINES_ENTITY_H
 #define MICROMACHINES_ENTITY_H
 
+#include <entities/Entity.h>
+
 class Entity {
 public:
     Entity() {}

@@ -11,8 +11,9 @@
 class Stone : public Entity {
 private:
     int damage;
+    int minForwardSpeed;
 public:
-    Stone(b2Body* body, std::map<std::string, float>& config);
+    Stone(b2Body* body, float damage, float minForwardSpeed);
     void collide(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void damageCar(Car* car);

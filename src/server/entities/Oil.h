@@ -13,7 +13,7 @@ private:
     float friction;
     float initialFriction;
 public:
-    Oil(b2Body *body, std::map<std::string, float>& config);
+    Oil(b2Body *body, float initialFriction, float friction);
     void collide(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void setFriction(Car *car);

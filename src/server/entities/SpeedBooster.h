@@ -14,7 +14,7 @@ private:
     float initialMaxSpeed;
     float speedBoost;
 public:
-    SpeedBooster(b2Body *body, std::map<std::string, float>& config);
+    SpeedBooster(b2Body *body, float initialMaxSpeed, float speedBoost);
     void collide(Entity* entity) override;
     void endCollision(Entity* entity) override;
 };

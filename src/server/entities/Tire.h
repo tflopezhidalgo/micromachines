@@ -21,7 +21,11 @@ private:
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
 public:
-    Tire(b2Body* body, std::map<std::string, float>& config);
+    Tire(b2Body* body, float maxForwardSpeed,
+                        float maxBackwardSpeed,
+                        float maxDriveForce,
+                        float maxLateralImpulse,
+                        float frictionFactor);
     void updateDrive(char action);
     void updateFriction();
     void setFriction(float newFriction);
