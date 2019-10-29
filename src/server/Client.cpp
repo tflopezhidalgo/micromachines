@@ -5,21 +5,21 @@
 #include <iostream>
 #include "Client.h"
 
-Client::Client(Proxy proxy, ProtectedQueue<std::string>& eventsQueue) :
-    proxy(std::move(proxy)),
-    eventsQueue(eventsQueue),
-    finished(false) {}
+Client::Client(Proxy proxy, ProtectedQueue<Event>& eventsQueue) :
+        proxy(std::move(proxy)),
+        eventsQueue(eventsQueue),
+        finished(false) {}
 
 void Client::run() {
     while (!finished) {
-        std::string action = proxy.receiveMessage();
-        std::cout<<action<<std::endl;
-        eventsQueue.push(action);
+        std::string eventDumped = proxy.receiveMessage();
+        Event event(eventDumped);
+        eventsQueue.push(std::move(event));
     }
-    //handle errors like socket exceptions (client disconnected)
+    //To do handling socket exceptions
 }
 
-void Client::sendMessage(std::string message) {
+void Client::sendMessage(std::string& message) {
     proxy.sendMessage(message);
 }
 

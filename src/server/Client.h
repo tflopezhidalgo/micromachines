@@ -7,6 +7,7 @@
 
 #include <string>
 #include <atomic>
+#include "Event.h"
 #include "ProtectedQueue.h"
 #include "Proxy.h"
 #include "Thread.h"
@@ -14,11 +15,11 @@
 class Client : public Thread {
 private:
     Proxy proxy;
-    ProtectedQueue<std::string>& eventsQueue;
+    ProtectedQueue<Event>& eventsQueue;
     std::atomic<bool> finished;
 public:
-    Client(Proxy proxy, ProtectedQueue<std::string> &eventsQueue);
-    void sendMessage(std::string message);
+    Client(Proxy proxy, ProtectedQueue<Event> &eventsQueue);
+    void sendMessage(std::string& message);
     void run() override;
     void stop();
     ~Client() override;

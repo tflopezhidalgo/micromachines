@@ -2,24 +2,32 @@
 // Created by leobellaera on 15/10/19.
 //
 
-#include <zconf.h> //borrar
-#include <iostream>
+#include <unordered_set>
 #include <nlohmann/json.hpp>
 #include "Match.h"
+#include "ModelSerializer.h"
 
-Match::Match(std::string mapName, std::string matchName,
-        int playersAmount, int raceLaps, std::map<std::string,float> &config) :
+#define FPS "framesPerSecond"
+#define NO_ACTION 0
+
+Match::Match(std::string mapName, int playersAmount,
+        int raceLaps, std::map<std::string,float> &config) :
     matchStarted(false),
     matchFinished(false),
-    matchName(matchName),
     mapName(mapName),
-    playersAmount(playersAmount),
     raceLaps(raceLaps),
+    playersAmount(playersAmount),
+    framesPerSecond(config.find(FPS)->second),
     world(500, 500, config) {
-    //make world from map
+    /* make world from map...
+       World* world = new World(height, width, config);
+       worldBuilder.build(mapName, world);
+       (build is a static method that builds map tracks)
+     */
 }
 
 void Match::addPlayer(std::string nickname, Client* client) {
+    //we need to see where to put every car
     Car* car = world.addCar(100.f, 100.f);
     cars.emplace(nickname, car);
     clients.emplace(nickname, client);
@@ -37,38 +45,57 @@ bool Match::nicknameIsAvailable(std::string& nickname) {
     return clients.count(nickname) != 1;
 }
 
-ProtectedQueue<std::string>& Match::getEventsQueue() {
+ProtectedQueue<Event>& Match::getEventsQueue() {
     return eventsQueue;
 }
 
 void Match::run() {
-    clients.find("tomas")->second->start();
-    bool updatee = false;
+    //ready, set, go
+    startClientsThread();
     while (!matchFinished) {
-        usleep(20000);
-        std::vector<std::string> actions = eventsQueue.emptyQueue();
-        for (std::string actionDumped: actions) {
-            nlohmann::json action = nlohmann::json::parse(actionDumped);
-            char accionDeTomas = action["action"].get<char>();
-            cars.find("tomas")->second->move(accionDeTomas);
-            updatee = true;
-            std::cout<<"NO SALI\n";
+        auto initial = std::chrono::high_resolution_clock::now();
+
+        std::vector<Event> events = eventsQueue.emptyQueue();
+        updateModel(events);
+        sendUpdateToClients();
+
+        auto final = std::chrono::high_resolution_clock::now();
+        auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
+        long sleepTime = (1 / framesPerSecond) * 1000 - loopDuration.count();
+        if (sleepTime > 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         }
-        if (!updatee) {
-            cars.find("tomas")->second->move('O');
+    }
+}
+
+void Match::updateModel(std::vector<Event> &events) {
+    std::unordered_set<std::string> updatedCars;
+    for (auto & event : events) {
+        std::string& clientId = event.getClientId();
+        char action = event.getAction();
+        cars.find(clientId)->second->update(action);
+        updatedCars.emplace(std::move(clientId));
+    }
+    for (auto & car : cars) {
+        auto setIter = updatedCars.find(car.first);
+        if (setIter == updatedCars.end()) {
+            car.second->update(NO_ACTION);
         }
-        world.step();
-        b2Vec2 position = cars.find("tomas")->second->getPosition();
-        nlohmann::json response;
-        response["x"] = int(position.x);
-        response["y"] = int(position.y);
-        response["angle"] = int(cars.find("tomas")->second->getAngle()*100);
-        clients.find("tomas")->second->sendMessage(response.dump());
-        updatee = false;
-        /*while (!eventsQueue.isEmpty()) {
-            std::string action = eventsQueue.pop();
-            nlohmann::json
-        }*/
+    }
+    world.step();
+}
+
+void Match::sendUpdateToClients() {
+    //model serializer will receive all unordered_maps as arguments
+    std::string modelSerialized = ModelSerializer::serialize(cars);
+    for (auto & client : clients) {
+        client.second->sendMessage(modelSerialized);
+    }
+}
+
+void Match::startClientsThread() {
+    for (auto it = clients.begin(); it != clients.end(); ++it) {
+        it->second->start();
     }
 }
 
@@ -82,10 +109,11 @@ nlohmann::json Match::getMatchInfo() {
     if (hasStarted()) {
         return matchInfo;
     }
-    matchInfo[matchName] = {mapName, raceLaps, playersAmount};
+    matchInfo.push_back(mapName);
+    matchInfo.push_back(raceLaps);
+    matchInfo.push_back(playersAmount);
     return matchInfo;
 }
-
 
 void Match::stop() {
     //to do

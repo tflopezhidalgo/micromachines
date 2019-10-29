@@ -41,4 +41,3 @@ public:
 };
 
 #endif //TESTING_ENTITY_H
-
