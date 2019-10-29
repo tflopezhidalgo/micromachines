@@ -17,5 +17,6 @@ void SpeedBooster::collide(Entity *entity) {
 
 }
 
-void SpeedBooster::endCollision(Entity *entity) {}
+void SpeedBooster::endCollision(Entity *entity) {
 
+}

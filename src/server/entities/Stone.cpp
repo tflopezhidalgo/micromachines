@@ -23,4 +23,3 @@ void Stone::damageCar(Car* car) {
 }
 
 void Stone::endCollision(Entity *entity) {}
-

@@ -20,7 +20,7 @@ Car::Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2Rev
         frontLeftJoint(flJoint),
         frontRightJoint(frJoint) {}
 
-void Car::move(char action) {
+void Car::update(char action) {
     //if status EXPLODING ...
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateFriction();
@@ -52,14 +52,19 @@ void Car::setTiresFriction(float newFriction) {
     }
 }
 
+/*void Car::setStatus() {
+    status = EXPLODING, etc
+}*/
+
 void Car::collide(Entity* object) {
     if (object->getIdentifier() == HEALTHBOOSTER) {
         auto healthBooster = dynamic_cast<HealthBooster*>(object);
         healthBooster->boost(this);
     } else if (object->getIdentifier() == STONE) {
         auto stone = dynamic_cast<Stone*>(object);
+        //stone->setDead() EL METODO setDead IRA EN LA CLASE ENTITY PARA Q SEA GENERICO
+        //if !stone->isDead()
         stone->damageCar(this);
-				// stone cambia velocidad del auto
     } else if (object->getIdentifier() == OIL) {
         auto oil = dynamic_cast<Oil*>(object);
         oil->setFriction(this);
@@ -83,17 +88,6 @@ void Car::receiveDamage(int damagePoints) {
 
 int Car::getHealth() {
     return health.getHealth();
-}
-
-int Car::getRacePosition() {
-    // depende de cuantos juegados hay y cuantas vueltas dio
-    return 1;
-}
-
-void Car::setMaxForwardSpeed(float newSpeed) {
-    for (auto tire : tires) {
-        tire->setMaxForwardSpeed(newSpeed);
-    }
 }
 
 Car::~Car() {

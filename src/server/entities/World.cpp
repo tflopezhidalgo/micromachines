@@ -11,13 +11,14 @@
 #define CURVE_SIZE 10
 #define CURVE_RADIUS 5
 
-#define FPS_KEY "framesPerSecond"
+#define FPS "framesPerSecond"
 
 #define DEGTORAD 20 //no se cual es un buen valor
 
 World::World(float height, float width, std::map<std::string, float> &config) :
     height(height),
     width(width),
+    timeStep(1.f / config.find(FPS)->second),
     config(config) {
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
@@ -199,7 +200,6 @@ b2RevoluteJoint* World::joinTireToChassis(
 }
 
 void World::step() {
-    float timeStep = 1.f / config.find(FPS_KEY)->second;
     int velocityIterations = 8;
     int positionIterations = 3; //should be 3
     world->Step(timeStep, velocityIterations, positionIterations);

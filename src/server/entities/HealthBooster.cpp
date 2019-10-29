@@ -24,4 +24,3 @@ void HealthBooster::boost(Car* car) {
 }
 
 void HealthBooster::endCollision(Entity *entity) {}
-

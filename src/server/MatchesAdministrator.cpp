@@ -14,9 +14,7 @@
 #define CLIENT_EQUAL_NAMED 3
 
 MatchesAdministrator::MatchesAdministrator(const char* configPath) :
-    configMapBuilder(configPath) {
-
-}
+    configMapBuilder(configPath) {}
 
 bool MatchesAdministrator::createMatch(
         std::string& creatorNickname,
@@ -38,7 +36,7 @@ bool MatchesAdministrator::createMatch(
         initiationResponse["status"] = VALID;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
-        auto match = new Match(mapName, matchName, playersAmount, raceLaps,
+        auto match = new Match(mapName, playersAmount, raceLaps,
                 configMapBuilder.getConfigMap());
         auto client = new Client(std::move(clientProxy), match->getEventsQueue());
         match->addPlayer(creatorNickname, client);
@@ -101,7 +99,7 @@ std::string MatchesAdministrator::getAvailableMatches() {
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json availableMatches;
     for (auto it = matches.begin(); it != matches.end(); ++it) {
-        availableMatches.push_back(it->second->getMatchInfo());
+        availableMatches[it->first] = it->second->getMatchInfo();
     }
     return std::move(availableMatches.dump());
 }
