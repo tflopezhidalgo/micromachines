@@ -14,7 +14,7 @@ private:
 public:
     explicit Curve(b2Body *body);
     void collide(Entity *entity) override;
-    void collideEnd(Entity *entity) override;
+    void endCollision(Entity *entity) override;
 };
 
 

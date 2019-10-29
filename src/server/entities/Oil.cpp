@@ -5,13 +5,13 @@
 #include <iostream>
 #include "Oil.h"
 
-#define STARTFRICTION "tireStartFriction"
-#define OILFRICTION "oilFriction"
+#define INITIAL_FRICTION "tiresFriction"
+#define OIL_FRICTION "oilFriction"
 
-Oil::Oil(Identifier identifier, b2Body *body, std::map<std::string, float>& config) :
-    Entity(OIL, body),
-    startFriction(config.find(STARTFRICTION)->second),
-    friction(config.find(OILFRICTION)->second) {}
+Oil::Oil(b2Body *body, std::map<std::string, float>& config) :
+        Entity(OIL, body),
+        initialFriction(config.find(INITIAL_FRICTION)->second),
+        friction(config.find(OIL_FRICTION)->second) {}
 
 void Oil::collide(Entity *entity) {
     if (entity->getIdentifier() == CAR) {
@@ -25,13 +25,12 @@ void Oil::setFriction(Car *car) {
 }
 
 void Oil::resetFriction(Car *car) {
-    car->setTiresFriction(startFriction);
+    car->setTiresFriction(initialFriction);
 }
 
-void Oil::collideEnd(Entity *entity) {
+void Oil::endCollision(Entity *entity) {
     if (entity->getIdentifier() == CAR) {
         Car *car = dynamic_cast<Car*>(entity);
         resetFriction(car);
     }
 }
-

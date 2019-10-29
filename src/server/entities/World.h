@@ -14,6 +14,7 @@
 #include "Stone.h"
 #include "Curve.h"
 #include "Oil.h"
+#include "SpeedBooster.h"
 
 class World {
 private:
@@ -31,8 +32,8 @@ private:
 
     b2Body* createTireBody();
 
-    b2RevoluteJoint* joinTireToChassis(b2World* world,
-            b2RevoluteJointDef* jointDef, b2Body* tireBody, b2Vec2 pos);
+    b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
+            b2Body* tireBody, b2Vec2 pos);
 
     b2Body *addFloor(b2Vec2 pos, b2Vec2 size, bool dynamic);
 
@@ -47,8 +48,15 @@ public:
     Stone* addStone(float x_pos, float y_pos);
 
     Oil *addOil(float x_pos, float y_pos);
+    SpeedBooster* addSpeedBooster(float x_pos, float y_pos);
 
-    Curve *addStreetCurve(float x_pos, float y_pos);
+    b2Body* addFloor(b2Vec2 pos, b2Vec2 size);
+    Curve* addStreetCurve(float x_pos, float y_pos);
+
+    b2Body* addCurve(b2Vec2 pos, float radius, b2Vec2 size);
+
+    //addVerticalTrack
+    //addHorizontalTrack
 
     void step();
 
@@ -56,3 +64,4 @@ public:
 };
 
 #endif //TESTING_WORLD_H
+

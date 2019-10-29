@@ -72,6 +72,11 @@ void Match::run() {
     }
 }
 
+bool Match::finished() {
+    //no lock?
+    return matchFinished;
+}
+
 nlohmann::json Match::getMatchInfo() {
     nlohmann::json matchInfo;
     if (hasStarted()) {
@@ -86,4 +91,6 @@ void Match::stop() {
     //to do
 }
 
-Match::~Match() {}
+Match::~Match() {
+    //to do
+}

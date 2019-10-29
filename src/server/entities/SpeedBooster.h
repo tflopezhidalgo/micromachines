@@ -10,14 +10,13 @@
 #include <map>
 
 class SpeedBooster : public Entity {
-public:
-    b2Body* body;
-    float startSpeed;
-    float speed;
 private:
-    SpeedBooster(Identifier identifier, b2Body *body, std::map<std::string, float>& config);
+    float initialMaxSpeed;
+    float speedBoost;
+public:
+    SpeedBooster(b2Body *body, std::map<std::string, float>& config);
     void collide(Entity* entity) override;
-    void collideEnd(Entity* entity) override;
+    void endCollision(Entity* entity) override;
 };
 
 

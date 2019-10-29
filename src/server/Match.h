@@ -34,6 +34,7 @@ public:
     nlohmann::json getMatchInfo();
     void addPlayer(std::string nickname, Client* client);
     bool hasStarted();
+    bool finished();
     bool nicknameIsAvailable(std::string& nickname);
     ProtectedQueue<std::string>& getEventsQueue();
     void run() override;
