@@ -31,4 +31,3 @@ void Oil::endCollision(Entity *entity) {
         resetFriction(car);
     }
 }
-

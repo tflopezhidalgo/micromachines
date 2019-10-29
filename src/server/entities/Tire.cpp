@@ -47,8 +47,8 @@ void Tire::setFriction(float newFriction) {
     frictionFactor = newFriction;
 }
 
-void Tire::setMaxForwardSpeed(float newForwardSpeed) {
-    maxForwardSpeed = newForwardSpeed;
+void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {
+    maxForwardSpeed = newMaxForwardSpeed;
 }
 
 void Tire::updateDrive(char controlState) {

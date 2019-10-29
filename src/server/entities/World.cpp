@@ -10,8 +10,10 @@
 #define FLOOR_OIL_SIZE 2
 #define CURVE_SIZE 10
 #define CURVE_RADIUS 5
+#define DEGTORAD 20 //no se cual es un buen valor
+#define EDGE_THICKNESS 0.1
 
-#define FPS_KEY "framesPerSecond"
+#define FPS "framesPerSecond"
 #define STONE_DAMAGE "stoneDamage"
 #define MIN_FORWARD_SPEED "minForwardSpeed"
 #define HEALTH_BOOST "healthBoost"
@@ -25,12 +27,10 @@
 #define LATERAL_IMPULSE "maxLateralImpulse"
 #define TIRES_FRICTION "tiresFriction"
 
-#define EDGE_THICKNESS 0.1
-#define DEGTORAD 20 //no se cual es un buen valor
-
 World::World(float height, float width, std::map<std::string, float> &config) :
     height(height),
     width(width),
+    timeStep(1.f / config.find(FPS)->second),
     config(config) {
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
@@ -243,7 +243,6 @@ b2RevoluteJoint* World::joinTireToChassis(
 }
 
 void World::step() {
-    float timeStep = 1.f / config.find(FPS_KEY)->second;
     int velocityIterations = 8;
     int positionIterations = 3; //should be 3
     world->Step(timeStep, velocityIterations, positionIterations);

@@ -5,7 +5,7 @@
 #ifndef MICROMACHINES_MATCHESADMINISTRATOR_H
 #define MICROMACHINES_MATCHESADMINISTRATOR_H
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <mutex>
 #include "Match.h"
@@ -14,11 +14,11 @@
 
 class MatchesAdministrator {
 private:
-    std::map<std::string, Match*> matches;
+    std::unordered_map<std::string, Match*> matches;
     ConfigMapBuilder configMapBuilder;
     std::mutex mutex;
 public:
-    MatchesAdministrator(const char* configPath);
+    explicit MatchesAdministrator(const char* configPath);
     bool createMatch(std::string& creatorNickname,
             Proxy clientProxy,
             std::string& matchName,

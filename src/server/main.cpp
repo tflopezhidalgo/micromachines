@@ -3,7 +3,10 @@
 //
 
 #include "LobbyClientAcceptor.h"
+#include <map>
 #include <iostream>
+
+#include <unordered_set>
 
 int main(int argc, char* argv[]) {
     MatchesAdministrator matchesAdministrator("../config.cfg");

@@ -21,18 +21,16 @@ private:
     Health health;
 public:
     Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint);
-    void move(char action);
+    void update(char action);
     void collide(Entity* object) override;
     void endCollision(Entity* object) override;
     void receiveHealing(int healingPoints);
     void receiveDamage(int damagePoints);
     void setTiresFriction(float newFriction);
+    int getRacePosition();
+    void setMaxForwardSpeed(float newMaxForwardSpeed);
     int getHealth();
     ~Car();
-
-    void setMaxForwardSpeed(float newSpeed);
-
-    int getRacePosition();
 };
 
 #endif //TESTING_CAR_H

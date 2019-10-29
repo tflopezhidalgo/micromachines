@@ -22,11 +22,14 @@ private:
     CollisionsProcessor collisionsProcessor;
     float height;
     float width;
+    float timeStep;
     std::map<std::string, float> &config;
 
     b2Body* addBody(b2Vec2 pos, bool dynamic);
 
     b2Body* addBox(b2Vec2 pos, b2Vec2 size, bool dynamic);
+
+    b2Body* addFloor(b2Vec2 pos, b2Vec2 size);
 
     void createCarChassisFixture(b2Body* body);
 
@@ -34,8 +37,6 @@ private:
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2 pos);
-
-    b2Body *addFloor(b2Vec2 pos, b2Vec2 size);
 
     b2Body *addCurve(b2Vec2 pos, float radius, b2Vec2 size);
 public:
@@ -47,8 +48,9 @@ public:
 
     Stone* addStone(float x_pos, float y_pos);
 
-    Oil *addOil(float x_pos, float y_pos);
     SpeedBooster* addSpeedBooster(float x_pos, float y_pos);
+
+    Oil* addOil(float x_pos, float y_pos);
 
     Curve* addStreetCurve(float x_pos, float y_pos);
 
@@ -61,4 +63,3 @@ public:
 };
 
 #endif //TESTING_WORLD_H
-

@@ -19,5 +19,3 @@ void SpeedBooster::collide(Entity *entity) {
 void SpeedBooster::endCollision(Entity *entity) {
     this->die();
 }
-
-

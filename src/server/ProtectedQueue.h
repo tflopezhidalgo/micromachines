@@ -13,6 +13,13 @@ class ProtectedQueue {
 private:
     std::queue<T> q;
     std::mutex m;
+public:
+    ProtectedQueue() {}
+
+    void push(T object) {
+        std::unique_lock<std::mutex> lck(m);
+        q.push(std::move(object));
+    }
 
     T pop() {
         T returnValue(std::move(q.front()));
@@ -20,22 +27,14 @@ private:
         return std::move(returnValue);
     }
 
-public:
-    ProtectedQueue() {}
-
-    void push(T object){
-        std::unique_lock<std::mutex> lck(m);
-        q.push(std::move(object));
-    }
-
     std::vector<T> emptyQueue() {
         std::unique_lock<std::mutex> lck(m);
         std::vector<T> values;
         while (!q.empty()) {
             T poppedValue = this->pop();
-            values.push_back(poppedValue);
+            values.push_back(std::move(poppedValue));
         }
-        return values;
+        return std::move(values);
     }
 
     ~ProtectedQueue() {}
