@@ -20,3 +20,4 @@ public:
 };
 
 #endif //TESTING_HEALTHBOOSTER_H
+

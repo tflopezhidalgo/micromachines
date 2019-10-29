@@ -26,3 +26,4 @@ Status Entity::getStatus() {
 }
 
 Entity::~Entity() {}
+

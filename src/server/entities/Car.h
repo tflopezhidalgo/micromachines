@@ -29,6 +29,10 @@ public:
     void setTiresFriction(float newFriction);
     int getHealth();
     ~Car();
+
+    void setMaxForwardSpeed(float newSpeed);
+
+    int getRacePosition();
 };
 
 #endif //TESTING_CAR_H
