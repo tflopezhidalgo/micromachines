@@ -90,6 +90,17 @@ int Car::getHealth() {
     return health.getHealth();
 }
 
+int Car::getRacePosition() {
+    //todo
+    return 1;
+}
+
+void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
+    for (auto tire : tires) {
+        tire->setMaxForwardSpeed(newMaxForwardSpeed);
+    }
+}
+
 Car::~Car() {
     for (size_t i = 0; i < tires.size(); i++) {
         delete tires[i];

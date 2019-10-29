@@ -27,6 +27,8 @@ public:
     void receiveHealing(int healingPoints);
     void receiveDamage(int damagePoints);
     void setTiresFriction(float newFriction);
+    int getRacePosition();
+    void setMaxForwardSpeed(float newMaxForwardSpeed);
     int getHealth();
     ~Car();
 };
