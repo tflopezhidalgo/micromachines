@@ -113,7 +113,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     float maxBackwardSpeed = config.find(BACKWARD_SPEED)->second;
     float maxDriveForce = config.find(DRIVE_FORCE)->second;
     float maxLateralImpulse = config.find(LATERAL_IMPULSE)->second;
-    float frictionFactor(config.find(TIRES_FRICTION)->second;
+    float frictionFactor = config.find(TIRES_FRICTION)->second;
 
     std::vector<Tire*> tires;
 
