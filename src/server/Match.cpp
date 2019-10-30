@@ -21,7 +21,7 @@ Match::Match(std::string mapName, int playersAmount,
     world(500, 500, config) {
     /* make world from map...
        World* world = new World(height, width, config);
-       worldBuilder.build(mapName, world);
+       World* world = worldBuilder.build(mapName, world, config);
        (build is a static method that builds map tracks)
      */
 }
