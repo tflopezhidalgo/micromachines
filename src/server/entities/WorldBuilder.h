@@ -14,7 +14,7 @@ private:
     std::ifstream file;
 public:
     WorldBuilder(std::string& mapName);
-    //World* build();
+    World* build();
     ~WorldBuilder();
 };
 

@@ -97,10 +97,19 @@ void MatchesAdministrator::deleteFinishedMatches() {
 
 std::string MatchesAdministrator::getAvailableMatches() {
     std::unique_lock<std::mutex> lck(mutex);
+
     nlohmann::json availableMatches;
+
     for (auto it = matches.begin(); it != matches.end(); ++it) {
-        availableMatches[it->first] = it->second->getMatchInfo();
+        std::string matchName = it->first;
+        it->second->showIfAvailable(availableMatches, matchName);
     }
+
+    if (availableMatches.is_null()) {
+        std::string nullMessage = "{}";
+        return std::move(nullMessage);
+    }
+
     return std::move(availableMatches.dump());
 }
 

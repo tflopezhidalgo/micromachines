@@ -35,7 +35,7 @@ private:
 public:
     Match(std::string mapName, int playersAmount,
             int raceLaps, std::map<std::string, float> &config);
-    nlohmann::json getMatchInfo();
+    void showIfAvailable(nlohmann::json& availableMatches, std::string& matchName);
     void addPlayer(std::string nickname, Client* client);
     bool hasStarted();
     bool finished();

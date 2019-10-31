@@ -11,6 +11,13 @@
 #define NO_ACTION '0'
 #define QUIT_ACTION 'Q'
 
+#define HORIZONTAL_TRACK 1
+#define VERTICAL_TRACK 2
+#define SUPLEFT_CURVE_TRACK 3
+#define SUPRIGHT_CURVE_TRACK 4
+#define INFLEFT_CURVE_TRACK 5
+#define INFRIGHT_CURVE_TRACK 6
+
 Match::Match(std::string mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
     matchStarted(false),
@@ -114,15 +121,15 @@ bool Match::finished() {
     return matchFinished;
 }
 
-nlohmann::json Match::getMatchInfo() {
-    nlohmann::json matchInfo;
+void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& matchName) {
     if (hasStarted()) {
-        return matchInfo;
+        return;
     }
+    nlohmann::json matchInfo;
     matchInfo.push_back(mapName);
     matchInfo.push_back(raceLaps);
     matchInfo.push_back(playersAmount);
-    return matchInfo;
+    availableMatches[matchName] = matchInfo;
 }
 
 void Match::stop() {
