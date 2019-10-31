@@ -206,6 +206,10 @@ void World::step() {
     //world->ClearForces(); neccesary?
 }
 
+void World::destroyBody(b2Body* body) {
+    world->DestroyBody(body);
+}
+
 World::~World() {
     b2Body* bodies = world->GetBodyList();
     while (bodies) {

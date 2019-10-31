@@ -77,7 +77,8 @@ void Match::updateModel(std::vector<Event> &events) {
 
         for (char action : actions) {
             if (action == QUIT_ACTION) {
-                //todo
+                delete cars.find(clientId)->second;
+                break;
             }
             cars.find(clientId)->second->update(action);
         }

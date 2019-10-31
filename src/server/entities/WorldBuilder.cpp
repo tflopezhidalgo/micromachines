@@ -6,11 +6,12 @@
 
 WorldBuilder::WorldBuilder(std::string &mapName) {
     std::string mapPath(mapName);
-//    mapPath.
+    //mapPath.
 }
 
-World* WorldBuilder::build() {
-
-}
+//todo
+/*World* WorldBuilder::build() {
+    //return new World();
+}*/
 
 WorldBuilder::~WorldBuilder() {}

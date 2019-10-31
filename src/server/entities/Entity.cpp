@@ -29,4 +29,6 @@ b2Body* Entity::getBody() {
     return body;
 }
 
-Entity::~Entity() {}
+Entity::~Entity() {
+    body->GetWorld()->DestroyBody(body);
+}

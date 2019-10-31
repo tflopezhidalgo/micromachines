@@ -78,4 +78,7 @@ void Tire::updateDrive(char controlState) {
     body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
-Tire::~Tire() {}
+Tire::~Tire() {
+    //todo if tire is a entity in a future, delete this
+    body->GetWorld()->DestroyBody(body);
+}
