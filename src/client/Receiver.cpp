@@ -11,9 +11,8 @@ Receiver::Receiver(ProtectedModel& model,
 
 void Receiver::run() {
     while (alive) {
+        usleep(2);
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
-
-        std::cout << "Se recibio en receiver " << j.dump() << std::endl;
 
         for (auto it = j.begin(); it != j.end(); ++it) {
             for (auto it2 = it->begin(); it2 != it->end(); ++it2) {

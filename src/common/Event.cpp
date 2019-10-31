@@ -33,7 +33,6 @@ Event::Event(std::string& clientId, std::vector<char> actions) :
 Event::Event(std::string& clientId, char action) :
     clientId(clientId){
     actions.push_back(action); 
-    std::cout << "Se pusheo " << action << " tamaño de acciones " << actions.size() << std::endl;
 }
 
 std::string Event::serialize() {
@@ -41,7 +40,6 @@ std::string Event::serialize() {
     data["actions"] = actions;
     data["clientId"] = clientId;
     std::string serialization = data.dump();
-    std::cout << "Se serializa Event a: " << serialization << std::endl;
     return std::move(serialization);
 }
 

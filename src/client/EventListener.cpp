@@ -17,9 +17,9 @@ void EventListener::run() {
     SDL_Event e;
     while (alive) {
         while (SDL_PollEvent(&e)) {
-            
-            // Ojo que si catchea cosas inválidas no tiene que encolar nada
 
+            // Ojo que si catchea cosas inválidas no tiene que encolar nada
+            usleep(1);
             Event action(std::move(this->handle(e)));
             q.push(std::move(action));
         }
@@ -56,7 +56,7 @@ Event EventListener::handle(SDL_Event e){
         }
     }
 
-    return Event(str, LEFT);
+    return Event(str, NO_OP);
 }
 
 EventListener::~EventListener() {
