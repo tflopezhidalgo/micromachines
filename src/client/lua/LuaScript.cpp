@@ -9,21 +9,24 @@ LuaScript::LuaScript(const std::string &filename) {
     luaL_dofile(L, filename);
 }
 
-std::string LuaScript::getAction(std::string car_id) {
+std::string LuaScript::getAction(int pos_x, int pos_y) {
     // Agrego al stack la función a llamar
     lua_getglobal(L, "getAction");
     // Agrego al stack los parámetros de la función a llamar
-    lua_pushlstring(L, car_id, strlen(car_id.length()));
-    //lua_pushnumber(L, numberHits);
+    //lua_pushlstring(L, car_id, strlen(car_id.length()));
+    lua_pushnumber(L, pos_x);
+    lua_pushnumber(L, pos_y);
 
     // Llamo a la función
     // lua_call(L, numParamsEntrada, numParamsSalida)
-    // La función recibe 1 parámetros y devuelve 1
-    lua_call(L, 1, 1);
-    int damage = lua_tonumber(L, 1);
+    // La función recibe 2 parámetros y devuelve 1
+    lua_call(L, 2, 1);
+    std::string action = lua_tonumber(L, 1);
 
     // Limpio el stack
     lua_gettop(L);
+
+    return action;
 }
 
 LuaScript::~LuaScript() {

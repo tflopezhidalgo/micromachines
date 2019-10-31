@@ -20,7 +20,7 @@ private:
 public:
     LuaScript(const std::string& filename);
 
-    std::string getAction();
+    std::string getAction(int pos_x, int pos_y);
 
     ~LuaScript();
 };
