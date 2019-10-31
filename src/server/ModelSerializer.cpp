@@ -10,9 +10,9 @@ std::string ModelSerializer::serialize(std::unordered_map<std::string, Car*>& ca
     for (auto &car : cars) {
         carsData.push_back({
             car.first,
-            car.second->getPosition().x,
-            car.second->getPosition().y,
-            car.second->getAngle(),
+            int(round(car.second->getPosition().x)),
+            int(round(car.second->getPosition().y)),
+            int(round(car.second->getAngle()* 100)),
             car.second->getHealth()
         });
     }

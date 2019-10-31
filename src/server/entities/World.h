@@ -12,9 +12,9 @@
 #include "HealthBooster.h"
 #include "CollisionsProcessor.h"
 #include "Stone.h"
-#include "Curve.h"
 #include "Oil.h"
 #include "SpeedBooster.h"
+#include "StraightTrack.h"
 
 class World {
 private:
@@ -29,7 +29,7 @@ private:
 
     b2Body* addBox(b2Vec2 pos, b2Vec2 size, bool dynamic);
 
-    b2Body* addFloor(b2Vec2 pos, b2Vec2 size);
+    b2Body* addRectangularFloor(b2Vec2 pos, b2Vec2 size);
 
     void createCarChassisFixture(b2Body* body);
 
@@ -37,6 +37,8 @@ private:
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2 pos);
+
+    b2Body* addCurve(b2Vec2 pos, float radius, b2Vec2 size);
 
 public:
     World(float height, float width, std::map<std::string, float> &config);
@@ -51,12 +53,7 @@ public:
 
     Oil* addOil(float x_pos, float y_pos);
 
-    Curve* addStreetCurve(float x_pos, float y_pos);
-
-    b2Body* addCurve(b2Vec2 pos, float radius, b2Vec2 size);
-
-    //addVerticalTrack
-    //addHorizontalTrack
+    StraightTrack* addStraightTrack(float x_pos, float y_pos, bool horizontal);
 
     void destroyBody(b2Body* body);
 
