@@ -5,16 +5,17 @@
 #include <iostream>
 #include "Oil.h"
 
-#define OIL_FRICTION "oilFriction"
+#define OIL_SKIDDING "oilSkidding"
 
 Oil::Oil(b2Body *body, std::map<std::string, float>& config) :
         Entity(OIL, body),
-        friction(config.find(OIL_FRICTION)->second) {}
+        oilSkidding(config.find(OIL_SKIDDING)->second) {}
 
-void Oil::collide(Entity *entity) {
+void Oil::beginCollision(Entity *entity) {
     if (entity->getIdentifier() == CAR /*&& isActive()*/) {
         Car* car = dynamic_cast<Car*>(entity);
-        setFriction(car);
+        //todo change car skidding (view iforce2d tut)
+        //setSkidding(car);
         die();
     }
 }
@@ -22,14 +23,6 @@ void Oil::collide(Entity *entity) {
 void Oil::endCollision(Entity *entity) {
     if (entity->getIdentifier() == CAR) {
         Car *car = dynamic_cast<Car*>(entity);
-        resetFriction(car);
+        //resetSkidding(car);
     }
-}
-
-void Oil::resetFriction(Car *car) {
-    car->resetTiresFriction();
-}
-
-void Oil::setFriction(Car *car) {
-    car->setTiresFriction(friction);
 }

@@ -8,7 +8,7 @@
 #define BOX_SIZE 1
 #define STONE_SIZE 0.5f
 #define FLOOR_OIL_SIZE 2
-#define TRACK_WIDTH 5
+#define TRACK_SIZE 5
 
 
 #define FPS "framesPerSecond"
@@ -157,11 +157,12 @@ b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
     return curveBody;
 }
 
-//tracks are squared, so horizontal and vertical tracks have the same shape.
-/*StraightTrack* World::addStraightTrack(float x_pos, float y_pos, bool horizontal) {
-    b2Body* floor = addRectangularFloor({x_pos, y_pos},{TRACK_WIDTH, TRACK_WIDTH});
-    auto StraightTrack
-}*/
+//actually, vertical and horizontal tracks have the same shape
+StraightTrack* World::addStraightTrack(float x_pos, float y_pos, bool horizontalDisposition) {
+    b2Body* body = addRectangularFloor({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
+    auto straightTrack = new StraightTrack(body);
+    return straightTrack;
+}
 
 //todo
 /*Curve* World::addStreetCurve(float x_pos, float y_pos, bool horizontal) {

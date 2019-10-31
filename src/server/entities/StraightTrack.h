@@ -6,8 +6,17 @@
 #define MICROMACHINES_STRAIGHTTRACK_H
 
 
-class StraightTrack {
 
+#include "Box2D/Box2D.h"
+#include "Entity.h"
+
+class StraightTrack : public Entity {
+private:
+public:
+    StraightTrack(b2Body* body);
+    void beginCollision(Entity* entity) override;
+    void endCollision(Entity* entity) override;
+    ~StraightTrack();
 };
 
 

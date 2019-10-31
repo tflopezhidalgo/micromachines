@@ -62,7 +62,7 @@ void Car::resetTiresFriction() {
     status = EXPLODING, etc
 }*/
 
-void Car::collide(Entity* object) {
+void Car::beginCollision(Entity* object) {
     if (object->getIdentifier() == HEALTHBOOSTER) {
         auto healthBooster = dynamic_cast<HealthBooster*>(object);
         healthBooster->boost(this);
@@ -73,14 +73,13 @@ void Car::collide(Entity* object) {
         stone->damageCar(this);
     } else if (object->getIdentifier() == OIL) {
         auto oil = dynamic_cast<Oil*>(object);
-        oil->setFriction(this);
+        //todo
     }
 }
 
 void Car::endCollision(Entity *object) {
     if (object->getIdentifier() == OIL) {
-        auto oil = dynamic_cast<Oil*>(object);
-        oil->resetFriction(this);
+        //todo
     }
 }
 

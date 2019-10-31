@@ -53,7 +53,7 @@ public:
 
     Oil* addOil(float x_pos, float y_pos);
 
-    StraightTrack* addStraightTrack(float x_pos, float y_pos, bool horizontal);
+    StraightTrack* addStraightTrack(float x_pos, float y_pos, bool horizontalDisposition);
 
     void destroyBody(b2Body* body);
 

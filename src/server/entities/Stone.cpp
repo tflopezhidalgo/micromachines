@@ -10,7 +10,7 @@ Stone::Stone(b2Body* body, std::map<std::string, float>& config) :
     Entity(STONE, body),
     damage(config.find(STONE_DAMAGE)->second) {}
 
-void Stone::collide(Entity* entity) {
+void Stone::beginCollision(Entity* entity) {
     if (entity->getIdentifier() == CAR) {
         Car* car = dynamic_cast<Car*>(entity);
         damageCar(car);

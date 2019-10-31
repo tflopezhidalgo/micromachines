@@ -50,9 +50,7 @@ void Tire::updateFriction() {
 }
 
 void Tire::setFriction(float newFriction) {
-    if (newFriction > actualFriction) {
-        actualFriction = newFriction;
-    }
+    actualFriction = newFriction;
 }
 
 void Tire::resetFriction() {
