@@ -38,7 +38,7 @@ bool MatchesAdministrator::createMatch(
         clientProxy.sendMessage(response);
         auto match = new Match(mapName, playersAmount, raceLaps,
                 configMapBuilder.getConfigMap());
-        auto client = new Client(std::move(clientProxy), match->getEventsQueue());
+        auto client = new Client(std::move(clientProxy), creatorNickname, match->getEventsQueue());
         match->addPlayer(creatorNickname, client);
         matches.insert({matchName, match});
         return true;
@@ -72,7 +72,7 @@ bool MatchesAdministrator::addClientToMatch(
         initiationResponse["status"] = VALID;
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
-        auto client = new Client(std::move(clientProxy), match->getEventsQueue());
+        auto client = new Client(std::move(clientProxy), clientNickname, match->getEventsQueue());
         match->addPlayer(clientNickname, client);
         matches.insert({matchName, match});
         return true;
@@ -97,10 +97,19 @@ void MatchesAdministrator::deleteFinishedMatches() {
 
 std::string MatchesAdministrator::getAvailableMatches() {
     std::unique_lock<std::mutex> lck(mutex);
+
     nlohmann::json availableMatches;
+
     for (auto it = matches.begin(); it != matches.end(); ++it) {
-        availableMatches[it->first] = it->second->getMatchInfo();
+        std::string matchName = it->first;
+        it->second->showIfAvailable(availableMatches, matchName);
     }
+
+    if (availableMatches.is_null()) {
+        std::string nullMessage = "{}";
+        return std::move(nullMessage);
+    }
+
     return std::move(availableMatches.dump());
 }
 

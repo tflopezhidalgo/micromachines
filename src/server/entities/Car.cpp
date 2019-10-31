@@ -102,7 +102,7 @@ void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
 }
 
 Car::~Car() {
-    for (size_t i = 0; i < tires.size(); i++) {
-        delete tires[i];
+    for (auto & tire : tires) {
+        delete tire;
     }
 }

@@ -25,4 +25,10 @@ Status Entity::getStatus() {
     return status;
 }
 
-Entity::~Entity() {}
+b2Body* Entity::getBody() {
+    return body;
+}
+
+Entity::~Entity() {
+    body->GetWorld()->DestroyBody(body);
+}

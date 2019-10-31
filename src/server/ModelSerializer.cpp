@@ -9,6 +9,7 @@ std::string ModelSerializer::serialize(std::unordered_map<std::string, Car*>& ca
     nlohmann::json carsData = nlohmann::json::array();
     for (auto &car : cars) {
         carsData.push_back({
+            car.first,
             car.second->getPosition().x,
             car.second->getPosition().y,
             car.second->getAngle(),

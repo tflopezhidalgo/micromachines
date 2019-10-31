@@ -58,6 +58,8 @@ public:
     //addVerticalTrack
     //addHorizontalTrack
 
+    void destroyBody(b2Body* body);
+
     void step();
 
     ~World();
