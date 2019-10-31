@@ -52,6 +52,12 @@ void Car::setTiresFriction(float newFriction) {
     }
 }
 
+void Car::resetTiresFriction() {
+    for (auto tire : tires) {
+        tire->resetFriction();
+    }
+}
+
 /*void Car::setStatus() {
     status = EXPLODING, etc
 }*/

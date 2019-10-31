@@ -23,7 +23,7 @@ WorldBuilder::WorldBuilder(std::string &mapName) {
 }
 
 //todo
-World* WorldBuilder::build() {
+//World* WorldBuilder::build() {
    /*nlohmann::json map = nlohmann::json::parse(file);
    for (auto & row : map["tiles"]) {
        std::vector<int> tilesRow = row.get<std::vector<int>>();
@@ -34,6 +34,6 @@ World* WorldBuilder::build() {
            }
        }
    }*/
-}
+//}
 
 WorldBuilder::~WorldBuilder() {}

@@ -36,6 +36,8 @@ public:
     float getAngle();
     Status getStatus();
     Identifier getIdentifier();
+    bool isDead();
+    void die();
     b2Body* getBody();
     ~Entity();
 

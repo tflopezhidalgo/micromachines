@@ -14,12 +14,13 @@
 #define TIRES_FRICTION "tiresFriction"
 
 Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
-    maxForwardSpeed(config.find(FORWARD_SPEED)->second),
-    maxBackwardSpeed(config.find(BACKWARD_SPEED)->second),
-    maxDriveForce(config.find(DRIVE_FORCE)->second),
-    maxLateralImpulse(config.find(LATERAL_IMPULSE)->second),
-    frictionFactor(config.find(TIRES_FRICTION)->second),
-    body(body) {}
+        maxForwardSpeed(config.find(FORWARD_SPEED)->second),
+        maxBackwardSpeed(config.find(BACKWARD_SPEED)->second),
+        maxDriveForce(config.find(DRIVE_FORCE)->second),
+        maxLateralImpulse(config.find(LATERAL_IMPULSE)->second),
+        actualFriction(config.find(TIRES_FRICTION)->second),
+        initialFriction(config.find(TIRES_FRICTION)->second),
+        body(body) {}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
@@ -44,12 +45,18 @@ void Tire::updateFriction() {
     //forward linear velocity
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
-    float dragForceMagnitude = -frictionFactor * currentForwardSpeed;
+    float dragForceMagnitude = -actualFriction * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::setFriction(float newFriction) {
-    frictionFactor = newFriction;
+    if (newFriction > actualFriction) {
+        actualFriction = newFriction;
+    }
+}
+
+void Tire::resetFriction() {
+    actualFriction = initialFriction;
 }
 
 void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {

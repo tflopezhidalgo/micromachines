@@ -25,6 +25,14 @@ Status Entity::getStatus() {
     return status;
 }
 
+bool Entity::isDead() {
+    return status == DEAD;
+}
+
+void Entity::die() {
+    status = DEAD;
+}
+
 b2Body* Entity::getBody() {
     return body;
 }

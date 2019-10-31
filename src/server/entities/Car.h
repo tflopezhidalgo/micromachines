@@ -14,7 +14,6 @@
 
 class Car : public Entity {
 private:
-    b2Body* body;
     b2RevoluteJoint* frontLeftJoint;
     b2RevoluteJoint* frontRightJoint;
     std::vector<Tire*> tires;
@@ -27,6 +26,7 @@ public:
     void receiveHealing(int healingPoints);
     void receiveDamage(int damagePoints);
     void setTiresFriction(float newFriction);
+    void resetTiresFriction();
     int getRacePosition();
     void setMaxForwardSpeed(float newMaxForwardSpeed);
     int getHealth();
