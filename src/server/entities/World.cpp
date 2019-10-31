@@ -14,6 +14,7 @@
 #define FPS "framesPerSecond"
 
 #define DEGTORAD 20 //no se cual es un buen valor
+#define EDGE_THICKNESS 0.5f
 
 World::World(float height, float width, std::map<std::string, float> &config) :
     height(height),
@@ -23,7 +24,23 @@ World::World(float height, float width, std::map<std::string, float> &config) :
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
     //b2Body* leftLimitBody = addBody(width/2);
-    //agregar bordes del mapa
+
+    //edges addition
+
+    b2Vec2 horizontalEdgeSize = {width, EDGE_THICKNESS};
+    b2Vec2 verticalEdgeSize = {EDGE_THICKNESS, height};
+
+    //top edge
+    addBox({0.f, height/2.f}, horizontalEdgeSize, false);
+
+    //down edge
+    addBox({0.f, -height/2.f}, horizontalEdgeSize, false);
+
+    //left edge
+    addBox({-width/2.f, 0.f}, verticalEdgeSize, false);
+
+    //right edge
+    addBox({width/2.f, 0.f}, verticalEdgeSize, false);
 }
 
 //private method that generates a new body in the physical world
