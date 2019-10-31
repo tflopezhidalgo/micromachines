@@ -13,7 +13,7 @@ SpeedBooster::SpeedBooster(
         initialMaxSpeed(config.find(INITIAL_MAX_SPEED)->second),
         speedBoost(config.find(SPEED_BOOST)->second) {}
 
-void SpeedBooster::collide(Entity *entity) {
+void SpeedBooster::beginCollision(Entity *entity) {
 
 }
 

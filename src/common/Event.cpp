@@ -5,36 +5,33 @@
 #include "Event.h"
 
 Event::Event(Event&& otherEvent) noexcept {
-    this->clientId = otherEvent.clientId;
-    this->action = otherEvent.action;
-    otherEvent.clientId = "";
-    otherEvent.action = '\0';
+    this->clientId = std::move(otherEvent.clientId);
+    this->actions = std::move(otherEvent.actions);
 }
 
 //Useful to server
 Event::Event(std::string& dataDumped) {
     nlohmann::json data = nlohmann::json::parse(dataDumped);
-    clientId = data["clientId"].get<std::string>();
-    action = data["action"].get<char>();
+    clientId = std::move(data["clientId"].get<std::string>());
+    actions = std::move(data["actions"].get<std::vector<char>>());
 }
 
 std::string& Event::getClientId() {
     return clientId;
 }
 
-char Event::getAction() {
-    return action;
+std::vector<char>& Event::getActions() {
+    return actions;
 }
 
-
 //Useful to client
-Event::Event(std::string& clientId, char action) :
+Event::Event(std::string& clientId, std::vector<char> actions) :
         clientId(clientId),
-        action(action) {}
+        actions(std::move(actions)) {}
 
 std::string Event::serialize() {
     nlohmann::json data;
-    data["action"] = action;
+    data["actions"] = actions;
     data["clientId"] = clientId;
     std::string serialization = data.dump();
     return std::move(serialization);

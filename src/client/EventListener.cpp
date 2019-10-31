@@ -5,6 +5,7 @@
 #include "TileMap.h"
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <zconf.h>
 
 EventListener::EventListener(ProtectedQueue<Action>& q) :
     q(q) {}
@@ -13,6 +14,7 @@ void EventListener::run() {
     bool alive = true;
     SDL_Event e;
     while (alive) {
+        usleep(200);
         while (SDL_PollEvent(&e)) {
             Action action(std::move(this->handle(e)));
             q.push(std::move(action));

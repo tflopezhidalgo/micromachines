@@ -25,4 +25,18 @@ Status Entity::getStatus() {
     return status;
 }
 
-Entity::~Entity() {}
+bool Entity::isDead() {
+    return status == DEAD;
+}
+
+void Entity::die() {
+    status = DEAD;
+}
+
+b2Body* Entity::getBody() {
+    return body;
+}
+
+Entity::~Entity() {
+    body->GetWorld()->DestroyBody(body);
+}

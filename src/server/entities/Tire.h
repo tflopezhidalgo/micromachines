@@ -16,7 +16,8 @@ private:
     float maxBackwardSpeed;
     float maxDriveForce;
     float maxLateralImpulse;
-    float frictionFactor;
+    float actualFriction;
+    float initialFriction;
     b2Body* body;
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
@@ -25,6 +26,7 @@ public:
     void updateDrive(char action);
     void updateFriction();
     void setFriction(float newFriction);
+    void resetFriction();
     void setMaxForwardSpeed(float newMaxForwardSpeed);
     ~Tire();
 };

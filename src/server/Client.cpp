@@ -3,20 +3,30 @@
 //
 
 #include <iostream>
+#include <SocketException.h>
 #include "Client.h"
 
-Client::Client(Proxy proxy, ProtectedQueue<Event>& eventsQueue) :
+#define QUIT 'Q'
+
+Client::Client(Proxy proxy, std::string clientId, ProtectedQueue<Event>& eventsQueue) :
         proxy(std::move(proxy)),
+        clientId(clientId),
         eventsQueue(eventsQueue),
         finished(false) {}
 
 void Client::run() {
     while (!finished) {
-        std::string eventDumped = proxy.receiveMessage();
-        Event event(eventDumped);
-        eventsQueue.push(std::move(event));
+        try {
+            std::string eventDumped = proxy.receiveMessage();
+            Event event(eventDumped);
+            eventsQueue.push(std::move(event));
+        } catch (const SocketException& e) {
+            std::vector<char> actions;
+            actions.push_back(QUIT);
+            Event event(clientId, actions);
+            finished = true;
+        }
     }
-    //To do handling socket exceptions
 }
 
 void Client::sendMessage(std::string& message) {
@@ -29,5 +39,5 @@ void Client::stop() {
 }
 
 Client::~Client() {
-    proxy.stop(); //check this
+    proxy.stop(); //todo
 }

@@ -52,11 +52,17 @@ void Car::setTiresFriction(float newFriction) {
     }
 }
 
+void Car::resetTiresFriction() {
+    for (auto tire : tires) {
+        tire->resetFriction();
+    }
+}
+
 /*void Car::setStatus() {
     status = EXPLODING, etc
 }*/
 
-void Car::collide(Entity* object) {
+void Car::beginCollision(Entity* object) {
     if (object->getIdentifier() == HEALTHBOOSTER) {
         auto healthBooster = dynamic_cast<HealthBooster*>(object);
         healthBooster->boost(this);
@@ -67,14 +73,13 @@ void Car::collide(Entity* object) {
         stone->damageCar(this);
     } else if (object->getIdentifier() == OIL) {
         auto oil = dynamic_cast<Oil*>(object);
-        oil->setFriction(this);
+        //todo
     }
 }
 
 void Car::endCollision(Entity *object) {
     if (object->getIdentifier() == OIL) {
-        auto oil = dynamic_cast<Oil*>(object);
-        oil->resetFriction(this);
+        //todo
     }
 }
 
@@ -102,7 +107,7 @@ void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
 }
 
 Car::~Car() {
-    for (size_t i = 0; i < tires.size(); i++) {
-        delete tires[i];
+    for (auto & tire : tires) {
+        delete tire;
     }
 }

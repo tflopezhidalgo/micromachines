@@ -10,14 +10,11 @@
 
 class Oil : public Entity {
 private:
-    float friction;
-    float initialFriction;
+    float oilSkidding;
 public:
     Oil(b2Body *body, std::map<std::string, float>& config);
-    void collide(Entity* entity) override;
+    void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
-    void setFriction(Car *car);
-    void resetFriction(Car *car);
 };
 
 

@@ -8,7 +8,15 @@
 #include "ModelSerializer.h"
 
 #define FPS "framesPerSecond"
-#define NO_ACTION 0
+#define NO_ACTION '0'
+#define QUIT_ACTION 'Q'
+
+#define HORIZONTAL_TRACK 1
+#define VERTICAL_TRACK 2
+#define SUPLEFT_CURVE_TRACK 3
+#define SUPRIGHT_CURVE_TRACK 4
+#define INFLEFT_CURVE_TRACK 5
+#define INFRIGHT_CURVE_TRACK 6
 
 Match::Match(std::string mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
@@ -20,8 +28,7 @@ Match::Match(std::string mapName, int playersAmount,
     framesPerSecond(config.find(FPS)->second),
     world(500, 500, config) {
     /* make world from map...
-       World* world = new World(height, width, config);
-       worldBuilder.build(mapName, world);
+       World* world = worldBuilder.build(mapName, world, config);
        (build is a static method that builds map tracks)
      */
 }
@@ -70,12 +77,22 @@ void Match::run() {
 
 void Match::updateModel(std::vector<Event> &events) {
     std::unordered_set<std::string> updatedCars;
+
     for (auto & event : events) {
         std::string& clientId = event.getClientId();
-        char action = event.getAction();
-        cars.find(clientId)->second->update(action);
+        std::vector<char> actions = event.getActions();
+
+        for (char action : actions) {
+            if (action == QUIT_ACTION) {
+                delete cars.find(clientId)->second;
+                break;
+            }
+            cars.find(clientId)->second->update(action);
+        }
         updatedCars.emplace(std::move(clientId));
     }
+
+    //friction update to remaining cars
     for (auto & car : cars) {
         auto setIter = updatedCars.find(car.first);
         if (setIter == updatedCars.end()) {
@@ -94,8 +111,8 @@ void Match::sendUpdateToClients() {
 }
 
 void Match::startClientsThread() {
-    for (auto it = clients.begin(); it != clients.end(); ++it) {
-        it->second->start();
+    for (auto & client : clients) {
+        client.second->start();
     }
 }
 
@@ -104,21 +121,21 @@ bool Match::finished() {
     return matchFinished;
 }
 
-nlohmann::json Match::getMatchInfo() {
-    nlohmann::json matchInfo;
+void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& matchName) {
     if (hasStarted()) {
-        return matchInfo;
+        return;
     }
+    nlohmann::json matchInfo;
     matchInfo.push_back(mapName);
     matchInfo.push_back(raceLaps);
     matchInfo.push_back(playersAmount);
-    return matchInfo;
+    availableMatches[matchName] = matchInfo;
 }
 
 void Match::stop() {
-    //to do
+    //todo
 }
 
 Match::~Match() {
-    //to do
+    //todo
 }

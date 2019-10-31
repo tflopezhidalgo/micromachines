@@ -11,14 +11,14 @@ Receiver::Receiver(ProtectedModel& model,
 
 void Receiver::run() {
     std::string msg = proxy.receiveMessage();
-    std::cout << msg << std::endl;
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
         int posX = j["x"].get<int>();
         int posY = j["y"].get<int>();
         int angle = j["angle"].get<int>();
-        //std::cout << "Se recibe " << j.dump() << std::endl;
         this->model.updateEntity("tomas", posX, posY, angle, 100);
+        this->model.updateEntity("toto", posY, posX, angle, 100);
+        this->model.updateEntity("totasio", 0, 0, angle, 100);
     }
 }
 

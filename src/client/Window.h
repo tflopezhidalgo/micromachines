@@ -17,9 +17,12 @@ class Window {
     public:
         explicit Window(std::string title);
         Window(std::string title, int w, int h);
-        Texture& createTextureFrom(std::string img);
-        void render(SDL_Texture *texture, SDL_Rect& rect, int angle);
-        void setCamera(int x, int y, int scale);
+        Texture& createTextureFrom(const std::string& img);
+        void render(SDL_Texture *texture,
+                    SDL_Rect& textureInfo,
+                    SDL_Rect& dstTexture,
+                    int angle);
+        void setCamera(int x, int y);
         int getHeight();
         int getWidth();
         SDL_Renderer* getRenderer();

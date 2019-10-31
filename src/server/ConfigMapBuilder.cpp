@@ -3,7 +3,7 @@
 //
 
 #include "ConfigMapBuilder.h"
-#include "ConfigMapBuilderException.h"
+#include "FileReadingException.h"
 #include <sstream>
 
 #define DELIM_CHAR '='
@@ -18,12 +18,12 @@ ConfigMapBuilder::ConfigMapBuilder(const char* filePath) {
     file.exceptions(std::ifstream::badbit);
     file.open(filePath);
     if (!file.is_open()) {
-        throw ConfigMapBuilderException(OPENING_ERROR_MSG);
+        throw FileReadingException(OPENING_ERROR_MSG);
     }
     try {
         this->buildMap();
     } catch (std::ios_base::failure& e) {
-        throw ConfigMapBuilderException(READING_ERROR_MSG);
+        throw FileReadingException(READING_ERROR_MSG);
     }
 }
 

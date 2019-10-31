@@ -18,8 +18,8 @@
 #define GRASS_TILE "../media/tiles/Grass_Tile.png"
 
 // De qué forma queremos que la muestre
-#define TILE_HEIGHT 1700
-#define TILE_WIDTH 1700
+#define TILE_HEIGHT 200
+#define TILE_WIDTH 200
 
 class TileMap: public Entity{
     private:
@@ -27,8 +27,11 @@ class TileMap: public Entity{
         Window& window;
 
     public:
-        TileMap(Window& window, const std::string& mapFile);
-        void render();
+        TileMap(Window& window,
+                const std::string& mapFile,
+                int zoom,
+                int offset);
+        void render(Camera& cam);
         ~TileMap();
 };
 

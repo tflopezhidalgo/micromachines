@@ -8,12 +8,13 @@
 #define BOX_SIZE 1
 #define STONE_SIZE 0.5f
 #define FLOOR_OIL_SIZE 2
-#define CURVE_SIZE 10
-#define CURVE_RADIUS 5
+#define TRACK_SIZE 5
+
 
 #define FPS "framesPerSecond"
 
-#define DEGTORAD 20 //no se cual es un buen valor
+#define DEGTORAD 0.017453292f
+#define EDGE_THICKNESS 0.5f
 
 World::World(float height, float width, std::map<std::string, float> &config) :
     height(height),
@@ -23,7 +24,23 @@ World::World(float height, float width, std::map<std::string, float> &config) :
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
     //b2Body* leftLimitBody = addBody(width/2);
-    //agregar bordes del mapa
+
+    //edges addition
+
+    b2Vec2 horizontalEdgeSize = {width, EDGE_THICKNESS};
+    b2Vec2 verticalEdgeSize = {EDGE_THICKNESS, height};
+
+    //top edge
+    addBox({0.f, height/2.f}, horizontalEdgeSize, false);
+
+    //down edge
+    addBox({0.f, -height/2.f}, horizontalEdgeSize, false);
+
+    //left edge
+    addBox({-width/2.f, 0.f}, verticalEdgeSize, false);
+
+    //right edge
+    addBox({width/2.f, 0.f}, verticalEdgeSize, false);
 }
 
 //private method that generates a new body in the physical world
@@ -109,7 +126,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     return car;
 }
 
-b2Body* World::addFloor(b2Vec2 pos, b2Vec2 size) {
+b2Body* World::addRectangularFloor(b2Vec2 pos, b2Vec2 size) {
     b2Body* boxBody = addBody(pos, false);
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(size.x / 2, size.y / 2);
@@ -124,7 +141,7 @@ b2Body* World::addFloor(b2Vec2 pos, b2Vec2 size) {
 
 b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
     b2Vec2 vertices[8];
-    vertices[0].Set(0,size.y); // deberia ser el contrario de la esquina
+    vertices[0].Set(0,size.y);
     for (int i = 0; i < 7; i++) {
         float angle = i / 6.0 * 90 * DEGTORAD;
         vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
@@ -137,20 +154,26 @@ b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
     fixture_def.isSensor = true;
     curveBody->CreateFixture(&fixture_def);
 
-    //make the body rotate at 45 degrees per second
-    //curveBody->SetAngularVelocity(45 * DEGTORAD);
     return curveBody;
 }
 
-Curve* World::addStreetCurve(float x_pos, float y_pos) {
+//actually, vertical and horizontal tracks have the same shape
+StraightTrack* World::addStraightTrack(float x_pos, float y_pos, bool horizontalDisposition) {
+    b2Body* body = addRectangularFloor({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
+    auto straightTrack = new StraightTrack(body);
+    return straightTrack;
+}
+
+//todo
+/*Curve* World::addStreetCurve(float x_pos, float y_pos, bool horizontal) {
     b2Body* body = addCurve({x_pos, y_pos}, CURVE_RADIUS, {CURVE_SIZE, CURVE_SIZE});
     auto curve = new Curve(body);
     body->SetUserData(curve);
     return curve;
-}
+}*/
 
 Oil* World::addOil(float x_pos, float y_pos) {
-    b2Body* body = addFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE});
+    b2Body* body = addRectangularFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE});
     auto oil = new Oil(body, config);
     body->SetUserData(oil);
     return oil;
@@ -203,7 +226,11 @@ void World::step() {
     int velocityIterations = 8;
     int positionIterations = 3; //should be 3
     world->Step(timeStep, velocityIterations, positionIterations);
-    //world->ClearForces(); neccesary?
+    //todo world->ClearForces(); neccesary?
+}
+
+void World::destroyBody(b2Body* body) {
+    world->DestroyBody(body);
 }
 
 World::~World() {

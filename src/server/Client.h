@@ -15,10 +15,11 @@
 class Client : public Thread {
 private:
     Proxy proxy;
+    std::string clientId;
     ProtectedQueue<Event>& eventsQueue;
     std::atomic<bool> finished;
 public:
-    Client(Proxy proxy, ProtectedQueue<Event> &eventsQueue);
+    Client(Proxy proxy, std::string clientId, ProtectedQueue<Event> &eventsQueue);
     void sendMessage(std::string& message);
     void run() override;
     void stop();

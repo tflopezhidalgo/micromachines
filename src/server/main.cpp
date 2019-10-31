@@ -6,11 +6,11 @@
 #include <map>
 #include <iostream>
 
-#include <unordered_set>
+#define BACKLOG 5
 
 int main(int argc, char* argv[]) {
     MatchesAdministrator matchesAdministrator("../config.cfg");
-    auto acceptor = new LobbyClientAcceptor(5, argv[1], matchesAdministrator);
+    auto acceptor = new LobbyClientAcceptor(BACKLOG, argv[1], matchesAdministrator);
     acceptor->start();
     char c = '\0';
     while (c != 'q') {

@@ -11,7 +11,7 @@ HealthBooster::HealthBooster(b2Body* body, std::map<std::string, float>& config)
     Entity(HEALTHBOOSTER, body),
     healthBoost(config.find(HEALTH_BOOST)->second) {}
 
-void HealthBooster::collide(Entity* entity) {
+void HealthBooster::beginCollision(Entity* entity) {
     if (entity->getIdentifier() == CAR) {
         Car* car = dynamic_cast<Car*>(entity);
         this->boost(car);

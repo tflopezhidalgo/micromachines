@@ -1,3 +1,4 @@
+#include <zconf.h>
 #include "Drawer.h"
 #include "Window.h"
 #include "ProtectedModel.h"
@@ -9,6 +10,7 @@ main(main), model(model){
 
 void Drawer::run() {
     while (running){
+        usleep(200000);
         this->main.clear();
         this->model.renderAll();
         this->main.update();
