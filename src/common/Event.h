@@ -22,6 +22,7 @@ public:
 
     //Useful to client
     Event(std::string& clientId,  std::vector<char> actions);
+    Event(std::string& clientId,  char action);
     std::string serialize();
 
     ~Event();

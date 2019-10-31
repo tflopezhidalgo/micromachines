@@ -5,15 +5,16 @@
 #include "../common/Thread.h"
 #include "ProtectedQueue.h"
 #include "../common/Proxy.h"
+#include "../common/Event.h"
 
 class Dispatcher: public Thread {
     private:
-        ProtectedQueue<Action>& q;
+        ProtectedQueue<Event>& q;
         Proxy& proxy;
         bool alive;
 
     public:
-        Dispatcher(ProtectedQueue<Action>& q, Proxy& proxy);
+        Dispatcher(ProtectedQueue<Event>& q, Proxy& proxy);
         void run();
         void stop();
 

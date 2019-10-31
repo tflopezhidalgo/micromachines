@@ -1,3 +1,4 @@
+#include "../common/Event.h"
 #include "EventListener.h"
 #include <iostream>
 #include <zconf.h>
@@ -96,10 +97,9 @@ int main(int argc, char* argv[]) {
         std::cin >> buffer;
         j["matchName"] = buffer;
 
-        /*if (recv.find(buffer) == recv.end()) {
-            std::cout << "Nombre invalido! \n";
-            return 0;
-        }*/
+        std::string msg = j.dump();
+
+        proxy.sendMessage(msg);
 
     } else {
         std::cout << "Debe seleccionar modo join o modo create.. saliendo\n";
@@ -107,16 +107,11 @@ int main(int argc, char* argv[]) {
     }
 
     json response = json::parse(proxy.receiveMessage());
-
     std::cout << "Se recibio  " << response.dump();
 
-    response = json::parse(proxy.receiveMessage());
+    Window main("Game", 1200, 600);
 
-    std::cout << "Se recibio " << response.dump() << std::endl;
-
-    /*Window main("Game", 1200, 600);
-
-    ProtectedQueue<Action> q;
+    ProtectedQueue<Event> q;
     ProtectedModel model(main);
 
     Receiver receiver(model, proxy);
@@ -135,7 +130,7 @@ int main(int argc, char* argv[]) {
     drawer.join();
     receiver.join();
     dispatcher.join();
-*/
+
     SDL_Quit();
     return 0;
 }
