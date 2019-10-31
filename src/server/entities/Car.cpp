@@ -7,16 +7,19 @@
 #include "HealthBooster.h"
 #include "Stone.h"
 #include "Oil.h"
+#include "StraightTrack.h"
 
-#define INITIAL_HEALTH 100
 #define DEGTORAD 0.017453292f
 #define LEFT 'L'
 #define RIGHT 'R'
 
-Car::Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint) :
+Car::Car(b2Body* body, std::vector<Tire*> tires, int carCollisionDamage,
+        b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint) :
+
         Entity(Identifier::CAR, body),
-        health(INITIAL_HEALTH),
+        health(100),
         tires(std::move(tires)),
+        carCollisionDamage(carCollisionDamage),
         frontLeftJoint(flJoint),
         frontRightJoint(frJoint) {}
 
@@ -62,18 +65,31 @@ void Car::resetTiresFriction() {
     status = EXPLODING, etc
 }*/
 
-void Car::beginCollision(Entity* object) {
-    if (object->getIdentifier() == HEALTHBOOSTER) {
-        auto healthBooster = dynamic_cast<HealthBooster*>(object);
-        healthBooster->boost(this);
-    } else if (object->getIdentifier() == STONE) {
-        auto stone = dynamic_cast<Stone*>(object);
-        //stone->setDead() EL METODO setDead IRA EN LA CLASE ENTITY PARA Q SEA GENERICO
-        //if !stone->isDead()
+void Car::beginCollision(Entity* entity) {
+
+    if (entity->isDead()) {
+        return;
+    }
+
+    if (entity->getIdentifier() == HEALTHBOOSTER) {
+        auto healthBooster = dynamic_cast<HealthBooster*>(entity);
+        healthBooster->heal(this);
+        healthBooster->die();
+    } else if (entity->getIdentifier() == STONE) {
+        auto stone = dynamic_cast<Stone*>(entity);
         stone->damageCar(this);
-    } else if (object->getIdentifier() == OIL) {
-        auto oil = dynamic_cast<Oil*>(object);
+        stone->die();
+    } else if (entity->getIdentifier() == OIL) {
+        auto oil = dynamic_cast<Oil*>(entity);
         //todo
+        oil->die();
+    } else if (entity->getIdentifier() == CAR) {
+        auto car = dynamic_cast<Car*>(entity);
+        car->receiveDamage(carCollisionDamage);
+        this->receiveDamage(carCollisionDamage);
+    } else if (entity->getIdentifier() == STRAIGHT_TRACK) {
+        auto track = dynamic_cast<StraightTrack*>(entity);
+        track->setCarFriction(this);
     }
 }
 

@@ -17,7 +17,7 @@ private:
     float maxDriveForce;
     float maxLateralImpulse;
     float actualFriction;
-    float initialFriction;
+    float defaultFriction;
     b2Body* body;
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();

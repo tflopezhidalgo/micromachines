@@ -11,10 +11,12 @@
 
 class SpeedBooster : public Entity {
 private:
-    float initialMaxSpeed;
+    float defaultMaxForwardSpeed;
     float speedBoost;
 public:
-    SpeedBooster(b2Body *body, std::map<std::string, float>& config);
+    SpeedBooster(b2Body *body,
+            float speedBoost,
+            float defaultMaxForwardSpeed);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
 };

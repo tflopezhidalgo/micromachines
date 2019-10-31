@@ -16,12 +16,17 @@ class Car : public Entity {
 private:
     b2RevoluteJoint* frontLeftJoint;
     b2RevoluteJoint* frontRightJoint;
+    int carCollisionDamage;
     std::vector<Tire*> tires;
     Health health;
 public:
-    Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint);
+    Car(b2Body* body,
+        std::vector<Tire*> tires,
+        int carCollisionDamage,
+        b2RevoluteJoint* flJoint,
+        b2RevoluteJoint* frJoint);
     void update(char action);
-    void beginCollision(Entity* object) override;
+    void beginCollision(Entity* entity) override;
     void endCollision(Entity* object) override;
     void receiveHealing(int healingPoints);
     void receiveDamage(int damagePoints);

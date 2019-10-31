@@ -4,17 +4,15 @@
 
 #include "Stone.h"
 
-#define STONE_DAMAGE "stoneDamage"
-
-Stone::Stone(b2Body* body, std::map<std::string, float>& config) :
+Stone::Stone(b2Body* body, int damage) :
     Entity(STONE, body),
-    damage(config.find(STONE_DAMAGE)->second) {}
+    damage(damage) {}
 
 void Stone::beginCollision(Entity* entity) {
-    if (entity->getIdentifier() == CAR) {
+    if (entity->getIdentifier() == CAR && !isDead()) {
         Car* car = dynamic_cast<Car*>(entity);
-        damageCar(car);
-        //die
+        car->receiveDamage(damage);
+        die();
     }
 }
 
@@ -23,3 +21,5 @@ void Stone::damageCar(Car* car) {
 }
 
 void Stone::endCollision(Entity *entity) {}
+
+Stone::~Stone() {}

@@ -12,6 +12,13 @@
 
 
 #define FPS "framesPerSecond"
+#define HEALTH_BOOST "healthBoost"
+#define OIL_GRIP "oilGrip"
+#define DEFAULT_MAX_SPEED "defaultMaxForwardSpeed"
+#define TRACK_FRICTION "trackFriction"
+#define CAR_COLLISION_DAMAGE "carCollisionDamage"
+#define SPEED_BOOST "speedBoost"
+#define STONE_DAMAGE "stoneDamage"
 
 #define DEGTORAD 0.017453292f
 #define EDGE_THICKNESS 0.5f
@@ -72,14 +79,14 @@ b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
 HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
     b2Body* body = addBox({x_pos, y_pos},
                              {BOX_SIZE, BOX_SIZE}, false);
-    auto healthBooster = new HealthBooster(body, config);
+    auto healthBooster = new HealthBooster(body, int(config.find(HEALTH_BOOST)->second));
     body->SetUserData(healthBooster);
     return healthBooster;
 }
 
 Stone* World::addStone(float x_pos, float y_pos) {
     b2Body* body = addBox({x_pos, y_pos}, {STONE_SIZE, STONE_SIZE}, false);
-    auto stone = new Stone(body, config);
+    auto stone = new Stone(body, int(config.find(STONE_DAMAGE)->second));
     body->SetUserData(stone);
     return stone;
 }
@@ -121,7 +128,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, {3.f, 13.5f});
     tires.push_back(tire);
 
-    Car* car = new Car(carBody, tires, flJoint, frJoint);
+    Car* car = new Car(carBody, tires, config.find(CAR_COLLISION_DAMAGE)->second, flJoint, frJoint);
     carBody->SetUserData(car);
     return car;
 }
@@ -160,7 +167,7 @@ b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
 //actually, vertical and horizontal tracks have the same shape
 StraightTrack* World::addStraightTrack(float x_pos, float y_pos, bool horizontalDisposition) {
     b2Body* body = addRectangularFloor({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
-    auto straightTrack = new StraightTrack(body);
+    auto straightTrack = new StraightTrack(body, config.find(TRACK_FRICTION)->second);
     return straightTrack;
 }
 
@@ -174,14 +181,16 @@ StraightTrack* World::addStraightTrack(float x_pos, float y_pos, bool horizontal
 
 Oil* World::addOil(float x_pos, float y_pos) {
     b2Body* body = addRectangularFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE});
-    auto oil = new Oil(body, config);
+    auto oil = new Oil(body, config.find(OIL_GRIP)->second);
     body->SetUserData(oil);
     return oil;
 }
 
 SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
     b2Body* body = addBody({x_pos,y_pos}, false);
-    auto speedBooster = new SpeedBooster(body, config);
+    auto speedBooster = new SpeedBooster(body,
+            config.find(SPEED_BOOST)->second,
+            config.find(DEFAULT_MAX_SPEED)->second);
     return speedBooster;
 }
 

@@ -13,10 +13,10 @@ class HealthBooster : public Entity {
 private:
     int healthBoost;
 public:
-    explicit HealthBooster(b2Body* body, std::map<std::string, float>& config);
+    explicit HealthBooster(b2Body* body, int healing);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
-    void boost(Car* car);
+    void heal(Car* car);
 };
 
 #endif //TESTING_HEALTHBOOSTER_H

@@ -7,11 +7,11 @@
 #define FORWARD 'F'
 #define BACKWARD 'B'
 
-#define FORWARD_SPEED "maxForwardSpeed"
-#define BACKWARD_SPEED "maxBackwardSpeed"
-#define DRIVE_FORCE "maxDriveForce"
-#define LATERAL_IMPULSE "maxLateralImpulse"
-#define TIRES_FRICTION "tiresFriction"
+#define FORWARD_SPEED "defaultMaxForwardSpeed"
+#define BACKWARD_SPEED "defaultMaxBackwardSpeed"
+#define DRIVE_FORCE "defaultMaxDriveForce"
+#define LATERAL_IMPULSE "defaultMaxLateralImpulse"
+#define TIRES_FRICTION "defaultFriction"
 
 Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
         maxForwardSpeed(config.find(FORWARD_SPEED)->second),
@@ -19,7 +19,7 @@ Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
         maxDriveForce(config.find(DRIVE_FORCE)->second),
         maxLateralImpulse(config.find(LATERAL_IMPULSE)->second),
         actualFriction(config.find(TIRES_FRICTION)->second),
-        initialFriction(config.find(TIRES_FRICTION)->second),
+        defaultFriction(config.find(TIRES_FRICTION)->second),
         body(body) {}
 
 b2Vec2 Tire::getLateralVelocity() {
@@ -47,6 +47,8 @@ void Tire::updateFriction() {
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -actualFriction * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
+
+    //todo drifting
 }
 
 void Tire::setFriction(float newFriction) {
@@ -54,7 +56,7 @@ void Tire::setFriction(float newFriction) {
 }
 
 void Tire::resetFriction() {
-    actualFriction = initialFriction;
+    actualFriction = defaultFriction;
 }
 
 void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {
@@ -81,6 +83,7 @@ void Tire::updateDrive(char controlState) {
         return;
     }
     body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
+    //todo allow drifting
 }
 
 Tire::~Tire() {
