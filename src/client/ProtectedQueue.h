@@ -27,11 +27,13 @@ class ProtectedQueue {
 
         T pop() {
             std::unique_lock<std::mutex> lck(this->m);
+            std::cout << "Comienza pop " << std::endl;
             while (q.empty())
                 cv.wait(lck);
 
             T returnValue(std::move(q.front()));
             q.pop();
+            std::cout << "Termina pop " << std::endl;
             return returnValue;
         }
 

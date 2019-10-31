@@ -29,11 +29,19 @@ Event::Event(std::string& clientId, std::vector<char> actions) :
         clientId(clientId),
         actions(std::move(actions)) {}
 
+
+Event::Event(std::string& clientId, char action) :
+    clientId(clientId){
+    actions.push_back(action); 
+    std::cout << "Se pusheo " << action << " tamaño de acciones " << actions.size() << std::endl;
+}
+
 std::string Event::serialize() {
     nlohmann::json data;
     data["actions"] = actions;
     data["clientId"] = clientId;
     std::string serialization = data.dump();
+    std::cout << "Se serializa Event a: " << serialization << std::endl;
     return std::move(serialization);
 }
 

@@ -20,7 +20,7 @@ void ProtectedModel::updateEntity(std::string id,
         this->entities[id] = new Car("../media/sprites/pitstop_car_1.png", 100, 100, main);
 
     if (!cam.targetSet()) {
-        cam.setOnTarget(this->entities["tomas"]);
+        cam.setOnTarget(this->entities["q"]);
     }
 
     entities[id]->setPos(x, y, angle);
