@@ -8,10 +8,12 @@ Dispatcher::Dispatcher(ProtectedQueue<Event> &q, Proxy& proxy) :
 
 void Dispatcher::run() {
     while (alive) {
+    	usleep(1);
         Event action(std::move(q.pop()));
         std::string dumpedAction(std::move(action.serialize()));
         std::cout << "Se envia: " << dumpedAction << std::endl;
-		proxy.sendMessage(dumpedAction);
+       	if (dumpedAction.find("Q") == std::string::npos)
+			proxy.sendMessage(dumpedAction);
         dumpedAction.clear();
     }
 }

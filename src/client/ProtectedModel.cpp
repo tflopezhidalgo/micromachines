@@ -28,11 +28,13 @@ void ProtectedModel::updateEntity(std::string id,
 
 void ProtectedModel::renderAll() {
     std::unique_lock<std::mutex> lock(m);
-    map.render(cam);
-    cam.update();
-    std::map<std::string, Entity *>::iterator it;
+    if (this->cam.targetSet()) {
+        map.render(cam);
+        cam.update();
+        std::map<std::string, Entity *>::iterator it;
         for (it = entities.begin(); it != entities.end(); ++it)
             it->second->render(cam);
+    }
 }
 
 ProtectedModel::~ProtectedModel(){
