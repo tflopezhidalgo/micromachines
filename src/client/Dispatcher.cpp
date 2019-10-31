@@ -9,7 +9,6 @@ void Dispatcher::run() {
         Action action(std::move(q.pop()));
         std::string dumpedAction(std::move(action.dump()));
         proxy.sendMessage(dumpedAction);
-        std::cout << "Se envia " << dumpedAction << std::endl;
         dumpedAction.clear();
     }
 }

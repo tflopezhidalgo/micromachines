@@ -22,47 +22,50 @@ Window::Window(std::string title, int w, int h) {
         throw std::runtime_error("no se pudo crear ventana");
 }
 
-Texture& Window::createTextureFrom(std::string img) {
+Texture& Window::createTextureFrom(const std::string& img) {
     Texture& texture = TextureRepository::getTexture(img, *this);
     return texture;
 }
 
-void Window::render(SDL_Texture *texture, SDL_Rect &rect, int angle) {
+void Window::render(SDL_Texture *texture,
+                    SDL_Rect& textureInfo,
+                    SDL_Rect& dstTexture,
+                    int angle) {
+
     SDL_Rect drawingRect = {0,0,0,0};
-    drawingRect.x = rect.x - camera.x;
-    drawingRect.y = rect.y - camera.y;
-    drawingRect.h = rect.h - camera.w;
-    drawingRect.w = rect.w - camera.w;
+    //drawingRect.x = dstTexture.x - dstTexture.w / 2 - camera.x;
+    //drawingRect.y = dstTexture.y - dstTexture.h / 2 - camera.y;
+    //drawingRect.h = dstTexture.h ;
+    //drawingRect.w = dstTexture.w ;
 
     double pi = 3.14;
     angle = (angle/pi) * 1.8;
 
-    SDL_Point point = {100,100};
+    SDL_Point point = {dstTexture.w / 2, dstTexture.h / 2};
+
     SDL_RenderCopyEx(this->renderer,
                      texture,
-                     NULL,
-                     &drawingRect,
+                     &textureInfo,
+                     &dstTexture,
                      angle,
                      &point,
-                     SDL_FLIP_NONE
-    );
+                     SDL_FLIP_NONE);
 }
 
-void Window::setCamera(int x, int y, int scale){
+void Window::setCamera(int x, int y){
     this->camera.x = x;
     this->camera.y = y;
-    this->camera.w = scale;
 }
 
 int Window::getHeight(){
-    int h;
-    SDL_GetRendererOutputSize(this->renderer, 0, &h);
+    int h, a;
+    SDL_GetRendererOutputSize(this->renderer, &a, &h);
     return h;
 }
 
 int Window::getWidth(){
-    int w;
-    SDL_GetRendererOutputSize(this->renderer, &w, 0);
+    int w, b ;
+    SDL_GetRendererOutputSize(this->renderer, &w, &b);
     return w;
 }
 

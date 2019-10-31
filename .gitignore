@@ -9,3 +9,4 @@ hello
 Model/Testing
 src/server/CMakeFiles/*
 src/server/Box2D-cmake.cbp
+/test/

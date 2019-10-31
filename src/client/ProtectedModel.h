@@ -5,12 +5,16 @@
 #include <map>
 #include "Entity.h"
 #include "Window.h"
+#include "Camera.h"
+#include "TileMap.h"
 
 class ProtectedModel {
 private:
     std::mutex m;
     std::map<std::string, Entity*> entities;
     Window& main;
+    Camera cam;
+    TileMap map;
 
 public:
     ProtectedModel(Window& main);

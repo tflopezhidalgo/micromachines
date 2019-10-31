@@ -4,6 +4,7 @@
 #include "ProtectedQueue.h"
 #include "Car.h"
 #include "Camera.h"
+#include <vector>
 #include "TileMap.h"
 #include "Drawer.h"
 #include "ProtectedModel.h"
@@ -18,24 +19,105 @@ using json = nlohmann::json;
 int main(int argc, char* argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
 
-    Window main("Game", 1200, 600);
-
     Socket skt(argv[1], argv[2]);
     Proxy proxy(std::move(skt));
 
-    json j;
-    j["mode"] = "create";
-    j["map"] = "adawd";
-    j["matchName"] = "tuSantaMadre";
-    j["playersAmount"] = 1;
-    j["clientId"] = "tomas";
-    j["raceLaps"] = 10;
+    std::cout << "Bienvenido a micromachines, está utilizando el modo CLI \n"
+              << "Por favor, seleccione el modo de juego: join | create \n";
+
+    std::string input;
+    json initialMsg;
+    std::cin >> input;
+
+    if (input == "create") {
+        initialMsg["mode"] = "create";
+        std::cout << "Seleccionado: create. Por favor ingrese los siguientes campos\n";
+
+        std::cout << "Ingrese nombre de la partida a crear: ";
+        std::cin >> input;
+        initialMsg["matchName"] = input;
+
+        std::cout << "Ingrese su nombre: ";
+        std::cin >> input;
+        initialMsg["clientId"] = input;
+
+        std::cout << "Ingrese nombre del mapa en el cuál desea jugar: ";
+        std::cin >> input;
+        initialMsg["map"] = input;
+
+        char a;
+        std::cout << "Ingrese cantidad de jugadores: ";
+        std::cin >> a;
+        initialMsg["playersAmount"] = atoi(&a);
+
+        std::cout << "Ingrese cantidad de vueltas: ";
+        std::cin >> a;
+        initialMsg["raceLaps"] = atoi(&a);
+
+        std::string serializedInitialMsg = initialMsg.dump();
+        proxy.sendMessage(serializedInitialMsg);
+
+    } else if (input == "join") {
+
+        initialMsg["mode"] = "join";
+        std::string buffer = initialMsg.dump();
+        proxy.sendMessage(buffer);
+
+        std::cout << "Pidiendo la lista de partidas disponibles... \n";
+
+        json recv = json::parse(proxy.receiveMessage());
+
+        std::cout << "Se recibieron : " << recv.dump() << std::endl;
+
+        if (recv.size() == 0) {
+            std::cout << "No hay partidas para jugar :(\n";
+            return 0;
+        }
+
+        int i = 0;
+        for (json::iterator it = recv.begin(); it != recv.end(); ++it) {
+            i++;
+            std::cout << " ------ " << i << " Nombre de la partida: "
+                      << *it
+                      << " informacion: " ;
+            for (auto& element : it.value())
+                std::cout << "  " << element << " ";
+
+            std::cout << " ------ \n";
+        }
+
+        json j;
+        std::cout << std::endl;
+        std::cout << "Ingrese su nombre y el nombre de la la partida a la que desea unirse \n";
+        std::cout << "Alias: ";
+        std::cin >> buffer;
+        j["clientId"] = buffer;
+        std::cout << "Partida: ";
+        std::cin >> buffer;
+        j["matchName"] = buffer;
+
+        /*if (recv.find(buffer) == recv.end()) {
+            std::cout << "Nombre invalido! \n";
+            return 0;
+        }*/
+
+    } else {
+        std::cout << "Debe seleccionar modo join o modo create.. saliendo\n";
+        return 0;
+    }
+
+    json response = json::parse(proxy.receiveMessage());
+
+    std::cout << "Se recibio  " << response.dump();
+
+    response = json::parse(proxy.receiveMessage());
+
+    std::cout << "Se recibio " << response.dump() << std::endl;
+
+    /*Window main("Game", 1200, 600);
 
     ProtectedQueue<Action> q;
     ProtectedModel model(main);
-
-    std::string msg = j.dump();
-    proxy.sendMessage(msg);
 
     Receiver receiver(model, proxy);
     Drawer drawer(main, model);
@@ -53,7 +135,7 @@ int main(int argc, char* argv[]) {
     drawer.join();
     receiver.join();
     dispatcher.join();
-
+*/
     SDL_Quit();
     return 0;
 }

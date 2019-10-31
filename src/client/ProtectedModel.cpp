@@ -8,9 +8,7 @@
 #include "TileMap.h"
 
 ProtectedModel::ProtectedModel(Window& main) :
-    main(main) {
-    this->entities["a"] = new TileMap(main, "../media/maps/lazy.map");
-}
+    main(main), cam(main), map(main, "../media/maps/lazy.map",  1, 100) {}
 
 void ProtectedModel::updateEntity(std::string id,
                                   int x,
@@ -18,22 +16,23 @@ void ProtectedModel::updateEntity(std::string id,
                                   int angle,
                                   int health) {
     std::unique_lock<std::mutex> lck(m);
-    if  (this->entities.count(id) == 0) {
+    if  (this->entities[id] == NULL)
         this->entities[id] = new Car("../media/sprites/pitstop_car_1.png", 100, 100, main);
+
+    if (!cam.targetSet()) {
+        cam.setOnTarget(this->entities["tomas"]);
     }
-    if (this->entities["zzz"] == NULL) {
-        this->entities["zzz"] = new Camera(this->main, *this->entities["tomas"]);
-    }
+
     entities[id]->setPos(x, y, angle);
 }
 
 void ProtectedModel::renderAll() {
     std::unique_lock<std::mutex> lock(m);
-    if (!entities.empty()) {
-        std::map<std::string, Entity *>::iterator it;
+    map.render(cam);
+    cam.update();
+    std::map<std::string, Entity *>::iterator it;
         for (it = entities.begin(); it != entities.end(); ++it)
-            it->second->render();
-    }
+            it->second->render(cam);
 }
 
 ProtectedModel::~ProtectedModel(){

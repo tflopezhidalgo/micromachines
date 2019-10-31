@@ -19,7 +19,7 @@ class Tile {
 
         Tile(Tile&& other);
 
-        void render();
+        void render(Camera& cam);
 
 };
 
