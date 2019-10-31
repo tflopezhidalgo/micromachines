@@ -25,4 +25,8 @@ Status Entity::getStatus() {
     return status;
 }
 
+b2Body* Entity::getBody() {
+    return body;
+}
+
 Entity::~Entity() {}

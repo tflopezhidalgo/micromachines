@@ -8,7 +8,8 @@
 #include "ModelSerializer.h"
 
 #define FPS "framesPerSecond"
-#define NO_ACTION 0
+#define NO_ACTION '0'
+#define QUIT_ACTION 'Q'
 
 Match::Match(std::string mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
@@ -20,7 +21,6 @@ Match::Match(std::string mapName, int playersAmount,
     framesPerSecond(config.find(FPS)->second),
     world(500, 500, config) {
     /* make world from map...
-       World* world = new World(height, width, config);
        World* world = worldBuilder.build(mapName, world, config);
        (build is a static method that builds map tracks)
      */
@@ -70,12 +70,21 @@ void Match::run() {
 
 void Match::updateModel(std::vector<Event> &events) {
     std::unordered_set<std::string> updatedCars;
+
     for (auto & event : events) {
         std::string& clientId = event.getClientId();
-        char action = event.getAction();
-        cars.find(clientId)->second->update(action);
+        std::vector<char> actions = event.getActions();
+
+        for (char action : actions) {
+            if (action == QUIT_ACTION) {
+                //todo
+            }
+            cars.find(clientId)->second->update(action);
+        }
         updatedCars.emplace(std::move(clientId));
     }
+
+    //friction update to remaining cars
     for (auto & car : cars) {
         auto setIter = updatedCars.find(car.first);
         if (setIter == updatedCars.end()) {
@@ -94,8 +103,8 @@ void Match::sendUpdateToClients() {
 }
 
 void Match::startClientsThread() {
-    for (auto it = clients.begin(); it != clients.end(); ++it) {
-        it->second->start();
+    for (auto & client : clients) {
+        client.second->start();
     }
 }
 
@@ -116,9 +125,9 @@ nlohmann::json Match::getMatchInfo() {
 }
 
 void Match::stop() {
-    //to do
+    //todo
 }
 
 Match::~Match() {
-    //to do
+    //todo
 }
