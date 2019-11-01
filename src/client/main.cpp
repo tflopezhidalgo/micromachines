@@ -120,16 +120,16 @@ int main(int argc, char* argv[]) {
     Dispatcher dispatcher(q, proxy);
 
     receiver.start();
-    drawer.start();
     dispatcher.start();
+    drawer.start();
     handler.run();
 
     drawer.stop();
-    receiver.stop();
     dispatcher.stop();
+    receiver.stop();
     drawer.join();
-    receiver.join();
     dispatcher.join();
+    receiver.join();
 
     SDL_Quit();
     return 0;

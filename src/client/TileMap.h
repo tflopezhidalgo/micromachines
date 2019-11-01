@@ -18,8 +18,8 @@
 #define GRASS_TILE "../media/tiles/Grass_Tile.png"
 
 // De qué forma queremos que la muestre
-#define TILE_HEIGHT 200
-#define TILE_WIDTH 200
+#define TILE_HEIGHT 33
+#define TILE_WIDTH 33
 
 class TileMap: public Entity{
     private:

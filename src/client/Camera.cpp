@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "Window.h"
 
-#define MtoP 2
+#define MtoP 6      // Relación metros a píxeles
 
 Camera::Camera(Window& w) :
 window(w) {
@@ -12,7 +12,6 @@ window(w) {
 
 void Camera::setOnTarget(Entity* e) {
     this->e = e;
-    std::cout << "Se seteo target " << e << std::endl;
 }
 
 SDL_Rect Camera::translate(SDL_Rect &origin) {
