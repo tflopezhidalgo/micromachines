@@ -4,9 +4,11 @@
 
 #include "LuaScript.h"
 
-LuaScript::LuaScript(const std::string &filename) {
+LuaScript::LuaScript(const std::string &map) {
     luaL_openlibs(L);
-    luaL_dofile(L, filename);
+    action = luaL_dofile(L, map);
+    action = luaL_dofile(L, "entities_ids.lua");
+    action = luaL_dofile(L, "player.lua");
 }
 
 std::string LuaScript::getAction(int pos_x, int pos_y) {
@@ -21,7 +23,7 @@ std::string LuaScript::getAction(int pos_x, int pos_y) {
     // lua_call(L, numParamsEntrada, numParamsSalida)
     // La función recibe 2 parámetros y devuelve 1
     lua_call(L, 2, 1);
-    std::string action = lua_tonumber(L, 1);
+    action = lua_tonumber(L, 1);
 
     // Limpio el stack
     lua_gettop(L);

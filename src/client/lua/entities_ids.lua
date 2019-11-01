@@ -1,3 +1,5 @@
+print("Loading Lua Entities")
+
 entities = {
     [0] = {
         "name" = "asphalt",
