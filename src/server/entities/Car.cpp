@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <FileReadingException.h>
 #include "Car.h"
 #include "HealthBooster.h"
 #include "Stone.h"
@@ -21,24 +22,30 @@ Car::Car(b2Body* body, std::vector<Tire*> tires, int carCollisionDamage,
         tires(std::move(tires)),
         carCollisionDamage(carCollisionDamage),
         frontLeftJoint(flJoint),
-        frontRightJoint(frJoint) {}
+        frontRightJoint(frJoint) {
 
-void Car::update(char action) {
-    //if status EXPLODING ...
+}
+
+void Car::updateFriction() {
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateFriction();
     }
+}
+
+void Car::updateMove(char action) {
+    //todo if status EXPLODING ...
+
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateDrive(action);
     }
 
     float lockAngle = 35 * DEGTORAD;
-    float turnSpeedPerSec = 160 * DEGTORAD;
+    float turnSpeedPerSec = 320 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
     switch (action) {
-        case RIGHT:  desiredAngle = lockAngle;  break;
-        case LEFT: desiredAngle = -lockAngle; break;
+        case RIGHT: desiredAngle = lockAngle;  break;
+        case LEFT:  desiredAngle = -lockAngle; break;
         default: ; //nothing to do
     }
     float angleNow = frontLeftJoint->GetJointAngle();

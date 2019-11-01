@@ -25,7 +25,8 @@ public:
         int carCollisionDamage,
         b2RevoluteJoint* flJoint,
         b2RevoluteJoint* frJoint);
-    void update(char action);
+    void updateFriction();
+    void updateMove(char action);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* object) override;
     void receiveHealing(int healingPoints);

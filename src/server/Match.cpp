@@ -76,7 +76,10 @@ void Match::run() {
 }
 
 void Match::updateModel(std::vector<Event> &events) {
-    std::unordered_set<std::string> updatedCars;
+
+    for (auto & car : cars) {
+        car.second->updateFriction();
+    }
 
     for (auto & event : events) {
         std::string& clientId = event.getClientId();
@@ -87,25 +90,17 @@ void Match::updateModel(std::vector<Event> &events) {
                 delete cars.find(clientId)->second;
                 break;
             }
-            cars.find(clientId)->second->update(action);
+            cars.find(clientId)->second->updateMove(action);
         }
-        updatedCars.emplace(std::move(clientId));
     }
 
-    //friction update to remaining cars
-    for (auto & car : cars) {
-        auto setIter = updatedCars.find(car.first);
-        if (setIter == updatedCars.end()) {
-            car.second->update(NO_ACTION);
-        }
-    }
     world.step();
 }
 
 void Match::sendUpdateToClients() {
     //model serializer will receive all unordered_maps as arguments
     std::string modelSerialized = ModelSerializer::serialize(cars);
-    std::cout << "DUMP UPDATE: " << modelSerialized << std::endl;
+    //std::cout << "DUMP UPDATE: " << modelSerialized << std::endl;
     for (auto & client : clients) {
         client.second->sendMessage(modelSerialized);
     }

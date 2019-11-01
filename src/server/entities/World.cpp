@@ -4,7 +4,7 @@
 
 #include "World.h"
 
-#define ANGULAR_DAMPING 3
+#define ANGULAR_DAMPING 5
 #define BOX_SIZE 1
 #define STONE_SIZE 0.5f
 #define FLOOR_OIL_SIZE 2
@@ -206,7 +206,7 @@ void World::createCarChassisFixture(b2Body* body) {
 
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
-    fixture_def.density = 0.01f;
+    fixture_def.density = 0.1f;
     fixture_def.shape = &polygonShape;
 
     body->CreateFixture(&fixture_def);
@@ -235,7 +235,7 @@ void World::step() {
     int velocityIterations = 8;
     int positionIterations = 3; //should be 3
     world->Step(timeStep, velocityIterations, positionIterations);
-    //todo world->ClearForces(); neccesary?
+    //world->ClearForces(); //neccesary?
 }
 
 void World::destroyBody(b2Body* body) {
