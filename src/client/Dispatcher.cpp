@@ -11,9 +11,10 @@ void Dispatcher::run() {
     	usleep(1);
         Event action(std::move(q.pop()));
         std::string dumpedAction(std::move(action.serialize()));
-        std::cout << "Se envia: " << dumpedAction << std::endl;
-       	if (dumpedAction.find("Q") == std::string::npos)
+       	if (dumpedAction.find("81") == std::string::npos){
+            std::cout << "Se enviaría : " << dumpedAction << std::endl;
 			proxy.sendMessage(dumpedAction);
+        }
         dumpedAction.clear();
     }
 }

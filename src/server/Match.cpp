@@ -105,6 +105,7 @@ void Match::updateModel(std::vector<Event> &events) {
 void Match::sendUpdateToClients() {
     //model serializer will receive all unordered_maps as arguments
     std::string modelSerialized = ModelSerializer::serialize(cars);
+    std::cout << "DUMP UPDATE: " << modelSerialized << std::endl;
     for (auto & client : clients) {
         client.second->sendMessage(modelSerialized);
     }

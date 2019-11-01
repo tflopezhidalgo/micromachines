@@ -16,10 +16,10 @@ void EventListener::run() {
     bool alive = true;
     SDL_Event e;
     while (alive) {
+        usleep(200);
         while (SDL_PollEvent(&e)) {
 
             // Ojo que si catchea cosas inválidas no tiene que encolar nada
-            usleep(1);
             Event action(std::move(this->handle(e)));
             q.push(std::move(action));
         }
@@ -28,7 +28,7 @@ void EventListener::run() {
 
 Event EventListener::handle(SDL_Event e){
     std::string str("q");
-    if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+    //if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
         switch (e.key.keysym.sym) {
             case SDLK_w:
                 return Event(str, FORWARD);
@@ -38,10 +38,10 @@ Event EventListener::handle(SDL_Event e){
                 return Event(str, LEFT);
             case SDLK_d:
                 return Event(str, RIGHT);
-            case SDLK_q:
+            default:
                 return Event(str, QUIT);
         }
-    } else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
+    /*} else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
         switch (e.key.keysym.sym) {
             case SDLK_w:
                 return Event(str, FORWARD);
@@ -51,12 +51,10 @@ Event EventListener::handle(SDL_Event e){
                 return Event(str, LEFT);
             case SDLK_d:
                 return Event(str, RIGHT);
-            case SDLK_q:
+            default:
                 return Event(str, QUIT);
         }
-    }
-
-    return Event(str, NO_OP);
+    }*/
 }
 
 EventListener::~EventListener() {

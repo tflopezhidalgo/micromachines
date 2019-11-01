@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "Window.h"
 
-#define MtoP 1
+#define MtoP 2
 
 Camera::Camera(Window& w) :
 window(w) {
