@@ -7,7 +7,7 @@
 #include "HealthBooster.h"
 #include "Stone.h"
 #include "Oil.h"
-#include "StraightTrack.h"
+#include "Track.h"
 
 #define DEGTORAD 0.017453292f
 #define LEFT 'L'
@@ -87,8 +87,8 @@ void Car::beginCollision(Entity* entity) {
         auto car = dynamic_cast<Car*>(entity);
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
-    } else if (entity->getIdentifier() == STRAIGHT_TRACK) {
-        auto track = dynamic_cast<StraightTrack*>(entity);
+    } else if (entity->getIdentifier() == TRACK) {
+        auto track = dynamic_cast<Track*>(entity);
         track->setCarFriction(this);
     }
 }

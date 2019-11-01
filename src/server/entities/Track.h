@@ -2,22 +2,28 @@
 // Created by leobellaera on 31/10/19.
 //
 
-#ifndef MICROMACHINES_STRAIGHTTRACK_H
-#define MICROMACHINES_STRAIGHTTRACK_H
+#ifndef MICROMACHINES_TRACK_H
+#define MICROMACHINES_TRACK_H
 
 #include "Box2D/Box2D.h"
 #include "Entity.h"
 #include "Car.h"
 
-class StraightTrack : public Entity {
+enum Shape {
+    HORIZONTAL,
+    VERTICAL,
+    //curved shapes
+};
+
+class Track : public Entity {
 private:
     float friction;
 public:
-    StraightTrack(b2Body* body, float friction);
+    Track(b2Body* body, float friction);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void setCarFriction(Car* car);
-    ~StraightTrack();
+    ~Track();
 };
 
-#endif //MICROMACHINES_STRAIGHTTRACK_H
+#endif //MICROMACHINES_TRACK_H

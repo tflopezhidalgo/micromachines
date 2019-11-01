@@ -20,7 +20,7 @@ enum Identifier {
     SPEEDBOOSTER,
     STONE,
     MUD,
-    STRAIGHT_TRACK,
+    TRACK
 };
 
 class Entity {

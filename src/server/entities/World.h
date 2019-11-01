@@ -14,7 +14,7 @@
 #include "Stone.h"
 #include "Oil.h"
 #include "SpeedBooster.h"
-#include "StraightTrack.h"
+#include "Track.h"
 
 class World {
 private:
@@ -53,7 +53,7 @@ public:
 
     Oil* addOil(float x_pos, float y_pos);
 
-    StraightTrack* addStraightTrack(float x_pos, float y_pos, bool horizontalDisposition);
+    Track* addTrack(float x_pos, float y_pos, Shape shape);
 
     void destroyBody(b2Body* body);
 
