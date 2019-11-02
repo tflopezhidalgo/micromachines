@@ -4,12 +4,10 @@
 
 #include <unordered_set>
 #include <nlohmann/json.hpp>
-#include <unistd.h>
 #include "Match.h"
 #include "ModelSerializer.h"
 
 #define FPS "framesPerSecond"
-#define NO_ACTION '0'
 #define QUIT_ACTION 'Q'
 
 #define HORIZONTAL_TRACK 1

@@ -3,10 +3,9 @@
 //
 
 #include "LobbyClientReceptionist.h"
+#include "Constants.h"
 #include "Client.h"
 #include <string>
-
-#define CREATE_MATCH "create"
 
 LobbyClientReceptionist::LobbyClientReceptionist(Socket socket,
         MatchesAdministrator& matchesAdministrator) :
@@ -20,7 +19,7 @@ void LobbyClientReceptionist::run() {
         std::string clientInitiationMessage = proxy.receiveMessage();
         nlohmann::json initiationMsg = nlohmann::json::parse(clientInitiationMessage);
         std::string mode = initiationMsg["mode"].get<std::string>();
-        if (mode == CREATE_MATCH) {
+        if (mode == CREATE_MATCH_MSG) {
 
             createNewMatch(initiationMsg);
 
