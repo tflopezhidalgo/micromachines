@@ -19,7 +19,7 @@ void EventListener::run() {
     while (alive) {
 
         // Tunearlo
-        usleep(1);
+        usleep(15000);
         while (SDL_PollEvent(&e)) {
 
             // Ojo que si catchea cosas inválidas no tiene que encolar nada

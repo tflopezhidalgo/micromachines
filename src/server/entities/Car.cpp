@@ -39,7 +39,7 @@ void Car::updateMove(std::vector<char>& actions) {
     }
 
     float lockAngle = 40 * DEGTORAD;
-    float turnSpeedPerSec = 160 * DEGTORAD;
+    float turnSpeedPerSec = 320 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
 
     bool turnRight = std::find(actions.begin(), actions.end(), RIGHT) != actions.end();

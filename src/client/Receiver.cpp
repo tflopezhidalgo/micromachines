@@ -1,7 +1,5 @@
-#include <zconf.h>
 #include "Receiver.h"
 #include "Proxy.h"
-#include "../common/Socket.h"
 #include <nlohmann/json.hpp>
 
 Receiver::Receiver(ProtectedModel& model,
@@ -12,8 +10,6 @@ Receiver::Receiver(ProtectedModel& model,
 void Receiver::run() {
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
-
-        std::cout << "Se recibe posiciones " << j.dump() << std::endl;
 
         for (auto it = j.begin(); it != j.end(); ++it) {
             for (auto it2 = it->begin(); it2 != it->end(); ++it2) {

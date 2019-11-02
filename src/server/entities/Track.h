@@ -12,7 +12,7 @@
 enum Shape {
     HORIZONTAL,
     VERTICAL,
-    //curved shapes
+    //todo curved shapes
 };
 
 class Track : public Entity {
