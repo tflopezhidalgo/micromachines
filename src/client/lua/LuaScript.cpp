@@ -5,7 +5,7 @@
 #include "LuaScript.h"
 
 #define PLAYER_SCRIPT "player.lua"
-#define ENTITIES_SCRIPT "entities.lua"
+#define ENTITIES_SCRIPT "entities_ids.lua"
 #define MAP_SCRIPT "map.lua"
 
 LuaScript::LuaScript() {
@@ -18,7 +18,6 @@ LuaScript::LuaScript() {
 }
 
 const char* LuaScript::getAction(int angle, int pos_x, int pos_y) {
-    std::cout << "getAction\n";
     int stackSize = lua_gettop(L);
     std::cout << "stacksize: " << stackSize << std::endl;
 
@@ -31,15 +30,11 @@ const char* LuaScript::getAction(int angle, int pos_x, int pos_y) {
 
     // Llamo a la función
     // La función recibe 2 parámetros y devuelve 1
-    lua_pcall(L, 2, 1, 0);
+    lua_pcall(L, 3, 1, 0);
     action = lua_tostring(L, 1);
 
-    // verifico stack
-    stackSize = lua_gettop(L);
-    std::cout << "stacksize: " << stackSize << std::endl;
-
     // Limpio el stack
-    lua_gettop(L);
+    lua_pop(L, 1);
     stackSize = lua_gettop(L);
     std::cout << "stacksize: " << stackSize << std::endl;
 

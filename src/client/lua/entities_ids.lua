@@ -1,5 +1,3 @@
-print("Loading Lua Entities...\n")
-
 entities = {
     [0] = {
         ["name"] = "asphalt",
@@ -24,7 +22,7 @@ entities = {
     [5] = {
         ["name"] = "speedboost",
         ["safe"] = true
-    }
+    },
     [6] = {
         ["name"] = "stone",
         ["safe"] = false

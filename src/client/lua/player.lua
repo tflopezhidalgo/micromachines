@@ -1,4 +1,4 @@
-print("Loading Lua Player...\n")
+print("Loading Lua Player...")
 
 -- start variables macro
 map_end = 20
@@ -26,8 +26,11 @@ next_position = {
 }
 -- end variables macro
 
+
+-- Depende el angulo tiene una direccion a seguir
 function getAction(angle, pos_x, pos_y)
     local action = ""
+    print(pos_x, pos_y)
     if (angle >= min_angle_up and angle <= max_angle_up) then
         action = direction_up(pos_x, pos_y)
 
@@ -44,20 +47,17 @@ function getAction(angle, pos_x, pos_y)
     return action
 end
 
-function getStart(pos_x)
+-- Si esta en un borde no tiene pasar el limite
+function getLimit(pos)
     start = -1
-    if (pos_x == map_start) then
+    ending = 1
+    if (pos == map_start) then
         start = 0
     end
-    return start
-end
-
-function getEnd(pos_x)
-    ending = 1
-    if (pos_x == map_end) then
+    if (pos == map_end) then
         ending = 0
     end
-    return ending
+    return start, ending
 end
 
 function is_in_border(pos)
@@ -69,70 +69,74 @@ function check_position(position)
 end
 
 function direction_down(pos_x, pos_y)
-    -- y + 1
-    -- x (-1, 0, 1)
     if (is_in_border(pos_y)) then
         return next_position["reverse"]
     end
-    local st = getStart(pos_x)
-    local en = getEnd(pos_x)
+
+     if (check_position(map[pos_y + 1][pos_x])) then
+        return next_position[0]
+    end
+
+    local st, en = getLimit(pos_x)
     for i = st, en do
-        if (check_position(map[pos_x + i][pos_y + 1])) then
-            print(string.format("next: %s", next_position[i]))
+        if (check_position(map[pos_y + 1][pos_x + i])) then
             return next_position[i]
         end
     end
+    return "F"
 end
 
 function direction_up(pos_x, pos_y)
-    -- y -1
-    -- x (-1, 0, 1)
     if (is_in_border(pos_y)) then
         return next_position["reverse"]
     end
-    local st = getStart(pos_x)
-    local en = getEnd(pos_x)
+    if (check_position(map[pos_y - 1][pos_x])) then
+        return next_position[0]
+    end
+
+    local st, en = getLimit(pos_x)
     for i = st, en do
-        if (check_position(map[pos_x + i][pos_y - 1])) then
+        print(map[pos_y - 1][pos_x + i])
+        if (check_position(map[pos_y - 1][pos_x + i])) then
             print(string.format("next: %s", next_position[i]))
             return next_position[i]
         end
     end
+    return "F"
 end
 
 function direction_left(pos_x, pos_y)
-    -- x -1
-    -- y (-1, 0, 1)
     if (is_in_border(pos_x)) then
         return next_position["reverse"]
     end
-    local st = getStart(pos_x)
-    local en = getEnd(pos_x)
+
+    if (check_position(map[pos_y][pos_x - 1])) then
+        return next_position[0]
+    end
+
+    local st, en = getLimit(pos_y)
     for i = st, en do
-        if (check_position(map[pos_x - 1][pos_y + i])) then
-            print(string.format("next: %s", next_position[i]))
+        if (check_position(map[pos_y + i][pos_x - 1])) then
             return next_position[i]
         end
     end
+    return "F"
 end
 
 function direction_right(pos_x, pos_y)
-    -- x + 1
-    -- y (-1, 0, 1)
     if (is_in_border(pos_x)) then
         return next_position["reverse"]
     end
-    local st = getStart(pos_x)
-    local en = getEnd(pos_x)
+
+    if (check_position(map[pos_y][pos_x + 1])) then
+        return next_position[0]
+    end
+
+    local st, en = getLimit(pos_y)
     for i = st, en do
-        if (check_position(map[pos_x + 1][pos_y + i])) then
-            print(string.format("next: %s", next_position[i]))
+        if (check_position(map[pos_y + i][pos_x + 1])) then
             return next_position[i]
         end
     end
+    return "F"
 end
-
-function try_go_forward(next_x, next_y)
-
-end
-
