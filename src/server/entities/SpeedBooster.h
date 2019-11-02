@@ -19,6 +19,7 @@ public:
             float defaultMaxForwardSpeed);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
+    ~SpeedBooster();
 };
 
 

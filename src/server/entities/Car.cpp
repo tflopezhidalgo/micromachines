@@ -7,7 +7,7 @@
 #include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
-#include "Constants.h"
+#include "Macros.h"
 
 #define DEGTORAD 0.017453292f
 
@@ -15,7 +15,7 @@ Car::Car(b2Body* body, std::vector<Tire*> tires,
         int carCollisionDamage, b2RevoluteJoint* flJoint,
         b2RevoluteJoint* frJoint) :
 
-        Entity(Identifier::CAR, body),
+        Entity(EntityIdentifier::CAR, body),
         health(100),
         tires(std::move(tires)),
         carCollisionDamage(carCollisionDamage),

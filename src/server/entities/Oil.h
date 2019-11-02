@@ -15,6 +15,7 @@ public:
     Oil(b2Body *body, float grip);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
+    ~Oil();
 };
 
 

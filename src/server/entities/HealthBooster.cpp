@@ -22,3 +22,5 @@ void HealthBooster::heal(Car* car) {
 }
 
 void HealthBooster::endCollision(Entity *entity) {}
+
+HealthBooster::~HealthBooster() {}

@@ -1,0 +1,34 @@
+//
+// Created by leobellaera on 2/11/19.
+//
+
+#ifndef MICROMACHINES_IDENTIFIERS_H
+#define MICROMACHINES_IDENTIFIERS_H
+
+enum FloorIdentifier {
+    GRASS_ID,
+    HORIZONTAL_TRACK_ID,
+    VERTICAL_TRACK_ID,
+    FIRST_QUADRANT_TRACK_ID,
+    SECOND_QUADRANT_TRACK_ID,
+    THIRD_QUADRANT_TRACK_ID,
+    FOURTH_QUADRANT_TRACK_ID,
+};
+
+enum EntityIdentifier {
+    CAR,
+    HEALTHBOOSTER,
+    OIL,
+    SPEEDBOOSTER,
+    STONE,
+    MUD,
+    TRACK
+};
+
+enum EntityStatus {
+    ALIVE,
+    SEVERALDAMAGED,
+    DEAD
+};
+
+#endif //MICROMACHINES_IDENTIFIERS_H

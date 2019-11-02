@@ -23,3 +23,5 @@ void Oil::endCollision(Entity *entity) {
         //resetSkidding(car);
     }
 }
+
+Oil::~Oil() {}

@@ -7,7 +7,7 @@
 #include "Proxy.h"
 #include "MatchesAdministrator.h"
 #include "Client.h"
-#include "Constants.h"
+#include "Macros.h"
 
 MatchesAdministrator::MatchesAdministrator(const char* configPath) :
     configMapBuilder(configPath) {}
