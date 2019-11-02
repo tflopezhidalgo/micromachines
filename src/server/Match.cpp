@@ -59,6 +59,7 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 
 void Match::run() {
     //ready, set, go
+    std::cout<<framesPerSecond<<std::endl;
     startClientsThread();
     while (!matchFinished) {
         auto initial = std::chrono::high_resolution_clock::now();
@@ -69,7 +70,7 @@ void Match::run() {
 
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
-        long sleepTime = (1 / framesPerSecond) * 1000 - loopDuration.count();
+        long sleepTime = (1000 / framesPerSecond) - loopDuration.count();
         if (sleepTime > 0) {
             std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         }
@@ -93,9 +94,6 @@ void Match::updateModel(std::vector<Event> &events) {
         cars.find(clientId)->second->updateFriction();
         cars.find(clientId)->second->updateMove(actions);
     }
-
-    usleep(20000);
-
     world.step();
 }
 

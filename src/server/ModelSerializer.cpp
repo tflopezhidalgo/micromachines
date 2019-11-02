@@ -3,6 +3,7 @@
 //
 
 #include "ModelSerializer.h"
+#include "Constants.h"
 
 std::string ModelSerializer::serialize(std::unordered_map<std::string, Car*>& cars) {
     nlohmann::json data;
@@ -10,9 +11,9 @@ std::string ModelSerializer::serialize(std::unordered_map<std::string, Car*>& ca
     for (auto &car : cars) {
         carsData.push_back({
             car.first,
-            int(round(car.second->getPosition().x) * 1000),
-            int(round(car.second->getPosition().y) * 1000),
-            int(round(car.second->getAngle()* 100)),
+            int(car.second->getPosition().x * SERIALIZING_RESCAILING),
+            int(car.second->getPosition().y * SERIALIZING_RESCAILING),
+            int(car.second->getAngle()* SERIALIZING_RESCAILING),
             car.second->getHealth()
         });
     }
