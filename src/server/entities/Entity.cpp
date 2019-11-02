@@ -33,6 +33,10 @@ void Entity::die() {
     status = DEAD;
 }
 
+void Entity::receiveSeveralDamage() {
+    status = SEVERALDAMAGED;
+}
+
 b2Body* Entity::getBody() {
     return body;
 }
