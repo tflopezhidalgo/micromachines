@@ -6,14 +6,7 @@
 #include <nlohmann/json.hpp>
 #include "Match.h"
 #include "ModelSerializer.h"
-#include "Constants.h"
-
-#define HORIZONTAL_TRACK 1
-#define VERTICAL_TRACK 2
-#define SUPLEFT_CURVE_TRACK 3
-#define SUPRIGHT_CURVE_TRACK 4
-#define INFLEFT_CURVE_TRACK 5
-#define INFRIGHT_CURVE_TRACK 6
+#include "Macros.h"
 
 Match::Match(std::string mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
@@ -22,7 +15,7 @@ Match::Match(std::string mapName, int playersAmount,
     mapName(mapName),
     raceLaps(raceLaps),
     playersAmount(playersAmount),
-    framesPerSecond(config.find(FPS)->second),
+    framesPerSecond(config.find(FPS_KEY)->second),
     world(500, 500, config) {
     /* make world from map...
        World* world = worldBuilder.build(mapName, world, config);
@@ -85,8 +78,6 @@ void Match::updateModel(std::vector<Event> &events) {
         if (actions[0] == QUIT_ACTION) {
             //todo
         }
-
-        cars.find(clientId)->second->updateFriction();
         cars.find(clientId)->second->updateMove(actions);
     }
     world.step();

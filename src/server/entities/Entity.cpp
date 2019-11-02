@@ -4,12 +4,12 @@
 
 #include "Entity.h"
 
-Entity::Entity(Identifier identifier, b2Body* body) :
+Entity::Entity(EntityIdentifier identifier, b2Body* body) :
     identifier(identifier),
     body(body),
-    status(Status::ALIVE) {}
+    status(EntityStatus::ALIVE) {}
 
-Identifier Entity::getIdentifier() {
+EntityIdentifier Entity::getIdentifier() {
     return identifier;
 }
 
@@ -21,7 +21,7 @@ float Entity::getAngle() {
     return body->GetAngle();
 }
 
-Status Entity::getStatus() {
+EntityStatus Entity::getStatus() {
     return status;
 }
 

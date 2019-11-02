@@ -14,7 +14,7 @@ class DecreaseSpeed {
 public:
     void updateModel(std::vector<Car*> cars, World* world) {
         for (auto car : cars) {
-            if (car->getStatus() == Status::SEVERALDAMAGED) {
+            if (car->getStatus() == EntityStatus::SEVERALDAMAGED) {
                 car->setMaxForwardSpeed(NEWFORDWARDSPEED);
             }
         }

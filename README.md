@@ -1,4 +1,4 @@
-# Status ![Build Status](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
+# EntityStatus ![Build EntityStatus](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
 
 # Reglas para el repo
 

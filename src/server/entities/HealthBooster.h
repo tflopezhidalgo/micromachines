@@ -16,6 +16,7 @@ public:
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void heal(Car* car);
+    ~HealthBooster();
 };
 
 #endif //TESTING_HEALTHBOOSTER_H
