@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
     std::string input;
     json initialMsg;
     std::cin >> input;
+	std::string playerID;
 
     if (input == "create") {
         initialMsg["mode"] = "create";
@@ -39,8 +40,8 @@ int main(int argc, char* argv[]) {
         initialMsg["matchName"] = input;
 
         std::cout << "Ingrese su nombre: ";
-        std::cin >> input;
-        initialMsg["clientId"] = input;
+        std::cin >> playerID;
+        initialMsg["clientId"] = playerID;
 
         std::cout << "Ingrese nombre del mapa en el cuál desea jugar: ";
         std::cin >> input;
@@ -91,8 +92,10 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
         std::cout << "Ingrese su nombre y el nombre de la la partida a la que desea unirse \n";
         std::cout << "Alias: ";
-        std::cin >> buffer;
-        j["clientId"] = buffer;
+		buffer.clear();
+        std::cin >> playerID;
+        j["clientId"] = playerID;
+		buffer.clear();
         std::cout << "Partida: ";
         std::cin >> buffer;
         j["matchName"] = buffer;
@@ -112,11 +115,11 @@ int main(int argc, char* argv[]) {
     Window main("Game", 1200, 600);
 
     ProtectedQueue<Event> q;
-    ProtectedModel model(main);
+    ProtectedModel model(main, playerID);
 
     Receiver receiver(model, proxy);
     Drawer drawer(main, model);
-    EventListener handler(q);
+    EventListener handler(playerID, q);
     Dispatcher dispatcher(q, proxy);
 
     receiver.start();

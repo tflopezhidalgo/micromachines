@@ -13,13 +13,14 @@ void Receiver::run() {
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
 
-        std::cout << "Se recibe: " << j.dump() << std::endl;
-
         for (auto it = j.begin(); it != j.end(); ++it) {
             for (auto it2 = it->begin(); it2 != it->end(); ++it2) {
                 auto it3 = it2->begin();
                 std::string key = *it3;
-                this->model.updateEntity(key, int(*(++it3)), int(*(++it3)), int(*(++it3)), 100);
+                int x = *(++it3);
+                int y = *(++it3);
+                int angle = *(++it3);
+                this->model.updateEntity(key, x, y, angle, 100);
             }
         }
     }

@@ -6,9 +6,13 @@
 #include <mutex>
 #include "Window.h"
 #include "TileMap.h"
+#include <string>
 
-ProtectedModel::ProtectedModel(Window& main) :
-    main(main), cam(main), map(main, "../media/maps/lazy.map",  1, 100) {}
+ProtectedModel::ProtectedModel(Window& main, std::string playerID) :
+    playerID(playerID), 
+	main(main), 
+	cam(main), 
+	map(main, "../media/maps/lazy.map",  cam.getZoom(), 100) {}
 
 void ProtectedModel::updateEntity(std::string id,
                                   int x,
@@ -17,13 +21,12 @@ void ProtectedModel::updateEntity(std::string id,
                                   int health) {
     std::unique_lock<std::mutex> lck(m);
     if  (this->entities[id] == NULL)
-        this->entities[id] = new Car("../media/sprites/pitstop_car_1.png", 100, 100, main);
+        this->entities[id] = new Car("../media/sprites/pitstop_car_1.png", main);
 
-    if (!cam.targetSet()) {
-        cam.setOnTarget(this->entities["q"]);
-    }
+    if (!cam.targetSet()) 
+        cam.setOnTarget(this->entities[this->playerID]);
 
-    entities[id]->setPos(x, y, angle);
+    entities[id]->setPos(x * cam.getZoom(), y * cam.getZoom(), angle);
 }
 
 void ProtectedModel::renderAll() {
@@ -31,7 +34,7 @@ void ProtectedModel::renderAll() {
     if (this->cam.targetSet()) {
         map.render(cam);
         cam.update();
-        std::map<std::string, Entity *>::iterator it;
+        std::map<std::string, Entity*>::iterator it;
         for (it = entities.begin(); it != entities.end(); ++it)
             it->second->render(cam);
     }

@@ -8,6 +8,7 @@ Camera::Camera(Window& w) :
 window(w) {
     this->cameraInfo = {0, 0, 0, 0};
     e = NULL;
+	this->zoom = MtoP;
 }
 
 void Camera::setOnTarget(Entity* e) {
@@ -17,7 +18,8 @@ void Camera::setOnTarget(Entity* e) {
 SDL_Rect Camera::translate(SDL_Rect &origin) {
     SDL_Rect translated = {origin.x - x,
                            origin.y - y,
-                           origin.w * zoom,0};
+                           origin.w * zoom , 
+                           0};
     return translated;
 }
 

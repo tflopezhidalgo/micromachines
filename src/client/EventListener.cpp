@@ -9,8 +9,9 @@
 #include <zconf.h>
 #include "../common/Event.h"
 
-EventListener::EventListener(ProtectedQueue<Event>& q) :
-    q(q) {}
+EventListener::EventListener(std::string playerID, 
+							 ProtectedQueue<Event>& q):
+    q(q), playerID(playerID) {}
 
 void EventListener::run() {
     bool alive = true;
@@ -27,19 +28,17 @@ void EventListener::run() {
 }
 
 Event EventListener::handle(SDL_Event e){
-    std::string str("q");
-    //if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
         switch (e.key.keysym.sym) {
             case SDLK_w:
-                return Event(str, FORWARD);
+                return Event(this->playerID, FORWARD);
             case SDLK_s:
-                return Event(str, BACKWARD);
+                return Event(this->playerID, BACKWARD);
             case SDLK_a:
-                return Event(str, LEFT);
+                return Event(this->playerID, LEFT);
             case SDLK_d:
-                return Event(str, RIGHT);
+                return Event(this->playerID, RIGHT);
             default:
-                return Event(str, QUIT);
+                return Event(this->playerID, QUIT);
         }
     /*} else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
         switch (e.key.keysym.sym) {

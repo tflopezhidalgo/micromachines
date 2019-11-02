@@ -10,9 +10,11 @@
 class EventListener: public Thread{
 private:
     ProtectedQueue<Event>& q;
+	std::string playerID;
 
 public:
-    EventListener(ProtectedQueue<Event>& e);
+    EventListener(std::string playerID, 
+				  ProtectedQueue<Event>& e);
     void run() override;
     Event handle(SDL_Event e);
     ~EventListener();

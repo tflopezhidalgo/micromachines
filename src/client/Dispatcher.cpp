@@ -12,6 +12,7 @@ void Dispatcher::run() {
         Event action(std::move(q.pop()));
         std::string dumpedAction(std::move(action.serialize()));
        	if (dumpedAction.find("81") == std::string::npos){
+			// Si entra acá es porque el msj es válido
             std::cout << "Se enviaría : " << dumpedAction << std::endl;
 			proxy.sendMessage(dumpedAction);
         }

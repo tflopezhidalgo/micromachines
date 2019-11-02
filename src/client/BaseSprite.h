@@ -17,9 +17,7 @@ class BaseSprite {
         int h;
 
     public:
-        BaseSprite(Window& main,
-                   const std::string& path,
-                   int height, int width);
+        BaseSprite(Window& main, const std::string& path, int height, int width);
         void render(int x, int y, int angle, Camera&);
         ~BaseSprite();
 };
