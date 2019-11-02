@@ -36,7 +36,6 @@ World::World(float height, float width, std::map<std::string, float> &config) :
     config(config) {
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
-    //b2Body* leftLimitBody = addBody(width/2);
 
     //edges addition
 
@@ -105,10 +104,10 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     carBody->SetAngularDamping(ANGULAR_DAMPING);
     b2Vec2 vertices[4];
-    vertices[0].Set(-3,   0);
-    vertices[1].Set(3, 0);
-    vertices[2].Set(-3, 15);
-    vertices[3].Set(3,  15);
+    vertices[0].Set(-3,   -7.5f);
+    vertices[1].Set(3, -7.5f);
+    vertices[2].Set(-3, 7.5f);
+    vertices[3].Set(3,  7.5f);
     b2PolygonShape polygonShape;
     polygonShape.Set(vertices, 4);
     carBody->CreateFixture(&polygonShape, 0.1f);
@@ -137,7 +136,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     float frontTireMaxLateralImpulse = 9;*/
 
     //back left tire
-    b2Vec2 backLeftTirePosition = {-3, 0.75f};
+    b2Vec2 backLeftTirePosition = {-3, -6.f};
     b2Body* body = createTireBody(backLeftTirePosition);
     Tire* tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, defaultFriction);
@@ -145,7 +144,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     tires.push_back(tire);
 
     //back right tire
-    b2Vec2 backRightTirePosition = {3, 0.75f};
+    b2Vec2 backRightTirePosition = {3, -6.f};
     body = createTireBody(backRightTirePosition);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, defaultFriction);
@@ -153,7 +152,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     tires.push_back(tire);
 
     //front left tire
-    b2Vec2 frontLeftTirePosition = {-3, 8.5f};
+    b2Vec2 frontLeftTirePosition = {-3, 6.f};
     body = createTireBody(frontLeftTirePosition);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             frontTireMaxDriveForce, frontTireMaxLatImpulse, defaultFriction);
@@ -161,7 +160,7 @@ Car* World::addCar(float x_pos, float y_pos) {
     tires.push_back(tire);
 
     //front right tire
-    b2Vec2 frontRightTirePosition = {3, 8.5f};
+    b2Vec2 frontRightTirePosition = {3, 6.f};
     body = createTireBody(frontRightTirePosition);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
                     frontTireMaxDriveForce, frontTireMaxLatImpulse, defaultFriction);
