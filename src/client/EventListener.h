@@ -3,12 +3,13 @@
 
 #include <SDL2/SDL_events.h>
 #include "../common/Thread.h"
-#include "Action.h"
 #include "ProtectedQueue.h"
 #include "../common/Event.h"
 
 class EventListener: public Thread{
 private:
+    bool alive = true;
+    bool keysHeld[723] = {false};
     ProtectedQueue<Event>& q;
 	std::string playerID;
 
@@ -16,7 +17,7 @@ public:
     EventListener(std::string playerID, 
 				  ProtectedQueue<Event>& e);
     void run() override;
-    Event handle(SDL_Event e);
+    void handle(SDL_Event& e);
     ~EventListener();
 };
 #endif

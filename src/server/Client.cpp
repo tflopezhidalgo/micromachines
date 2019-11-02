@@ -2,11 +2,9 @@
 // Created by leobellaera on 25/10/19.
 //
 
-#include <iostream>
 #include <SocketException.h>
+#include "Constants.h"
 #include "Client.h"
-
-#define QUIT 'Q'
 
 Client::Client(Proxy proxy, std::string clientId, ProtectedQueue<Event>& eventsQueue) :
         proxy(std::move(proxy)),
@@ -22,7 +20,7 @@ void Client::run() {
             eventsQueue.push(std::move(event));
         } catch (const SocketException& e) {
             std::vector<char> actions;
-            actions.push_back(QUIT);
+            actions.push_back(QUIT_ACTION);
             Event event(clientId, actions);
             finished = true;
         }

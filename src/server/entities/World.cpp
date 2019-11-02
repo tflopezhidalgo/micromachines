@@ -207,7 +207,7 @@ b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
 }
 
 //actually, vertical and horizontal tracks have the same shape
-Track* World::addTrack(float x_pos, float y_pos, Shape shape) {
+Track* World::addTrack(float x_pos, float y_pos, int shape) {
     b2Body* body = addRectangularFloor({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
     auto track = new Track(body, config.find(TRACK_FRICTION)->second);
     return track;

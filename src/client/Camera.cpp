@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "Window.h"
 
-#define MtoP 6      // Relación metros a píxeles
+#define MtoP 5      // Relación metros a píxeles
 
 Camera::Camera(Window& w) :
 window(w) {

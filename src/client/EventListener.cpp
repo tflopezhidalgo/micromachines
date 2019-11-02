@@ -1,12 +1,8 @@
 #include "EventListener.h"
-#include "Window.h"
 #include <string>
-#include "BaseSprite.h"
-#include "Camera.h"
-#include "TileMap.h"
 #include <SDL2/SDL.h>
-#include <iostream>
 #include <zconf.h>
+#include <Constants.h>
 #include "../common/Event.h"
 
 EventListener::EventListener(std::string playerID, 
@@ -14,47 +10,48 @@ EventListener::EventListener(std::string playerID,
     q(q), playerID(playerID) {}
 
 void EventListener::run() {
-    bool alive = true;
     SDL_Event e;
     while (alive) {
-        usleep(2);
-        while (SDL_PollEvent(&e)) {
 
-            // Ojo que si catchea cosas inválidas no tiene que encolar nada
-            Event action(std::move(this->handle(e)));
-            q.push(std::move(action));
+        //tunear
+        usleep(15000);
+
+        std::vector<char> actions;
+        if (SDL_PollEvent(&e)) {
+            handle(e);
         }
+
+        if (keysHeld[SDLK_w]) {
+            actions.push_back(FORWARD);
+        }
+        if (keysHeld[SDLK_s]) {
+            actions.push_back(BACKWARD);
+        }
+        if (keysHeld[SDLK_d]) {
+            actions.push_back(RIGHT);
+        }
+        if (keysHeld[SDLK_a]) {
+            actions.push_back(LEFT);
+        }
+
+        Event event(this->playerID, actions);
+        q.push(std::move(event));
     }
 }
 
-Event EventListener::handle(SDL_Event e){
-        switch (e.key.keysym.sym) {
-            case SDLK_w:
-                return Event(this->playerID, FORWARD);
-            case SDLK_s:
-                return Event(this->playerID, BACKWARD);
-            case SDLK_a:
-                return Event(this->playerID, LEFT);
-            case SDLK_d:
-                return Event(this->playerID, RIGHT);
-            default:
-                return Event(this->playerID, QUIT);
-        }
-    /*} else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
-        switch (e.key.keysym.sym) {
-            case SDLK_w:
-                return Event(str, FORWARD);
-            case SDLK_s:
-                return Event(str, BACKWARD);
-            case SDLK_a:
-                return Event(str, LEFT);
-            case SDLK_d:
-                return Event(str, RIGHT);
-            default:
-                return Event(str, QUIT);
-        }
-    }*/
+void EventListener::handle(SDL_Event& e) {
+    if (e.type == SDL_QUIT) {
+        alive = false;
+    }
+    if (e.type == SDL_KEYDOWN) {
+        keysHeld[e.key.keysym.sym] = true;
+    }
+    if (e.type == SDL_KEYUP) {
+        keysHeld[e.key.keysym.sym] = false;
+    }
+    if (keysHeld[SDLK_ESCAPE]) {
+        alive = false;
+    }
 }
 
-EventListener::~EventListener() {
-}
+EventListener::~EventListener() {}

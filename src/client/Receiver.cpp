@@ -1,7 +1,5 @@
-#include <zconf.h>
 #include "Receiver.h"
 #include "Proxy.h"
-#include "../common/Socket.h"
 #include <nlohmann/json.hpp>
 
 Receiver::Receiver(ProtectedModel& model,

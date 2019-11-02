@@ -7,10 +7,9 @@
 #include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
+#include "Constants.h"
 
 #define DEGTORAD 0.017453292f
-#define LEFT 'L'
-#define RIGHT 'R'
 
 Car::Car(b2Body* body, std::vector<Tire*> tires,
         int carCollisionDamage, b2RevoluteJoint* flJoint,
@@ -39,7 +38,7 @@ void Car::updateMove(std::vector<char>& actions) {
     }
 
     float lockAngle = 40 * DEGTORAD;
-    float turnSpeedPerSec = 160 * DEGTORAD;
+    float turnSpeedPerSec = 320 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
 
     bool turnRight = std::find(actions.begin(), actions.end(), RIGHT) != actions.end();

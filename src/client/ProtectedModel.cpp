@@ -26,7 +26,7 @@ void ProtectedModel::updateEntity(std::string id,
     if (!cam.targetSet()) 
         cam.setOnTarget(this->entities[this->playerID]);
 
-    entities[id]->setPos(x * cam.getZoom(), y * cam.getZoom(), angle);
+    entities[id]->setPos(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle);
 }
 
 void ProtectedModel::renderAll() {
