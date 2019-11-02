@@ -10,12 +10,8 @@ void Dispatcher::run() {
     while (alive) {
         Event action(std::move(q.pop()));
         std::string dumpedAction(std::move(action.serialize()));
-       	if (dumpedAction.find("81") == std::string::npos){
-			// Si entra acá es porque el msj es válido
-			proxy.sendMessage(dumpedAction);
+        proxy.sendMessage(dumpedAction);
         }
-        dumpedAction.clear();
-    }
 }
 
 void Dispatcher::stop() {

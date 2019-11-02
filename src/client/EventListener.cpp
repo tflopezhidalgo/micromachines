@@ -16,26 +16,26 @@ void EventListener::run() {
         //tunear
         usleep(15000);
 
+        std::vector<char> actions;
         if (SDL_PollEvent(&e)) {
             handle(e);
-            std::vector<char> actions;
-
-            if (keysHeld[SDLK_w]) {
-                actions.push_back(FORWARD);
-            }
-            if (keysHeld[SDLK_s]) {
-                actions.push_back(BACKWARD);
-            }
-            if (keysHeld[SDLK_d]) {
-                actions.push_back(RIGHT);
-            }
-            if (keysHeld[SDLK_a]) {
-                actions.push_back(LEFT);
-            }
-
-            Event event(this->playerID, actions);
-            q.push(std::move(event));
         }
+
+        if (keysHeld[SDLK_w]) {
+            actions.push_back(FORWARD);
+        }
+        if (keysHeld[SDLK_s]) {
+            actions.push_back(BACKWARD);
+        }
+        if (keysHeld[SDLK_d]) {
+            actions.push_back(RIGHT);
+        }
+        if (keysHeld[SDLK_a]) {
+            actions.push_back(LEFT);
+        }
+
+        Event event(this->playerID, actions);
+        q.push(std::move(event));
     }
 }
 
