@@ -19,7 +19,7 @@ public:
     }
 
     float getPosition() {
-        float val = rand() % MAX;
+        auto val = rand() % MAX;
         float newVal = val + val % 5;
         return newVal;
     }
