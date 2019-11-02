@@ -10,10 +10,11 @@
 #include "Constants.h"
 
 #define DEGTORAD 0.017453292f
+#define SEVERAL_DAMAGED_POINTS 50
 
 Car::Car(b2Body* body, std::vector<Tire*> tires,
-        int carCollisionDamage, b2RevoluteJoint* flJoint,
-        b2RevoluteJoint* frJoint) :
+         int carCollisionDamage, b2RevoluteJoint* flJoint,
+         b2RevoluteJoint* frJoint) :
 
         Entity(Identifier::CAR, body),
         health(100),
@@ -112,6 +113,9 @@ void Car::endCollision(Entity *object) {
 
 void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);
+    if (health.getHealth() <= SEVERAL_DAMAGED_POINTS) {
+        this->receiveSeveralDamage();
+    }
 }
 
 void Car::receiveDamage(int damagePoints) {

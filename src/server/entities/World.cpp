@@ -265,6 +265,22 @@ void World::step() {
     //world->ClearForces(); //neccesary?
 }
 
+void World::removeEntity(Identifier identifier) {
+    b2Body* bodies = world->GetBodyList();
+    while (bodies) {
+        b2Body *actualBody = bodies;
+        bodies = bodies->GetNext();
+        void *userData = actualBody->GetUserData();
+        if (userData != nullptr) {
+            auto entity = static_cast<Entity*>(userData);
+            if (entity->getIdentifier() == identifier) {
+                world->DestroyBody(actualBody);
+                return;
+            }
+        }
+    }
+}
+
 void World::destroyBody(b2Body* body) {
     world->DestroyBody(body);
 }

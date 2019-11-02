@@ -5,13 +5,12 @@
 #ifndef PLUGINS_INCREASESPEED_H
 #define PLUGINS_INCREASESPEED_H
 
-#include "Plugin.h"
 #include "entities/World.h"
 #include "entities/Car.h"
 
 #define NEWFORDWARDSPEED 150
 
-class IncreaseSpeed : public Plugin {
+class IncreaseSpeed {
 public:
     void updateModel(std::vector<Car*> cars, World* world) {
         for (auto car : cars) {

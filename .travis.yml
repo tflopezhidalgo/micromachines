@@ -11,6 +11,7 @@ before_install:
                                                       libsdl2-dev 
                                                       libsdl2-image-dev 
                                                       nlohmann-json-dev 
+													  lua5.3 liblua5.3-dev
     
 before_script:
     - mkdir build

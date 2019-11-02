@@ -41,6 +41,7 @@ public:
     b2Body* getBody();
     ~Entity();
 
+    void receiveSeveralDamage();
 };
 
 #endif //TESTING_ENTITY_H

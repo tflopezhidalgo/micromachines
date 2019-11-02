@@ -1,34 +1,58 @@
 //
 // Created by eliana on 30/10/19.
 //
-
+#include <iostream>
 #include "LuaScript.h"
 
-LuaScript::LuaScript(const std::string &map) {
+#define PLAYER_SCRIPT "player.lua"
+#define ENTITIES_SCRIPT "entities_ids.lua"
+#define MAP_SCRIPT "map.lua"
+
+LuaScript::LuaScript() {
+    L = luaL_newstate();
     luaL_openlibs(L);
-    action = luaL_dofile(L, map);
-    action = luaL_dofile(L, "entities_ids.lua");
-    action = luaL_dofile(L, "player.lua");
+
+    luaL_dofile(L, MAP_SCRIPT);
+    luaL_dofile(L, PLAYER_SCRIPT);
+    luaL_dofile(L, ENTITIES_SCRIPT);
 }
 
-std::string LuaScript::getAction(int pos_x, int pos_y) {
+const char* LuaScript::getAction(int angle, int pos_x, int pos_y) {
+    int stackSize = lua_gettop(L);
+    std::cout << "stacksize: " << stackSize << std::endl;
+
     // Agrego al stack la función a llamar
     lua_getglobal(L, "getAction");
     // Agrego al stack los parámetros de la función a llamar
-    //lua_pushlstring(L, car_id, strlen(car_id.length()));
+    lua_pushnumber(L, angle);
     lua_pushnumber(L, pos_x);
     lua_pushnumber(L, pos_y);
 
     // Llamo a la función
-    // lua_call(L, numParamsEntrada, numParamsSalida)
     // La función recibe 2 parámetros y devuelve 1
-    lua_call(L, 2, 1);
-    action = lua_tonumber(L, 1);
+    lua_pcall(L, 3, 1, 0);
+    action = lua_tostring(L, 1);
 
     // Limpio el stack
-    lua_gettop(L);
+    lua_pop(L, 1);
+    stackSize = lua_gettop(L);
+    std::cout << "stacksize: " << stackSize << std::endl;
 
+    lastAction = (char*)action;
     return action;
+}
+
+char* LuaScript::getLastAction() {
+    return lastAction;
+}
+
+void LuaScript::createTable(std::vector<std::vector<int>> mapVector) {
+    lua_newtable(L);
+    for (int i = 0; i < mapVector.size(); i++) {
+        //lua_pushinteger(L, i + 1);
+        //lua_pushnumber(L, mapVector[i]);
+        //lua_settable(L, -3);
+    }
 }
 
 LuaScript::~LuaScript() {

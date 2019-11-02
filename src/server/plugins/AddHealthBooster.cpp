@@ -6,16 +6,22 @@
 #define BOX2D_ADDHEALTHBOOSTER_H
 
 #include <stdlib.h>
-#include "Plugin.h"
 #include "entities/Car.h"
 #include "entities/World.h"
 
-class AddHealthBooster : public Plugin {
+#define MAX 100
+
+class AddHealthBooster {
 public:
     // Agrega 2 cajas de vida en lugares random del mapa
     void updateModel(std::vector<Car*> cars, World* world) {
-        world->addHealthBooster(rand() % 100, rand() % 100);
-        world->addHealthBooster(rand() % 100, rand() % 100);
+        world->addHealthBooster(getPosition(), getPosition());
+    }
+
+    float getPosition() {
+        auto val = rand() % MAX;
+        float newVal = val + val % 5;
+        return newVal;
     }
 };
 

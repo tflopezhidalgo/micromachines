@@ -6,6 +6,8 @@
 #define MICROMACHINES_LUASCRIPT_H
 
 #include <string>
+#include <iostream>
+#include <vector>
 
 extern "C" {
 # include <lua.h>
@@ -16,11 +18,16 @@ extern "C" {
 class LuaScript {
 private:
     lua_State *L;
-    std::string action;
+    const char* action;
+    char* lastAction;
 public:
-    LuaScript(const std::string& map);
+    LuaScript();
 
-    std::string getAction(int pos_x, int pos_y);
+    const char* getAction(int angle, int pos_x, int pos_y);
+
+    char* getLastAction();
+
+    void createTable(std::vector<std::vector<int>> mapVector);
 
     ~LuaScript();
 };
