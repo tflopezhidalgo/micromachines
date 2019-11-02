@@ -3,9 +3,7 @@
 //
 
 #include "Tire.h"
-
-#define FORWARD 'F'
-#define BACKWARD 'B'
+#include "Constants.h"
 
 #define FORWARD_SPEED "defaultMaxForwardSpeed"
 #define BACKWARD_SPEED "defaultMaxBackwardSpeed"

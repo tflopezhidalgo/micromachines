@@ -7,10 +7,9 @@
 #include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
+#include "Constants.h"
 
 #define DEGTORAD 0.017453292f
-#define LEFT 'L'
-#define RIGHT 'R'
 
 Car::Car(b2Body* body, std::vector<Tire*> tires,
         int carCollisionDamage, b2RevoluteJoint* flJoint,
