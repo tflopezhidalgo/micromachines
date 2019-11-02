@@ -5,8 +5,7 @@
 #include "LobbyClientAcceptor.h"
 #include <map>
 #include <iostream>
-
-#define BACKLOG 5
+#include <Macros.h>
 
 int main(int argc, char* argv[]) {
     MatchesAdministrator matchesAdministrator("../config.cfg");

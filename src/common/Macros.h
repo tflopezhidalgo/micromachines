@@ -3,9 +3,9 @@
 #define MICROMACHINES_MACROS_H
 
 
-//Sv-utils
+//Sv macros
+#define BACKLOG 5
 #define QUIT_ACTION 'Q'
-
 
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
