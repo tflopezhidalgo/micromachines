@@ -9,6 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build)
 include_directories(${PROJECT_SOURCE_DIR}/src/client)
 include_directories(${PROJECT_SOURCE_DIR}/src/server)
 include_directories(${PROJECT_SOURCE_DIR}/src/common)
+include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 
 file(GLOB SERVER_SRC_FILES "src/server/*.cpp")
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
@@ -19,7 +20,7 @@ file(GLOB PLUGINS_SRC_FILES "src/server/plugins/*.cpp")
 set(SOURCE CMAKE_SOURCE_DIR)
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES})
-target_link_libraries(Client SDL2 SDL2_image pthread)
+target_link_libraries(Client SDL2 SDL2_image pthread lua5.3)
 
 add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES} ${ENTITIES_SRC_FILES} ${PLUGINS_SRC_FILES})
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/server ${PROJECT_SOURCE_DIR}/build/Box2D-build)
