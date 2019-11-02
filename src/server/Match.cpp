@@ -6,9 +6,7 @@
 #include <nlohmann/json.hpp>
 #include "Match.h"
 #include "ModelSerializer.h"
-
-#define FPS "framesPerSecond"
-#define QUIT_ACTION 'Q'
+#include "Constants.h"
 
 #define HORIZONTAL_TRACK 1
 #define VERTICAL_TRACK 2
@@ -57,7 +55,6 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 
 void Match::run() {
     //ready, set, go
-    std::cout<<framesPerSecond<<std::endl;
     startClientsThread();
     while (!matchFinished) {
         auto initial = std::chrono::high_resolution_clock::now();
