@@ -29,9 +29,9 @@
 #define BOX_SIZE 1
 #define STONE_SIZE 0.5f
 #define FLOOR_OIL_SIZE 2
-#define TRACK_SIZE 5
 #define EDGE_THICKNESS 0.5f
 
+#define TRACK_SIZE 33
 
 //Config Keys
 #define MAX_FORWARD_SPEED_KEY "maxForwardSpeed"

@@ -78,8 +78,6 @@ void Match::updateModel(std::vector<Event> &events) {
         if (actions[0] == QUIT_ACTION) {
             //todo
         }
-
-        cars.find(clientId)->second->updateFriction();
         cars.find(clientId)->second->updateMove(actions);
     }
     world.step();
