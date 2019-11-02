@@ -17,7 +17,9 @@ void EventListener::run() {
     bool alive = true;
     SDL_Event e;
     while (alive) {
-        usleep(2);
+
+        // Tunearlo
+        usleep(1);
         while (SDL_PollEvent(&e)) {
 
             // Ojo que si catchea cosas inválidas no tiene que encolar nada

@@ -4,6 +4,7 @@
 
 #include <unordered_set>
 #include <nlohmann/json.hpp>
+#include <unistd.h>
 #include "Match.h"
 #include "ModelSerializer.h"
 
@@ -92,6 +93,8 @@ void Match::updateModel(std::vector<Event> &events) {
         cars.find(clientId)->second->updateFriction();
         cars.find(clientId)->second->updateMove(actions);
     }
+
+    usleep(20000);
 
     world.step();
 }
