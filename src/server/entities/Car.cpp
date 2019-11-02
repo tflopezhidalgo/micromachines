@@ -2,20 +2,19 @@
 // Created by leobellaera on 18/10/19.
 //
 
-#include <iostream>
-#include <FileReadingException.h>
 #include "Car.h"
+#include "Track.h"
+#include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
-#include "Oil.h"
-#include "Track.h"
 
 #define DEGTORAD 0.017453292f
 #define LEFT 'L'
 #define RIGHT 'R'
 
-Car::Car(b2Body* body, std::vector<Tire*> tires, int carCollisionDamage,
-        b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint) :
+Car::Car(b2Body* body, std::vector<Tire*> tires,
+        int carCollisionDamage, b2RevoluteJoint* flJoint,
+        b2RevoluteJoint* frJoint) :
 
         Entity(Identifier::CAR, body),
         health(100),
@@ -32,22 +31,32 @@ void Car::updateFriction() {
     }
 }
 
-void Car::updateMove(char action) {
+void Car::updateMove(std::vector<char>& actions) {
     //todo if status EXPLODING ...
 
     for (size_t i = 0; i < tires.size(); i++) {
-        tires[i]->updateDrive(action);
+        tires[i]->updateDrive(actions);
     }
 
-    float lockAngle = 35 * DEGTORAD;
-    float turnSpeedPerSec = 320 * DEGTORAD;
+    float lockAngle = 40 * DEGTORAD;
+    float turnSpeedPerSec = 160 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
+
+    bool turnRight = std::find(actions.begin(), actions.end(), RIGHT) != actions.end();
+    bool turnLeft = std::find(actions.begin(), actions.end(), LEFT) != actions.end();
+
     float desiredAngle = 0;
-    switch (action) {
-        case RIGHT: desiredAngle = lockAngle;  break;
-        case LEFT:  desiredAngle = -lockAngle; break;
-        default: ; //nothing to do
+
+    if (turnRight) {
+        desiredAngle = lockAngle;
+    } else if (turnLeft) {
+        desiredAngle = -lockAngle;
     }
+
+    if (turnLeft && turnRight) {
+        desiredAngle = 0;
+    }
+
     float angleNow = frontLeftJoint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
@@ -67,10 +76,6 @@ void Car::resetTiresFriction() {
         tire->resetFriction();
     }
 }
-
-/*void Car::setStatus() {
-    status = EXPLODING, etc
-}*/
 
 void Car::beginCollision(Entity* entity) {
 

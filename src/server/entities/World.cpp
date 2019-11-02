@@ -10,11 +10,17 @@
 #define FLOOR_OIL_SIZE 2
 #define TRACK_SIZE 5
 
-
+#define MAX_FORWARD_SPEED "maxForwardSpeed"
+#define MAX_BACKWARD_SPEED "maxBackwardSpeed"
+#define FRONT_MAX_DRIVE_FORCE "frontTireMaxDriveForce"
+#define BACK_MAX_DRIVE_FORCE "backTireMaxDriveForce"
+#define FRONT_MAX_LAT_IMPULSE "frontTireMaxLateralImpulse"
+#define BACK_MAX_LAT_IMPULSE "backTireMaxLateralImpulse"
+#define DEFAULT_FRICTION "defaultFriction"
 #define FPS "framesPerSecond"
 #define HEALTH_BOOST "healthBoost"
 #define OIL_GRIP "oilGrip"
-#define DEFAULT_MAX_SPEED "defaultMaxForwardSpeed"
+
 #define TRACK_FRICTION "trackFriction"
 #define CAR_COLLISION_DAMAGE "carCollisionDamage"
 #define SPEED_BOOST "speedBoost"
@@ -92,43 +98,79 @@ Stone* World::addStone(float x_pos, float y_pos) {
 }
 
 Car* World::addCar(float x_pos, float y_pos) {
-    b2Body* carBody = addBody({x_pos, y_pos}, true);
-    carBody->SetAngularDamping(ANGULAR_DAMPING);
-    createCarChassisFixture(carBody);
+    //todo use x_pos, y_pos
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    b2Body* carBody = world->CreateBody(&bodyDef);
 
+    carBody->SetAngularDamping(ANGULAR_DAMPING);
+    b2Vec2 vertices[4];
+    vertices[0].Set(-3,   0);
+    vertices[1].Set(3, 0);
+    vertices[2].Set(-3, 15);
+    vertices[3].Set(3,  15);
+    b2PolygonShape polygonShape;
+    polygonShape.Set(vertices, 4);
+    carBody->CreateFixture(&polygonShape, 0.1f);
+
+    //common joint parameters
     b2RevoluteJointDef jointDef;
     jointDef.bodyA = carBody;
     jointDef.enableLimit = true;
     jointDef.lowerAngle = 0;
     jointDef.upperAngle = 0;
-    jointDef.localAnchorB.SetZero();
+    jointDef.localAnchorB.SetZero(); //tire centre
 
     std::vector<Tire*> tires;
 
-    b2Body* body = createTireBody();
-    Tire* tire = new Tire(body, config);
-    joinTireToChassis(&jointDef, body, {-3.f, 0.75f});
+    float maxForwardSpeed = config.find(MAX_FORWARD_SPEED)->second;
+    float maxBackwardSpeed = config.find(MAX_BACKWARD_SPEED)->second;
+    float backTireMaxDriveForce = config.find(BACK_MAX_DRIVE_FORCE)->second;
+    float frontTireMaxDriveForce = config.find(FRONT_MAX_DRIVE_FORCE)->second;
+    float backTireMaxLatImpulse = config.find(BACK_MAX_LAT_IMPULSE)->second;
+    float frontTireMaxLatImpulse = config.find(FRONT_MAX_LAT_IMPULSE)->second;
+    float defaultFriction = config.find(DEFAULT_FRICTION)->second;
+
+    /*float backTireMaxDriveForce = 950;
+    float frontTireMaxDriveForce = 400;
+    float backTireMaxLateralImpulse = 9;
+    float frontTireMaxLateralImpulse = 9;*/
+
+    //back left tire
+    b2Vec2 backLeftTirePosition = {-3, 0.75f};
+    b2Body* body = createTireBody(backLeftTirePosition);
+    Tire* tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+            backTireMaxDriveForce, backTireMaxLatImpulse, defaultFriction);
+    joinTireToChassis(&jointDef, body, backLeftTirePosition);
     tires.push_back(tire);
 
     //back right tire
-    body = createTireBody();
-    tire = new Tire(body, config);
-    joinTireToChassis(&jointDef, body, {3.f, 0.75f});
+    b2Vec2 backRightTirePosition = {3, 0.75f};
+    body = createTireBody(backRightTirePosition);
+    tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+            backTireMaxDriveForce, backTireMaxLatImpulse, defaultFriction);
+    joinTireToChassis(&jointDef, body, backRightTirePosition);
     tires.push_back(tire);
 
     //front left tire
-    body = createTireBody();
-    tire = new Tire(body, config);
-    b2RevoluteJoint* flJoint = joinTireToChassis(&jointDef, body, {-3.f, 13.5f});
+    b2Vec2 frontLeftTirePosition = {-3, 8.5f};
+    body = createTireBody(frontLeftTirePosition);
+    tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+            frontTireMaxDriveForce, frontTireMaxLatImpulse, defaultFriction);
+    b2RevoluteJoint* flJoint = joinTireToChassis(&jointDef, body, frontLeftTirePosition);
     tires.push_back(tire);
 
     //front right tire
-    body = createTireBody();
-    tire = new Tire(body, config);
-    b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, {3.f, 13.5f});
+    b2Vec2 frontRightTirePosition = {3, 8.5f};
+    body = createTireBody(frontRightTirePosition);
+    tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
+                    frontTireMaxDriveForce, frontTireMaxLatImpulse, defaultFriction);
+    b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, frontRightTirePosition);
     tires.push_back(tire);
 
-    Car* car = new Car(carBody, tires, config.find(CAR_COLLISION_DAMAGE)->second, flJoint, frJoint);
+    Car* car = new Car(carBody, tires,
+            int(config.find(CAR_COLLISION_DAMAGE)->second),
+            flJoint, frJoint);
     carBody->SetUserData(car);
     return car;
 }
@@ -190,41 +232,26 @@ SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
     b2Body* body = addBody({x_pos,y_pos}, false);
     auto speedBooster = new SpeedBooster(body,
             config.find(SPEED_BOOST)->second,
-            config.find(DEFAULT_MAX_SPEED)->second);
+            config.find(MAX_FORWARD_SPEED)->second);
     return speedBooster;
 }
 
-void World::createCarChassisFixture(b2Body* body) {
-    b2Vec2 vertices[4];
-    vertices[0].Set(-3,   0);
-    vertices[1].Set(3, 0);
-    vertices[2].Set(-3, 15);
-    vertices[3].Set(3,  15);
-
-    b2PolygonShape polygonShape;
-    polygonShape.Set(vertices, 4);
-
-    b2FixtureDef fixture_def;
-    fixture_def.shape = &polygonShape;
-    fixture_def.density = 0.1f;
-    fixture_def.shape = &polygonShape;
-
-    body->CreateFixture(&fixture_def);
-}
-
-b2Body* World::createTireBody() {
-    b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(0.5f, 1.25f);
+b2Body* World::createTireBody(b2Vec2& position) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
+    bodyDef.position = position;
+
     b2Body* body = world->CreateBody(&bodyDef);
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox( 0.5f, 1.25f );
+
     body->CreateFixture(&polygonShape, 1);
     return body;
 }
 
 b2RevoluteJoint* World::joinTireToChassis(
         b2RevoluteJointDef* jointDef,
-        b2Body* tireBody, b2Vec2 pos) {
+        b2Body* tireBody, b2Vec2& pos) {
     jointDef->bodyB = tireBody;
     jointDef->localAnchorA.Set(pos.x, pos.y);
     auto joint = (b2RevoluteJoint*)world->CreateJoint(jointDef);

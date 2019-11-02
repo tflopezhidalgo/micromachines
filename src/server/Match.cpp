@@ -85,13 +85,12 @@ void Match::updateModel(std::vector<Event> &events) {
         std::string& clientId = event.getClientId();
         std::vector<char> actions = event.getActions();
 
-        for (char action : actions) {
-            if (action == QUIT_ACTION) {
-                delete cars.find(clientId)->second;
-                break;
-            }
-            cars.find(clientId)->second->updateMove(action);
+        if (actions[0] == QUIT_ACTION) {
+            //todo
         }
+
+        cars.find(clientId)->second->updateFriction();
+        cars.find(clientId)->second->updateMove(actions);
     }
 
     world.step();
@@ -100,7 +99,6 @@ void Match::updateModel(std::vector<Event> &events) {
 void Match::sendUpdateToClients() {
     //model serializer will receive all unordered_maps as arguments
     std::string modelSerialized = ModelSerializer::serialize(cars);
-    //std::cout << "DUMP UPDATE: " << modelSerialized << std::endl;
     for (auto & client : clients) {
         client.second->sendMessage(modelSerialized);
     }

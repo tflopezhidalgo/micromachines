@@ -5,7 +5,6 @@
 #ifndef TESTING_HEALTHBOOSTER_H
 #define TESTING_HEALTHBOOSTER_H
 
-#include "../Box2D/Box2D.h"
 #include "Entity.h"
 #include "Car.h"
 
