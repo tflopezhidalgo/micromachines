@@ -1,7 +1,7 @@
 //
 // Created by leobellaera on 29/10/19.
 //
-
+#include <string>
 #include "Event.h"
 
 Event::Event(Event&& otherEvent) noexcept {
@@ -28,6 +28,12 @@ std::vector<char>& Event::getActions() {
 Event::Event(std::string& clientId, std::vector<char> actions) :
         clientId(clientId),
         actions(std::move(actions)) {}
+
+
+Event::Event(std::string& clientId, char action) :
+    clientId(clientId){
+    actions.push_back(action); 
+}
 
 std::string Event::serialize() {
     nlohmann::json data;

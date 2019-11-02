@@ -5,6 +5,7 @@
 
 TileMap::TileMap(Window& window, const std::string& mapFile, int zoom, int offset) :
 window(window) {
+	std::cout << "Se crea mapa con " << zoom << std::endl;
     int x, y = - 7 * zoom * TILE_HEIGHT;
     std::fstream in(mapFile);
     for (int i = 0; i < 15; ++i) {

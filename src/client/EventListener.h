@@ -5,15 +5,18 @@
 #include "../common/Thread.h"
 #include "Action.h"
 #include "ProtectedQueue.h"
+#include "../common/Event.h"
 
 class EventListener: public Thread{
 private:
-    ProtectedQueue<Action>& q;
+    ProtectedQueue<Event>& q;
+	std::string playerID;
 
 public:
-    EventListener(ProtectedQueue<Action>& e);
+    EventListener(std::string playerID, 
+				  ProtectedQueue<Event>& e);
     void run() override;
-    Action handle(SDL_Event e);
+    Event handle(SDL_Event e);
     ~EventListener();
 };
 #endif

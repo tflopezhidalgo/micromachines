@@ -15,7 +15,7 @@ private:
     int angle;
 
 public:
-    Car(const std::string& file, int h, int w, Window& win);
+    Car(const std::string& file, Window& win);
     void setPos(int x, int y, int angle);
     int getXPos();
     int getYPos();

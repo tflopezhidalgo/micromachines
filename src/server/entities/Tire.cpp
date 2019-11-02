@@ -7,29 +7,30 @@
 #define FORWARD 'F'
 #define BACKWARD 'B'
 
-#define FORWARD_SPEED "maxForwardSpeed"
-#define BACKWARD_SPEED "maxBackwardSpeed"
-#define DRIVE_FORCE "maxDriveForce"
-#define LATERAL_IMPULSE "maxLateralImpulse"
-#define TIRES_FRICTION "tiresFriction"
+#define FORWARD_SPEED "defaultMaxForwardSpeed"
+#define BACKWARD_SPEED "defaultMaxBackwardSpeed"
+#define DRIVE_FORCE "defaultMaxDriveForce"
+#define LATERAL_IMPULSE "defaultMaxLateralImpulse"
+#define TIRES_FRICTION "defaultFriction"
 
-Tire::Tire(b2Body* body, std::map<std::string, float>& config) :
-        maxForwardSpeed(config.find(FORWARD_SPEED)->second),
-        maxBackwardSpeed(config.find(BACKWARD_SPEED)->second),
-        maxDriveForce(config.find(DRIVE_FORCE)->second),
-        maxLateralImpulse(config.find(LATERAL_IMPULSE)->second),
-        actualFriction(config.find(TIRES_FRICTION)->second),
-        initialFriction(config.find(TIRES_FRICTION)->second),
-        body(body) {}
+Tire::Tire(b2Body* body, float maxFwSpeed, float maxBwSpeed,
+            float maxDriveForce, float maxLatImpulse, float defaultFriction) :
+            body(body),
+            maxForwardSpeed(maxFwSpeed),
+            maxBackwardSpeed(maxBwSpeed),
+            maxDriveForce(maxDriveForce),
+            maxLateralImpulse(maxLatImpulse),
+            actualFriction(defaultFriction),
+            defaultFriction(defaultFriction) {}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
-    return b2Dot(currentRightNormal, body->GetLinearVelocity()) * currentRightNormal;
+    return b2Dot( currentRightNormal, body->GetLinearVelocity() ) * currentRightNormal;
 }
 
 b2Vec2 Tire::getForwardVelocity() {
     b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
-    return b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal;
+    return b2Dot( currentForwardNormal, body->GetLinearVelocity() ) * currentForwardNormal;
 }
 
 void Tire::updateFriction() {
@@ -47,6 +48,41 @@ void Tire::updateFriction() {
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -actualFriction * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
+
+    //todo drifting
+}
+
+void Tire::updateDrive(std::vector<char>& actions) {
+
+    float desiredSpeed = 0;
+
+    bool moveForward = std::find(actions.begin(), actions.end(), FORWARD) != actions.end();
+    bool moveBackward = std::find(actions.begin(), actions.end(), BACKWARD) != actions.end();
+
+    if (moveForward) {
+        desiredSpeed = maxForwardSpeed;
+    } else if (moveBackward) {
+        desiredSpeed = maxBackwardSpeed;
+    }
+
+    if ((moveForward && moveBackward) || (!moveForward && !moveBackward)) {
+        return;
+    }
+
+    //find current speed in forward direction
+    b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
+    float currentSpeed = b2Dot( getForwardVelocity(), currentForwardNormal );
+
+    //apply necessary force
+    float force = 0;
+    if ( desiredSpeed > currentSpeed )
+        force = maxDriveForce;
+    else if ( desiredSpeed < currentSpeed )
+        force = -maxDriveForce;
+    else
+        return;
+
+    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::setFriction(float newFriction) {
@@ -54,33 +90,11 @@ void Tire::setFriction(float newFriction) {
 }
 
 void Tire::resetFriction() {
-    actualFriction = initialFriction;
+    actualFriction = defaultFriction;
 }
 
 void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {
     maxForwardSpeed = newMaxForwardSpeed;
-}
-
-void Tire::updateDrive(char controlState) {
-    float desiredSpeed = 0;
-    switch (controlState) {
-        case FORWARD: desiredSpeed = maxForwardSpeed;  break;
-        case BACKWARD: desiredSpeed = maxBackwardSpeed; break;
-        default: return;
-    }
-
-    b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
-    float currentSpeed = b2Dot(getForwardVelocity(), currentForwardNormal);
-
-    float force = 0;
-    if (desiredSpeed > currentSpeed) {
-        force = maxDriveForce;
-    } else if (desiredSpeed < currentSpeed) {
-        force = -maxDriveForce;
-    } else {
-        return;
-    }
-    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 Tire::~Tire() {

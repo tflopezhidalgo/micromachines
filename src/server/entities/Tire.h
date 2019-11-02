@@ -1,14 +1,10 @@
-//
-// Created by leobellaera on 18/10/19.
-//
-
 #ifndef TESTING_TIRE_H
 #define TESTING_TIRE_H
 
-#include "../Box2D/Box2D.h"
-#include "Entity.h"
+#include <vector>
 #include <map>
 #include <string>
+#include "Box2D/Box2D.h"
 
 class Tire {
 private:
@@ -17,13 +13,20 @@ private:
     float maxDriveForce;
     float maxLateralImpulse;
     float actualFriction;
-    float initialFriction;
+    float defaultFriction;
     b2Body* body;
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
 public:
-    Tire(b2Body* body, std::map<std::string, float>& config);
-    void updateDrive(char action);
+    Tire(
+        b2Body* body,
+        float maxFwSpeed,
+        float maxBwSpeed,
+        float maxDriveForce,
+        float maxLatImpulse,
+        float defaultFriction
+    );
+    void updateDrive(std::vector<char>& actions);
     void updateFriction();
     void setFriction(float newFriction);
     void resetFriction();

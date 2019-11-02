@@ -14,7 +14,7 @@
 #include "Stone.h"
 #include "Oil.h"
 #include "SpeedBooster.h"
-#include "StraightTrack.h"
+#include "Track.h"
 
 class World {
 private:
@@ -31,12 +31,10 @@ private:
 
     b2Body* addRectangularFloor(b2Vec2 pos, b2Vec2 size);
 
-    void createCarChassisFixture(b2Body* body);
-
-    b2Body* createTireBody();
+    b2Body* createTireBody(b2Vec2& position);
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
-            b2Body* tireBody, b2Vec2 pos);
+            b2Body* tireBody, b2Vec2& pos);
 
     b2Body* addCurve(b2Vec2 pos, float radius, b2Vec2 size);
 
@@ -53,7 +51,7 @@ public:
 
     Oil* addOil(float x_pos, float y_pos);
 
-    StraightTrack* addStraightTrack(float x_pos, float y_pos, bool horizontalDisposition);
+    Track* addTrack(float x_pos, float y_pos, Shape shape);
 
     void destroyBody(b2Body* body);
 

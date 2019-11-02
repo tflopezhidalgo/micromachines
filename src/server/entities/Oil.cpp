@@ -2,19 +2,16 @@
 // Created by eliana on 20/10/19.
 //
 
-#include <iostream>
 #include "Oil.h"
 
-#define OIL_SKIDDING "oilSkidding"
-
-Oil::Oil(b2Body *body, std::map<std::string, float>& config) :
+Oil::Oil(b2Body *body, float grip) :
         Entity(OIL, body),
-        oilSkidding(config.find(OIL_SKIDDING)->second) {}
+        grip(grip) {}
 
 void Oil::beginCollision(Entity *entity) {
-    if (entity->getIdentifier() == CAR /*&& isActive()*/) {
+    if (entity->getIdentifier() == CAR && !isDead()) {
         Car* car = dynamic_cast<Car*>(entity);
-        //todo change car skidding (view iforce2d tut)
+        //todo
         //setSkidding(car);
         die();
     }

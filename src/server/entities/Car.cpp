@@ -2,42 +2,61 @@
 // Created by leobellaera on 18/10/19.
 //
 
-#include <iostream>
 #include "Car.h"
+#include "Track.h"
+#include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
-#include "Oil.h"
 
-#define INITIAL_HEALTH 100
 #define DEGTORAD 0.017453292f
 #define LEFT 'L'
 #define RIGHT 'R'
 
-Car::Car(b2Body* body, std::vector<Tire*> tires, b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint) :
-        Entity(Identifier::CAR, body),
-        health(INITIAL_HEALTH),
-        tires(std::move(tires)),
-        frontLeftJoint(flJoint),
-        frontRightJoint(frJoint) {}
+Car::Car(b2Body* body, std::vector<Tire*> tires,
+        int carCollisionDamage, b2RevoluteJoint* flJoint,
+        b2RevoluteJoint* frJoint) :
 
-void Car::update(char action) {
-    //if status EXPLODING ...
+        Entity(Identifier::CAR, body),
+        health(100),
+        tires(std::move(tires)),
+        carCollisionDamage(carCollisionDamage),
+        frontLeftJoint(flJoint),
+        frontRightJoint(frJoint) {
+
+}
+
+void Car::updateFriction() {
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateFriction();
     }
+}
+
+void Car::updateMove(std::vector<char>& actions) {
+    //todo if status EXPLODING ...
+
     for (size_t i = 0; i < tires.size(); i++) {
-        tires[i]->updateDrive(action);
+        tires[i]->updateDrive(actions);
     }
 
-    float lockAngle = 35 * DEGTORAD;
+    float lockAngle = 40 * DEGTORAD;
     float turnSpeedPerSec = 160 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
+
+    bool turnRight = std::find(actions.begin(), actions.end(), RIGHT) != actions.end();
+    bool turnLeft = std::find(actions.begin(), actions.end(), LEFT) != actions.end();
+
     float desiredAngle = 0;
-    switch (action) {
-        case RIGHT:  desiredAngle = lockAngle;  break;
-        case LEFT: desiredAngle = -lockAngle; break;
-        default: ; //nothing to do
+
+    if (turnRight) {
+        desiredAngle = lockAngle;
+    } else if (turnLeft) {
+        desiredAngle = -lockAngle;
     }
+
+    if (turnLeft && turnRight) {
+        desiredAngle = 0;
+    }
+
     float angleNow = frontLeftJoint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
@@ -58,22 +77,31 @@ void Car::resetTiresFriction() {
     }
 }
 
-/*void Car::setStatus() {
-    status = EXPLODING, etc
-}*/
+void Car::beginCollision(Entity* entity) {
 
-void Car::beginCollision(Entity* object) {
-    if (object->getIdentifier() == HEALTHBOOSTER) {
-        auto healthBooster = dynamic_cast<HealthBooster*>(object);
-        healthBooster->boost(this);
-    } else if (object->getIdentifier() == STONE) {
-        auto stone = dynamic_cast<Stone*>(object);
-        //stone->setDead() EL METODO setDead IRA EN LA CLASE ENTITY PARA Q SEA GENERICO
-        //if !stone->isDead()
+    if (entity->isDead()) {
+        return;
+    }
+
+    if (entity->getIdentifier() == HEALTHBOOSTER) {
+        auto healthBooster = dynamic_cast<HealthBooster*>(entity);
+        healthBooster->heal(this);
+        healthBooster->die();
+    } else if (entity->getIdentifier() == STONE) {
+        auto stone = dynamic_cast<Stone*>(entity);
         stone->damageCar(this);
-    } else if (object->getIdentifier() == OIL) {
-        auto oil = dynamic_cast<Oil*>(object);
+        stone->die();
+    } else if (entity->getIdentifier() == OIL) {
+        auto oil = dynamic_cast<Oil*>(entity);
         //todo
+        oil->die();
+    } else if (entity->getIdentifier() == CAR) {
+        auto car = dynamic_cast<Car*>(entity);
+        car->receiveDamage(carCollisionDamage);
+        this->receiveDamage(carCollisionDamage);
+    } else if (entity->getIdentifier() == TRACK) {
+        auto track = dynamic_cast<Track*>(entity);
+        track->setCarFriction(this);
     }
 }
 

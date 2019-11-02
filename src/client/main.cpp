@@ -1,3 +1,4 @@
+#include "../common/Event.h"
 #include "EventListener.h"
 #include <iostream>
 #include <zconf.h>
@@ -28,6 +29,7 @@ int main(int argc, char* argv[]) {
     std::string input;
     json initialMsg;
     std::cin >> input;
+	std::string playerID;
 
     if (input == "create") {
         initialMsg["mode"] = "create";
@@ -38,8 +40,8 @@ int main(int argc, char* argv[]) {
         initialMsg["matchName"] = input;
 
         std::cout << "Ingrese su nombre: ";
-        std::cin >> input;
-        initialMsg["clientId"] = input;
+        std::cin >> playerID;
+        initialMsg["clientId"] = playerID;
 
         std::cout << "Ingrese nombre del mapa en el cuál desea jugar: ";
         std::cin >> input;
@@ -90,16 +92,17 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
         std::cout << "Ingrese su nombre y el nombre de la la partida a la que desea unirse \n";
         std::cout << "Alias: ";
-        std::cin >> buffer;
-        j["clientId"] = buffer;
+		buffer.clear();
+        std::cin >> playerID;
+        j["clientId"] = playerID;
+		buffer.clear();
         std::cout << "Partida: ";
         std::cin >> buffer;
         j["matchName"] = buffer;
 
-        /*if (recv.find(buffer) == recv.end()) {
-            std::cout << "Nombre invalido! \n";
-            return 0;
-        }*/
+        std::string msg = j.dump();
+
+        proxy.sendMessage(msg);
 
     } else {
         std::cout << "Debe seleccionar modo join o modo create.. saliendo\n";
@@ -107,35 +110,30 @@ int main(int argc, char* argv[]) {
     }
 
     json response = json::parse(proxy.receiveMessage());
-
     std::cout << "Se recibio  " << response.dump();
 
-    response = json::parse(proxy.receiveMessage());
+    Window main("Game", 1200, 600);
 
-    std::cout << "Se recibio " << response.dump() << std::endl;
-
-    /*Window main("Game", 1200, 600);
-
-    ProtectedQueue<Action> q;
-    ProtectedModel model(main);
+    ProtectedQueue<Event> q;
+    ProtectedModel model(main, playerID);
 
     Receiver receiver(model, proxy);
     Drawer drawer(main, model);
-    EventListener handler(q);
+    EventListener handler(playerID, q);
     Dispatcher dispatcher(q, proxy);
 
     receiver.start();
-    drawer.start();
     dispatcher.start();
+    drawer.start();
     handler.run();
 
     drawer.stop();
-    receiver.stop();
     dispatcher.stop();
+    receiver.stop();
     drawer.join();
-    receiver.join();
     dispatcher.join();
-*/
+    receiver.join();
+
     SDL_Quit();
     return 0;
 }

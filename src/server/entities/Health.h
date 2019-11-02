@@ -10,7 +10,7 @@ private:
     int actualHealth;
     int maximumHealth;
 public:
-    Health(int initialHealth);
+    explicit Health(int initialHealth);
     void receiveDamage(int damage);
     void receiveHealing(int healingPoints);
     int getHealth();

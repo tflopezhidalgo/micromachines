@@ -76,29 +76,23 @@ void Match::run() {
 }
 
 void Match::updateModel(std::vector<Event> &events) {
-    std::unordered_set<std::string> updatedCars;
+
+    for (auto & car : cars) {
+        car.second->updateFriction();
+    }
 
     for (auto & event : events) {
         std::string& clientId = event.getClientId();
         std::vector<char> actions = event.getActions();
 
-        for (char action : actions) {
-            if (action == QUIT_ACTION) {
-                delete cars.find(clientId)->second;
-                break;
-            }
-            cars.find(clientId)->second->update(action);
+        if (actions[0] == QUIT_ACTION) {
+            //todo
         }
-        updatedCars.emplace(std::move(clientId));
+
+        cars.find(clientId)->second->updateFriction();
+        cars.find(clientId)->second->updateMove(actions);
     }
 
-    //friction update to remaining cars
-    for (auto & car : cars) {
-        auto setIter = updatedCars.find(car.first);
-        if (setIter == updatedCars.end()) {
-            car.second->update(NO_ACTION);
-        }
-    }
     world.step();
 }
 
