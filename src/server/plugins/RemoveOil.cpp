@@ -14,7 +14,7 @@ class RemoveOil {
 public:
     // quita algun aceite que se encuentre en el mapa
     void updateModel(std::vector<Car*> cars, World* world) {
-        world->removeEntity(OIL);
+//        world->removeEntity(OIL);
     }
 };
 

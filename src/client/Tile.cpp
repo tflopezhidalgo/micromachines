@@ -14,8 +14,8 @@ Tile::Tile(Tile&& other) :
 void Tile::render(Camera& cam){
     SDL_Rect box2;
 
-    box2.x = box.x - cam.x;
-    box2.y = box.y - cam.y;
+    box2.x = (box.x - cam.x);
+    box2.y = (box.y - cam.y);
     box2.h = box.h ;
     box2.w = box.w ;
 

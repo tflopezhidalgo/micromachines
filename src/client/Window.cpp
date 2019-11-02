@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <string>
 
+#define PI 3.14
+
 Window::Window(std::string title) {
     this->camera = {0,0 ,0,0};
     this->window = SDL_CreateWindow(title.c_str(), 0, 0, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
@@ -33,14 +35,7 @@ void Window::render(SDL_Texture *texture,
                     SDL_Rect& dstTexture,
                     int angle) {
 
-    SDL_Rect drawingRect = {0,0,0,0};
-    //drawingRect.x = dstTexture.x - dstTexture.w / 2 - camera.x;
-    //drawingRect.y = dstTexture.y - dstTexture.h / 2 - camera.y;
-    //drawingRect.h = dstTexture.h ;
-    //drawingRect.w = dstTexture.w ;
-
-    double pi = 3.14;
-    angle = (angle/pi) * 180 / SERIALIZING_RESCAILING;
+    double precition_angle = (angle/ PI ) * 180 / SERIALIZING_RESCAILING;
 
     SDL_Point point = {dstTexture.w / 2, dstTexture.h / 2};
 
@@ -48,14 +43,9 @@ void Window::render(SDL_Texture *texture,
                      texture,
                      &textureInfo,
                      &dstTexture,
-                     angle,
+                     precition_angle,
                      &point,
                      SDL_FLIP_NONE);
-}
-
-void Window::setCamera(int x, int y){
-    this->camera.x = x;
-    this->camera.y = y;
 }
 
 int Window::getHeight(){

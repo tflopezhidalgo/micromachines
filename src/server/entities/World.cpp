@@ -242,7 +242,7 @@ void World::step() {
     world->Step(timeStep, velocityIterations, positionIterations);
 }
 
-void World::removeEntity(Identifier identifier) {
+/*void World::removeEntity(Identifier identifier) {
     b2Body* bodies = world->GetBodyList();
     while (bodies) {
         b2Body *actualBody = bodies;
@@ -256,7 +256,7 @@ void World::removeEntity(Identifier identifier) {
             }
         }
     }
-}
+}**/
 
 void World::destroyBody(b2Body* body) {
     world->DestroyBody(body);

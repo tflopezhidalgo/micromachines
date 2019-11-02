@@ -11,7 +11,7 @@ void Dispatcher::run() {
         Event action(std::move(q.pop()));
         std::string dumpedAction(std::move(action.serialize()));
         proxy.sendMessage(dumpedAction);
-        }
+    }
 }
 
 void Dispatcher::stop() {

@@ -9,7 +9,7 @@
 class EventListener: public Thread{
 private:
     bool alive = true;
-    bool keysHeld[723] = {false};
+    std::map<int, bool> keysHeld;
     ProtectedQueue<Event>& q;
 	std::string playerID;
 
@@ -17,7 +17,8 @@ public:
     EventListener(std::string playerID, 
 				  ProtectedQueue<Event>& e);
     void run() override;
-    void handle(SDL_Event& e);
+    void detectEvent(SDL_Event& e);
+    std::vector<char> createActionList();
     ~EventListener();
 };
 #endif

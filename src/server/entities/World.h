@@ -15,6 +15,7 @@
 #include "Oil.h"
 #include "SpeedBooster.h"
 #include "Track.h"
+#include "../common/Identifiers.h"
 
 class World {
 private:
@@ -59,7 +60,7 @@ public:
 
     ~World();
 
-    void removeEntity(Identifier identifier);
+//    void removeEntity(Identifier identifier);
 };
 
 #endif //TESTING_WORLD_H

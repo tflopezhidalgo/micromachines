@@ -20,11 +20,11 @@ void Car::setPos(int x, int y, int angle) {
 }
 
 int Car::getXPos() {
-    return (x + CAR_W / 2);
+    return x;
 }
 
 int Car::getYPos() {
-    return (y + CAR_W / 2);
+    return y;
 }
 
 void Car::render(Camera& cam) {
