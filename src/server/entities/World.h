@@ -51,7 +51,7 @@ public:
 
     Oil* addOil(float x_pos, float y_pos);
 
-    Track* addTrack(float x_pos, float y_pos, Shape shape);
+    Track* addTrack(float x_pos, float y_pos, int shape);
 
     void destroyBody(b2Body* body);
 

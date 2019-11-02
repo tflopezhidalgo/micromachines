@@ -9,12 +9,7 @@
 #include "Entity.h"
 #include "Car.h"
 
-enum Shape {
-    HORIZONTAL,
-    VERTICAL,
-    //curved shapes
-};
-
+//todo curved shapes
 class Track : public Entity {
 private:
     float friction;

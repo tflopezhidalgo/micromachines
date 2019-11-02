@@ -7,11 +7,7 @@
 #include "Proxy.h"
 #include "MatchesAdministrator.h"
 #include "Client.h"
-
-#define VALID 0
-#define MATCH_HAS_STARTED 1
-#define MATCH_EQUAL_NAMED 2
-#define CLIENT_EQUAL_NAMED 3
+#include "Constants.h"
 
 MatchesAdministrator::MatchesAdministrator(const char* configPath) :
     configMapBuilder(configPath) {}

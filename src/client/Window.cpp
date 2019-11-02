@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Constants.h"
 #include "TextureRepository.h"
 #include <SDL2/SDL.h>
 #include <string>
@@ -39,7 +40,7 @@ void Window::render(SDL_Texture *texture,
     //drawingRect.w = dstTexture.w ;
 
     double pi = 3.14;
-    angle = (angle/pi) * 1.8;
+    angle = (angle/pi) * 180 / SERIALIZING_RESCAILING;
 
     SDL_Point point = {dstTexture.w / 2, dstTexture.h / 2};
 
