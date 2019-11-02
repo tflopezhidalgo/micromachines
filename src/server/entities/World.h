@@ -58,6 +58,8 @@ public:
     void step();
 
     ~World();
+
+    void removeEntity(Identifier identifier);
 };
 
 #endif //TESTING_WORLD_H
