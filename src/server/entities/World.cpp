@@ -109,11 +109,6 @@ Car* World::addCar(float x_pos, float y_pos) {
     float frontTireMaxLatImpulse = config.find(FRONT_MAX_LAT_IMPULSE_KEY)->second;
     float defaultFriction = config.find(DEFAULT_FRICTION_KEY)->second;
 
-    /*float backTireMaxDriveForce = 950;
-    float frontTireMaxDriveForce = 400;
-    float backTireMaxLateralImpulse = 9;
-    float frontTireMaxLateralImpulse = 9;*/
-
     //back left tire
     b2Vec2 backLeftTirePosition = {-3, -6.f};
     b2Body* body = createTireBody(backLeftTirePosition);
