@@ -12,7 +12,8 @@ class Window {
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;
-        SDL_Rect camera;
+        int h;
+        int w;
 
     public:
         explicit Window(std::string title);
@@ -22,7 +23,6 @@ class Window {
                     SDL_Rect& textureInfo,
                     SDL_Rect& dstTexture,
                     int angle);
-        void setCamera(int x, int y);
         int getHeight();
         int getWidth();
         SDL_Renderer* getRenderer();

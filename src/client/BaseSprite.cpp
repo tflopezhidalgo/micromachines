@@ -11,9 +11,11 @@ BaseSprite::BaseSprite(Window& main,
 }
 
 void BaseSprite::render(int x, int y, int angle, Camera& cam) {
-    SDL_Rect rect = {x - cam.x , y - cam.y , w * cam.zoom, h * cam.zoom};
-    if ((rect.x + rect.w) > 0 || (rect.y + rect.h) > 0)
-        this->texture.render(rect, angle);
+    SDL_Rect dimensions = {x, y, w, h};
+    SDL_Rect translated = cam.translate(dimensions);
+
+    if (cam.collideWith(translated))
+        this->texture.render(translated, angle);
 }
 
 BaseSprite::~BaseSprite() { }

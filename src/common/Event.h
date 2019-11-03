@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 29/10/19.
-//
-
 #ifndef MICROMACHINES_EVENT_H
 #define MICROMACHINES_EVENT_H
 
@@ -21,10 +17,10 @@ public:
     std::string& getClientId();
 
     //Useful to client
-    Event(std::string& clientId,  std::vector<char> actions);
+    Event(std::string& clientId, std::vector<char> actions);
     std::string serialize();
 
     ~Event();
 };
 
-#endif //MICROMACHINES_EVENT_H
+#endif

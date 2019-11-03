@@ -2,35 +2,48 @@
 #include "Entity.h"
 #include "Window.h"
 
-#define MtoP 10      // Relación metros a píxeles
+#define MtoP 4      // Relación metros a píxeles
 
 Camera::Camera(Window& w) :
-window(w) {
+    window(w) {
     this->cameraInfo = {0, 0, 0, 0};
-    e = NULL;
+    target = NULL;
 	this->zoom = MtoP;
 }
 
 void Camera::setOnTarget(Entity* e) {
-    this->e = e;
+    this->target = e;
 }
 
 SDL_Rect Camera::translate(SDL_Rect &origin) {
-    SDL_Rect translated = {origin.x - x,
-                           origin.y - y,
+    SDL_Rect translated = {origin.x - cameraInfo.x,
+                           origin.y - cameraInfo.y,
                            origin.w * zoom,
-                           0};
+                           origin.h * zoom};
     return translated;
 }
 
+bool Camera::collideWith(SDL_Rect& obj_dimensions) {
+
+    if ((obj_dimensions.x + obj_dimensions.w) < 0 ||
+            (obj_dimensions.y + obj_dimensions.h) < 0)
+        return false;
+
+    if (obj_dimensions.x > cameraInfo.w ||
+        obj_dimensions.y  > cameraInfo.h)
+        return false;
+
+    return true;
+}
+
 void Camera::update() {
-    if (e == NULL)
+    if (target == NULL)
         return;
 
-    this->x = e->getXPos() - w / 2;
-    this->y = e->getYPos() - h / 2;
-    this->h = window.getHeight();
-    this->w = window.getWidth();
+    this->cameraInfo.x = target->getXPos() - cameraInfo.w / 2;
+    this->cameraInfo.y = target->getYPos() - cameraInfo.h / 2;
+    this->cameraInfo.h = window.getHeight();
+    this->cameraInfo.w = window.getWidth();
     this->zoom = MtoP;
 }
 
@@ -39,5 +52,5 @@ int Camera::getZoom() {
 }
 
 bool Camera::targetSet() {
-    return (e != NULL);
+    return (target != NULL);
 }

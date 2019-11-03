@@ -16,4 +16,5 @@ void Dispatcher::run() {
 
 void Dispatcher::stop() {
     this->alive = false;
+    proxy.stop();
 }

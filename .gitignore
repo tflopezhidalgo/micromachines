@@ -10,3 +10,4 @@ Model/Testing
 src/server/CMakeFiles/*
 src/server/Box2D-cmake.cbp
 /test/
+src/client/test.cpp
