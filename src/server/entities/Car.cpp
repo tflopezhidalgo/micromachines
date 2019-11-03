@@ -2,6 +2,7 @@
 // Created by leobellaera on 18/10/19.
 //
 
+#include <iostream>
 #include "Car.h"
 #include "Track.h"
 #include "Oil.h"
@@ -113,6 +114,7 @@ void Car::endCollision(Entity *object) {
 
 void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);
+    //todo que es esto??!
     if (health.getHealth() <= SEVERAL_DAMAGED_POINTS) {
         this->receiveSeveralDamage();
     }

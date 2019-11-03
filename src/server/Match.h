@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <string>
 #include <nlohmann/json.hpp>
+#include <entities/WorldBuilder.h>
 #include "../common/Thread.h"
 #include "Client.h"
 #include "entities/Car.h"
@@ -19,11 +20,12 @@
 
 class Match : public Thread {
 private:
-    World world;
+    World* world;
     std::atomic<bool> matchStarted;
     std::atomic<bool> matchFinished;
     std::string mapName;
     ProtectedQueue<Event> eventsQueue;
+    std::vector<Track*> tracks;
     std::unordered_map<std::string, Car*> cars;
     std::unordered_map<std::string, Client*> clients;
     int playersAmount;
@@ -33,7 +35,7 @@ private:
     void updateModel(std::vector<Event> &events);
     void sendUpdateToClients();
 public:
-    Match(std::string mapName, int playersAmount,
+    Match(std::string& mapName, int playersAmount,
             int raceLaps, std::map<std::string, float> &config);
     void showIfAvailable(nlohmann::json& availableMatches, std::string& matchName);
     void addPlayer(std::string nickname, Client* client);
