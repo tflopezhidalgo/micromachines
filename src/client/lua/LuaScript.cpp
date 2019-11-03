@@ -8,7 +8,7 @@
 #define ENTITIES_SCRIPT "entities_ids.lua"
 #define MAP_SCRIPT "map.lua"
 
-LuaScript::LuaScript() {
+LuaScript::LuaScript(std::string mapName) {
     L = luaL_newstate();
     luaL_openlibs(L);
 
@@ -17,7 +17,7 @@ LuaScript::LuaScript() {
     luaL_dofile(L, ENTITIES_SCRIPT);
 }
 
-const char* LuaScript::getAction(int angle, int pos_x, int pos_y) {
+std::string LuaScript::getAction(int angle, int pos_x, int pos_y) {
     int stackSize = lua_gettop(L);
     std::cout << "stacksize: " << stackSize << std::endl;
 
@@ -31,23 +31,24 @@ const char* LuaScript::getAction(int angle, int pos_x, int pos_y) {
     // Llamo a la función
     // La función recibe 2 parámetros y devuelve 1
     lua_pcall(L, 3, 1, 0);
-    action = lua_tostring(L, 1);
+    const char* lua_action = lua_tostring(L, 1);
 
     // Limpio el stack
     lua_pop(L, 1);
     stackSize = lua_gettop(L);
     std::cout << "stacksize: " << stackSize << std::endl;
 
-    lastAction = (char*)action;
+    action = std::string(lua_action);
     return action;
 }
 
-char* LuaScript::getLastAction() {
-    return lastAction;
+string LuaScript::getLastAction() {
+    return action;
 }
 
 void LuaScript::createTable(std::vector<std::vector<int>> mapVector) {
     lua_newtable(L);
+    lua_setglobal(L, "entities")
     for (int i = 0; i < mapVector.size(); i++) {
         //lua_pushinteger(L, i + 1);
         //lua_pushnumber(L, mapVector[i]);

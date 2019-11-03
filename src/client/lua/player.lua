@@ -1,9 +1,6 @@
 print("Loading Lua Player...")
 
 -- start variables macro
-map_end = 20
-map_start = 1
-
 min_angle_up = 45
 max_angle_up = 135
 
@@ -18,31 +15,24 @@ max_angle_right1 = 45
 min_angle_right2 = 315
 max_angle_right2 = 360
 
-next_position = {
-    [-1] = "R",
-    [0] = "F",
-    [1] = "L",
-    ["reverse"] = "B"
-}
 -- end variables macro
 
 
 -- Depende el angulo tiene una direccion a seguir
 function getAction(angle, pos_x, pos_y)
     local action = ""
-    print(pos_x, pos_y)
     if (angle >= min_angle_up and angle <= max_angle_up) then
-        action = direction_up(pos_x, pos_y)
+        action = action_vertical("U", pos_x, pos_y - 1)
 
     elseif (angle >= min_angle_left and angle <= max_angle_left) then
-        action = direction_left(pos_x, pos_y)
+        action = action_horizontal("L", pos_x - 1, pos_y)
 
     elseif (angle >= min_angle_down and angle <= max_angle_down) then
-        action = direction_left(pos_x, pos_y)
+        action = action_vertical("D", pos_x, pos_y +1)
 
     elseif ((angle >= min_angle_right1 and angle <= max_angle_right1) or
         (angle >= min_angle_right2 and angle <= max_angle_right2)) then
-        action = direction_right(pos_x, pos_y)
+        action = action_horizontal("R", pos_x + 1, pos_y)
     end
     return action
 end
@@ -51,92 +41,77 @@ end
 function getLimit(pos)
     start = -1
     ending = 1
-    if (pos == map_start) then
+    if (pos == 1) then
         start = 0
     end
-    if (pos == map_end) then
+    if (pos == #map) then
         ending = 0
     end
     return start, ending
 end
 
 function is_in_border(pos)
-    return pos == map_start or pos == map_end
+    return pos == 1 or pos == #map
 end
 
 function check_position(position)
-    return entities[position]["safe"]
+    return floor_id[position]["safe"]
 end
 
-function direction_down(pos_x, pos_y)
+function check_safe_floor(direction, floor)
+    if (floor_id[floor]["direction"] ~= nil) then
+        return floor_id[floor]["direction"]
+    else
+        return "F" -- ADELANTE
+    end
+end
+
+function action_vertical(direction, pos_x, next_y)
     if (is_in_border(pos_y)) then
-        return next_position["reverse"]
+        return "B" -- REVERSE
     end
 
-     if (check_position(map[pos_y + 1][pos_x])) then
-        return next_position[0]
-    end
-
+    return check_safe_floor(direction, map[next_y][pos_x + i])
     local st, en = getLimit(pos_x)
     for i = st, en do
-        if (check_position(map[pos_y + 1][pos_x + i])) then
-            return next_position[i]
+        if (check_position(map[next_y][pos_x + i])) then
+            return next_action[i]
         end
     end
     return "F"
 end
 
-function direction_up(pos_x, pos_y)
-    if (is_in_border(pos_y)) then
-        return next_position["reverse"]
-    end
-    if (check_position(map[pos_y - 1][pos_x])) then
-        return next_position[0]
-    end
-
-    local st, en = getLimit(pos_x)
-    for i = st, en do
-        print(map[pos_y - 1][pos_x + i])
-        if (check_position(map[pos_y - 1][pos_x + i])) then
-            print(string.format("next: %s", next_position[i]))
-            return next_position[i]
-        end
-    end
-    return "F"
-end
-
-function direction_left(pos_x, pos_y)
+function action_horizontal(direction, next_x, pos_y)
     if (is_in_border(pos_x)) then
-        return next_position["reverse"]
-    end
-
-    if (check_position(map[pos_y][pos_x - 1])) then
-        return next_position[0]
+        return next_action["reverse"]
     end
 
     local st, en = getLimit(pos_y)
     for i = st, en do
-        if (check_position(map[pos_y + i][pos_x - 1])) then
-            return next_position[i]
+        if (check_position(map[pos_y + i][next_x])) then
+            return next_action[i]
         end
     end
     return "F"
 end
 
-function direction_right(pos_x, pos_y)
-    if (is_in_border(pos_x)) then
-        return next_position["reverse"]
-    end
-
-    if (check_position(map[pos_y][pos_x + 1])) then
-        return next_position[0]
-    end
-
-    local st, en = getLimit(pos_y)
-    for i = st, en do
-        if (check_position(map[pos_y + i][pos_x + 1])) then
-            return next_position[i]
-        end
-    end
-    return "F"
+function direction_down(direction, pos_x, pos_y)
+    return action_vertical(direction, pos_x, pos_y +1)
 end
+
+function direction_up(direction, pos_x, pos_y)
+    return action_vertical(direction, pos_x, pos_y - 1)
+end
+
+function direction_left(direction, pos_x, pos_y)
+    return action_horizontal(direction, pos_x - 1, pos_y)
+end
+
+function direction_right(direction, pos_x, pos_y)
+    return action_horizontal(1, pos_x + 1, pos_y)
+end
+
+--if (check_position(map[pos_y][pos_x + 1])) then
+--          return next_action[0]
+--      end
+
