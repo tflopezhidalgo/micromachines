@@ -7,6 +7,7 @@
 #define BACKLOG 5
 #define QUIT_ACTION 'Q'
 
+
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
 
@@ -25,7 +26,7 @@
 #define LEFT 'L'
 #define RIGHT 'R'
 
-//Bodies sizes
+//Bodies sizes //todo adjust sizes
 #define BOX_SIZE 1
 #define STONE_SIZE 0.5f
 #define FLOOR_OIL_SIZE 2

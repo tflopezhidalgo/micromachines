@@ -109,11 +109,6 @@ Car* World::addCar(float x_pos, float y_pos) {
     float frontTireMaxLatImpulse = config.find(FRONT_MAX_LAT_IMPULSE_KEY)->second;
     float defaultFriction = config.find(DEFAULT_FRICTION_KEY)->second;
 
-    /*float backTireMaxDriveForce = 950;
-    float frontTireMaxDriveForce = 400;
-    float backTireMaxLateralImpulse = 9;
-    float frontTireMaxLateralImpulse = 9;*/
-
     //back left tire
     b2Vec2 backLeftTirePosition = {-3, -6.f};
     b2Body* body = createTireBody(backLeftTirePosition);
@@ -156,7 +151,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 b2Body* World::addRectangularFloor(b2Vec2 pos, b2Vec2 size) {
     b2Body* boxBody = addBody(pos, false);
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(size.x / 2, size.y / 2);
+    polygonShape.SetAsBox(size.x / 2.f, size.y / 2.f);
 
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
@@ -166,38 +161,13 @@ b2Body* World::addRectangularFloor(b2Vec2 pos, b2Vec2 size) {
     return boxBody;
 }
 
-b2Body* World::addCurve(b2Vec2 pos, float radius, b2Vec2 size) {
-    b2Vec2 vertices[8];
-    vertices[0].Set(0,size.y);
-    for (int i = 0; i < 7; i++) {
-        float angle = i / 6.0 * 90 * DEGTORAD;
-        vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
-    }
-    b2Body* curveBody = addBody(pos, false);
-    b2FixtureDef fixture_def;
-    b2PolygonShape polygonShape;
-    polygonShape.Set(vertices, 8);
-    fixture_def.shape = &polygonShape;
-    fixture_def.isSensor = true;
-    curveBody->CreateFixture(&fixture_def);
-
-    return curveBody;
-}
-
 //actually, vertical and horizontal tracks have the same shape
 Track* World::addTrack(float x_pos, float y_pos, int shape) {
     b2Body* body = addRectangularFloor({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
     auto track = new Track(body, config.find(TRACK_FRICTION_KEY)->second);
+    body->SetUserData(track);
     return track;
 }
-
-//todo
-/*Curve* World::addStreetCurve(float x_pos, float y_pos, bool horizontal) {
-    b2Body* body = addCurve({x_pos, y_pos}, CURVE_RADIUS, {CURVE_SIZE, CURVE_SIZE});
-    auto curve = new Curve(body);
-    body->SetUserData(curve);
-    return curve;
-}*/
 
 Oil* World::addOil(float x_pos, float y_pos) {
     b2Body* body = addRectangularFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE});
