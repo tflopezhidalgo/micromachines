@@ -2,9 +2,6 @@
 #include "BaseSprite.h"
 #include "Window.h"
 
-#define CAR_H 15
-#define CAR_W 6
-
 Car::Car(const std::string &file, Window& win) :
     sprite(win, file, CAR_H, CAR_W) {
         this->x = 0;

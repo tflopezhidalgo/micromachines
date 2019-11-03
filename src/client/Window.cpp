@@ -7,22 +7,23 @@
 #define PI 3.14
 
 Window::Window(std::string title) {
-    this->camera = {0,0 ,0,0};
-    this->window = SDL_CreateWindow(title.c_str(), 0, 0, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+    this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 0, 0, SDL_WINDOW_SHOWN |  SDL_WINDOW_FULLSCREEN_DESKTOP);
     this->renderer = SDL_CreateRenderer(this->window, -1,
                                   SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if (!window || !renderer)
         throw std::runtime_error("No se pudo crear ventana");
+
+    SDL_GetRendererOutputSize(this->renderer, &this->w, &this->h);
 }
 
 Window::Window(std::string title, int w, int h) {
-    this->camera = {0,0 ,0,0};
-    this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN);
+    this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     this->renderer =
             SDL_CreateRenderer(this->window,-1,
                         SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if (!window)
         throw std::runtime_error("no se pudo crear ventana");
+    SDL_GetRendererOutputSize(this->renderer, &this->w, &this->h);
 }
 
 Texture& Window::createTextureFrom(const std::string& img) {
@@ -48,29 +49,15 @@ void Window::render(SDL_Texture *texture,
                      SDL_FLIP_NONE);
 }
 
-int Window::getHeight(){
-    int h, a;
-    SDL_GetRendererOutputSize(this->renderer, &a, &h);
-    return h;
-}
+int Window::getHeight(){ return h; }
 
-int Window::getWidth(){
-    int w, b ;
-    SDL_GetRendererOutputSize(this->renderer, &w, &b);
-    return w;
-}
+int Window::getWidth(){ return w; }
 
-SDL_Renderer* Window::getRenderer(){
-    return this->renderer;
-}
+SDL_Renderer* Window::getRenderer(){ return this->renderer; }
 
-void Window::update() {
-    SDL_RenderPresent(this->renderer);
-}
+void Window::update() { SDL_RenderPresent(this->renderer); }
 
-void Window::clear() {
-    SDL_RenderClear(this->renderer);
-}
+void Window::clear() { SDL_RenderClear(this->renderer); }
 
 Window::~Window() {
     SDL_DestroyRenderer(this->renderer);
