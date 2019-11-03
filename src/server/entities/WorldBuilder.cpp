@@ -28,7 +28,7 @@ World* WorldBuilder::build(std::vector<Track*>& tracks) {
     nlohmann::json map = nlohmann::json::parse(file);
     auto height = map["height"].get<float>();
     auto width = map["width"].get<float>();
-    auto world = new World(height, width, config);
+    World* world = new World(height, width, config);
 
     float i = float(TRACK_SIZE)/2, j = float(TRACK_SIZE)/2;
 
