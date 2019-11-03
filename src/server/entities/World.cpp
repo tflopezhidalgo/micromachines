@@ -22,16 +22,16 @@ World::World(float height, float width, std::map<std::string, float> &config) :
     b2Vec2 verticalEdgeSize = {EDGE_THICKNESS, height};
 
     //top edge
-    addBox({0.f, height/2.f}, horizontalEdgeSize, false);
+    addBox({0.f, height/2.f}, horizontalEdgeSize, false, false);
 
     //down edge
-    addBox({0.f, -height/2.f}, horizontalEdgeSize, false);
+    addBox({0.f, -height/2.f}, horizontalEdgeSize, false, false);
 
     //left edge
-    addBox({-width/2.f, 0.f}, verticalEdgeSize, false);
+    addBox({-width/2.f, 0.f}, verticalEdgeSize, false, false);
 
     //right edge
-    addBox({width/2.f, 0.f}, verticalEdgeSize, false);
+    addBox({width/2.f, 0.f}, verticalEdgeSize, false, false);
 }
 
 //private method that generates a new body in the physical world
@@ -47,29 +47,58 @@ b2Body* World::addBody(b2Vec2 pos, bool dynamic) {
     return body;
 }
 
-b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic) {
+b2Body* World::addBox(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor) {
     b2Body* boxBody = addBody(pos, dynamic);
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(size.x / 2, size.y / 2);
+    polygonShape.SetAsBox(size.x / 2.f, size.y / 2.f);
 
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
     fixture_def.density = 1.f;
+    fixture_def.isSensor = sensor;
     boxBody->CreateFixture(&fixture_def);
 
     return boxBody;
 }
 
+b2Body* World::addCircle(b2Vec2 pos, float radius, bool dynamic, bool sensor) {
+    b2Body* body = addBody(pos, dynamic);
+    b2CircleShape circle;
+    circle.m_p.Set(0, 0);
+    circle.m_radius = radius;
+
+    b2FixtureDef fixture_def;
+    fixture_def.shape = &circle;
+    fixture_def.isSensor = sensor;
+    body->CreateFixture(&fixture_def);
+
+    return body;
+}
+
 HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
-    b2Body* body = addBox({x_pos, y_pos},
-                             {BOX_SIZE, BOX_SIZE}, false);
+    b2Body* body = addCircle({x_pos, y_pos}, BOOSTERS_RADIUS, false, true);
     auto healthBooster = new HealthBooster(body, int(config.find(HEALTH_BOOST_KEY)->second));
     body->SetUserData(healthBooster);
     return healthBooster;
 }
 
+SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
+    b2Body* body = addCircle({x_pos,y_pos}, BOOSTERS_RADIUS, false, true);
+    auto speedBooster = new SpeedBooster(body,
+            config.find(SPEED_BOOST_KEY)->second,
+            config.find(MAX_FORWARD_SPEED_KEY)->second);
+    return speedBooster;
+}
+
+Oil* World::addOil(float x_pos, float y_pos) {
+    b2Body* body = addCircle({x_pos, y_pos}, OIL_RADIUS, false, true);
+    auto oil = new Oil(body, config.find(OIL_GRIP_KEY)->second);
+    body->SetUserData(oil);
+    return oil;
+}
+
 Stone* World::addStone(float x_pos, float y_pos) {
-    b2Body* body = addBox({x_pos, y_pos}, {STONE_SIZE, STONE_SIZE}, false);
+    b2Body* body = addCircle({x_pos, y_pos}, STONE_RADIUS, false, false);
     auto stone = new Stone(body, int(config.find(STONE_DAMAGE_KEY)->second));
     body->SetUserData(stone);
     return stone;
@@ -169,21 +198,6 @@ Track* World::addTrack(float x_pos, float y_pos, int shape) {
     return track;
 }
 
-Oil* World::addOil(float x_pos, float y_pos) {
-    b2Body* body = addRectangularFloor({x_pos, y_pos}, {FLOOR_OIL_SIZE, FLOOR_OIL_SIZE});
-    auto oil = new Oil(body, config.find(OIL_GRIP_KEY)->second);
-    body->SetUserData(oil);
-    return oil;
-}
-
-SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
-    b2Body* body = addBody({x_pos,y_pos}, false);
-    auto speedBooster = new SpeedBooster(body,
-            config.find(SPEED_BOOST_KEY)->second,
-            config.find(MAX_FORWARD_SPEED_KEY)->second);
-    return speedBooster;
-}
-
 b2Body* World::createTireBody(b2Vec2& position) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -211,22 +225,6 @@ void World::step() {
     int positionIterations = 3;
     world->Step(timeStep, velocityIterations, positionIterations);
 }
-
-/*void World::removeEntity(Identifier identifier) {
-    b2Body* bodies = world->GetBodyList();
-    while (bodies) {
-        b2Body *actualBody = bodies;
-        bodies = bodies->GetNext();
-        void *userData = actualBody->GetUserData();
-        if (userData != nullptr) {
-            auto entity = static_cast<Entity*>(userData);
-            if (entity->getIdentifier() == identifier) {
-                world->DestroyBody(actualBody);
-                return;
-            }
-        }
-    }
-}**/
 
 void World::destroyBody(b2Body* body) {
     world->DestroyBody(body);

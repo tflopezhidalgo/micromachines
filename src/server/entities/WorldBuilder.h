@@ -15,6 +15,10 @@ class WorldBuilder {
 private:
     std::ifstream file;
     std::map<std::string, float>& config;
+    nlohmann::json map;
+    float height;
+    float width;
+    void addTracks(World* world, std::vector<Track*>& tracks);
 public:
     explicit WorldBuilder(std::string& mapName, std::map<std::string, float>& config);
     World* build(std::vector<Track*>& tracks);

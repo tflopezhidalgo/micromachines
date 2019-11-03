@@ -28,7 +28,9 @@ private:
 
     b2Body* addBody(b2Vec2 pos, bool dynamic);
 
-    b2Body* addBox(b2Vec2 pos, b2Vec2 size, bool dynamic);
+    b2Body* addBox(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor);
+
+    b2Body* addCircle(b2Vec2 pos, float radius, bool dynamic, bool sensor);
 
     b2Body* addRectangularFloor(b2Vec2 pos, b2Vec2 size);
 
