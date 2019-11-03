@@ -24,13 +24,14 @@ WorldBuilder::WorldBuilder(std::string &mapName, std::map<std::string, float>& c
     }
 }
 
+//builds physical word and adds tracks references in tracks vector.
 World* WorldBuilder::build(std::vector<Track*>& tracks) {
     nlohmann::json map = nlohmann::json::parse(file);
     auto height = map["height"].get<float>();
     auto width = map["width"].get<float>();
-    World* world = new World(height, width, config);
+    auto world = new World(height, width, config);
 
-    float i = float(TRACK_SIZE)/2, j = float(TRACK_SIZE)/2;
+    float i = float(TRACK_SIZE)/2.f, j = float(TRACK_SIZE)/2.f;
 
     Track* track;
 
@@ -43,27 +44,27 @@ World* WorldBuilder::build(std::vector<Track*>& tracks) {
            switch(tile) {
                //todo: done to accept curved tracks
                case HORIZONTAL_TRACK_ID: {
-                    track = world->addTrack(-width/2 + i, height/2 - j);
+                    track = world->addTrack(-width/2 + i, -height/2 + j);
                     tracks.push_back(track);
                }
                case VERTICAL_TRACK_ID: {
-                    track = world->addTrack(-width/2 + i, height/2 - j);
+                    track = world->addTrack(-width/2 + i, -height/2 + j);
                     tracks.push_back(track);
                }
                case FIRST_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(-width/2 + i, height/2 - j);
+                    track = world->addTrack(-width/2 + i, -height/2 + j);
                     tracks.push_back(track);
                }
                case SECOND_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(-width/2 + i, height/2 - j);
+                    track = world->addTrack(-width/2 + i, -height/2 + j);
                     tracks.push_back(track);
                }
                case THIRD_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(-width/2 + i, height/2 - j);
+                    track = world->addTrack(-width/2 + i, -height/2 + j);
                     tracks.push_back(track);
                }
                case FOURTH_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(-width/2 + i, height/2 - j);
+                    track = world->addTrack(-width/2 + i, -height/2 + j);
                     tracks.push_back(track);
                }
                default: ; //do nothing
@@ -72,7 +73,7 @@ World* WorldBuilder::build(std::vector<Track*>& tracks) {
 
            }
        }
-       i = TRACK_SIZE;
+       i = TRACK_SIZE/2.f;
        j += TRACK_SIZE;
     }
     return world;

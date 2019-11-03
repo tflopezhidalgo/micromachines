@@ -151,7 +151,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 b2Body* World::addRectangularFloor(b2Vec2 pos, b2Vec2 size) {
     b2Body* boxBody = addBody(pos, false);
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(size.x / 2, size.y / 2);
+    polygonShape.SetAsBox(size.x / 2.f, size.y / 2.f);
 
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
@@ -165,6 +165,7 @@ b2Body* World::addRectangularFloor(b2Vec2 pos, b2Vec2 size) {
 Track* World::addTrack(float x_pos, float y_pos, int shape) {
     b2Body* body = addRectangularFloor({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
     auto track = new Track(body, config.find(TRACK_FRICTION_KEY)->second);
+    body->SetUserData(track);
     return track;
 }
 
