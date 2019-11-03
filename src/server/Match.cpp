@@ -25,15 +25,12 @@ Match::Match(std::string& mapName, int playersAmount,
 
 void Match::addPlayer(std::string nickname, Client* client) {
     //we need to see where to put every car
-    std::cout<<"OK***\n";
     Car* car = world->addCar(100.f, 100.f);
-    std::cout<<"OK****\n";
     cars.emplace(nickname, car);
     clients.emplace(nickname, client);
     if (cars.size() == playersAmount) {
         matchStarted = true;
         start();
-        std::cout<<"OK LEO\n";
     }
 }
 
@@ -51,7 +48,6 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 
 void Match::run() {
     //ready, set, go
-    std::cout<<"OK0\n";
     startClientsThread();
     while (!matchFinished) {
         auto initial = std::chrono::high_resolution_clock::now();
@@ -59,19 +55,16 @@ void Match::run() {
         std::vector<Event> events = eventsQueue.emptyQueue();
         updateModel(events);
         sendUpdateToClients();
-        std::cout<<"OK5\n";
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
         long sleepTime = (1000 / framesPerSecond) - loopDuration.count();
         if (sleepTime > 0) {
             std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         }
-        std::cout<<"OK7\n";
     }
 }
 
 void Match::updateModel(std::vector<Event> &events) {
-    std::cout<<"OK1\n";
     for (auto & car : cars) {
         car.second->updateFriction();
     }
