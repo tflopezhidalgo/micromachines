@@ -48,7 +48,7 @@ b2Body* World::addBody(b2Vec2 pos, bool dynamic, float angle) {
     return body;
 }
 
-b2Body* World::addBoxBody(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor) {
+b2Body* World::addBoxBody(b2Vec2 pos, b2Vec2 size, float angle, bool dynamic, bool sensor) {
     b2Body* boxBody = addBody(pos, dynamic);
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(size.x / 2.f, size.y / 2.f);
@@ -199,10 +199,12 @@ Floor* World::addFloor(float x_pos, float y_pos, float friction) {
     return floor;
 }
 
-/*GrandStand* World::addGrandStand(float x_pos, float y_pos, float angle) {
-    b2Body* body = addBoxBody({x_pos, y_pos}, {})
-    return new GrandStand(b2Body*);
-}*/
+GrandStand* World::addGrandStand(float x_pos, float y_pos, float angle) {
+    b2Body* body = addBoxBody({x_pos, y_pos},
+            {GRANDSTAND_WIDTH, GRANDSTAND_HEIGHT}, angle*DEGTORAD, false, false);
+    return new GrandStand(body,
+            config.find(GRANDSTAND_OBJECTS_THROWN)->second, x_pos, y_pos);
+}
 
 b2Body* World::createTireBody(b2Vec2 chassisPosition, float angle) {
     b2BodyDef bodyDef;

@@ -29,7 +29,7 @@ private:
 
     b2Body* addBody(b2Vec2 pos, bool dynamic, float angle = 0);
 
-    b2Body* addBoxBody(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor);
+    b2Body* addBoxBody(b2Vec2 pos, b2Vec2 size, float angle = 0, bool dynamic, bool sensor);
 
     b2Body* addCircleBody(b2Vec2 pos, float radius, bool dynamic, bool sensor);
 
@@ -45,7 +45,7 @@ public:
 
     Car* addCar(float x_pos, float y_pos, float angle);
 
-    //GrandStand* addGrandStand(float x_pos, float y_pos, float angle);
+    GrandStand* addGrandStand(float x_pos, float y_pos, float angle);
 
     HealthBooster* addHealthBooster(float x_pos, float y_pos);
 

@@ -5,6 +5,8 @@
 #ifndef MICROMACHINES_IDENTIFIERS_H
 #define MICROMACHINES_IDENTIFIERS_H
 
+#define THROWABLE_OBJECTS_NUMBER 4
+
 enum FloorIdentifier {
     GRASS_ID,
     HORIZONTAL_TRACK_ID,
@@ -16,13 +18,13 @@ enum FloorIdentifier {
 };
 
 enum EntityIdentifier {
-    CAR,
     HEALTHBOOSTER,
     OIL,
     SPEEDBOOSTER,
     STONE,
-    MUD,
-    TRACK
+    MUG,
+    TRACK,
+    CAR
 };
 
 enum EntityStatus {

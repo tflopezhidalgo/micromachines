@@ -26,7 +26,7 @@ Match::Match(std::string& mapName, int playersAmount,
 
 void Match::addPlayer(std::string nickname, Client* client) {
     //we need to see where to put every car
-    Car* car = world->addCar(0.f, 0.f, 0.f);
+    Car* car = world->addCar(0.f, 0.f, 180.f);
     //todo harcodeado
     Entity* entity = world->addStone(100, 100);
     entities.emplace(entitiesCounter, entity);

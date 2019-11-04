@@ -34,6 +34,8 @@
 #define BOOSTERS_RADIUS 3.f
 #define EDGE_THICKNESS 0.5f
 #define TRACK_SIZE 33
+#define GRANDSTAND_WIDTH 50
+#define GRANDSTAND_HEIGHT 50
 
 //Config Keys
 #define MAX_FORWARD_SPEED_KEY "maxForwardSpeed"
@@ -50,5 +52,6 @@
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"
 #define SPEED_BOOST_KEY "speedBoost"
 #define STONE_DAMAGE_KEY "stoneDamage"
+#define GRANDSTAND_OBJECTS_THROWN "grandStandObjectsThrown"
 
 #endif //MICROMACHINES_MACROS_H

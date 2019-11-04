@@ -15,7 +15,7 @@ private:
     int objectsThrownNumber;
 public:
     GrandStand(b2Body* body, int objectsThrownNumber, float x_pos, float y_pos);
-    void throwObjectsToPilots(std::vector<Entity*> entities);
+    void throwObjectsToPilots(std::vector<Entity*>& entities);
     ~GrandStand();
 };
 
