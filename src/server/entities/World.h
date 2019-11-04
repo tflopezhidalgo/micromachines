@@ -34,7 +34,7 @@ private:
 
     b2Body* addRectangularFloor(b2Vec2 pos, b2Vec2 size);
 
-    b2Body* createTireBody(b2Vec2& position);
+    b2Body* createTireBody(b2Vec2& position, b2Vec2 chassisPosition) ;
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2& pos);
