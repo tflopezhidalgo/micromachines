@@ -27,9 +27,9 @@ private:
     float timeStep;
     std::map<std::string, float> &config;
 
-    b2Body* addBody(b2Vec2 pos, bool dynamic, float angle = 0);
+    b2Body* addBody(b2Vec2 pos, bool dynamic);
 
-    b2Body* addBoxBody(b2Vec2 pos, b2Vec2 size, float angle = 0, bool dynamic, bool sensor);
+    b2Body* addBoxBody(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor, float angle = 0);
 
     b2Body* addCircleBody(b2Vec2 pos, float radius, bool dynamic, bool sensor);
 
