@@ -35,7 +35,7 @@ World::World(float height, float width, std::map<std::string, float> &config) :
 }
 
 //private method that generates a new body in the physical world
-b2Body* World::addBody(b2Vec2 pos, bool dynamic) {
+b2Body* World::addBody(b2Vec2 pos, bool dynamic, float angle) {
     b2BodyDef bodyDef;
     if (dynamic) {
         bodyDef.type = b2_dynamicBody;
@@ -43,6 +43,7 @@ b2Body* World::addBody(b2Vec2 pos, bool dynamic) {
         bodyDef.type = b2_staticBody;
     }
     bodyDef.position = pos;
+    bodyDef.angle = angle;
     b2Body* body = world->CreateBody(&bodyDef);
     return body;
 }
@@ -104,11 +105,12 @@ Stone* World::addStone(float x_pos, float y_pos) {
     return stone;
 }
 
-Car* World::addCar(float x_pos, float y_pos) {
+Car* World::addCar(float x_pos, float y_pos, float angle) {
     //todo use x_pos, y_pos
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = {x_pos, y_pos};
+    bodyDef.angle = angle;
     b2Body* carBody = world->CreateBody(&bodyDef);
 
     carBody->SetAngularDamping(ANGULAR_DAMPING);
@@ -139,7 +141,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //back left tire
     b2Vec2 backLeftTirePosition = {-3, -6.f};
-    b2Body* body = createTireBody(backLeftTirePosition, {x_pos, y_pos});
+    b2Body* body = createTireBody(backLeftTirePosition, {x_pos, y_pos}, angle);
     Tire* tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, initialFriction);
     joinTireToChassis(&jointDef, body, backLeftTirePosition);
@@ -147,7 +149,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //back right tire
     b2Vec2 backRightTirePosition = {3, -6.f};
-    body = createTireBody(backRightTirePosition, {x_pos, y_pos});
+    body = createTireBody(backRightTirePosition, {x_pos, y_pos}, angle);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, initialFriction);
     joinTireToChassis(&jointDef, body, backRightTirePosition);
@@ -155,7 +157,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //front left tire
     b2Vec2 frontLeftTirePosition = {-3, 6.f};
-    body = createTireBody(frontLeftTirePosition, {x_pos, y_pos});
+    body = createTireBody(frontLeftTirePosition, {x_pos, y_pos}, angle);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             frontTireMaxDriveForce, frontTireMaxLatImpulse, initialFriction);
     b2RevoluteJoint* flJoint = joinTireToChassis(&jointDef, body, frontLeftTirePosition);
@@ -163,7 +165,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //front right tire
     b2Vec2 frontRightTirePosition = {3, 6.f};
-    body = createTireBody(frontRightTirePosition, {x_pos, y_pos});
+    body = createTireBody(frontRightTirePosition, {x_pos, y_pos}, angle);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
                     frontTireMaxDriveForce, frontTireMaxLatImpulse, initialFriction);
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, frontRightTirePosition);
@@ -197,10 +199,16 @@ Floor* World::addFloor(float x_pos, float y_pos, float friction) {
     return floor;
 }
 
-b2Body* World::createTireBody(b2Vec2& position, b2Vec2 chassisPosition) {
+/*GrandStand* World::addGrandStand(float x_pos, float y_pos, float angle) {
+    b2Body* body = addBoxBody({x_pos, y_pos}, {})
+    return new GrandStand(b2Body*);
+}*/
+
+b2Body* World::createTireBody(b2Vec2& position, b2Vec2 chassisPosition, float angle) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = {position.x + chassisPosition.x, position.y + chassisPosition.y};
+    bodyDef.angle = angle;
 
     b2Body* body = world->CreateBody(&bodyDef);
     b2PolygonShape polygonShape;

@@ -42,7 +42,6 @@
 #define BACK_MAX_DRIVE_FORCE_KEY "backTireMaxDriveForce"
 #define FRONT_MAX_LAT_IMPULSE_KEY "frontTireMaxLateralImpulse"
 #define BACK_MAX_LAT_IMPULSE_KEY "backTireMaxLateralImpulse"
-#define DEFAULT_FRICTION_KEY "defaultFriction"
 #define FPS_KEY "framesPerSecond"
 #define HEALTH_BOOST_KEY "healthBoost"
 #define OIL_GRIP_KEY "oilGrip"
