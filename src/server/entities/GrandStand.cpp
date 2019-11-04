@@ -39,6 +39,8 @@ void GrandStand::throwObjectsToPilots(std::vector<Entity*>& entities) {
 
         default: ; //do nothing
     }
+
+    //return objectsAddedNumber (para el contador)
 }
 
 GrandStand::~GrandStand() {

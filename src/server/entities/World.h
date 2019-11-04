@@ -35,7 +35,7 @@ private:
 
     b2Body* addFloorBody(b2Vec2 pos, b2Vec2 size);
 
-    b2Body* createTireBody(b2Vec2 chassisPosition, float angle) ;
+    b2Body* createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos, float angle) ;
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2& pos);

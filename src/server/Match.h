@@ -5,7 +5,6 @@
 #ifndef MICROMACHINES_MATCH_H
 #define MICROMACHINES_MATCH_H
 
-
 #include "ProtectedQueue.h"
 #include "Event.h"
 #include <atomic>
