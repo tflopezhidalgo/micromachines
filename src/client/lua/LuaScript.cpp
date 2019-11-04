@@ -18,26 +18,16 @@ LuaScript::LuaScript(std::string &mapName) {
 }
 
 std::string LuaScript::getAction(int angle, int pos_x, int pos_y) {
-    int stackSize = lua_gettop(L);
-    std::cout << "stacksize: " << stackSize << std::endl;
-
-    // Agrego al stack la función a llamar
     lua_getglobal(L, "getAction");
-    // Agrego al stack los parámetros de la función a llamar
+
     lua_pushnumber(L, angle);
     lua_pushnumber(L, pos_x);
     lua_pushnumber(L, pos_y);
 
-    // Llamo a la función
-    // La función recibe 2 parámetros y devuelve 1
     lua_pcall(L, 3, 1, 0);
     const char* lua_action = lua_tostring(L, 1);
 
-    // Limpio el stack
-    lua_pop(L, 1);
-    stackSize = lua_gettop(L);
-    std::cout << "stacksize: " << stackSize << std::endl;
-
+    emptyStack();
     action = std::string(lua_action);
     return action;
 }
@@ -46,7 +36,31 @@ std::string LuaScript::getLastAction() {
     return action;
 }
 
-void LuaScript::createTable(std::vector<std::vector<int>> newEntities) {
+void LuaScript::setEntitiesTable(std::vector<std::vector<int>> newEntities) {
+    //int old_size = entities.size();
+    std::vector<std::vector<int>> to_add = addedEntities(newEntities);
+    std::vector<std::vector<int>> to_delete = deletedEntities(newEntities);
+
+    luaCreateTable(newEntities);
+    /*
+    if (old_size == 0) {
+        luaCreateTable(newEntities);
+    } else {
+        luaUpdateTable(newEntities);
+    }
+    */
+}
+
+void LuaScript::luaUpdateTable(std::vector<std::vector<int>> newEntities) {
+    std::vector<std::vector<int>> to_add = addedEntities(newEntities);
+    std::vector<std::vector<int>> to_delete = deletedEntities(newEntities);
+
+    lua_getglobal(L,"entities");
+    //lua_rawgeti(L,-1,1);
+    //lua_rawgeti(L,-1,2);
+}
+
+void LuaScript::luaCreateTable(std::vector<std::vector<int>> newEntities) {
     lua_newtable(L);
     for(int i = 0; i < newEntities.size(); i++) {
         lua_pushnumber(L, i + 1);    // parent table index
@@ -86,23 +100,15 @@ std::vector<std::vector<int>> LuaScript::deletedEntities(
     return different;
 }
 
-void LuaScript::setEntitiesTable(std::vector<std::vector<int>> newEntities) {
-    int old_size = entities.size();
-
-    std::vector<std::vector<int>> to_add = addedEntities(newEntities);
-    std::vector<std::vector<int>> to_delete = deletedEntities(newEntities);
-    
-    if (old_size == 0) createTable(newEntities);
-
-    // push new in lua
-    // delete in lua
-}
-
-LuaScript::~LuaScript() {
+void LuaScript::emptyStack() {
     int stackSize = lua_gettop(L);
     while(stackSize != 0) {
         lua_pop(L, 1);
         stackSize = lua_gettop(L);
     }
+}
+
+LuaScript::~LuaScript() {
+    emptyStack();
     lua_close(L);
 }

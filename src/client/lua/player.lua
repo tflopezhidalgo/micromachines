@@ -71,47 +71,35 @@ function action_vertical(direction, pos_x, next_y)
         return "B" -- REVERSE
     end
 
-    return check_safe_floor(direction, map[next_y][pos_x + i])
+    -- return check_safe_floor(direction, map[next_y][pos_x + i])
     local st, en = getLimit(pos_x)
     for i = st, en do
-        if (check_position(map[next_y][pos_x + i])) then
-            return next_action[i]
+        local floor = map[next_y][pos_x + i])
+        if (check_position(floor)) then
+            return "F"
         end
     end
-    return "F"
 end
 
 function action_horizontal(direction, next_x, pos_y)
     if (is_in_border(pos_x)) then
-        return next_action["reverse"]
+        return "B" -- REVERSE
     end
 
     local st, en = getLimit(pos_y)
     for i = st, en do
         if (check_position(map[pos_y + i][next_x])) then
-            return next_action[i]
+            return "F"
         end
     end
     return "F"
 end
 
-function direction_down(direction, pos_x, pos_y)
-    return action_vertical(direction, pos_x, pos_y +1)
+function check_entity(pos_x, pos_y)
+    for _, entity in pairs(entities) do
+        if (entity[2] == pos_x and entity[3] == pos_y) then
+            return entities[entity[1]]["safe"]
+    end
+    -- no hay ninguna entidad en ese lugar, puede pasar
+    return true
 end
-
-function direction_up(direction, pos_x, pos_y)
-    return action_vertical(direction, pos_x, pos_y - 1)
-end
-
-function direction_left(direction, pos_x, pos_y)
-    return action_horizontal(direction, pos_x - 1, pos_y)
-end
-
-function direction_right(direction, pos_x, pos_y)
-    return action_horizontal(1, pos_x + 1, pos_y)
-end
-
---if (check_position(map[pos_y][pos_x + 1])) then
---          return next_action[0]
---      end
-
