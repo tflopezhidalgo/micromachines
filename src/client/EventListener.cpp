@@ -7,7 +7,8 @@
 
 EventListener::EventListener(std::string playerID, 
 							 ProtectedQueue<Event>& q):
-    q(q), playerID(playerID) {}
+							 alive(true),
+                             q(q), playerID(playerID) {}
 
 void EventListener::run() {
     SDL_Event e;
@@ -24,10 +25,10 @@ void EventListener::run() {
             detectEvent(e);
 
         std::vector<char> actions = std::move(createActionList());
-        //if (!actions.empty()) {
+        if (!actions.empty()) {
             Event event(this->playerID, std::move(actions));
             q.push(std::move(event));
-        //}
+        }
     }
 }
 
@@ -54,8 +55,9 @@ std::vector<char> EventListener::createActionList() {
     if (this->keysHeld[SDLK_a])
         actions.push_back(LEFT);
 
-    if (this->keysHeld[SDLK_q])
+    if (this->keysHeld[SDLK_q]) {
         this->alive = false;
+    }
 
     return actions;
 }

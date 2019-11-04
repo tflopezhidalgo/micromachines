@@ -13,7 +13,6 @@ private:
     float maxDriveForce;
     float maxLateralImpulse;
     float actualFriction;
-    float defaultFriction;
     b2Body* body;
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
@@ -29,7 +28,6 @@ public:
     void updateDrive(std::vector<char>& actions);
     void updateFriction();
     void setFriction(float newFriction);
-    void resetFriction();
     void setMaxForwardSpeed(float newMaxForwardSpeed);
     ~Tire();
 };

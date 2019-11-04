@@ -8,7 +8,7 @@
 
 class EventListener: public Thread{
 private:
-    bool alive = true;
+    bool alive;
     std::map<int, bool> keysHeld;
     ProtectedQueue<Event>& q;
 	std::string playerID;
