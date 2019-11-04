@@ -14,12 +14,12 @@
 #define TILE_3 "../media/tiles/03_Road.png"
 #define TILE_4 "../media/tiles/04_Road.png"
 #define TILE_5 "../media/tiles/05_Road.png"
-#define TILE_6 "../media/tiles/06_Road.img"
+#define TILE_6 "../media/tiles/06_Road.pmg"
 #define GRASS_TILE "../media/tiles/Grass_Tile.png"
 
 // De qué forma queremos que la muestre
-#define TILE_HEIGHT 33.26
-#define TILE_WIDTH 33.26
+#define TILE_HEIGHT 33.05
+#define TILE_WIDTH 33.05
 
 class TileMap: public Entity{
     private:

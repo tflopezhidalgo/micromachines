@@ -34,6 +34,9 @@ window(window) {
             else if (j == 5) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_5, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
+            else if (j == 6) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_6, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+            }
             x += (zoom * TILE_WIDTH);
         }
         y += (zoom*TILE_HEIGHT);

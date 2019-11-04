@@ -13,17 +13,33 @@ void Receiver::run() {
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
 
-
         nlohmann::json list;
-        list.push_back("1");
-        list.push_back("ROCK");
-        list.push_back(50);
-        list.push_back(50);
+        list.push_back("2");
+        list.push_back("HEALTH");
+        list.push_back(-20);
+        list.push_back(-20);
         list.push_back(true);
 
         j["objects"].push_back(list);
 
-        std::cout << j.dump() << std::endl;
+        nlohmann::json list2;
+        list2.push_back("1");
+        list2.push_back("BOOST");
+        list2.push_back(20);
+        list2.push_back(20);
+        list2.push_back(true);
+
+        j["objects"].push_back(list2);
+
+        nlohmann::json list3;
+        list3.push_back("3");
+        list3.push_back("OIL");
+        list3.push_back(0);
+        list3.push_back(0);
+        list3.push_back(true);
+
+        j["objects"].push_back(list3);
+
 
         for (auto& car : j["carsData"]) {
             std::string key = car[0].get<std::string>();
