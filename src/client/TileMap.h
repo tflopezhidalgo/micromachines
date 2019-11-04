@@ -16,6 +16,7 @@
 #define TILE_5 "../media/tiles/05_Road.png"
 #define TILE_6 "../media/tiles/06_Road.png"
 #define TILE_7 "../media/tiles/07_Road.png"
+#define TILE_8 "../media/tiles/08_Road.png"
 #define GRASS_TILE "../media/tiles/Grass_Tile.png"
 
 // De qué forma queremos que la muestre
