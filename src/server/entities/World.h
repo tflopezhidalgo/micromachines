@@ -16,6 +16,7 @@
 #include "SpeedBooster.h"
 #include "Floor.h"
 #include "../common/Identifiers.h"
+#include "GrandStand.h"
 
 class World {
 private:
@@ -26,7 +27,7 @@ private:
     float timeStep;
     std::map<std::string, float> &config;
 
-    b2Body* addBody(b2Vec2 pos, bool dynamic);
+    b2Body* addBody(b2Vec2 pos, bool dynamic, float angle = 0);
 
     b2Body* addBoxBody(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor);
 
@@ -34,7 +35,7 @@ private:
 
     b2Body* addFloorBody(b2Vec2 pos, b2Vec2 size);
 
-    b2Body* createTireBody(b2Vec2& position, b2Vec2 chassisPosition) ;
+    b2Body* createTireBody(b2Vec2& position, b2Vec2 chassisPosition, float angle) ;
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2& pos);
@@ -42,7 +43,9 @@ private:
 public:
     World(float height, float width, std::map<std::string, float> &config);
 
-    Car* addCar(float x_pos, float y_pos);
+    Car* addCar(float x_pos, float y_pos, float angle);
+
+    //GrandStand* addGrandStand(float x_pos, float y_pos, float angle);
 
     HealthBooster* addHealthBooster(float x_pos, float y_pos);
 

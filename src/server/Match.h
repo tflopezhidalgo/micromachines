@@ -28,9 +28,11 @@ private:
     std::vector<Floor*> floors;
     std::unordered_map<std::string, Car*> cars;
     std::unordered_map<std::string, Client*> clients;
+    std::unordered_map<int,Entity*> entities;
     int playersAmount;
     int raceLaps;
-    int framesPerSecond;
+    long timeStep;
+    int entitiesCounter;
     void startClientsThread();
     void updateModel(std::vector<Event> &events);
     void sendUpdateToClients();
