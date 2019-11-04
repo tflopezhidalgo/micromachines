@@ -11,12 +11,12 @@ window(window) {
     nlohmann::json json_p;
     in >> json_p;
     int sized = json_p["tiles"].size();
-    int x, y = ((- sized * TILE_HEIGHT) + CAR_H) * zoom / 2;
+    int x, y = - (sized - 1) * TILE_HEIGHT * zoom / 2;
 
     for (auto& tileList : json_p["tiles"]) {
         std::vector<int> tiles2 = tileList.get<std::vector<int>>();
         int size2 = tiles2.size();
-        x = ((- size2 * TILE_WIDTH) + CAR_W) * zoom / 2;
+        x = - (size2 - 1) * TILE_WIDTH * zoom / 2;
         for (int j : tiles2) {
             this->tiles.emplace_back(std::move(Tile(window, GRASS_TILE, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             if (j == 1) {
