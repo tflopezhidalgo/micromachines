@@ -29,11 +29,16 @@
 //Bodies sizes //todo adjust sizes
 #define CAR_H 15.f
 #define CAR_W 6.f
-#define STONE_RADIUS 3.f
-#define OIL_RADIUS 5.f
-#define BOOSTERS_RADIUS 3.f
+#define STONE_RADIUS 20.f
+#define OIL_RADIUS 20.f
+#define BOOSTERS_RADIUS 20.f
 #define EDGE_THICKNESS 0.5f
 #define TRACK_SIZE 33
+#define GRANDSTAND_WIDTH 50
+#define GRANDSTAND_HEIGHT 50
+
+//Bodies types
+
 
 //Config Keys
 #define MAX_FORWARD_SPEED_KEY "maxForwardSpeed"
@@ -42,7 +47,6 @@
 #define BACK_MAX_DRIVE_FORCE_KEY "backTireMaxDriveForce"
 #define FRONT_MAX_LAT_IMPULSE_KEY "frontTireMaxLateralImpulse"
 #define BACK_MAX_LAT_IMPULSE_KEY "backTireMaxLateralImpulse"
-#define DEFAULT_FRICTION_KEY "defaultFriction"
 #define FPS_KEY "framesPerSecond"
 #define HEALTH_BOOST_KEY "healthBoost"
 #define OIL_GRIP_KEY "oilGrip"
@@ -51,5 +55,6 @@
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"
 #define SPEED_BOOST_KEY "speedBoost"
 #define STONE_DAMAGE_KEY "stoneDamage"
+#define GRANDSTAND_OBJECTS_THROWN "grandStandObjectsThrown"
 
 #endif //MICROMACHINES_MACROS_H

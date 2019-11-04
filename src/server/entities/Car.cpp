@@ -134,6 +134,7 @@ void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
 }
 
 Car::~Car() {
+    //todo delete joints
     for (auto & tire : tires) {
         delete tire;
     }

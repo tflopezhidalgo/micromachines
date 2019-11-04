@@ -10,12 +10,13 @@
 
 Match::Match(std::string& mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
-    matchStarted(false),
-    matchFinished(false),
-    mapName(mapName),
-    raceLaps(raceLaps),
-    playersAmount(playersAmount),
-    framesPerSecond(config.find(FPS_KEY)->second) {
+        matchStarted(false),
+        matchFinished(false),
+        mapName(mapName),
+        raceLaps(raceLaps),
+        playersAmount(playersAmount),
+        timeStep(1000/config.find(FPS_KEY)->second),
+        entitiesCounter(0) {
         //todo nombre del mapa harcodeado
         std::string name = "simple";
         WorldBuilder worldBuilder(name, config);
@@ -25,7 +26,11 @@ Match::Match(std::string& mapName, int playersAmount,
 
 void Match::addPlayer(std::string nickname, Client* client) {
     //we need to see where to put every car
-    Car* car = world->addCar(100.f, 100.f);
+    Car* car = world->addCar(-100.f, 0.f, 180.f);
+    //todo harcodeado
+    Entity* entity = world->addStone(100, 100);
+    entities.emplace(entitiesCounter, entity);
+    //*****************************
     cars.emplace(nickname, car);
     clients.emplace(nickname, client);
     if (cars.size() == playersAmount) {
@@ -57,7 +62,7 @@ void Match::run() {
         sendUpdateToClients();
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
-        long sleepTime = (1000 / framesPerSecond) - loopDuration.count();
+        long sleepTime = timeStep - loopDuration.count();
         if (sleepTime > 0) {
             std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         }
@@ -83,7 +88,7 @@ void Match::updateModel(std::vector<Event> &events) {
 
 void Match::sendUpdateToClients() {
     //model serializer will receive all unordered_maps as arguments
-    std::string modelSerialized = ModelSerializer::serialize(cars);
+    std::string modelSerialized = ModelSerializer::serialize(cars, entities);
     for (auto & client : clients) {
         client.second->sendMessage(modelSerialized);
     }

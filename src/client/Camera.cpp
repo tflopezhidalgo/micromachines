@@ -16,8 +16,8 @@ void Camera::setOnTarget(Entity* e) {
 }
 
 SDL_Rect Camera::translate(SDL_Rect &origin) {
-    SDL_Rect translated = {origin.x - cameraInfo.x,
-                           origin.y - cameraInfo.y,
+    SDL_Rect translated = {origin.x - cameraInfo.x - (origin.w / 2) * zoom,
+                           origin.y - cameraInfo.y - (origin.h / 2) * zoom,
                            origin.w * zoom,
                            origin.h * zoom};
     return translated;
@@ -40,8 +40,8 @@ void Camera::update() {
     if (target == NULL)
         return;
 
-    this->cameraInfo.x = target->getXPos() - cameraInfo.w / 2;
-    this->cameraInfo.y = target->getYPos() - cameraInfo.h / 2;
+    this->cameraInfo.x = target->getXPos() - (cameraInfo.w / 2);
+    this->cameraInfo.y = target->getYPos() - (cameraInfo.h / 2);
     this->cameraInfo.h = window.getHeight();
     this->cameraInfo.w = window.getWidth();
     this->zoom = MtoP;

@@ -32,7 +32,8 @@ WorldBuilder::WorldBuilder(std::string &mapName, std::map<std::string, float>& c
 World* WorldBuilder::build(std::vector<Floor*>& tracks) {
     auto world = new World(height, width, config);
     addFloors(world, tracks);
-
+    //todo addCheckpoints
+    //todo addGrandStands
     return world;
 }
 
