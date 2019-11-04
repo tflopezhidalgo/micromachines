@@ -2,6 +2,7 @@
 // Created by leobellaera on 18/10/19.
 //
 
+#include <iostream>
 #include "Tire.h"
 #include "Macros.h"
 
@@ -26,6 +27,7 @@ b2Vec2 Tire::getForwardVelocity() {
 
 void Tire::updateFriction() {
     //lateral linear velocity
+    std::cout<<"X_POS: "<< body->GetPosition().x<<" || Y_POS: "<< body->GetPosition().y<<std::endl;
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
     if (impulse.Length() > maxLateralImpulse)
         impulse *= maxLateralImpulse / impulse.Length();
