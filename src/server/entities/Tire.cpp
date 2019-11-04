@@ -5,12 +5,6 @@
 #include "Tire.h"
 #include "Macros.h"
 
-#define FORWARD_SPEED "defaultMaxForwardSpeed"
-#define BACKWARD_SPEED "defaultMaxBackwardSpeed"
-#define DRIVE_FORCE "defaultMaxDriveForce"
-#define LATERAL_IMPULSE "defaultMaxLateralImpulse"
-#define TIRES_FRICTION "defaultFriction"
-
 Tire::Tire(b2Body* body, float maxFwSpeed, float maxBwSpeed,
             float maxDriveForce, float maxLatImpulse, float defaultFriction) :
             body(body),
@@ -18,8 +12,7 @@ Tire::Tire(b2Body* body, float maxFwSpeed, float maxBwSpeed,
             maxBackwardSpeed(maxBwSpeed),
             maxDriveForce(maxDriveForce),
             maxLateralImpulse(maxLatImpulse),
-            actualFriction(defaultFriction),
-            defaultFriction(defaultFriction) {}
+            actualFriction(defaultFriction) {}
 
 b2Vec2 Tire::getLateralVelocity() {
     b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(1,0) );
@@ -85,10 +78,6 @@ void Tire::updateDrive(std::vector<char>& actions) {
 
 void Tire::setFriction(float newFriction) {
     actualFriction = newFriction;
-}
-
-void Tire::resetFriction() {
-    actualFriction = defaultFriction;
 }
 
 void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {

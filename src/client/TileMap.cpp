@@ -1,35 +1,38 @@
+#include <sys/param.h>
 #include "TileMap.h"
 #include "Window.h"
-
-// Ojo que offset está deprecado
+#include "../common/Macros.h"
+#include "Car.h"
+#include <nlohmann/json.hpp>
 
 TileMap::TileMap(Window& window, const std::string& mapFile, int zoom, int offset) :
 window(window) {
-    // Harcodeado, en proceso de desharcodeo jeje
-    float x, y = -7.5 * zoom * TILE_HEIGHT;
-    y = -242 * zoom;
-    std::fstream in(mapFile);
-    for (int i = 0; i < 15; i++) {
-        x = - 7.5 * zoom * TILE_WIDTH;
-        x = - 245.5 * zoom;
-        for (int j = 0; j < 15; j++) {
-            int type = -1;
-            in >> type;
-            this->tiles.emplace_back(std::move(Tile(window, GRASS_TILE, x, y, zoom * TILE_HEIGHT, zoom*TILE_WIDTH)));
-            if (type == 1) {
-                tiles.emplace_back(std::move(Tile(window, TILE_1, x, y, zoom * TILE_HEIGHT, zoom*TILE_WIDTH)));
+    std::ifstream in(mapFile);
+    nlohmann::json json_p;
+    in >> json_p;
+    int sized = json_p["tiles"].size();
+    int x, y = ((- sized * TILE_HEIGHT) + CAR_H) * zoom / 2;
+
+    for (auto& tileList : json_p["tiles"]) {
+        std::vector<int> tiles2 = tileList.get<std::vector<int>>();
+        int size2 = tiles2.size();
+        x = ((- size2 * TILE_WIDTH) + CAR_W) * zoom / 2;
+        for (int j : tiles2) {
+            this->tiles.emplace_back(std::move(Tile(window, GRASS_TILE, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+            if (j == 1) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_1, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (type == 2) {
-                tiles.emplace_back(std::move(Tile(window, TILE_2, x, y, zoom * TILE_HEIGHT, zoom*TILE_WIDTH)));
+            else if (j == 2) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_2, x, y, TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (type == 3) {
-                tiles.emplace_back(std::move(Tile(window, TILE_3, x, y, zoom * TILE_HEIGHT, zoom*TILE_WIDTH)));
+            else if (j == 3) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_3, x, y, TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (type == 4) {
-                tiles.emplace_back(std::move(Tile(window, TILE_4, x, y, zoom * TILE_HEIGHT, zoom*TILE_WIDTH)));
+            else if (j == 4) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_4, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (type == 5) {
-                tiles.emplace_back(std::move(Tile(window, TILE_5, x, y, zoom * TILE_HEIGHT, zoom*TILE_WIDTH)));
+            else if (j == 5) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_5, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
             x += (zoom * TILE_WIDTH);
         }

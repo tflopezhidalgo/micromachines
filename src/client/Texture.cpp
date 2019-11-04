@@ -20,9 +20,7 @@ Texture::Texture(Texture&& other) :
     window(other.window) {
         this->texture = other.texture;
         other.texture = NULL;
-        this->textureInfo.x = 0;
-        this->textureInfo.y = 0;
-        SDL_QueryTexture(texture, NULL, NULL, &textureInfo.w, &textureInfo.h);
+        this->textureInfo = other.textureInfo;
 }
 
 void Texture::render(SDL_Rect& src, int angle) {

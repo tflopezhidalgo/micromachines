@@ -8,27 +8,30 @@
 
 class Animation: public Entity {
 private:
-    std::vector<Texture> frames;
+    std::vector<SDL_Rect> frames;
+    Texture texture;
 
 public:
-    Animation(Window& window, const std::string& file, int frames, int x, int y, int h, int w){
+    Animation(Window& window, const std::string& file, int frames, int x, int y, int h, int w)
+    : texture(std::move(TextureRepository::getTexture(file, window))) {
         y = 0;
         x = 0;
+        SDL_Rect rect = {x, y, h, w};
         for (int i = 0; i < frames; i++) {
-            SDL_Rect rect = {x, y, h, w};
-            Texture f(std::move(TextureRepository::getTexture(file, window)));
-            f.setRect(rect);
-            this->frames.push_back(std::move(f));
+            this->frames.push_back(rect);
             rect.x += w;
         }
     }
 
     void render(Camera& cam){
-        static int counter;
-        if (counter == 5)
+        static float counter;
+        if (counter > 5)
             counter = 0;
-        SDL_Rect r = {0,0, 100, 100};
-        frames[counter].render(r, 0);
+        SDL_Rect r = {0,0, 200, 200};
+        texture.setRect(frames[counter]);
+        texture.render(r, 0);
+        counter = counter + 0.20;
+        std::cout << "Counter vale " << counter << std::endl;
     }
 
 
