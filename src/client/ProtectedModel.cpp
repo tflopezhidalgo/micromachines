@@ -35,11 +35,12 @@ void ProtectedModel::updateObject(std::string &id, std::string &type, int x, int
     std::unique_lock<std::mutex> lck(m);
 
     if (objects.count(id) == 0) {
+        std::cout << "Se crea objeto id: " << id << std::endl;
         ThrowableFactory factory(this->main);
         this->objects[id] = factory.generateThrowable(type);
     }
 
-    this->objects[id]->setPos(x, y);
+    this->objects[id]->setPos(x * cam.getZoom() , y * cam.getZoom());
     this->objects[id]->setState(state);
 }
 

@@ -112,8 +112,8 @@ int main(int argc, char* argv[]) {
     json response = json::parse(proxy.receiveMessage());
     std::cout << "Se recibio  " << response.dump();
 
-    Window main("Game", 800, 500);
-    //Window main("game");
+    //Window main("Game", 800, 500);
+    Window main("game");
 
     ProtectedQueue<Event> q;
     ProtectedModel model(main, playerID);
