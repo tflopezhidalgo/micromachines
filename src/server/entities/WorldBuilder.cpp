@@ -29,18 +29,21 @@ WorldBuilder::WorldBuilder(std::string &mapName, std::map<std::string, float>& c
 }
 
 //builds physical word and adds tracks references in tracks vector.
-World* WorldBuilder::build(std::vector<Track*>& tracks) {
+World* WorldBuilder::build(std::vector<Floor*>& tracks) {
     auto world = new World(height, width, config);
-    addTracks(world, tracks);
+    addFloors(world, tracks);
 
     return world;
 }
 
-void WorldBuilder::addTracks(World* world, std::vector<Track*>& tracks) {
+void WorldBuilder::addFloors(World* world, std::vector<Floor*>& tracks) {
     float i = float(TRACK_SIZE)/2.f, j = float(TRACK_SIZE)/2.f;
     float w = -width/2.f, h = -height/2.f;
 
-    Track* track;
+    Floor* track;
+    
+    float grassFriction = config.find(GRASS_FRICTION_KEY)->second;
+    float trackFriction = config.find(TRACK_FRICTION_KEY)->second;
 
     for (auto & row : map["tiles"]) {
 
@@ -49,32 +52,36 @@ void WorldBuilder::addTracks(World* world, std::vector<Track*>& tracks) {
         for (int & tile : tilesRow) {
 
             switch(tile) {
-                //todo: done to accept curved tracks
+                
+                case GRASS_ID: {
+                    track = world->addFloor(w + i, h + j, grassFriction);
+                    tracks.push_back(track);
+                }
+                
                 case HORIZONTAL_TRACK_ID: {
-                    track = world->addTrack(w + i, h + j);
+                    track = world->addFloor(w + i, h + j, trackFriction);
                     tracks.push_back(track);
                 }
                 case VERTICAL_TRACK_ID: {
-                    track = world->addTrack(w + i, h + j);
+                    track = world->addFloor(w + i, h + j, trackFriction);
                     tracks.push_back(track);
                 }
                 case FIRST_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(w + i, h + j);
+                    track = world->addFloor(w + i, h + j, trackFriction);
                     tracks.push_back(track);
                 }
                 case SECOND_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(w + i, h + j);
+                    track = world->addFloor(w + i, h + j, trackFriction);
                     tracks.push_back(track);
                 }
                 case THIRD_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(w + i, h + j);
+                    track = world->addFloor(w + i, h + j, trackFriction);
                     tracks.push_back(track);
                 }
                 case FOURTH_QUAD_CURVE_TRACK_ID: {
-                    track = world->addTrack(w + i, h + j);
+                    track = world->addFloor(w + i, h + j, trackFriction);
                     tracks.push_back(track);
                 }
-                default: ; //do nothing
             }
             i += TRACK_SIZE;
         }

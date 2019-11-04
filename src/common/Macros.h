@@ -47,6 +47,7 @@
 #define HEALTH_BOOST_KEY "healthBoost"
 #define OIL_GRIP_KEY "oilGrip"
 #define TRACK_FRICTION_KEY "trackFriction"
+#define GRASS_FRICTION_KEY "grassFriction"
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"
 #define SPEED_BOOST_KEY "speedBoost"
 #define STONE_DAMAGE_KEY "stoneDamage"

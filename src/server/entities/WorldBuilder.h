@@ -18,10 +18,10 @@ private:
     nlohmann::json map;
     float height;
     float width;
-    void addTracks(World* world, std::vector<Track*>& tracks);
+    void addFloors(World* world, std::vector<Floor*>& floors);
 public:
     explicit WorldBuilder(std::string& mapName, std::map<std::string, float>& config);
-    World* build(std::vector<Track*>& tracks);
+    World* build(std::vector<Floor*>& tracks);
     ~WorldBuilder();
 };
 

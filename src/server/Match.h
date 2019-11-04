@@ -25,7 +25,7 @@ private:
     std::atomic<bool> matchFinished;
     std::string mapName;
     ProtectedQueue<Event> eventsQueue;
-    std::vector<Track*> tracks;
+    std::vector<Floor*> floors;
     std::unordered_map<std::string, Car*> cars;
     std::unordered_map<std::string, Client*> clients;
     int playersAmount;
