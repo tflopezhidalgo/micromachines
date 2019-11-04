@@ -6,19 +6,16 @@
 
 class Camera {
 private:
-    Entity* e;
+    Entity* target;
     Window& window;
     SDL_Rect cameraInfo;
+    int zoom;
 
 public:
-    int x;
-    int y;
-    int h;
-    int w;
-    int zoom;
     Camera(Window& w);
     void setOnTarget(Entity* e);
     SDL_Rect translate(SDL_Rect& origin);
+    bool collideWith(SDL_Rect& obj_dimensions);
     void update();
     int getZoom();
     bool targetSet();

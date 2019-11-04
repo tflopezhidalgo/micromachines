@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Car.h"
-#include "Track.h"
+#include "Floor.h"
 #include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
@@ -72,12 +72,6 @@ void Car::setTiresFriction(float newFriction) {
     }
 }
 
-void Car::resetTiresFriction() {
-    for (auto tire : tires) {
-        tire->resetFriction();
-    }
-}
-
 void Car::beginCollision(Entity* entity) {
 
     if (entity->isDead()) {
@@ -101,7 +95,7 @@ void Car::beginCollision(Entity* entity) {
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
     } else if (entity->getIdentifier() == TRACK) {
-        auto track = dynamic_cast<Track*>(entity);
+        auto track = dynamic_cast<Floor*>(entity);
         track->setCarFriction(this);
     }
 }

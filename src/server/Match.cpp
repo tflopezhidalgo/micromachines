@@ -19,7 +19,7 @@ Match::Match(std::string& mapName, int playersAmount,
         //todo nombre del mapa harcodeado
         std::string name = "simple";
         WorldBuilder worldBuilder(name, config);
-        world = worldBuilder.build(tracks);
+        world = worldBuilder.build(floors);
 
 }
 

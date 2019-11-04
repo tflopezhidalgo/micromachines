@@ -8,12 +8,15 @@
 #include "Window.h"
 #include "Camera.h"
 #include "TileMap.h"
+#include "Car.h"
+#include "Throwable.h"
 
 class ProtectedModel {
 private:
 	std::string playerID; 
     std::mutex m;
-    std::map<std::string, Entity*> entities;
+    std::map<std::string, Car*> entities;
+    std::map<std::string, Throwable*> objects;
     Window& main;
     Camera cam;
     TileMap map;
@@ -21,7 +24,8 @@ private:
 
 public:
     ProtectedModel(Window& main, std::string playerID);
-    void updateEntity(std::string, int x, int y, int angle, int health);
+    void updateCar(std::string& id, int x, int y, int angle, int health);
+    void updateObject(std::string& id, std::string& type, int x, int y, bool state);
     void renderAll();
     ~ProtectedModel();
 };
