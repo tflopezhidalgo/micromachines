@@ -2,23 +2,23 @@
 // Created by leobellaera on 31/10/19.
 //
 
-#ifndef MICROMACHINES_TRACK_H
-#define MICROMACHINES_TRACK_H
+#ifndef MICROMACHINES_FLOOR_H
+#define MICROMACHINES_FLOOR_H
 
 #include "Box2D/Box2D.h"
 #include "Entity.h"
 #include "Car.h"
 
 //todo curved shapes
-class Track : public Entity {
+class Floor : public Entity {
 private:
     float friction;
 public:
-    Track(b2Body* body, float friction);
+    Floor(b2Body* body, float friction);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void setCarFriction(Car* car);
-    ~Track();
+    ~Floor();
 };
 
-#endif //MICROMACHINES_TRACK_H
+#endif //MICROMACHINES_FLOOR_H

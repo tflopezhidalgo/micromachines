@@ -6,9 +6,6 @@
 #include "Window.h"
 #include "Camera.h"
 
-#define CAR_H 15
-#define CAR_W 6
-
 class Car: public Entity{
 private:
     BaseSprite sprite;

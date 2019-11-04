@@ -7,6 +7,7 @@
 #define BACKLOG 5
 #define QUIT_ACTION 'Q'
 
+
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
 
@@ -25,12 +26,13 @@
 #define LEFT 'L'
 #define RIGHT 'R'
 
-//Bodies sizes
-#define BOX_SIZE 1
-#define STONE_SIZE 0.5f
-#define FLOOR_OIL_SIZE 2
+//Bodies sizes //todo adjust sizes
+#define CAR_H 15.f
+#define CAR_W 6.f
+#define STONE_RADIUS 3.f
+#define OIL_RADIUS 5.f
+#define BOOSTERS_RADIUS 3.f
 #define EDGE_THICKNESS 0.5f
-
 #define TRACK_SIZE 33
 
 //Config Keys
@@ -45,6 +47,7 @@
 #define HEALTH_BOOST_KEY "healthBoost"
 #define OIL_GRIP_KEY "oilGrip"
 #define TRACK_FRICTION_KEY "trackFriction"
+#define GRASS_FRICTION_KEY "grassFriction"
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"
 #define SPEED_BOOST_KEY "speedBoost"
 #define STONE_DAMAGE_KEY "stoneDamage"

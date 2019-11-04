@@ -7,14 +7,21 @@
 
 
 #include <fstream>
+#include <map>
+#include <string>
 #include "World.h"
 
 class WorldBuilder {
 private:
     std::ifstream file;
+    std::map<std::string, float>& config;
+    nlohmann::json map;
+    float height;
+    float width;
+    void addFloors(World* world, std::vector<Floor*>& floors);
 public:
-    WorldBuilder(std::string& mapName);
-    //World* build();
+    explicit WorldBuilder(std::string& mapName, std::map<std::string, float>& config);
+    World* build(std::vector<Floor*>& tracks);
     ~WorldBuilder();
 };
 

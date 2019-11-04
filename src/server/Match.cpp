@@ -8,24 +8,24 @@
 #include "ModelSerializer.h"
 #include "Macros.h"
 
-Match::Match(std::string mapName, int playersAmount,
+Match::Match(std::string& mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
     matchStarted(false),
     matchFinished(false),
     mapName(mapName),
     raceLaps(raceLaps),
     playersAmount(playersAmount),
-    framesPerSecond(config.find(FPS_KEY)->second),
-    world(500, 500, config) {
-    /* make world from map...
-       World* world = worldBuilder.build(mapName, world, config);
-       (build is a static method that builds map tracks)
-     */
+    framesPerSecond(config.find(FPS_KEY)->second) {
+        //todo nombre del mapa harcodeado
+        std::string name = "simple";
+        WorldBuilder worldBuilder(name, config);
+        world = worldBuilder.build(floors);
+
 }
 
 void Match::addPlayer(std::string nickname, Client* client) {
     //we need to see where to put every car
-    Car* car = world.addCar(100.f, 100.f);
+    Car* car = world->addCar(100.f, 100.f);
     cars.emplace(nickname, car);
     clients.emplace(nickname, client);
     if (cars.size() == playersAmount) {
@@ -55,7 +55,6 @@ void Match::run() {
         std::vector<Event> events = eventsQueue.emptyQueue();
         updateModel(events);
         sendUpdateToClients();
-
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
         long sleepTime = (1000 / framesPerSecond) - loopDuration.count();
@@ -66,7 +65,6 @@ void Match::run() {
 }
 
 void Match::updateModel(std::vector<Event> &events) {
-
     for (auto & car : cars) {
         car.second->updateFriction();
     }
@@ -80,7 +78,7 @@ void Match::updateModel(std::vector<Event> &events) {
         }
         cars.find(clientId)->second->updateMove(actions);
     }
-    world.step();
+    world->step();
 }
 
 void Match::sendUpdateToClients() {

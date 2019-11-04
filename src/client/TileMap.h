@@ -18,6 +18,7 @@
 #define GRASS_TILE "../media/tiles/Grass_Tile.png"
 
 // De qué forma queremos que la muestre
+
 #define TILE_HEIGHT 33.05
 #define TILE_WIDTH 33.05
 
