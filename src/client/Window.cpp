@@ -17,7 +17,7 @@ Window::Window(std::string title) {
 }
 
 Window::Window(std::string title, int w, int h) {
-    this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN);
     this->renderer =
             SDL_CreateRenderer(this->window,-1,
                         SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
@@ -36,7 +36,7 @@ void Window::render(SDL_Texture *texture,
                     SDL_Rect& dstTexture,
                     int angle) {
 
-    double precition_angle = (angle/ PI ) * 180 / SERIALIZING_RESCAILING;
+    double precition_angle = (angle / PI ) * 180 / SERIALIZING_RESCAILING;
 
     SDL_Point point = {dstTexture.w / 2, dstTexture.h / 2};
 

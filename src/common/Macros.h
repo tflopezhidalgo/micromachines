@@ -29,13 +29,16 @@
 //Bodies sizes //todo adjust sizes
 #define CAR_H 15.f
 #define CAR_W 6.f
-#define STONE_RADIUS 3.f
-#define OIL_RADIUS 5.f
-#define BOOSTERS_RADIUS 3.f
+#define STONE_RADIUS 20.f
+#define OIL_RADIUS 20.f
+#define BOOSTERS_RADIUS 20.f
 #define EDGE_THICKNESS 0.5f
 #define TRACK_SIZE 33
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
+
+//Bodies types
+
 
 //Config Keys
 #define MAX_FORWARD_SPEED_KEY "maxForwardSpeed"
