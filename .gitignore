@@ -1,5 +1,5 @@
-cmake-build-debug/
-build/
+cmake-buildWorld-debug/
+buildWorld/
 .idea/
 Box2dSFMLTestings/*
 CMakeFiles/

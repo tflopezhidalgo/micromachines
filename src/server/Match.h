@@ -11,11 +11,11 @@
 #include <unordered_map>
 #include <string>
 #include <nlohmann/json.hpp>
-#include <entities/WorldBuilder.h>
+#include <StageBuilder.h>
 #include "../common/Thread.h"
 #include "Client.h"
 #include "entities/Car.h"
-#include "entities/World.h"
+#include "World.h"
 
 class Match : public Thread {
 private:
@@ -24,6 +24,7 @@ private:
     std::atomic<bool> matchFinished;
     std::string mapName;
     ProtectedQueue<Event> eventsQueue;
+    RaceJudge raceJudge;
     std::vector<Floor*> floors;
     std::unordered_map<std::string, Car*> cars;
     std::unordered_map<std::string, Client*> clients;

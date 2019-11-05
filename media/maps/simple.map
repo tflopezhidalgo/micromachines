@@ -15,5 +15,9 @@
   ],
 
   "height" : 396,
-  "width" : 627
+  "width" : 627,
+
+  "checkpointsOrder" : [],
+
+  "carsStartingPositions" : []
 }

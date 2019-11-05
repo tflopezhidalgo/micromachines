@@ -17,6 +17,8 @@ enum FloorIdentifier {
     HORIZONTAL_MIRRORED_TRACK_ID,
     VERTICAL_TRACK_ID,
     VERTICAL_MIRRORED_TRACK_ID,
+    HORIZONTAL_TRACK_CP_ID,
+    VERTICAL_TRACK_CP_ID
 };
 
 enum EntityIdentifier {
@@ -26,7 +28,8 @@ enum EntityIdentifier {
     STONE,
     MUG,
     TRACK,
-    CAR
+    CAR,
+    CHECKPOINT
 };
 
 enum EntityStatus {

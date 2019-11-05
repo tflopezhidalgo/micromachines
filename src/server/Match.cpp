@@ -16,27 +16,30 @@ Match::Match(std::string& mapName, int playersAmount,
         raceLaps(raceLaps),
         playersAmount(playersAmount),
         timeStep(1000/config.find(FPS_KEY)->second),
+        raceJudge(raceLaps),
         entitiesCounter(0) {
         //todo nombre del mapa harcodeado
         std::string name = "simple";
-        WorldBuilder worldBuilder(name, config);
-        world = worldBuilder.build(floors);
+        //RaceManager(name, config, raceLaps, timeStep);
+        StageBuilder stageBuilder(name, config);
+        world = stageBuilder.buildWorld();
+        stageBuilder.addRaceSurface(world, floors, raceJudge);
 
 }
 
 void Match::addPlayer(std::string nickname, Client* client) {
     //we need to see where to put every car
-    Car* car = world->addCar(-100.f, 0.f, 180.f);
-    //todo harcodeado
-    Entity* entity = world->addStone(100, 100);
-    entities.emplace(entitiesCounter, entity);
-    //*****************************
+    Car* car = world->addCar(nickname, -100.f, 0.f, 180.f);
     cars.emplace(nickname, car);
+    raceJudge.addCar(nickname);
     clients.emplace(nickname, client);
     if (cars.size() == playersAmount) {
         matchStarted = true;
         start();
     }
+    /*todo harcodeado
+    Entity* entity = world->addStone(100, 100);
+    entities.emplace(entitiesCounter, entity);*/
 }
 
 bool Match::hasStarted() {
@@ -70,6 +73,11 @@ void Match::run() {
 }
 
 void Match::updateModel(std::vector<Event> &events) {
+    //sacar esto
+    if (raceJudge.raceFinished()) {
+        std::cout<<"GANASTE!!";
+    }
+    //sacar esto
     for (auto & car : cars) {
         car.second->updateFriction();
     }
