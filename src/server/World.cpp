@@ -205,19 +205,20 @@ GrandStand* World::addGrandStand(float x_pos, float y_pos, float angle) {
             config.find(GRANDSTAND_OBJECTS_THROWN)->second, x_pos, y_pos);
 }
 
-void World::addCheckpoint(float x_pos, float y_pos, bool horizontalDisposal,
+Checkpoint* World::addCheckpoint(float x_pos, float y_pos, bool horizontalDisposal,
         int checkpointOrder, RaceJudge& raceJudge) {
     b2Vec2 size;
     if (horizontalDisposal) {
-        size = {TILE_SIZE, TILE_SIZE/3};
+        size = {TILE_SIZE, float(TILE_SIZE)/3.f};
     } else {
-        size = {TILE_SIZE/3, TILE_SIZE};
+        size = {float(TILE_SIZE)/3.f, TILE_SIZE};
     }
     b2Body* body = addBoxBody({x_pos, y_pos}, size, false, true);
 
     Checkpoint* checkpoint = new Checkpoint(body, checkpointOrder, raceJudge);
-    raceJudge.addCheckpoint(checkpoint);
+    body->SetUserData(checkpoint);
 
+    return checkpoint;
 }
 
 b2Body* World::createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos, float angle) {

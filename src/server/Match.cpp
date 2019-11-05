@@ -23,7 +23,7 @@ Match::Match(std::string& mapName, int playersAmount,
         //RaceManager(name, config, raceLaps, timeStep);
         StageBuilder stageBuilder(name, config);
         world = stageBuilder.buildWorld();
-        stageBuilder.addRaceSurface(world, floors, raceJudge);
+        stageBuilder.addRaceSurface(world, floors, checkpoints, raceJudge);
 
 }
 
@@ -75,9 +75,8 @@ void Match::run() {
 void Match::updateModel(std::vector<Event> &events) {
     //sacar esto
     if (raceJudge.raceFinished()) {
-        std::cout<<"GANASTE!!";
+        //todo
     }
-    //sacar esto
     for (auto & car : cars) {
         car.second->updateFriction();
     }

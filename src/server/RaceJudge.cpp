@@ -13,12 +13,11 @@ void RaceJudge::addCar(std::string& id) {
     carsCheckpointsTaken.emplace(id, 0);
 }
 
-void RaceJudge::addCheckpoint(Checkpoint* checkpoint) {
-    checkpoints.push_back(checkpoint);
+void RaceJudge::increaseCheckpointsNumber() {
+    checkpointsNumber++;
 }
 
 void RaceJudge::activate(std::string carId, int checkpointOrder) {
-
     if (someoneWon) {
         return;
     }
@@ -30,13 +29,13 @@ void RaceJudge::activate(std::string carId, int checkpointOrder) {
         checkpointsTakenIt->second += 1;
         nextCheckpointIt->second += 1;
 
-        if (checkpointsTakenIt->second == raceLaps * checkpoints.size()) {
+        if (checkpointsTakenIt->second == raceLaps * checkpointsNumber) {
             winnerId = carId;
             someoneWon = true;
             return;
         }
 
-        if (nextCheckpointIt->second > checkpoints.size()) {
+        if (nextCheckpointIt->second > checkpointsNumber - 1) {
             nextCheckpointIt->second = 0;
         }
     }
@@ -47,8 +46,4 @@ bool RaceJudge::raceFinished() {
     return someoneWon;
 }
 
-RaceJudge::~RaceJudge() {
-    for (int i = 0; i < checkpoints.size(); i++) {
-        delete checkpoints[i];
-    }
-}
+RaceJudge::~RaceJudge() {}

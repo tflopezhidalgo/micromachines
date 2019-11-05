@@ -26,6 +26,7 @@ private:
     ProtectedQueue<Event> eventsQueue;
     RaceJudge raceJudge;
     std::vector<Floor*> floors;
+    std::vector<Checkpoint*> checkpoints;
     std::unordered_map<std::string, Car*> cars;
     std::unordered_map<std::string, Client*> clients;
     std::unordered_map<int,Entity*> entities;

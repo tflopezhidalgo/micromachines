@@ -48,7 +48,7 @@ public:
 
     GrandStand* addGrandStand(float x_pos, float y_pos, float angle);
 
-    void addCheckpoint(float x_pos, float y_pos,
+    Checkpoint* addCheckpoint(float x_pos, float y_pos,
             bool horizontalDisposal, int checkpointOrder, RaceJudge& raceJudge);
 
     HealthBooster* addHealthBooster(float x_pos, float y_pos);

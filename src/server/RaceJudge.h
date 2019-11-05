@@ -14,7 +14,7 @@ class Checkpoint;
 class RaceJudge {
 private:
     int raceLaps;
-    std::vector<Checkpoint*> checkpoints;
+    int checkpointsNumber;
     std::unordered_map<std::string, int> carsCheckpointsTaken;
     std::unordered_map<std::string, int> carsNextCheckpoint;
     std::string winnerId;
@@ -22,7 +22,7 @@ private:
 public:
     RaceJudge(int raceLaps);
     void addCar(std::string& id);
-    void addCheckpoint(Checkpoint* checkpoint);
+    void increaseCheckpointsNumber();
     void activate(std::string carId, int checkpointOrder);
     bool raceFinished();
     //todo getRacePositions

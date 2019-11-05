@@ -22,7 +22,8 @@ private:
 public:
     explicit StageBuilder(std::string& mapName, std::map<std::string, float>& config);
     World* buildWorld();
-    void addRaceSurface(World* world, std::vector<Floor*>& floors, RaceJudge& raceJudge);
+    void addRaceSurface(World* world, std::vector<Floor*>& floors,
+            std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge);
     ~StageBuilder();
 };
 
