@@ -33,41 +33,41 @@ floor_id = {
     [1] = {
         ["name"] = "vertical",
         ["safe"] = true,
-        ["U"] = "F",
-        ["D"] = "F",
-        ["R"] = "L",
-        ["L"] = "R"
+        ["U"] = 0,
+        ["D"] = 0,
+        ["R"] = -1,
+        ["L"] = 1
     },
     [2] = {
         ["name"] = "horizontal",
         ["safe"] = true,
-        ["R"] = "F",
-        ["L"] = "F",
-        ["U"] = "R",
-        ["D"] = "L"
+        ["R"] = 0,
+        ["L"] = 0,
+        ["U"] = 1,
+        ["D"] = -1,
     },
     [3] = {
         ["name"] = "first_quadrant",
         ["safe"] = true,
-        ["U"] = "R",
-        ["R"] = "L"
+        ["U"] = 1,
+        ["R"] = -1
     },
     [4] = {
         ["name"] = "second_quadrant",
         ["safe"] = true,
-        ["L"] = "R",
-        ["U"] = "L"
+        ["L"] = 1,
+        ["U"] = -1
     },
     [5] = {
         ["name"] = "third_quadrant",
         ["safe"] = true,
-        ["D"] = "R",
-        ["L"] = "L"
+        ["D"] = 1,
+        ["L"] = -1
     },
     [6] = {
         ["name"] = "fourth_quadrant",
         ["safe"] = true,
-        ["R"] = "R",
-        ["D"] = "L"
+        ["R"] = 1,
+        ["D"] = -1
     }
 }
