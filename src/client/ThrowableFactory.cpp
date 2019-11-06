@@ -1,7 +1,7 @@
 #include "ThrowableFactory.h"
 #include "BaseSprite.h"
 #include "Throwable.h"
-#include "Macros.h"
+#include "Constants.h"
 
 #define HEALTH_SPRITE "../media/sprites/health_sprite.png"
 #define BOOST_SPRITE "../media/sprites/powerup.png"

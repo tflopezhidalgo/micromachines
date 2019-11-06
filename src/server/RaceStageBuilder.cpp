@@ -4,8 +4,8 @@
 
 #include <nlohmann/json.hpp>
 #include "FileReadingException.h"
-#include "StageBuilder.h"
-#include "Macros.h"
+#include "RaceStageBuilder.h"
+#include "Constants.h"
 
 #define EXTENSION ".map"
 #define PREFIX "../media/maps/"
@@ -13,8 +13,9 @@
 #define OPENING_ERROR_MSG "An error occurred while\
  trying to open the config file.\n"
 
-StageBuilder::StageBuilder(std::string &mapName, std::map<std::string, float>& config) :
-    config(config) {
+RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, float>& config) :
+    config(config),
+    startingPosIndex(0) {
     std::string mapPath(mapName);
     mapPath = PREFIX + mapPath + EXTENSION;
     file.open(mapPath);
@@ -25,16 +26,17 @@ StageBuilder::StageBuilder(std::string &mapName, std::map<std::string, float>& c
     map = nlohmann::json::parse(file);
     height = map["height"].get<float>();
     width = map["width"].get<float>();
+    startingPositions = map["carsStartingPositions"].get<std::vector<std::vector<float>>>();
 }
 
 //builds physical word and adds tracks references in tracks vector.
-World* StageBuilder::buildWorld() {
+World* RaceStageBuilder::buildWorld() {
     auto world = new World(height, width, config);
     return world;
 }
 
-void StageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
-        std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge) {
+void RaceStageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
+                                      std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge) {
 
     int idx = 0;
     std::vector<int> checkpointsOrder = map["checkpointsOrder"].get<std::vector<int>>();
@@ -84,6 +86,10 @@ void StageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
     }
 }
 
-//todo std::vector<b2Vec2> getStartingPositions()
+//returns a starting position available for a car.
+std::vector<float>& RaceStageBuilder::getStartingPosition() {
+    startingPosIndex++;
+    return startingPositions[startingPosIndex - 1];
+}
 
-StageBuilder::~StageBuilder() {}
+RaceStageBuilder::~RaceStageBuilder() {}

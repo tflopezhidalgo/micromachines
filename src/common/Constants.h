@@ -1,12 +1,10 @@
 
-#ifndef MICROMACHINES_MACROS_H
-#define MICROMACHINES_MACROS_H
+#ifndef MICROMACHINES_CONSTANTS_H
+#define MICROMACHINES_CONSTANTS_H
 
 
 //Sv macros
-#define BACKLOG 5
-#define QUIT_ACTION 'Q'
-
+#define BACKLOG 15
 
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
@@ -58,4 +56,4 @@
 #define STONE_DAMAGE_KEY "stoneDamage"
 #define GRANDSTAND_OBJECTS_THROWN "grandStandObjectsThrown"
 
-#endif //MICROMACHINES_MACROS_H
+#endif //MICROMACHINES_CONSTANTS_H

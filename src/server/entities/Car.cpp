@@ -8,7 +8,7 @@
 #include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
-#include "Macros.h"
+#include "Constants.h"
 #include "Checkpoint.h"
 
 #define DEGTORAD 0.017453292f

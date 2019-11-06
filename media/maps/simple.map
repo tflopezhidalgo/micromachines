@@ -19,5 +19,5 @@
 
   "checkpointsOrder" : [0, 3, 1, 2],
 
-  "carsStartingPositions" : []
+  "carsStartingPositions" : [[100.0, 100.0, 0.0],[120.0, 100.0, 0]]
 }

@@ -2,8 +2,8 @@
 // Created by leobellaera on 29/10/19.
 //
 
-#ifndef MICROMACHINES_STAGEBUILDER_H
-#define MICROMACHINES_STAGEBUILDER_H
+#ifndef MICROMACHINES_RACESTAGEBUILDER_H
+#define MICROMACHINES_RACESTAGEBUILDER_H
 
 
 #include <fstream>
@@ -12,19 +12,22 @@
 #include <entities/Checkpoint.h>
 #include "World.h"
 
-class StageBuilder {
+class RaceStageBuilder {
 private:
     std::ifstream file;
     std::map<std::string, float>& config;
     nlohmann::json map;
     float height;
     float width;
+    std::vector<std::vector<float>> startingPositions;
+    int startingPosIndex;
 public:
-    explicit StageBuilder(std::string& mapName, std::map<std::string, float>& config);
+    explicit RaceStageBuilder(std::string& mapName, std::map<std::string, float>& config);
     World* buildWorld();
     void addRaceSurface(World* world, std::vector<Floor*>& floors,
             std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge);
-    ~StageBuilder();
+    std::vector<float>& getStartingPosition();
+    ~RaceStageBuilder();
 };
 
-#endif //MICROMACHINES_STAGEBUILDER_H
+#endif //MICROMACHINES_RACESTAGEBUILDER_H
