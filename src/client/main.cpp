@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
 
     json response = json::parse(proxy.receiveMessage());
 
-    Window main("Game", 900, 600);
+    Window main("Game", 1080, 1080);
     //Window main("game");
 
     ProtectedQueue<Event> q;

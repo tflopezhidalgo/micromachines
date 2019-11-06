@@ -11,35 +11,30 @@
 #include <unordered_map>
 #include <string>
 #include <nlohmann/json.hpp>
-#include <entities/WorldBuilder.h>
+#include <RaceStageBuilder.h>
 #include "../common/Thread.h"
 #include "Client.h"
 #include "entities/Car.h"
-#include "entities/World.h"
+#include "World.h"
+#include "RaceManager.h"
 
 class Match : public Thread {
 private:
-    World* world;
+    RaceManager raceManager;
     std::atomic<bool> matchStarted;
-    std::atomic<bool> matchFinished;
     std::string mapName;
-    ProtectedQueue<Event> eventsQueue;
-    std::vector<Floor*> floors;
-    std::unordered_map<std::string, Car*> cars;
-    std::unordered_map<std::string, Client*> clients;
-    std::unordered_map<int,Entity*> entities;
     int playersAmount;
     int raceLaps;
     long timeStep;
-    int entitiesCounter;
+    ProtectedQueue<Event> eventsQueue;
+    std::unordered_map<std::string, Client*> clients;
     void startClientsThread();
-    void updateModel(std::vector<Event> &events);
     void sendUpdateToClients();
 public:
     Match(std::string& mapName, int playersAmount,
             int raceLaps, std::map<std::string, float> &config);
     void showIfAvailable(nlohmann::json& availableMatches, std::string& matchName);
-    void addPlayer(std::string nickname, Client* client);
+    void addClient(std::string nickname, Client* client);
     bool hasStarted();
     bool finished();
     bool nicknameIsAvailable(std::string& nickname);

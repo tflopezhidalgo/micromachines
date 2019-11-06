@@ -14,13 +14,14 @@
 
 class Car : public Entity {
 private:
+    std::string id;
     b2RevoluteJoint* frontLeftJoint;
     b2RevoluteJoint* frontRightJoint;
     std::vector<Tire*> tires;
     Health health;
     int carCollisionDamage;
 public:
-    Car(b2Body* body, std::vector<Tire*> tires,
+    Car(std::string id, b2Body* body, std::vector<Tire*> tires,
         int carCollisionDamage,
         b2RevoluteJoint* flJoint,
         b2RevoluteJoint* frJoint);
@@ -34,6 +35,7 @@ public:
     int getRacePosition();
     void setMaxForwardSpeed(float newMaxForwardSpeed);
     int getHealth();
+    std::string& getId();
     ~Car();
 };
 

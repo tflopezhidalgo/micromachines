@@ -4,36 +4,23 @@
 
 #include <unordered_set>
 #include <nlohmann/json.hpp>
+#include <SocketException.h>
 #include "Match.h"
-#include "ModelSerializer.h"
-#include "Macros.h"
+#include "Constants.h"
 
 Match::Match(std::string& mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
         matchStarted(false),
-        matchFinished(false),
         mapName(mapName),
         raceLaps(raceLaps),
         playersAmount(playersAmount),
         timeStep(1000/config.find(FPS_KEY)->second),
-        entitiesCounter(0) {
-        //todo nombre del mapa harcodeado
-        std::string name = "simple";
-        WorldBuilder worldBuilder(name, config);
-        world = worldBuilder.build(floors);
+        raceManager(mapName, config, raceLaps) {}
 
-}
-
-void Match::addPlayer(std::string nickname, Client* client) {
-    //we need to see where to put every car
-    Car* car = world->addCar(-100.f, 0.f, 180.f);
-    //todo harcodeado
-    Entity* entity = world->addStone(100, 100);
-    entities.emplace(entitiesCounter, entity);
-    //*****************************
-    cars.emplace(nickname, car);
+void Match::addClient(std::string nickname, Client* client) {
+    raceManager.addPlayer(nickname);
     clients.emplace(nickname, client);
-    if (cars.size() == playersAmount) {
+    if (clients.size() == playersAmount) {
         matchStarted = true;
         start();
     }
@@ -54,11 +41,10 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 void Match::run() {
     //ready, set, go
     startClientsThread();
-    while (!matchFinished) {
+    while (!raceManager.raceFinished()) {
         auto initial = std::chrono::high_resolution_clock::now();
-
         std::vector<Event> events = eventsQueue.emptyQueue();
-        updateModel(events);
+        raceManager.updateModel(events);
         sendUpdateToClients();
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
@@ -69,28 +55,15 @@ void Match::run() {
     }
 }
 
-void Match::updateModel(std::vector<Event> &events) {
-    for (auto & car : cars) {
-        car.second->updateFriction();
-    }
-
-    for (auto & event : events) {
-        std::string& clientId = event.getClientId();
-        std::vector<char> actions = event.getActions();
-
-        if (actions[0] == QUIT_ACTION) {
-            //todo
-        }
-        cars.find(clientId)->second->updateMove(actions);
-    }
-    world->step();
-}
-
 void Match::sendUpdateToClients() {
-    //model serializer will receive all unordered_maps as arguments
-    std::string modelSerialized = ModelSerializer::serialize(cars, entities);
+    std::string modelSerialized = std::move(raceManager.getRaceStatus());
     for (auto & client : clients) {
-        client.second->sendMessage(modelSerialized);
+        try {
+            client.second->sendMessage(modelSerialized);
+        } catch (const SocketException& e) {
+            delete client.second;
+            clients.erase(client.first);
+        }
     }
 }
 
@@ -101,8 +74,8 @@ void Match::startClientsThread() {
 }
 
 bool Match::finished() {
-    //no lock?
-    return matchFinished;
+    //todo lock??!
+    return raceManager.raceFinished();
 }
 
 void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& matchName) {

@@ -6,7 +6,7 @@
 #define MICROMACHINES_DECREASESPEED_CPP
 
 #include "entities/Car.h"
-#include "entities/World.h"
+#include "World.h"
 
 #define NEWFORDWARDSPEED 70
 
