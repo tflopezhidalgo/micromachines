@@ -77,9 +77,8 @@ void Match::updateModel(std::vector<Event> &events) {
     if (raceJudge.raceFinished()) {
         //todo
     }
-    for (auto & car : cars) {
-        car.second->updateFriction();
-    }
+
+    std::unordered_map<std::string, bool> updatedCars;
 
     for (auto & event : events) {
         std::string& clientId = event.getClientId();
@@ -89,7 +88,17 @@ void Match::updateModel(std::vector<Event> &events) {
             //todo
         }
         cars.find(clientId)->second->updateMove(actions);
+        updatedCars[clientId] = true;
     }
+
+    std::vector<char> nullAction;
+    for (auto & car : cars) {
+        car.second->updateFriction();
+        if (updatedCars.count(car.first) == 0) {
+            car.second->updateMove(nullAction);
+        }
+    }
+
     world->step();
 }
 
