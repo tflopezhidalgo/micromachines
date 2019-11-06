@@ -31,15 +31,16 @@ void ProtectedModel::updateCar(std::string& id,
     entities[id]->setPos(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle);
 }
 
-void ProtectedModel::updateObject(std::string &id, std::string &type, int x, int y, bool state) {
+void ProtectedModel::updateObject(int id, int type, int x, int y, bool state) {
     std::unique_lock<std::mutex> lck(m);
 
     if (objects.count(id) == 0) {
+        std::cout << "Se crea objeto id: " << id << std::endl;
         ThrowableFactory factory(this->main);
         this->objects[id] = factory.generateThrowable(type);
     }
 
-    this->objects[id]->setPos(x, y);
+    this->objects[id]->setPos(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000);
     this->objects[id]->setState(state);
 }
 

@@ -3,7 +3,6 @@
 //
 
 #include <SocketException.h>
-#include "Macros.h"
 #include "Client.h"
 
 
@@ -20,9 +19,6 @@ void Client::run() {
             Event event(eventDumped);
             eventsQueue.push(std::move(event));
         } catch (const SocketException& e) {
-            std::vector<char> actions;
-            actions.push_back(QUIT_ACTION);
-            Event event(clientId, actions);
             finished = true;
         }
     }
@@ -38,5 +34,5 @@ void Client::stop() {
 }
 
 Client::~Client() {
-    proxy.stop(); //todo
+    proxy.stop();
 }

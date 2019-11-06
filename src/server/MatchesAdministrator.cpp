@@ -7,7 +7,7 @@
 #include "Proxy.h"
 #include "MatchesAdministrator.h"
 #include "Client.h"
-#include "Macros.h"
+#include "Constants.h"
 
 MatchesAdministrator::MatchesAdministrator(const char* configPath) :
     configMapBuilder(configPath) {}
@@ -35,7 +35,7 @@ bool MatchesAdministrator::createMatch(
         auto match = new Match(mapName, playersAmount, raceLaps,
                 configMapBuilder.getConfigMap());
         auto client = new Client(std::move(clientProxy), creatorNickname, match->getEventsQueue());
-        match->addPlayer(creatorNickname, client);
+        match->addClient(creatorNickname, client);
         matches.insert({matchName, match});
         return true;
     }
@@ -69,7 +69,7 @@ bool MatchesAdministrator::addClientToMatch(
         std::string response = initiationResponse.dump();
         clientProxy.sendMessage(response);
         auto client = new Client(std::move(clientProxy), clientNickname, match->getEventsQueue());
-        match->addPlayer(clientNickname, client);
+        match->addClient(clientNickname, client);
         matches.insert({matchName, match});
         return true;
 

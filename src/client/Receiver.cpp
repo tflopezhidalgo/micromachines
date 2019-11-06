@@ -13,16 +13,6 @@ void Receiver::run() {
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
 
-
-        nlohmann::json list;
-        list.push_back("1");
-        list.push_back("ROCK");
-        list.push_back(50);
-        list.push_back(50);
-        list.push_back(true);
-
-        j["objects"].push_back(list);
-
         std::cout << j.dump() << std::endl;
 
         for (auto& car : j["carsData"]) {
@@ -34,12 +24,12 @@ void Receiver::run() {
             this->model.updateCar(key, x, y, angle, health);
         }
 
-        for (auto& obj : j["objects"]) {
-            std::string key = obj[0].get<std::string>();
-            std::string type = obj[1].get<std::string>();
-            int x = obj[2].get<int>();
-            int y = obj[3].get<int>();
-            bool state = obj[4].get<bool>();
+        for (auto& obj : j["entitiesData"]) {
+            int key = obj[0].get<int>();
+            int type = obj[1].get<int>();
+            int state = obj[3].get<int>();
+            int x = obj[3].get<int>();
+            int y = obj[4].get<int>();
             this->model.updateObject(key, type, x, y, state);
         }
 
