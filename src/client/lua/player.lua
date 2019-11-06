@@ -28,17 +28,17 @@ next_position = {
 function getAction(angle, pos_x, pos_y)
     local action = ""
     if (angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) then
-        action = action_vertical("U", pos_x, pos_y - 1)
+        action = action_vertical("U", pos_x, pos_y) -- pos_y -1
 
     elseif (angle >= MIN_ANGLE_LEFT and angle <= MAX_ANGLE_LEFT) then
-        action = action_horizontal("L", pos_x - 1, pos_y)
+        action = action_horizontal("L", pos_x, pos_y) -- pos_x -1
 
     elseif (angle >= MIN_ANGLE_DOWN and angle <= MAX_ANGLE_LEFT) then
-        action = action_vertical("D", pos_x, pos_y +1)
+        action = action_vertical("D", pos_x, pos_y) --pos_y +1
 
     elseif ((angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT1) or
         (angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT2)) then
-        action = action_horizontal("R", pos_x + 1, pos_y)
+        action = action_horizontal("R", pos_x, pos_y) --pos_x +1
     end
     return action
 end
@@ -97,7 +97,7 @@ function action_vertical(direction, pos_x, next_y)
             return next_position[i]
         end
     end
-    return next_position[try_pos]
+    return next_position[0]
 end
 
 function action_horizontal(direction, next_x, pos_y)
@@ -106,13 +106,15 @@ function action_horizontal(direction, next_x, pos_y)
     end
 
     local try_pos = next_recommended_position(map[pos_y][next_x], direction)
-    local st, en = getLimit(pos_y)
+    if (next_y_try ~= nil and check_entity(map[pos_y][next_x + try_pos])) then
+        return next_position[try_pos]
+    end
+    local st, en = getLimit(pos_x)
     for i = st, en do
-        local pos = map[pos_y + i][next_x]
+        local pos = map[pos_y][next_x + i]
         if (check_floor(pos) and check_entity(pos)) then
             return next_position[i]
         end
     end
     return next_position[try_pos]
 end
-

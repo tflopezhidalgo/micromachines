@@ -22,15 +22,6 @@ private:
     std::string action;
     std::vector<std::vector<int>> entities;
 
-    std::vector<std::vector<int>> addedEntities(
-            std::vector<std::vector<int>> newEntities);
-
-    std::vector<std::vector<int>> deletedEntities(
-            std::vector<std::vector<int>> newEntities);
-
-    void luaCreateTable(std::vector<std::vector<int>> newEntities);
-
-    void luaUpdateTable(std::vector<std::vector<int>> newEntities);
 public:
     LuaScript(std::string &mapName);
 
@@ -38,9 +29,13 @@ public:
 
     std::string getLastAction();
 
-    void setEntitiesTable(std::vector<std::vector<int>> entitiesVector);
-
     void emptyStack();
+
+    void luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable);
+
+    void createMap(std::vector<std::vector<int>> table);
+
+    void setEntities(std::vector<std::vector<int>> table);
 
     ~LuaScript();
 };
