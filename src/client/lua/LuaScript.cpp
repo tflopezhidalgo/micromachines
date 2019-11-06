@@ -10,8 +10,10 @@
 #define MAP_SCRIPT "map.lua"
 #define ENTITIES "entities"
 #define MAP "map"
+#define INDEX_X 1
+#define INDEX_Y 2
 
-LuaScript::LuaScript(std::string &mapName) {
+LuaScript::LuaScript() {
     L = luaL_newstate();
     luaL_openlibs(L);
 
@@ -19,14 +21,22 @@ LuaScript::LuaScript(std::string &mapName) {
     luaL_dofile(L, PLAYER_SCRIPT);
     luaL_dofile(L, ENTITIES_SCRIPT);
     luaL_dofile(L, FLOOR_SCRIPT);
+    matrixWidth = 15;
+    matrixHeight = 11;
 }
 
 std::string LuaScript::getAction(int angle, int pos_x, int pos_y) {
+    std::cout << pos_x << " " << pos_y;
+    Converter converter;
+    auto tuplePos = converter.getLuaMapPosition(pos_x, pos_y,
+            matrixHeight, matrixWidth);
+
+    std::cout << std::get<0>(tuplePos) << " " << std::get<1>(tuplePos);
     lua_getglobal(L, "getAction");
 
     lua_pushnumber(L, angle);
-    lua_pushnumber(L, pos_x);
-    lua_pushnumber(L, pos_y);
+    lua_pushnumber(L, std::get<0>(tuplePos));
+    lua_pushnumber(L, std::get<1>(tuplePos));
 
     lua_pcall(L, 3, 1, 0);
     const char* lua_action = lua_tostring(L, 1);
@@ -60,10 +70,21 @@ void LuaScript::luaCreateTable(std::vector<std::vector<int>> table, std::string 
 }
 
 void LuaScript::createMap(std::vector<std::vector<int>> table) {
+    matrixHeight = table.size();
+    matrixWidth = table[0].size();
     luaCreateTable(table, MAP);
 }
 
 void LuaScript::setEntities(std::vector<std::vector<int>> table) {
+    Converter converter;
+    for (int i = 0; i < table.size(); i++) {
+        std::cout << table[i][INDEX_X] << " " << table[i][INDEX_Y];
+        auto tuplePos = converter.getLuaMapPosition(table[i][INDEX_X], table[i][INDEX_Y],
+                                                    matrixHeight, matrixWidth);
+        table[i][INDEX_X] = std::get<0>(tuplePos);
+        table[i][INDEX_Y] = std::get<1>(tuplePos);
+        std::cout << table[i][INDEX_X] << " " << table[i][INDEX_Y];
+    }
     luaCreateTable(table, ENTITIES);
 }
 

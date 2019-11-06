@@ -9,6 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <tuple>
+#include "Converter.h"
 
 extern "C" {
 # include <lua.h>
@@ -20,10 +22,10 @@ class LuaScript {
 private:
     lua_State *L;
     std::string action;
-    std::vector<std::vector<int>> entities;
-
+    int matrixHeight;
+    int matrixWidth;
 public:
-    LuaScript(std::string &mapName);
+    LuaScript();
 
     std::string getAction(int angle, int pos_x, int pos_y);
 

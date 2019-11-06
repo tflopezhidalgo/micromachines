@@ -25,7 +25,17 @@ next_position = {
 
 
 -- Depende el angulo tiene una direccion a seguir
+function print_entities()
+    for _,v in pair(entities) do
+        for _, k in pair(v) do
+            print(k)
+        end
+    end
+end
+
 function getAction(angle, pos_x, pos_y)
+    print_entities()
+
     local action = ""
     if (angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) then
         action = action_vertical("U", pos_x, pos_y) -- pos_y -1
