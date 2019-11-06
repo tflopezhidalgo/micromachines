@@ -1,7 +1,7 @@
 #include "Car.h"
 #include "BaseSprite.h"
 #include "Window.h"
-#include "Macros.h"
+#include "Constants.h"
 
 Car::Car(const std::string &file, Window& win) :
     sprite(win, file, CAR_H, CAR_W) {

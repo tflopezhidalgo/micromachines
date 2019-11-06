@@ -5,7 +5,7 @@
 #ifndef PLUGINS_INCREASESPEED_H
 #define PLUGINS_INCREASESPEED_H
 
-#include "entities/World.h"
+#include "World.h"
 #include "entities/Car.h"
 
 #define NEWFORDWARDSPEED 150

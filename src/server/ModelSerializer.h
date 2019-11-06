@@ -12,7 +12,8 @@
 
 class ModelSerializer {
 public:
-    static std::string serialize(std::unordered_map<std::string, Car*>& cars);
+    static std::string serialize(std::unordered_map<std::string, Car*>& cars,
+            std::unordered_map<int, Entity*>& entities);
 };
 
 #endif //MICROMACHINES_MODELSERIALIZER_H

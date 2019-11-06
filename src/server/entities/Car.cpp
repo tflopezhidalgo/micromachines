@@ -8,16 +8,18 @@
 #include "Oil.h"
 #include "HealthBooster.h"
 #include "Stone.h"
-#include "Macros.h"
+#include "Constants.h"
+#include "Checkpoint.h"
 
 #define DEGTORAD 0.017453292f
 #define SEVERAL_DAMAGED_POINTS 50
 
-Car::Car(b2Body* body, std::vector<Tire*> tires,
-         int carCollisionDamage, b2RevoluteJoint* flJoint,
-         b2RevoluteJoint* frJoint) :
+Car::Car(std::string id, b2Body* body,
+        std::vector<Tire*> tires, int carCollisionDamage,
+        b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint) :
 
         Entity(EntityIdentifier::CAR, body),
+        id(id),
         health(100),
         tires(std::move(tires)),
         carCollisionDamage(carCollisionDamage),
@@ -95,8 +97,11 @@ void Car::beginCollision(Entity* entity) {
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
     } else if (entity->getIdentifier() == TRACK) {
-        auto track = dynamic_cast<Floor*>(entity);
-        track->setCarFriction(this);
+        auto floor = dynamic_cast<Floor*>(entity);
+        floor->setCarFriction(this);
+    } else if (entity->getIdentifier() == CHECKPOINT) {
+        auto checkpoint = dynamic_cast<Checkpoint*>(entity);
+        checkpoint->activate(this);
     }
 }
 
@@ -108,7 +113,7 @@ void Car::endCollision(Entity *object) {
 
 void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);
-    //todo que es esto??!
+    //todo
     if (health.getHealth() <= SEVERAL_DAMAGED_POINTS) {
         this->receiveSeveralDamage();
     }
@@ -127,6 +132,10 @@ int Car::getRacePosition() {
     return 1;
 }
 
+std::string& Car::getId() {
+    return id;
+}
+
 void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
     for (auto tire : tires) {
         tire->setMaxForwardSpeed(newMaxForwardSpeed);
@@ -134,6 +143,7 @@ void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
 }
 
 Car::~Car() {
+    //todo delete joints
     for (auto & tire : tires) {
         delete tire;
     }

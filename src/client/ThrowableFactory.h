@@ -11,7 +11,7 @@ private:
 
 public:
     explicit ThrowableFactory(Window& window);
-    Throwable* generateThrowable(std::string& type);
+    Throwable* generateThrowable(int type);
 
 };
 

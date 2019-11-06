@@ -6,7 +6,7 @@
 
 #include <stdlib.h>
 #include "entities/Car.h"
-#include "entities/World.h"
+#include "World.h"
 
 #define MAX 100
 

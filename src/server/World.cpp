@@ -3,7 +3,7 @@
 //
 
 #include "World.h"
-#include "Macros.h"
+#include "Constants.h"
 
 #define ANGULAR_DAMPING 5
 #define DEGTORAD 0.017453292f
@@ -35,7 +35,7 @@ World::World(float height, float width, std::map<std::string, float> &config) :
 }
 
 //private method that generates a new body in the physical world
-b2Body* World::addBody(b2Vec2 pos, bool dynamic) {
+b2Body* World::addBody(b2Vec2 pos, bool dynamic, float angle) {
     b2BodyDef bodyDef;
     if (dynamic) {
         bodyDef.type = b2_dynamicBody;
@@ -43,12 +43,13 @@ b2Body* World::addBody(b2Vec2 pos, bool dynamic) {
         bodyDef.type = b2_staticBody;
     }
     bodyDef.position = pos;
+    bodyDef.angle = angle*DEGTORAD;
     b2Body* body = world->CreateBody(&bodyDef);
     return body;
 }
 
-b2Body* World::addBoxBody(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor) {
-    b2Body* boxBody = addBody(pos, dynamic);
+b2Body* World::addBoxBody(b2Vec2 pos, b2Vec2 size, bool dynamic, bool sensor, float angle) {
+    b2Body* boxBody = addBody(pos, dynamic, angle);
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(size.x / 2.f, size.y / 2.f);
 
@@ -104,11 +105,12 @@ Stone* World::addStone(float x_pos, float y_pos) {
     return stone;
 }
 
-Car* World::addCar(float x_pos, float y_pos) {
+Car* World::addCar(std::string id, float x_pos, float y_pos, float angle) {
     //todo use x_pos, y_pos
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = {x_pos, y_pos};
+    //bodyDef.angle = angle*DEGTORAD;
     b2Body* carBody = world->CreateBody(&bodyDef);
 
     carBody->SetAngularDamping(ANGULAR_DAMPING);
@@ -139,7 +141,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //back left tire
     b2Vec2 backLeftTirePosition = {-3, -6.f};
-    b2Body* body = createTireBody(backLeftTirePosition, {x_pos, y_pos});
+    b2Body* body = createTireBody({x_pos, y_pos}, backLeftTirePosition, angle);
     Tire* tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, initialFriction);
     joinTireToChassis(&jointDef, body, backLeftTirePosition);
@@ -147,7 +149,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //back right tire
     b2Vec2 backRightTirePosition = {3, -6.f};
-    body = createTireBody(backRightTirePosition, {x_pos, y_pos});
+    body = createTireBody({x_pos, y_pos}, backRightTirePosition, angle);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, initialFriction);
     joinTireToChassis(&jointDef, body, backRightTirePosition);
@@ -155,7 +157,7 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //front left tire
     b2Vec2 frontLeftTirePosition = {-3, 6.f};
-    body = createTireBody(frontLeftTirePosition, {x_pos, y_pos});
+    body = createTireBody({x_pos, y_pos}, frontLeftTirePosition, angle);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             frontTireMaxDriveForce, frontTireMaxLatImpulse, initialFriction);
     b2RevoluteJoint* flJoint = joinTireToChassis(&jointDef, body, frontLeftTirePosition);
@@ -163,15 +165,14 @@ Car* World::addCar(float x_pos, float y_pos) {
 
     //front right tire
     b2Vec2 frontRightTirePosition = {3, 6.f};
-    body = createTireBody(frontRightTirePosition, {x_pos, y_pos});
+    body = createTireBody({x_pos, y_pos}, frontRightTirePosition, angle);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
                     frontTireMaxDriveForce, frontTireMaxLatImpulse, initialFriction);
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, frontRightTirePosition);
     tires.push_back(tire);
 
-    Car* car = new Car(carBody, tires,
-            int(config.find(CAR_COLLISION_DAMAGE_KEY)->second),
-            flJoint, frJoint);
+    Car* car = new Car(id, carBody, tires,
+            int(config.find(CAR_COLLISION_DAMAGE_KEY)->second), flJoint, frJoint);
     carBody->SetUserData(car);
     return car;
 }
@@ -191,16 +192,40 @@ b2Body* World::addFloorBody(b2Vec2 pos, b2Vec2 size) {
 
 //actually, vertical and horizontal tracks have the same shape
 Floor* World::addFloor(float x_pos, float y_pos, float friction) {
-    b2Body* body = addFloorBody({x_pos, y_pos}, {TRACK_SIZE, TRACK_SIZE});
+    b2Body* body = addFloorBody({x_pos, y_pos}, {TILE_WIDTH, TILE_HEIGHT});
     auto floor = new Floor(body, friction);
     body->SetUserData(floor);
     return floor;
 }
 
-b2Body* World::createTireBody(b2Vec2& position, b2Vec2 chassisPosition) {
+GrandStand* World::addGrandStand(float x_pos, float y_pos, float angle) {
+    b2Body* body = addBoxBody({x_pos, y_pos},
+            {GRANDSTAND_WIDTH, GRANDSTAND_HEIGHT}, false, false, angle*DEGTORAD);
+    return new GrandStand(body,
+            config.find(GRANDSTAND_OBJECTS_THROWN)->second, x_pos, y_pos);
+}
+
+Checkpoint* World::addCheckpoint(float x_pos, float y_pos, bool horizontalDisposal,
+        int checkpointOrder, RaceJudge& raceJudge) {
+    b2Vec2 size;
+    if (horizontalDisposal) {
+        size = {TILE_WIDTH, float(TILE_HEIGHT)/3.f};
+    } else {
+        size = {float(TILE_WIDTH)/3.f, TILE_HEIGHT};
+    }
+    b2Body* body = addBoxBody({x_pos, y_pos}, size, false, true);
+
+    Checkpoint* checkpoint = new Checkpoint(body, checkpointOrder, raceJudge);
+    body->SetUserData(checkpoint);
+
+    return checkpoint;
+}
+
+b2Body* World::createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos, float angle) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position = {position.x + chassisPosition.x, position.y + chassisPosition.y};
+    bodyDef.position = {chassisPosition.x + tirePos.x, chassisPosition.y + tirePos.y};
+    //bodyDef.angle = angle*DEGTORAD;
 
     b2Body* body = world->CreateBody(&bodyDef);
     b2PolygonShape polygonShape;

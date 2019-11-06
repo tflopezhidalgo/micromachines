@@ -19,7 +19,7 @@
 ```
 cd <PATH_TO_MICROMACHINES>/micromachines
 mkdir build
-cd build
+cd buildWorld
 cmake ..
 make <CLIENT/SERVER>
 ```

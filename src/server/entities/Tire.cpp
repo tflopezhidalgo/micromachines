@@ -3,7 +3,7 @@
 //
 
 #include "Tire.h"
-#include "Macros.h"
+#include "Constants.h"
 
 Tire::Tire(b2Body* body, float maxFwSpeed, float maxBwSpeed,
             float maxDriveForce, float maxLatImpulse, float defaultFriction) :
