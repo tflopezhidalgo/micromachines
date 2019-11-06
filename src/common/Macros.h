@@ -33,7 +33,8 @@
 #define OIL_RADIUS 20.f
 #define BOOSTERS_RADIUS 20.f
 #define EDGE_THICKNESS 0.5f
-#define TILE_SIZE 33
+#define TILE_WIDTH 50
+#define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
 

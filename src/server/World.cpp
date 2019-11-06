@@ -192,7 +192,7 @@ b2Body* World::addFloorBody(b2Vec2 pos, b2Vec2 size) {
 
 //actually, vertical and horizontal tracks have the same shape
 Floor* World::addFloor(float x_pos, float y_pos, float friction) {
-    b2Body* body = addFloorBody({x_pos, y_pos}, {TILE_SIZE, TILE_SIZE});
+    b2Body* body = addFloorBody({x_pos, y_pos}, {TILE_WIDTH, TILE_HEIGHT});
     auto floor = new Floor(body, friction);
     body->SetUserData(floor);
     return floor;
@@ -209,9 +209,9 @@ Checkpoint* World::addCheckpoint(float x_pos, float y_pos, bool horizontalDispos
         int checkpointOrder, RaceJudge& raceJudge) {
     b2Vec2 size;
     if (horizontalDisposal) {
-        size = {TILE_SIZE, float(TILE_SIZE)/3.f};
+        size = {TILE_WIDTH, float(TILE_HEIGHT)/3.f};
     } else {
-        size = {float(TILE_SIZE)/3.f, TILE_SIZE};
+        size = {float(TILE_WIDTH)/3.f, TILE_HEIGHT};
     }
     b2Body* body = addBoxBody({x_pos, y_pos}, size, false, true);
 

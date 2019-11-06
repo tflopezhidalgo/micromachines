@@ -12,7 +12,8 @@ window(window) {
     nlohmann::json json_p;
     in >> json_p;
     int sized = json_p["tiles"].size();
-    int x, y = - (sized - 1) * TILE_HEIGHT * zoom / 2;
+    int x = - (sized - 1) * TILE_WIDTH * zoom / 2;
+    int y = - (sized - 1) * TILE_HEIGHT * zoom / 2;
 
     for (auto& tileList : json_p["tiles"]) {
         std::vector<int> tiles2 = tileList.get<std::vector<int>>();

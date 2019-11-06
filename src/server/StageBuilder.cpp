@@ -39,7 +39,7 @@ void StageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
     int idx = 0;
     std::vector<int> checkpointsOrder = map["checkpointsOrder"].get<std::vector<int>>();
 
-    float i = float(TILE_SIZE) / 2.f, j = float(TILE_SIZE) / 2.f;
+    float i = float(TILE_WIDTH) / 2.f, j = float(TILE_HEIGHT) / 2.f;
     float w = -width/2.f, h = -height/2.f;
 
     float grassFriction = config.find(GRASS_FRICTION_KEY)->second;
@@ -76,11 +76,11 @@ void StageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
                 idx++;
             }
 
-            i += TILE_SIZE;
+            i += TILE_WIDTH;
 
         }
-        i = TILE_SIZE / 2.f;
-        j += TILE_SIZE;
+        i = TILE_WIDTH / 2.f;
+        j += TILE_HEIGHT;
     }
 }
 
