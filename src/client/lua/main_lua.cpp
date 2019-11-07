@@ -1,8 +1,16 @@
-#include "LuaScript.cpp"
+#include "LuaScript.h"
+#include <vector>
 
 int main(int argc, char* argv[]) {
-    LuaScript* lua = new LuaScript();
-    std::string action = lua->getAction(90, 2,2);
+    std::string map("map.lua");
+    LuaScript lua;
+
+    std::vector<std::vector<int>> vector;
+    std::vector<int> v = {1, 0, 0};
+    vector.push_back(v);
+
+    lua.setEntities(vector);
+    std::string action = lua.getAction(90, 0,0);
 
     std::cout << "print action: "<< action << std::endl;
 }

@@ -16,8 +16,11 @@ file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
 file(GLOB ENTITIES_SRC_FILES "src/server/entities/*.cpp")
 file(GLOB PLUGINS_SRC_FILES "src/server/plugins/*.cpp")
+file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
+
+add_executable(Lua src/client/lua/main_lua.cpp ${LUA_SRC_FILES})
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES})
 target_link_libraries(Client SDL2 SDL2_image pthread lua5.3)

@@ -1,30 +1,33 @@
-entities = {
+--
+-- User: eliana
+-- Date: 1/11/19
+--
+
+
+entities_id = {
     [0] = {
-        ["name"] = "asphalt",
+        ["name"] = "car",
         ["safe"] = true
     },
     [1] = {
-        ["name"] = "grass",
-        ["safe"] = false
+        ["name"] = "healthboost",
+        ["safe"] = true
     },
     [2] = {
         ["name"] = "oil",
         ["safe"] = false
     },
     [3] = {
-        ["name"] = "mud",
-        ["safe"] = false
-    },
-    [4] = {
-        ["name"] = "healthboost",
-        ["safe"] = true
-    },
-    [5] = {
         ["name"] = "speedboost",
         ["safe"] = true
     },
-    [6] = {
+    [4] = {
         ["name"] = "stone",
+        ["safe"] = false
+    },
+    [5] = {
+        ["name"] = "mud",
         ["safe"] = false
     }
 }
+
