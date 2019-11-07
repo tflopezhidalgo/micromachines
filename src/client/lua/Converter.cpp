@@ -1,15 +1,15 @@
 //
 // Created by eliana on 5/11/19.
 //
-
+#include <iostream>
 #include "Converter.h"
 
 std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matrixHeight, int matrixWidth) {
     int widthMap = matrixWidth * TILE_WIDTH;
     int heightMap = matrixHeight * TILE_HEIGHT;
 
-    double refCenterX = widthMap / 2;
-    double refCenterY = heightMap / 2;
+    int refCenterX = widthMap / 2;
+    int refCenterY = heightMap / 2;
 
     double realPosX = refCenterX + pos_x;
     double realPosY = refCenterY + pos_y;
