@@ -5,8 +5,8 @@
 #include "Converter.h"
 
 std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matrixHeight, int matrixWidth) {
-    int widthMap = matrixWidth * TILE_WIDTH;
-    int heightMap = matrixHeight * TILE_HEIGHT;
+    int widthMap = matrixWidth * 15;//TILE_WIDTH;
+    int heightMap = matrixHeight * 11;//TILE_HEIGHT;
 
     int refCenterX = widthMap / 2;
     int refCenterY = heightMap / 2;

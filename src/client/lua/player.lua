@@ -23,11 +23,10 @@ next_position = {
 }
 -- end variables macro
 
-
 -- Depende el angulo tiene una direccion a seguir
 function print_entities()
-    for _,v in pair(entities) do
-        for _, k in pair(v) do
+    for _,v in ipairs(entities) do
+        for _, k in ipairs(v) do
             print(k)
         end
     end
@@ -67,7 +66,7 @@ function getLimit(pos)
 end
 
 function is_in_border(pos)
-    return pos <= 1 or pos >= #map or pos
+    return pos <= 1 or pos >= #map
 end
 
 function next_recommended_position(floor_type, direction)

@@ -22,6 +22,7 @@ class LuaScript {
 private:
     lua_State *L;
     std::string action;
+    Converter converter;
     int matrixHeight;
     int matrixWidth;
 public:

@@ -26,14 +26,10 @@ LuaScript::LuaScript() {
 }
 
 std::string LuaScript::getAction(int angle, int pos_x, int pos_y) {
-    std::cout << pos_x << " " << pos_y;
-    Converter converter;
     auto tuplePos = converter.getLuaMapPosition(pos_x, pos_y,
             matrixHeight, matrixWidth);
 
-    std::cout << std::get<0>(tuplePos) << " " << std::get<1>(tuplePos);
     lua_getglobal(L, "getAction");
-
     lua_pushnumber(L, angle);
     lua_pushnumber(L, std::get<0>(tuplePos));
     lua_pushnumber(L, std::get<1>(tuplePos));
@@ -57,7 +53,7 @@ void LuaScript::luaCreateTable(std::vector<std::vector<int>> table, std::string 
         lua_newtable(L);                    // tabla
 
         int size = table[i].size();
-        if (typeTable == ENTITIES) size -= 1;
+        //if (typeTable == ENTITIES) size -= 1;
 
         for(int j = 0; j < size; j++) {
             lua_pushnumber(L, j + 1);       // indice del valor
@@ -76,14 +72,11 @@ void LuaScript::createMap(std::vector<std::vector<int>> table) {
 }
 
 void LuaScript::setEntities(std::vector<std::vector<int>> table) {
-    Converter converter;
     for (int i = 0; i < table.size(); i++) {
-        std::cout << table[i][INDEX_X] << " " << table[i][INDEX_Y];
         auto tuplePos = converter.getLuaMapPosition(table[i][INDEX_X], table[i][INDEX_Y],
                                                     matrixHeight, matrixWidth);
         table[i][INDEX_X] = std::get<0>(tuplePos);
         table[i][INDEX_Y] = std::get<1>(tuplePos);
-        std::cout << table[i][INDEX_X] << " " << table[i][INDEX_Y];
     }
     luaCreateTable(table, ENTITIES);
 }
