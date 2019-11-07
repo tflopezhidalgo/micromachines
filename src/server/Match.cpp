@@ -57,12 +57,16 @@ void Match::run() {
 
 void Match::sendUpdateToClients() {
     std::string modelSerialized = std::move(raceManager.getRaceStatus());
-    for (auto & client : clients) {
+    auto clientsIt = clients.begin();
+    while (clientsIt != clients.end()) {
         try {
-            client.second->sendMessage(modelSerialized);
+            clientsIt->second->sendMessage(modelSerialized);
+            clientsIt++;
         } catch (const SocketException& e) {
-            delete client.second;
-            clients.erase(client.first);
+            clientsIt->second->stop();
+            clientsIt->second->join();
+            delete clientsIt->second;
+            clientsIt = clients.erase(clientsIt);
         }
     }
 }

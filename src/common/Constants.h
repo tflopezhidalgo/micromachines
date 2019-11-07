@@ -35,6 +35,7 @@
 #define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
+#define PROJECTILE_RADIUS 2
 
 //Bodies types
 

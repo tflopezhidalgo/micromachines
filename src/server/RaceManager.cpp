@@ -11,10 +11,11 @@
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     stageBuilder(mapName, config),
-    raceJudge(raceLaps),
-    nextEntityId(0) {
+    raceJudge(raceLaps) {
     world = stageBuilder.buildWorld();
+    entitiesManager.setWorld(world);
     stageBuilder.addRaceSurface(world, floors, checkpoints, raceJudge);
+
 }
 
 void RaceManager::addPlayer(std::string& nickname) {
@@ -34,6 +35,8 @@ void RaceManager::updateModel(std::vector<Event> &events) {
         //todo
     }
 
+    entitiesManager.updateProjectilesFriction();
+
     std::unordered_map<std::string, bool> updatedCars;
 
     for (auto & event : events) {
@@ -52,11 +55,11 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     }
 
     world->step();
-
+    entitiesManager.updateProjectilesStatus();
 }
 
 std::string RaceManager::getRaceStatus() {
-    return std::move(ModelSerializer::serialize(cars, entities));
+    return std::move(ModelSerializer::serialize(cars, entitiesManager.getEntities()));
 }
 
 RaceManager::~RaceManager() {

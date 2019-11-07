@@ -12,7 +12,6 @@
 #include "Checkpoint.h"
 
 #define DEGTORAD 0.017453292f
-#define SEVERAL_DAMAGED_POINTS 50
 
 Car::Car(std::string id, b2Body* body,
         std::vector<Tire*> tires, int carCollisionDamage,
@@ -35,7 +34,7 @@ void Car::updateFriction() {
 }
 
 void Car::updateMove(std::vector<char>& actions) {
-    //todo if status EXPLODING ...
+    //todo if status DEAD ...
 
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateDrive(actions);
@@ -84,21 +83,26 @@ void Car::beginCollision(Entity* entity) {
         auto healthBooster = dynamic_cast<HealthBooster*>(entity);
         healthBooster->heal(this);
         healthBooster->die();
+
     } else if (entity->getIdentifier() == STONE) {
         auto stone = dynamic_cast<Stone*>(entity);
         stone->damageCar(this);
         stone->die();
+
     } else if (entity->getIdentifier() == OIL) {
         auto oil = dynamic_cast<Oil*>(entity);
         //todo
         oil->die();
+
     } else if (entity->getIdentifier() == CAR) {
         auto car = dynamic_cast<Car*>(entity);
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
+
     } else if (entity->getIdentifier() == TRACK) {
         auto floor = dynamic_cast<Floor*>(entity);
         floor->setCarFriction(this);
+
     } else if (entity->getIdentifier() == CHECKPOINT) {
         auto checkpoint = dynamic_cast<Checkpoint*>(entity);
         checkpoint->activate(this);
@@ -113,10 +117,6 @@ void Car::endCollision(Entity *object) {
 
 void Car::receiveHealing(int healingPoints) {
     health.receiveHealing(healingPoints);
-    //todo
-    if (health.getHealth() <= SEVERAL_DAMAGED_POINTS) {
-        this->receiveSeveralDamage();
-    }
 }
 
 void Car::receiveDamage(int damagePoints) {

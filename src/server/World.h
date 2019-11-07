@@ -5,9 +5,10 @@
 #ifndef TESTING_WORLD_H
 #define TESTING_WORLD_H
 
+#include "Box2D/Box2D.h"
 #include <map>
 #include <vector>
-#include "Box2D/Box2D.h"
+#include <entities/Projectile.h>
 #include "entities/Car.h"
 #include "entities/HealthBooster.h"
 #include "entities/CollisionsProcessor.h"
@@ -16,7 +17,7 @@
 #include "entities/SpeedBooster.h"
 #include "entities/Floor.h"
 #include "Identifiers.h"
-#include "entities/GrandStand.h"
+#include "entities/Grandstand.h"
 #include "entities/Checkpoint.h"
 
 class World {
@@ -46,7 +47,9 @@ public:
 
     Car* addCar(std::string id, float x_pos, float y_pos, float angle);
 
-    GrandStand* addGrandStand(float x_pos, float y_pos, float angle);
+    Grandstand* addGrandstand(float x_pos, float y_pos, bool horizontalDisposal, bool positiveOrientation);
+
+    Projectile* addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
 
     Checkpoint* addCheckpoint(float x_pos, float y_pos,
             bool horizontalDisposal, int checkpointOrder, RaceJudge& raceJudge);
@@ -60,8 +63,6 @@ public:
     Oil* addOil(float x_pos, float y_pos);
 
     Floor* addFloor(float x_pos, float y_pos, float friction);
-
-    void destroyBody(b2Body* body);
 
     void step();
 
