@@ -100,4 +100,8 @@ EntitiesManager::~EntitiesManager() {
     for (auto it = entities.begin(); it != entities.end(); ++it) {
         delete (it->second);
     }
+
+    for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
+        delete (it->second);
+    }
 }

@@ -11,12 +11,14 @@ std::string ModelStatusSerializer::serialize(RaceJudge& raceJudge,
     nlohmann::json data;
     nlohmann::json carsData = nlohmann::json::array();
     for (auto &car : cars) {
+        std::string carId = car.first;
         carsData.push_back({
-            car.first,
+            carId,
             int(car.second->getPosition().x * SERIALIZING_RESCAILING),
             int(car.second->getPosition().y * SERIALIZING_RESCAILING),
             int(car.second->getAngle()* SERIALIZING_RESCAILING),
-            car.second->getHealth()
+            car.second->getHealth(),
+            raceJudge.getLapsDone(carId)
         });
     }
     data["carsData"] = carsData;
@@ -33,7 +35,7 @@ std::string ModelStatusSerializer::serialize(RaceJudge& raceJudge,
     }
     data["entitiesData"] = entitiesData;
 
-    //todo
+    //todo winner?
 
     std::string dumpedData = data.dump();
     return std::move(dumpedData);

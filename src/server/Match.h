@@ -21,6 +21,7 @@
 class Match : public Thread {
 private:
     RaceManager raceManager;
+    std::atomic<bool> dead;
     std::atomic<bool> matchStarted;
     std::string mapName;
     int playersAmount;

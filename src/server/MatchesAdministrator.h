@@ -20,7 +20,7 @@ private:
 public:
     explicit MatchesAdministrator(const char* configPath);
     bool createMatch(std::string& creatorNickname,
-            Proxy clientProxy,
+            Proxy& clientProxy,
             std::string& matchName,
             std::string& mapName,
             int playersAmount,

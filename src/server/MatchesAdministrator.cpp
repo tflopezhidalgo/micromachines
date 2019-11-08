@@ -14,7 +14,7 @@ MatchesAdministrator::MatchesAdministrator(const char* configPath) :
 
 bool MatchesAdministrator::createMatch(
         std::string& creatorNickname,
-        Proxy clientProxy,
+        Proxy& clientProxy,
         std::string& matchName,
         std::string& mapName,
         int playersAmount,
@@ -80,13 +80,13 @@ bool MatchesAdministrator::addClientToMatch(
 void MatchesAdministrator::deleteFinishedMatches() {
     auto it = matches.begin();
     while (it != matches.end()) {
-        auto matchIterator = it++;
-        auto match = matchIterator->second;
-        if (match->finished()) {
-            match->stop();
-            match->join();
-            delete match;
-            matches.erase(matchIterator);
+        if (it->second->finished()) {
+            it->second->stop();
+            it->second->join();
+            delete it->second;
+            it = matches.erase(it);
+        } else {
+            it++;
         }
     }
 }

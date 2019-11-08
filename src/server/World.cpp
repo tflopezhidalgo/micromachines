@@ -268,4 +268,5 @@ World::~World() {
         bodies = bodies->GetNext();
         world->DestroyBody(actualBody);
     }
+    delete world;
 }

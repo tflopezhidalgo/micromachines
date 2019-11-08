@@ -22,10 +22,9 @@ void LobbyClientAcceptor::run() {
                     matchesAdministrator);
             receptionist->start();
             receptionists.push_back(receptionist);
-            this->deleteDeadReceptionists();
-        } catch(const SocketException& e) {
-            //stderr print??!!
-            return;
+            deleteDeadReceptionists();
+        } catch (const SocketException& e) {
+            stop();
         }
     }
 }
@@ -34,11 +33,11 @@ void LobbyClientAcceptor::deleteDeadReceptionists() {
     auto it = receptionists.begin();
     while (it != receptionists.end()) {
         if ((*it)->isDead()) {
-            ++it;
-        } else {
             (*it)->join();
             delete (*it);
             it = receptionists.erase(it);
+        } else {
+            ++it;
         }
     }
 }

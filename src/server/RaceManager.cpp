@@ -27,12 +27,13 @@ void RaceManager::addPlayer(std::string& nickname) {
 }
 
 bool RaceManager::raceFinished() {
-    return raceJudge.raceFinished();
+    return false;
+    //todo return raceJudge.raceFinished();
 }
 
 void RaceManager::updateModel(std::vector<Event> &events) {
     if (raceJudge.raceFinished()) {
-        //todo
+        std::cout<<raceJudge.getWinnerId()<<std::endl;
     }
 
     entitiesManager.updateProjectilesStatus();
@@ -67,5 +68,20 @@ std::string RaceManager::getRaceStatus() {
 }
 
 RaceManager::~RaceManager() {
- //todo
+    for (auto it = cars.begin(); it != cars.end(); ++it) {
+        delete it->second;
+    }
+
+    for (auto it = grandstands.begin(); it != grandstands.end(); ++it) {
+        delete (*it);
+    }
+
+    for (auto it = floors.begin(); it != floors.end(); ++it) {
+        delete (*it);
+    }
+    for (auto it = checkpoints.begin(); it != checkpoints.end(); ++it) {
+        delete (*it);
+    }
+
+    delete world;
 }
