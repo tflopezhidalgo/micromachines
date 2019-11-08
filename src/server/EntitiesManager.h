@@ -10,7 +10,6 @@
 #include <unordered_map>
 #include "World.h"
 
-
 class EntitiesManager {
 private:
     World* world;
@@ -18,10 +17,9 @@ private:
     std::unordered_map<int, Entity*> entities;
     int entitiesCounter;
 public:
-    EntitiesManager();
-    void setWorld(World* stageWorld);
+    EntitiesManager(World* stageWorld);
     void addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse);
-    void addEntity();
+    void addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
     void deleteDeadEntities();
     void updateProjectilesStatus();
     void updateProjectilesFriction();

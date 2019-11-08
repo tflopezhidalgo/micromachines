@@ -24,7 +24,7 @@
 #define LEFT 'L'
 #define RIGHT 'R'
 
-//Bodies sizes //todo adjust sizes
+//Bodies sizes
 #define CAR_H 15.f
 #define CAR_W 6.f
 #define STONE_RADIUS 20.f

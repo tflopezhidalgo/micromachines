@@ -11,9 +11,8 @@
 #define MIN_LINEAR_IMPULSE 10
 #define PROJECTILE_INITIAL_DISTANCE 0.5f
 
-Grandstand::Grandstand(b2Body* body, int objectsThrownNumber,
-                       float x_pos, float y_pos, bool horizontalDisposal,
-                       bool positiveOrientation) :
+Grandstand::Grandstand(b2Body* body, int objectsThrownNumber, float x_pos,
+        float y_pos, bool horizontalDisposal, bool positiveOrientation) :
     body(body),
     objectsThrownNumber(objectsThrownNumber),
     horizontalDisposal(horizontalDisposal),
@@ -21,7 +20,7 @@ Grandstand::Grandstand(b2Body* body, int objectsThrownNumber,
     x_pos(x_pos),
     y_pos(y_pos) {}
 
-void Grandstand::throwObjectsToPilots(EntitiesManager& entitiesManager) {
+void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
 
     EntityIdentifier projectiles[5] = {HEALTHBOOSTER, OIL, SPEEDBOOSTER, STONE, MUG};
 

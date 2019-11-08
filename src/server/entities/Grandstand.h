@@ -24,7 +24,7 @@ public:
                float x_pos, float y_pos,
                bool horizontalDisposal,
                bool positiveOrientation);
-    void throwObjectsToPilots(EntitiesManager& entitiesManager);
+    void throwProjectiles(EntitiesManager& entitiesManager);
     ~Grandstand();
 };
 

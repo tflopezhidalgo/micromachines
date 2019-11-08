@@ -23,7 +23,7 @@ public:
     EntityIdentifier getIdentifier();
     bool isDead();
     void die();
-    ~Entity();
+    virtual ~Entity();
 };
 
 #endif //TESTING_ENTITY_H

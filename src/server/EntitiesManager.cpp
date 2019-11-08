@@ -4,12 +4,9 @@
 
 #include "EntitiesManager.h"
 
-EntitiesManager::EntitiesManager() :
-    entitiesCounter(0) {}
-
-void EntitiesManager::setWorld(World* stageWorld) {
-    world = stageWorld;
-}
+EntitiesManager::EntitiesManager(World* stageWorld) :
+    entitiesCounter(0),
+    world(stageWorld) {}
 
 void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse) {
     Projectile* projectile = world->addProjectile(entityIdentifier, x_pos, y_pos);
@@ -19,7 +16,7 @@ void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_p
     entitiesCounter++;
 }
 
-void EntitiesManager::addEntity() {
+void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
     //todo
 }
 
@@ -91,5 +88,7 @@ std::unordered_map<int, Entity*>& EntitiesManager::getEntities() {
 }
 
 EntitiesManager::~EntitiesManager() {
-    //todo
+    for (auto it = entities.begin(); it != entities.end(); ++it) {
+        delete (it->second);
+    }
 }

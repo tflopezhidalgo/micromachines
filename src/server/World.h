@@ -17,7 +17,6 @@
 #include "entities/SpeedBooster.h"
 #include "entities/Floor.h"
 #include "Identifiers.h"
-#include "entities/Grandstand.h"
 #include "entities/Checkpoint.h"
 
 class World {
@@ -47,7 +46,7 @@ public:
 
     Car* addCar(std::string id, float x_pos, float y_pos, float angle);
 
-    Grandstand* addGrandstand(float x_pos, float y_pos, bool horizontalDisposal, bool positiveOrientation);
+    b2Body* getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal);
 
     Projectile* addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
 

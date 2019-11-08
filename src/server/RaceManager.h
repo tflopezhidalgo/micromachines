@@ -18,11 +18,12 @@
 
 class RaceManager {
 private:
-    World* world;
     RaceStageBuilder stageBuilder;
+    World* world;
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
     std::unordered_map<std::string, Car*> cars;
+    std::vector<Grandstand*> grandstands;
     std::vector<Floor*> floors;
     std::vector<Checkpoint*> checkpoints;
 public:

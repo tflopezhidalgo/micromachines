@@ -3,7 +3,7 @@
 //
 
 #include "RaceManager.h"
-#include "ModelSerializer.h"
+#include "ModelStatusSerializer.h"
 
 #define X_POS_IDX 0
 #define Y_POS_IDX 1
@@ -11,11 +11,11 @@
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     stageBuilder(mapName, config),
-    raceJudge(raceLaps) {
-    world = stageBuilder.buildWorld();
-    entitiesManager.setWorld(world);
+    world(stageBuilder.buildWorld()),
+    raceJudge(raceLaps),
+    entitiesManager(world) {
     stageBuilder.addRaceSurface(world, floors, checkpoints, raceJudge);
-
+    stageBuilder.addGrandstands(world, grandstands);
 }
 
 void RaceManager::addPlayer(std::string& nickname) {
@@ -35,7 +35,12 @@ void RaceManager::updateModel(std::vector<Event> &events) {
         //todo
     }
 
+    entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
+
+    for (int i = 0; i < grandstands.size(); i++) {
+        grandstands[i]->throwProjectiles(entitiesManager);
+    }
 
     std::unordered_map<std::string, bool> updatedCars;
 
@@ -55,11 +60,10 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     }
 
     world->step();
-    entitiesManager.updateProjectilesStatus();
 }
 
 std::string RaceManager::getRaceStatus() {
-    return std::move(ModelSerializer::serialize(cars, entitiesManager.getEntities()));
+    return std::move(ModelStatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
 }
 
 RaceManager::~RaceManager() {
