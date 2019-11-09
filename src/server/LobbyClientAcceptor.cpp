@@ -24,7 +24,7 @@ void LobbyClientAcceptor::run() {
             receptionists.push_back(receptionist);
             deleteDeadReceptionists();
         } catch (const SocketException& e) {
-            stop();
+            return;
         }
     }
 }

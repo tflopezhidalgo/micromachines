@@ -76,7 +76,6 @@ bool MatchesAdministrator::addClientToMatch(
     }
 }
 
-//No lock till unique thread delete finished matches
 void MatchesAdministrator::deleteFinishedMatches() {
     auto it = matches.begin();
     while (it != matches.end()) {
