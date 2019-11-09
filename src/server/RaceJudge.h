@@ -9,14 +9,13 @@
 #include <unordered_map>
 #include <entities/Car.h>
 
-class Checkpoint;
-
 class RaceJudge {
 private:
     int raceLaps;
     int checkpointsNumber;
-    std::unordered_map<std::string, int> carsCheckpointsTaken;
-    std::unordered_map<std::string, int> carsNextCheckpoint;
+    std::unordered_map<std::string, int> checkpointsTaken;
+    std::unordered_map<std::string, int> nextCheckpoint;
+    std::unordered_map<std::string, int> lapsDone;
     std::string winnerId;
     bool someoneWon;
 public:
@@ -25,7 +24,8 @@ public:
     void increaseCheckpointsNumber();
     void activate(std::string carId, int checkpointOrder);
     bool raceFinished();
-    //todo getRacePositions
+    int getLapsDone(std::string& carId);
+    std::string& getWinnerId();
     ~RaceJudge();
 };
 

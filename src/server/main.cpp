@@ -9,13 +9,14 @@
 
 int main(int argc, char* argv[]) {
     MatchesAdministrator matchesAdministrator("../config.cfg");
-    auto acceptor = new LobbyClientAcceptor(BACKLOG, argv[1], matchesAdministrator);
-    acceptor->start();
+    LobbyClientAcceptor acceptor(BACKLOG, argv[1], matchesAdministrator);
+    acceptor.start();
     char c = '\0';
     while (c != 'q') {
         std::cin >> c;
+        matchesAdministrator.deleteFinishedMatches();
     }
-    acceptor->stop();
-    acceptor->join();
+    acceptor.stop();
+    acceptor.join();
     return 0;
 }

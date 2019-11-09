@@ -14,17 +14,18 @@
 #include "Client.h"
 #include "World.h"
 #include "RaceStageBuilder.h"
+#include "EntitiesManager.h"
 
 class RaceManager {
 private:
-    World* world;
     RaceStageBuilder stageBuilder;
+    World* world;
     RaceJudge raceJudge;
+    EntitiesManager entitiesManager;
     std::unordered_map<std::string, Car*> cars;
-    std::unordered_map<int,Entity*> entities;
+    std::vector<Grandstand*> grandstands;
     std::vector<Floor*> floors;
     std::vector<Checkpoint*> checkpoints;
-    int nextEntityId;
 public:
     RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps);
     void addPlayer(std::string& nickname);

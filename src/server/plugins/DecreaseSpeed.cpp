@@ -15,7 +15,7 @@ class DecreaseSpeed {
 public:
     void updateModel(std::vector<Car*> cars, World* world) {
         for (auto car : cars) {
-            if (car->getHealth() == SEVERAL_DAMAGED_POINTS) {
+            if (car->getHealth() <= SEVERAL_DAMAGED_POINTS) {
                 car->setMaxForwardSpeed(NEWFORDWARDSPEED);
             }
         }

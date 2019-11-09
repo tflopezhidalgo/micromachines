@@ -14,7 +14,7 @@ private:
     b2Body* body;
     EntityStatus status;
 public:
-    Entity(EntityIdentifier identifier, b2Body* body);
+    Entity(EntityIdentifier identifier, b2Body* body, EntityStatus entityStatus = ALIVE);
     virtual void beginCollision(Entity* entity) = 0;
     virtual void endCollision(Entity* entity) = 0;
     b2Vec2 getPosition();
@@ -23,10 +23,7 @@ public:
     EntityIdentifier getIdentifier();
     bool isDead();
     void die();
-    b2Body* getBody();
-    ~Entity();
-
-    void receiveSeveralDamage();
+    virtual ~Entity();
 };
 
 #endif //TESTING_ENTITY_H

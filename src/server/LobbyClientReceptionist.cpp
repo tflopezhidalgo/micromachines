@@ -14,7 +14,6 @@ LobbyClientReceptionist::LobbyClientReceptionist(Socket socket,
         matchesAdministrator(matchesAdministrator) {}
 
 void LobbyClientReceptionist::run() {
-    //following code will be encapsulated by a client instance
     while (!finished) {
         std::string clientInitiationMessage = proxy.receiveMessage();
         nlohmann::json initiationMsg = nlohmann::json::parse(clientInitiationMessage);
@@ -44,9 +43,9 @@ void LobbyClientReceptionist::createNewMatch(nlohmann::json& initiationMsg) {
     std::string map = initiationMsg["map"].get<std::string>();
     int matchPlayersAmount = initiationMsg["playersAmount"].get<int>();
     int raceLaps = initiationMsg["raceLaps"].get<int>();
-    finished = matchesAdministrator.createMatch(clientId,
-            std::move(proxy), matchName,
-            map, matchPlayersAmount, raceLaps);
+    //if match created, proxy is moved to a Client instance
+    finished = matchesAdministrator.createMatch(clientId,proxy,
+            matchName,map, matchPlayersAmount, raceLaps);
 }
 
 void LobbyClientReceptionist::joinMatch(nlohmann::json& initiationMsg) {
@@ -62,7 +61,10 @@ bool LobbyClientReceptionist::isDead() {
 }
 
 void LobbyClientReceptionist::stop() {
+    finished = true;
     proxy.stop();
 }
 
-LobbyClientReceptionist::~LobbyClientReceptionist() {}
+LobbyClientReceptionist::~LobbyClientReceptionist() {
+    proxy.stop();
+}

@@ -23,7 +23,7 @@ public:
     bool isDead();
     void run() override;
     void stop();
-    ~LobbyClientReceptionist() override;
+    ~LobbyClientReceptionist();
 };
 
 #endif //MICROMACHINES_LOBBYCLIENTRECEPTIONIST_H

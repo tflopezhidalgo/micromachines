@@ -3,7 +3,7 @@
 //
 
 #include "RaceManager.h"
-#include "ModelSerializer.h"
+#include "ModelStatusSerializer.h"
 
 #define X_POS_IDX 0
 #define Y_POS_IDX 1
@@ -11,10 +11,11 @@
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     stageBuilder(mapName, config),
+    world(stageBuilder.buildWorld()),
     raceJudge(raceLaps),
-    nextEntityId(0) {
-    world = stageBuilder.buildWorld();
+    entitiesManager(world) {
     stageBuilder.addRaceSurface(world, floors, checkpoints, raceJudge);
+    stageBuilder.addGrandstands(world, grandstands);
 }
 
 void RaceManager::addPlayer(std::string& nickname) {
@@ -26,12 +27,20 @@ void RaceManager::addPlayer(std::string& nickname) {
 }
 
 bool RaceManager::raceFinished() {
-    return raceJudge.raceFinished();
+    return false;
+    //todo return raceJudge.raceFinished();
 }
 
 void RaceManager::updateModel(std::vector<Event> &events) {
     if (raceJudge.raceFinished()) {
-        //todo
+        std::cout<<raceJudge.getWinnerId()<<std::endl;
+    }
+
+    entitiesManager.updateProjectilesStatus();
+    entitiesManager.updateProjectilesFriction();
+
+    for (int i = 0; i < grandstands.size(); i++) {
+        grandstands[i]->throwProjectiles(entitiesManager);
     }
 
     std::unordered_map<std::string, bool> updatedCars;
@@ -52,13 +61,27 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     }
 
     world->step();
-
 }
 
 std::string RaceManager::getRaceStatus() {
-    return std::move(ModelSerializer::serialize(cars, entities));
+    return std::move(ModelStatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
 }
 
 RaceManager::~RaceManager() {
- //todo
+    for (auto it = cars.begin(); it != cars.end(); ++it) {
+        delete it->second;
+    }
+
+    for (auto it = grandstands.begin(); it != grandstands.end(); ++it) {
+        delete (*it);
+    }
+
+    for (auto it = floors.begin(); it != floors.end(); ++it) {
+        delete (*it);
+    }
+    for (auto it = checkpoints.begin(); it != checkpoints.end(); ++it) {
+        delete (*it);
+    }
+
+    delete world;
 }
