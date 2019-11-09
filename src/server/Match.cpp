@@ -10,6 +10,7 @@
 
 Match::Match(std::string& mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
+        dead(false),
         matchStarted(false),
         mapName(mapName),
         raceLaps(raceLaps),
@@ -41,11 +42,16 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 void Match::run() {
     //ready, set, go
     startClientsThread();
-    while (!raceManager.raceFinished()) {
+    while (!dead) {
         auto initial = std::chrono::high_resolution_clock::now();
         std::vector<Event> events = eventsQueue.emptyQueue();
         raceManager.updateModel(events);
         sendUpdateToClients();
+
+        if (raceManager.raceFinished()) {
+            dead = true;
+        }
+
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
         long sleepTime = timeStep - loopDuration.count();
@@ -57,14 +63,23 @@ void Match::run() {
 
 void Match::sendUpdateToClients() {
     std::string modelSerialized = std::move(raceManager.getRaceStatus());
-    for (auto & client : clients) {
+    auto clientsIt = clients.begin();
+    while (clientsIt != clients.end()) {
         try {
-            client.second->sendMessage(modelSerialized);
+            clientsIt->second->sendMessage(modelSerialized);
+            clientsIt++;
         } catch (const SocketException& e) {
-            delete client.second;
-            clients.erase(client.first);
+            clientsIt->second->stop();
+            clientsIt->second->join();
+            delete clientsIt->second;
+            clientsIt = clients.erase(clientsIt);
         }
     }
+
+    if (clients.size() == 0) {
+        dead = true;
+    }
+
 }
 
 void Match::startClientsThread() {
@@ -74,8 +89,7 @@ void Match::startClientsThread() {
 }
 
 bool Match::finished() {
-    //todo lock??!
-    return raceManager.raceFinished();
+    return dead;
 }
 
 void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& matchName) {
@@ -90,9 +104,11 @@ void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& match
 }
 
 void Match::stop() {
-    //todo
+    dead = true;
 }
 
 Match::~Match() {
-    //todo
+    for (auto it = clients.begin(); it != clients.end(); ++it) {
+        delete (it->second);
+    }
 }

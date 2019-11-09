@@ -9,7 +9,6 @@
 #include "Entity.h"
 #include "Car.h"
 
-//todo curved shapes
 class Floor : public Entity {
 private:
     float friction;

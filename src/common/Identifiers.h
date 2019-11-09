@@ -5,8 +5,6 @@
 #ifndef MICROMACHINES_IDENTIFIERS_H
 #define MICROMACHINES_IDENTIFIERS_H
 
-#define THROWABLE_OBJECTS_NUMBER 4
-
 enum FloorIdentifier {
     GRASS_ID,
     THIRD_QUAD_CURVE_TRACK_ID,
@@ -33,8 +31,8 @@ enum EntityIdentifier {
 };
 
 enum EntityStatus {
+    RECENTLY_THROWN,
     ALIVE,
-    SEVERALDAMAGED,
     DEAD
 };
 

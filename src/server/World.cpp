@@ -198,15 +198,26 @@ Floor* World::addFloor(float x_pos, float y_pos, float friction) {
     return floor;
 }
 
-GrandStand* World::addGrandStand(float x_pos, float y_pos, float angle) {
-    b2Body* body = addBoxBody({x_pos, y_pos},
-            {GRANDSTAND_WIDTH, GRANDSTAND_HEIGHT}, false, false, angle*DEGTORAD);
-    return new GrandStand(body,
-            config.find(GRANDSTAND_OBJECTS_THROWN)->second, x_pos, y_pos);
+b2Body* World::getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal) {
+    b2Body* body;
+    if (horizontalDisposal) {
+        body = addBoxBody({x_pos, y_pos},{GRANDSTAND_WIDTH, GRANDSTAND_HEIGHT},
+                false, false);
+    } else {
+        body = addBoxBody({x_pos, y_pos},{GRANDSTAND_HEIGHT, GRANDSTAND_WIDTH},
+                          false, false);
+    }
+    return body;
+}
+
+Projectile* World::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
+    b2Body* body = addCircleBody({x_pos, y_pos}, PROJECTILE_RADIUS, true, false);
+    Projectile* projectile = new Projectile(entityIdentifier, body);
+    return projectile;
 }
 
 Checkpoint* World::addCheckpoint(float x_pos, float y_pos, bool horizontalDisposal,
-        int checkpointOrder, RaceJudge& raceJudge) {
+                                 int checkpointOrder, RaceJudge& raceJudge) {
     b2Vec2 size;
     if (horizontalDisposal) {
         size = {TILE_WIDTH, float(TILE_HEIGHT)/3.f};
@@ -250,10 +261,6 @@ void World::step() {
     world->Step(timeStep, velocityIterations, positionIterations);
 }
 
-void World::destroyBody(b2Body* body) {
-    world->DestroyBody(body);
-}
-
 World::~World() {
     b2Body* bodies = world->GetBodyList();
     while (bodies) {
@@ -261,4 +268,5 @@ World::~World() {
         bodies = bodies->GetNext();
         world->DestroyBody(actualBody);
     }
+    delete world;
 }

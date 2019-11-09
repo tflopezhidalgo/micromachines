@@ -4,10 +4,10 @@
 
 #include "Entity.h"
 
-Entity::Entity(EntityIdentifier identifier, b2Body* body) :
+Entity::Entity(EntityIdentifier identifier, b2Body* body, EntityStatus entityStatus) :
     identifier(identifier),
     body(body),
-    status(EntityStatus::ALIVE) {}
+    status(entityStatus) {}
 
 EntityIdentifier Entity::getIdentifier() {
     return identifier;
@@ -31,14 +31,6 @@ bool Entity::isDead() {
 
 void Entity::die() {
     status = DEAD;
-}
-
-void Entity::receiveSeveralDamage() {
-    status = SEVERALDAMAGED;
-}
-
-b2Body* Entity::getBody() {
-    return body;
 }
 
 Entity::~Entity() {
