@@ -8,6 +8,9 @@
 #include "Match.h"
 #include "Constants.h"
 
+//todo
+#include "TimedEvent.h"
+
 Match::Match(std::string& mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
         dead(false),
@@ -39,18 +42,31 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
     return eventsQueue;
 }
 
+void test();
+
+void test() {
+    std::cout<<"HOLA\n";
+}
+
 void Match::run() {
     //ready, set, go
+    std::function<void()> func = test;
+    TimedEvent timedEvent(func, 10);
+
     startClientsThread();
     while (!dead) {
+
         auto initial = std::chrono::high_resolution_clock::now();
         std::vector<Event> events = eventsQueue.emptyQueue();
         raceManager.updateModel(events);
-        sendUpdateToClients();
 
         if (raceManager.raceFinished()) {
             dead = true;
         }
+
+        timedEvent.update(1.f/60.f);
+
+        sendUpdateToClients();
 
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
