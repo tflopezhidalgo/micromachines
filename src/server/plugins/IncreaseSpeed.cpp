@@ -1,26 +1,18 @@
 //
-// Created by eliana on 20/10/19.
+// Created by eliana on 9/11/19.
 //
 
-#ifndef PLUGINS_INCREASESPEED_H
-#define PLUGINS_INCREASESPEED_H
+#include "IncreaseSpeed.h"
 
-#include "World.h"
-#include "entities/Car.h"
-#include "Plugin.h"
 
-#define NEWFORDWARDSPEED 150
-
-class IncreaseSpeed : public Plugin {
-public:
-    void updateModel(std::vector<Car*> cars, World* world) {
-        for (auto car : cars) {
-            if (car->getRacePosition() == cars.size()) {
-                car->setMaxForwardSpeed(NEWFORDWARDSPEED);
-            }
+void IncreaseSpeed::updateModel(World *world, std::vector<Car *> cars) {
+    for (auto car : cars) {
+        if (car->getRacePosition() == cars.size()) {
+            car->setMaxForwardSpeed(NEWFORDWARDSPEED);
         }
     }
-};
+}
 
-
-#endif //PLUGINS_INCREASESPEED_H
+extern "C" Plugin* create() {
+    return static_cast<Plugin*>(new IncreaseSpeed);
+}

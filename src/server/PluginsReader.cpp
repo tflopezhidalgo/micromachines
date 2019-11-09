@@ -4,11 +4,11 @@
 
 #include "PluginsReader.h"
 
-#define DIRECTORY "plugins"
+#define DIRECTORY "./plugins"
 #define EXTENSION "so"
 
 
-PluginsReader::PluginsReader(World* world, std::vector<Car*> cars) {
+PluginsReader::PluginsReader() {
     DIR* dir;
     struct dirent *file;
 
@@ -29,9 +29,11 @@ PluginsReader::PluginsReader(World* world, std::vector<Car*> cars) {
     closedir(dir);
 }
 
-void PluginsReader::applyPlugin() {
+void PluginsReader::applyPlugin(World* world, std::vector<Car*> cars) {
     typedef void (*func_pointer)(void);
     func_pointer plugin;
+
+    Plugin* (*create)(world, cars);
     for (auto it = files.begin(); it != files.end(); ++it) {
         *(void **) (&plugin) = dlsym(it->second, (const char*)it->first.c_str());
     }

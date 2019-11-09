@@ -18,9 +18,9 @@ class PluginsReader {
 private:
     std::map<std::string, void*> files;
 public:
-    PluginsReader(World* world, std::vector<Car*> cars);
+    PluginsReader();
 
-    void applyPlugin();
+    void applyPlugin(World* world, std::vector<Car*> cars);
 
     ~PluginsReader();
 };

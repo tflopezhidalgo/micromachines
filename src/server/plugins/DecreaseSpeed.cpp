@@ -1,27 +1,18 @@
 //
-// Created by eliana on 27/10/19.
+// Created by eliana on 9/11/19.
 //
 
-#ifndef MICROMACHINES_DECREASESPEED_CPP
-#define MICROMACHINES_DECREASESPEED_CPP
+#include "DecreaseSpeed.h"
 
-#include "entities/Car.h"
-#include "World.h"
-#include "Plugin.h"
 
-#define NEWFORDWARDSPEED 70
-#define SEVERAL_DAMAGED_POINTS 50
-
-class DecreaseSpeed : public Plugin {
-public:
-    void updateModel(std::vector<Car*> cars, World* world) {
-        for (auto car : cars) {
-            if (car->getHealth() <= SEVERAL_DAMAGED_POINTS) {
-                car->setMaxForwardSpeed(NEWFORDWARDSPEED);
-            }
+void DecreaseSpeed::updateModel(World *world, std::vector<Car *> cars) {
+    for (auto car : cars) {
+        if (car->getHealth() <= SEVERAL_DAMAGED_POINTS) {
+            car->setMaxForwardSpeed(NEWFORDWARDSPEED);
         }
     }
-};
+}
 
-
-#endif //MICROMACHINES_DECREASESPEED_CPP
+extern "C" Plugin* create() {
+    return static_cast<Plugin*>(new DecreaseSpeed);
+}
