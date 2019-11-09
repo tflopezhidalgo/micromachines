@@ -5,6 +5,7 @@
 #include "PluginsReader.h"
 
 #define DIRECTORY "plugins"
+#define EXTENSION "so"
 
 typedef void (*func_pointer)(void);
 
@@ -15,13 +16,15 @@ PluginsReader::PluginsReader() {
     dir = opendir(DIRECTORY);
     if (dir != NULL) {
         while ((file = readdir(dir)) != NULL) {
-            void* shared_lib = dlopen(file->d_name, RTLD_NOW);
             std::string name = std::string(file->d_name);
-            name = name.substr(0, name.size() - 3); // remove .so
-            if (!shared_lib) {
-                continue;
+            if(name.substr(name.find_last_of(".") + 1) == EXTENSION) {
+                void* shared_lib = dlopen(file->d_name, RTLD_NOW);
+                name = name.substr(0, name.size() - 3); // remove .so
+                if (!shared_lib) {
+                    continue;
+                }
+                files[name] = shared_lib;
             }
-            files[name] = shared_lib;
         }
     }
     closedir(dir);
