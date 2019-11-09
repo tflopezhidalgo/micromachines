@@ -6,6 +6,7 @@
 
 #define DIRECTORY "./plugins"
 #define EXTENSION "so"
+#define CREATE "create"
 
 
 PluginsReader::PluginsReader() {
@@ -30,12 +31,9 @@ PluginsReader::PluginsReader() {
 }
 
 void PluginsReader::applyPlugin(World* world, std::vector<Car*> cars) {
-    typedef void (*func_pointer)(void);
-    func_pointer plugin;
-
-    Plugin* (*create)(world, cars);
     for (auto it = files.begin(); it != files.end(); ++it) {
-        *(void **) (&plugin) = dlsym(it->second, (const char*)it->first.c_str());
+        Plugin* plug = (Plugin*)dlsym(it->second, CREATE);
+        plug->updateModel(world, cars);
     }
 }
 

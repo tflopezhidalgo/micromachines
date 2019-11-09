@@ -15,5 +15,5 @@ void AddHealthBooster::updateModel(World *world, std::vector<Car *> cars) {
 }
 
 extern "C" Plugin* create() {
-    return static_cast<Plugin*>(new AddHealthBooster);
+    return new AddHealthBooster;
 }

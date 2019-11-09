@@ -15,5 +15,5 @@ float AddOil::getPosition() {
 }
 
 extern "C" Plugin* create() {
-    return static_cast<Plugin*>(new AddOil);
+    return new AddOil;
 }

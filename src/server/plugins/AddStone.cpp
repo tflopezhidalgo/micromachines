@@ -15,5 +15,5 @@ float AddStone::getPosition() {
 }
 
 extern "C" Plugin* create() {
-    return static_cast<Plugin*>(new AddStone);
+    return new AddStone;
 }

@@ -14,5 +14,5 @@ void IncreaseSpeed::updateModel(World *world, std::vector<Car *> cars) {
 }
 
 extern "C" Plugin* create() {
-    return static_cast<Plugin*>(new IncreaseSpeed);
+    return new IncreaseSpeed;
 }
