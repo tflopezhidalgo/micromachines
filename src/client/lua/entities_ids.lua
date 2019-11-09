@@ -6,28 +6,28 @@
 
 entities_id = {
     [0] = {
-        ["name"] = "car",
-        ["safe"] = true
-    },
-    [1] = {
         ["name"] = "healthboost",
         ["safe"] = true
     },
-    [2] = {
+    [1] = {
         ["name"] = "oil",
         ["safe"] = false
     },
-    [3] = {
+    [2] = {
         ["name"] = "speedboost",
         ["safe"] = true
     },
-    [4] = {
+    [3] = {
         ["name"] = "stone",
         ["safe"] = false
     },
-    [5] = {
+    [4] = {
         ["name"] = "mud",
         ["safe"] = false
-    }
+    },
+    [5] = {
+        ["name"] = "car",
+        ["safe"] = true
+    },
 }
 

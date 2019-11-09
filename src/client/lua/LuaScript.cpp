@@ -7,7 +7,6 @@
 #define PLAYER_SCRIPT "player.lua"
 #define ENTITIES_SCRIPT "entities_ids.lua"
 #define FLOOR_SCRIPT "floor_ids.lua"
-//#define MAP_SCRIPT "map.lua"
 #define ENTITIES "entities"
 #define MAP "map"
 #define INDEX_X 1
@@ -18,7 +17,6 @@ LuaScript::LuaScript(std::string& clientId) :
     L = luaL_newstate();
     luaL_openlibs(L);
 
-    //luaL_dofile(L, MAP_SCRIPT);
     luaL_dofile(L, PLAYER_SCRIPT);
     luaL_dofile(L, ENTITIES_SCRIPT);
     luaL_dofile(L, FLOOR_SCRIPT);
