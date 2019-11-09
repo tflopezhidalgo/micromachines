@@ -9,12 +9,17 @@
 #include <cstdio>
 #include <iostream>
 #include <map>
+#include <dlfcn.h>
 
 class PluginsReader {
 private:
-    std::map<std::string, struct dirent> files;
+    std::map<std::string, void*> files;
 public:
-    void dirReader();
+    PluginsReader();
+
+    void applyPlugin();
+
+    ~PluginsReader();
 };
 
 
