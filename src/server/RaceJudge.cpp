@@ -2,11 +2,12 @@
 // Created by leobellaera on 4/11/19.
 //
 
+#include <iostream>
 #include "RaceJudge.h"
 
 RaceJudge::RaceJudge(int raceLaps) :
     raceLaps(raceLaps),
-    someoneWon(false) {}
+    checkpointsNumber(0) {}
 
 void RaceJudge::addCar(std::string& id) {
     nextCheckpoint.emplace(id, 0);
@@ -19,7 +20,8 @@ void RaceJudge::increaseCheckpointsNumber() {
 }
 
 void RaceJudge::activate(std::string carId, int checkpointOrder) {
-    if (someoneWon) {
+
+    if (std::find(arrivalOrder.begin(), arrivalOrder.end(), carId) != arrivalOrder.end()) {
         return;
     }
 
@@ -32,9 +34,7 @@ void RaceJudge::activate(std::string carId, int checkpointOrder) {
         nextCheckpointIt->second += 1;
 
         if (checkpointsTakenIt->second == raceLaps * checkpointsNumber) {
-            winnerId = carId;
-            someoneWon = true;
-            return;
+            arrivalOrder.push_back(carId);
         }
 
         if (nextCheckpointIt->second > checkpointsNumber - 1) {
@@ -45,16 +45,17 @@ void RaceJudge::activate(std::string carId, int checkpointOrder) {
 
 }
 
+std::vector<std::string>& RaceJudge::getCarsArrivalOrder() {
+    return arrivalOrder;
+}
+
 int RaceJudge::getLapsDone(std::string& carId) {
     return lapsDone.find(carId)->second;
 }
 
-std::string& RaceJudge::getWinnerId() {
-    return winnerId;
-}
-
 bool RaceJudge::raceFinished() {
-    return someoneWon;
+    //cars number is equal to the number of cars that finished the race
+    return (arrivalOrder.size() == lapsDone.size());
 }
 
 RaceJudge::~RaceJudge() {}

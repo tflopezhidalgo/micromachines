@@ -34,7 +34,9 @@ void Car::updateFriction() {
 }
 
 void Car::updateMove(std::vector<char>& actions) {
-    //todo if status DEAD ...
+    if (isDead()) {
+        return;
+    }
 
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateDrive(actions);

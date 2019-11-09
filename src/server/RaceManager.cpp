@@ -11,7 +11,7 @@
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     stageBuilder(mapName, config),
-    world(stageBuilder.buildWorld()),
+    world(std::move(stageBuilder.buildWorld())),
     raceJudge(raceLaps),
     entitiesManager(world) {
     stageBuilder.addRaceSurface(world, floors, checkpoints, raceJudge);
@@ -20,7 +20,7 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
 
 void RaceManager::addPlayer(std::string& nickname) {
     std::vector<float> startingPosition = stageBuilder.getStartingPosition();
-    Car* car = world->addCar(nickname, startingPosition[X_POS_IDX],
+    Car* car = world.addCar(nickname, startingPosition[X_POS_IDX],
             startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX]);
     cars.emplace(nickname, car);
     raceJudge.addCar(nickname);
@@ -32,10 +32,7 @@ bool RaceManager::raceFinished() {
 }
 
 void RaceManager::updateModel(std::vector<Event> &events) {
-    if (raceJudge.raceFinished()) {
-        std::cout<<raceJudge.getWinnerId()<<std::endl;
-    }
-
+    entitiesManager.deleteDeadEntities();
     entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
 
@@ -60,7 +57,7 @@ void RaceManager::updateModel(std::vector<Event> &events) {
         }
     }
 
-    world->step();
+    world.step();
 }
 
 std::string RaceManager::getRaceStatus() {
@@ -82,6 +79,4 @@ RaceManager::~RaceManager() {
     for (auto it = checkpoints.begin(); it != checkpoints.end(); ++it) {
         delete (*it);
     }
-
-    delete world;
 }

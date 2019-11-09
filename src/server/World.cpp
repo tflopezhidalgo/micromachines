@@ -34,6 +34,17 @@ World::World(float height, float width, std::map<std::string, float> &config) :
     addBoxBody({width / 2.f, 0.f}, verticalEdgeSize, false, false);
 }
 
+World::World(World&& other) :
+    config(other.config) {
+    this->world = other.world;
+    world->SetContactListener(&collisionsProcessor);
+
+    other.world = nullptr;
+    this->height = other.height;
+    this->width = other.width;
+    this->timeStep = other.timeStep;
+}
+
 //private method that generates a new body in the physical world
 b2Body* World::addBody(b2Vec2 pos, bool dynamic, float angle) {
     b2BodyDef bodyDef;
@@ -262,11 +273,13 @@ void World::step() {
 }
 
 World::~World() {
-    b2Body* bodies = world->GetBodyList();
-    while (bodies) {
-        b2Body* actualBody = bodies;
-        bodies = bodies->GetNext();
-        world->DestroyBody(actualBody);
+    if (world) {
+        b2Body* bodies = world->GetBodyList();
+        while (bodies) {
+            b2Body* actualBody = bodies;
+            bodies = bodies->GetNext();
+            world->DestroyBody(actualBody);
+        }
+        delete world;
     }
-    delete world;
 }

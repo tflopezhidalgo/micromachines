@@ -40,17 +40,22 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 }
 
 void Match::run() {
-    //ready, set, go
+
+    //startCountdown(); todo uncomment
     startClientsThread();
+
     while (!dead) {
+
         auto initial = std::chrono::high_resolution_clock::now();
         std::vector<Event> events = eventsQueue.emptyQueue();
         raceManager.updateModel(events);
-        sendUpdateToClients();
 
         if (raceManager.raceFinished()) {
             dead = true;
         }
+
+        std::string modelSerialized = std::move(raceManager.getRaceStatus());
+        sendMessageToClients(modelSerialized);
 
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
@@ -61,12 +66,11 @@ void Match::run() {
     }
 }
 
-void Match::sendUpdateToClients() {
-    std::string modelSerialized = std::move(raceManager.getRaceStatus());
+void Match::sendMessageToClients(std::string& message) {
     auto clientsIt = clients.begin();
     while (clientsIt != clients.end()) {
         try {
-            clientsIt->second->sendMessage(modelSerialized);
+            clientsIt->second->sendMessage(message);
             clientsIt++;
         } catch (const SocketException& e) {
             clientsIt->second->stop();
@@ -105,6 +109,19 @@ void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& match
 
 void Match::stop() {
     dead = true;
+}
+
+void Match::startCountdown() {
+    std::string countdownMsg = "Ready";
+    sendMessageToClients(countdownMsg);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+    countdownMsg = "Set";
+    sendMessageToClients(countdownMsg);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+    countdownMsg = "Go";
+    sendMessageToClients(countdownMsg);
 }
 
 Match::~Match() {

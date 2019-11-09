@@ -29,8 +29,9 @@ private:
     long timeStep;
     ProtectedQueue<Event> eventsQueue;
     std::unordered_map<std::string, Client*> clients;
+    void startCountdown();
     void startClientsThread();
-    void sendUpdateToClients();
+    void sendMessageToClients(std::string& message);
 public:
     Match(std::string& mapName, int playersAmount,
             int raceLaps, std::map<std::string, float> &config);

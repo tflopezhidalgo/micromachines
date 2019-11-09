@@ -12,12 +12,12 @@
 
 class EntitiesManager {
 private:
-    World* world;
+    World& world;
     std::unordered_map<int, Projectile*> projectiles;
     std::unordered_map<int, Entity*> entities;
     int entitiesCounter;
 public:
-    EntitiesManager(World* stageWorld);
+    EntitiesManager(World& stageWorld);
     void addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse);
     void addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
     void deleteDeadEntities();
