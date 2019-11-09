@@ -9,12 +9,13 @@
 #include "World.h"
 
 #define NEWFORDWARDSPEED 70
+#define SEVERAL_DAMAGED_POINTS 50
 
 class DecreaseSpeed {
 public:
     void updateModel(std::vector<Car*> cars, World* world) {
         for (auto car : cars) {
-            if (car->getHealth() < 30) {
+            if (car->getHealth() <= SEVERAL_DAMAGED_POINTS) {
                 car->setMaxForwardSpeed(NEWFORDWARDSPEED);
             }
         }
