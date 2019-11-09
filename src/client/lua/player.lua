@@ -24,7 +24,7 @@ next_position = {
 -- end variables macro
 
 -- Depende el angulo tiene una direccion a seguir
-function getAction(angle, pos_x, pos_y)
+function getEvent(angle, pos_x, pos_y)
     local action = ""
     if (angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) then
         action = action_vertical("U", pos_x, pos_y) -- pos_y -1

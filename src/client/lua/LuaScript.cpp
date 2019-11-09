@@ -7,41 +7,47 @@
 #define PLAYER_SCRIPT "player.lua"
 #define ENTITIES_SCRIPT "entities_ids.lua"
 #define FLOOR_SCRIPT "floor_ids.lua"
-#define MAP_SCRIPT "map.lua"
+//#define MAP_SCRIPT "map.lua"
 #define ENTITIES "entities"
 #define MAP "map"
 #define INDEX_X 1
 #define INDEX_Y 2
 
-LuaScript::LuaScript() {
+LuaScript::LuaScript(std::string& clientId) :
+    clientId(clientId) {
     L = luaL_newstate();
     luaL_openlibs(L);
 
-    luaL_dofile(L, MAP_SCRIPT);
+    //luaL_dofile(L, MAP_SCRIPT);
     luaL_dofile(L, PLAYER_SCRIPT);
     luaL_dofile(L, ENTITIES_SCRIPT);
     luaL_dofile(L, FLOOR_SCRIPT);
 }
 
-std::string LuaScript::getAction(int angle, int pos_x, int pos_y) {
+Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     auto tuplePos = converter.getLuaMapPosition(pos_x, pos_y,
             matrixHeight, matrixWidth);
 
-    lua_getglobal(L, "getAction");
+    lua_getglobal(L, "getEvent");
     lua_pushnumber(L, angle);
     lua_pushnumber(L, std::get<0>(tuplePos));
     lua_pushnumber(L, std::get<1>(tuplePos));
 
     lua_pcall(L, 3, 1, 0);
-    const char* lua_action = lua_tostring(L, 1);
+    const char* luaEvent = lua_tostring(L, 1);
+    lua_pop(L, 1); // elimina lua_action
 
-    emptyStack();
-    action = std::string(lua_action);
-    return action;
+    int stackSize = lua_gettop(L);
+    std::cout << stackSize << std::endl;
+    //lua_pop(L, 1); // elimina entities
+    return createEvent(luaEvent);
 }
 
-std::string LuaScript::getLastAction() {
-    return action;
+Event LuaScript::createEvent(const char* luaEvent) {
+    std::vector<char> v_event;
+    v_event.push_back(luaEvent[0]);
+    Event event(clientId, v_event);
+    return event;
 }
 
 void LuaScript::luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable) {
@@ -71,8 +77,10 @@ void LuaScript::createMap(std::vector<std::vector<int>> table) {
 
 void LuaScript::setEntities(std::vector<std::vector<int>> table) {
     for (int i = 0; i < table.size(); i++) {
-        auto tuplePos = converter.getLuaMapPosition(table[i][INDEX_X], table[i][INDEX_Y],
-                                                    matrixHeight, matrixWidth);
+        auto tuplePos = converter.getLuaMapPosition(
+                table[i][INDEX_X],table[i][INDEX_Y],
+                matrixHeight,matrixWidth);
+
         table[i][INDEX_X] = std::get<0>(tuplePos);
         table[i][INDEX_Y] = std::get<1>(tuplePos);
     }
