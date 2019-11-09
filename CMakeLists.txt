@@ -29,6 +29,7 @@ file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
 set(SOURCE CMAKE_SOURCE_DIR)
 
 add_executable(Lua src/client/lua/main_lua.cpp ${LUA_SRC_FILES})
+target_link_libraries(Lua lua5.3 m dl)
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES})
 target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl)

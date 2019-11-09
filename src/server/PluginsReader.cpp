@@ -33,7 +33,7 @@ PluginsReader::PluginsReader() {
 void PluginsReader::applyPlugin() {
     func_pointer plugin;
     for (auto it = files.begin(); it != files.end(); ++it) {
-        *(void **) (&plugin) = dlsym(it->second, it->first);
+        *(void **) (&plugin) = dlsym(it->second, (const char*)it->first.c_str());
     }
 }
 
