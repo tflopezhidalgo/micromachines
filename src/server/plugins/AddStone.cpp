@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include "entities/Car.h"
 #include "World.h"
+#include "Plugin.h"
 
 #define MAX 100
 
-class AddStone {
+class AddStone : public Plugin {
 public:
     // agrega piedra en una posicion random del mapa
     void updateModel(std::vector<Car*> cars, World* world) {

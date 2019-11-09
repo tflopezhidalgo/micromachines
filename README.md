@@ -14,6 +14,12 @@
 - Programar lo más genéricamente posible
 - Testear
 
+# Install Lua
+
+```
+sudo apt install lua5.3 liblua5.3-dev
+```
+
 # Compile with CMake
 
 ```

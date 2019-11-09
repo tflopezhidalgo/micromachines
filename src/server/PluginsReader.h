@@ -10,12 +10,15 @@
 #include <iostream>
 #include <map>
 #include <dlfcn.h>
+#include "World.h"
+#include "entities/Car.h"
+#include "plugins/Plugin.h"
 
 class PluginsReader {
 private:
     std::map<std::string, void*> files;
 public:
-    PluginsReader();
+    PluginsReader(World* world, std::vector<Car*> cars);
 
     void applyPlugin();
 

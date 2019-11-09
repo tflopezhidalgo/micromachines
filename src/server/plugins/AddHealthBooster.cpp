@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include "entities/Car.h"
 #include "World.h"
+#include "Plugin.h"
 
 #define MAX 100
 
-class AddHealthBooster {
+class AddHealthBooster : public Plugin {
 public:
     // Agrega 2 cajas de vida en lugares random del mapa
     void updateModel(std::vector<Car*> cars, World* world) {

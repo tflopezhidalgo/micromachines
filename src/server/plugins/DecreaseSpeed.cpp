@@ -7,11 +7,12 @@
 
 #include "entities/Car.h"
 #include "World.h"
+#include "Plugin.h"
 
 #define NEWFORDWARDSPEED 70
 #define SEVERAL_DAMAGED_POINTS 50
 
-class DecreaseSpeed {
+class DecreaseSpeed : public Plugin {
 public:
     void updateModel(std::vector<Car*> cars, World* world) {
         for (auto car : cars) {
