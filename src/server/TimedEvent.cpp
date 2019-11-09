@@ -24,3 +24,11 @@ bool TimedEvent::update(float delta) {
         return false;
     }
 }
+
+bool TimedEvent::operator<(const TimedEvent& timedEvent) {
+    return (remainingTimeout() < timedEvent.remainingTimeout());
+}
+
+float TimedEvent::remainingTimeout() const {
+    return timeout - elapsed;
+}

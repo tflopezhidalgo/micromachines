@@ -30,12 +30,12 @@ RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, f
 }
 
 //builds physical word and adds tracks references in tracks vector.
-World* RaceStageBuilder::buildWorld() {
-    auto world = new World(height, width, config);
-    return world;
+World RaceStageBuilder::buildWorld() {
+    World world(height, width, config);
+    return std::move(world);
 }
 
-void RaceStageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
+void RaceStageBuilder::addRaceSurface(World& world, std::vector<Floor*>& floors,
                                       std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge) {
 
     int idx = 0;
@@ -55,25 +55,25 @@ void RaceStageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
 
             if (tile == GRASS_ID) {
 
-                floors.push_back(world->addFloor(w + i, h + j, grassFriction));
+                floors.push_back(world.addFloor(w + i, h + j, grassFriction));
 
             } else if (tile == HORIZONTAL_TRACK_ID || tile == VERTICAL_TRACK_ID ||
             tile == FIRST_QUAD_CURVE_TRACK_ID || tile == SECOND_QUAD_CURVE_TRACK_ID ||
             tile == THIRD_QUAD_CURVE_TRACK_ID || tile == FOURTH_QUAD_CURVE_TRACK_ID) {
 
-                floors.push_back(world->addFloor(w + i, h + j, trackFriction));
+                floors.push_back(world.addFloor(w + i, h + j, trackFriction));
 
             } else if (tile == HOR_TRACK_CHECKPOINT_ID) {
 
-                floors.push_back(world->addFloor(w + i, h + j, trackFriction));
-                checkpoints.push_back(world->addCheckpoint(w + i,h + j,
+                floors.push_back(world.addFloor(w + i, h + j, trackFriction));
+                checkpoints.push_back(world.addCheckpoint(w + i,h + j,
                         false, checkpointsOrder[idx], raceJudge));
                 idx++;
 
             } else if (tile == VER_TRACK_CHECKPOINT_ID) {
 
-                floors.push_back(world->addFloor(w + i, h + j, trackFriction));
-                checkpoints.push_back(world->addCheckpoint(w + i, h + j,
+                floors.push_back(world.addFloor(w + i, h + j, trackFriction));
+                checkpoints.push_back(world.addCheckpoint(w + i, h + j,
                         true, checkpointsOrder[idx], raceJudge));
                 idx++;
             }
@@ -86,13 +86,13 @@ void RaceStageBuilder::addRaceSurface(World* world, std::vector<Floor*>& floors,
     }
 }
 
-void RaceStageBuilder::addGrandstands(World* world, std::vector<Grandstand*>& grandstands) {
+void RaceStageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grandstands) {
     for (auto& grandstandData : map["grandstandsData"]) {
         float x_pos = grandstandData[0].get<float>();
         float y_pos = grandstandData[1].get<float>();
         bool horizontalDisposal = grandstandData[2].get<bool>();
         bool positiveOrientation = grandstandData[3].get<bool>();
-        b2Body* body = world->getGrandstandBody(x_pos, y_pos, horizontalDisposal);
+        b2Body* body = world.getGrandstandBody(x_pos, y_pos, horizontalDisposal);
         Grandstand* grandstand = new Grandstand(body,
                 config.find(GRANDSTAND_OBJECTS_THROWN)->second,
                 x_pos, y_pos, horizontalDisposal, positiveOrientation);

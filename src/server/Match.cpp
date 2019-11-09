@@ -8,9 +8,6 @@
 #include "Match.h"
 #include "Constants.h"
 
-//todo
-#include "TimedEvent.h"
-
 Match::Match(std::string& mapName, int playersAmount,
         int raceLaps, std::map<std::string,float> &config) :
         dead(false),
@@ -42,18 +39,11 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
     return eventsQueue;
 }
 
-void test();
-
-void test() {
-    std::cout<<"HOLA\n";
-}
-
 void Match::run() {
-    //ready, set, go
-    std::function<void()> func = test;
-    TimedEvent timedEvent(func, 10);
 
+    //startCountdown(); todo uncomment
     startClientsThread();
+
     while (!dead) {
 
         auto initial = std::chrono::high_resolution_clock::now();
@@ -64,9 +54,8 @@ void Match::run() {
             dead = true;
         }
 
-        timedEvent.update(1.f/60.f);
-
-        sendUpdateToClients();
+        std::string modelSerialized = std::move(raceManager.getRaceStatus());
+        sendMessageToClients(modelSerialized);
 
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
@@ -77,12 +66,11 @@ void Match::run() {
     }
 }
 
-void Match::sendUpdateToClients() {
-    std::string modelSerialized = std::move(raceManager.getRaceStatus());
+void Match::sendMessageToClients(std::string& message) {
     auto clientsIt = clients.begin();
     while (clientsIt != clients.end()) {
         try {
-            clientsIt->second->sendMessage(modelSerialized);
+            clientsIt->second->sendMessage(message);
             clientsIt++;
         } catch (const SocketException& e) {
             clientsIt->second->stop();
@@ -121,6 +109,19 @@ void Match::showIfAvailable(nlohmann::json& availableMatches, std::string& match
 
 void Match::stop() {
     dead = true;
+}
+
+void Match::startCountdown() {
+    std::string countdownMsg = "Ready";
+    sendMessageToClients(countdownMsg);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+    countdownMsg = "Set";
+    sendMessageToClients(countdownMsg);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+    countdownMsg = "Go";
+    sendMessageToClients(countdownMsg);
 }
 
 Match::~Match() {

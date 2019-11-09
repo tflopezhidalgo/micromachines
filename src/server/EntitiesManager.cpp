@@ -6,7 +6,7 @@
 
 #define MAX_PROJECTILES_SIZE 30
 
-EntitiesManager::EntitiesManager(World* stageWorld) :
+EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
     world(stageWorld) {}
 
@@ -15,7 +15,7 @@ void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_p
         return;
     }
 
-    Projectile* projectile = world->addProjectile(entityIdentifier, x_pos, y_pos);
+    Projectile* projectile = world.addProjectile(entityIdentifier, x_pos, y_pos);
     projectile->applyLinearImpulse(impulse);
 
     projectiles.emplace(entitiesCounter, projectile);
@@ -56,22 +56,22 @@ void EntitiesManager::updateProjectilesStatus() {
 
             if (identifier == HEALTHBOOSTER) {
 
-                HealthBooster* healthBooster = world->addHealthBooster(pos.x, pos.y);
+                HealthBooster* healthBooster = world.addHealthBooster(pos.x, pos.y);
                 entities.find(projectileId)->second = healthBooster;
 
             } else if (identifier == STONE) {
 
-                Stone* stone = world->addStone(pos.x, pos.y);
+                Stone* stone = world.addStone(pos.x, pos.y);
                 entities.find(projectileId)->second = stone;
 
             } else if (identifier == OIL) {
 
-                Oil* oil = world->addOil(pos.x, pos.y);
+                Oil* oil = world.addOil(pos.x, pos.y);
                 entities.find(projectileId)->second = oil;
 
             } else if (identifier == SPEEDBOOSTER) {
 
-                HealthBooster* healthBooster = world->addHealthBooster(pos.x, pos.y);
+                HealthBooster* healthBooster = world.addHealthBooster(pos.x, pos.y);
                 entities.find(projectileId)->second = healthBooster;
 
             } else if (identifier == MUG) {

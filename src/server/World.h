@@ -44,6 +44,8 @@ private:
 public:
     World(float height, float width, std::map<std::string, float> &config);
 
+    World(World&& other);
+
     Car* addCar(std::string id, float x_pos, float y_pos, float angle);
 
     b2Body* getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal);

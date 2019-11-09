@@ -11,17 +11,20 @@
 #include <entities/Car.h>
 #include <entities/Floor.h>
 #include <entities/Checkpoint.h>
+#include <set>
 #include "Client.h"
 #include "World.h"
 #include "RaceStageBuilder.h"
 #include "EntitiesManager.h"
+#include "TimedEvent.h"
 
 class RaceManager {
 private:
     RaceStageBuilder stageBuilder;
-    World* world;
+    World world;
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
+    std::multiset<TimedEvent> timedEvents;
     std::unordered_map<std::string, Car*> cars;
     std::vector<Grandstand*> grandstands;
     std::vector<Floor*> floors;

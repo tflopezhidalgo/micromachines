@@ -6,7 +6,8 @@
 #include "RaceJudge.h"
 
 RaceJudge::RaceJudge(int raceLaps) :
-    raceLaps(raceLaps) {}
+    raceLaps(raceLaps),
+    checkpointsNumber(0) {}
 
 void RaceJudge::addCar(std::string& id) {
     nextCheckpoint.emplace(id, 0);
@@ -53,6 +54,7 @@ int RaceJudge::getLapsDone(std::string& carId) {
 }
 
 bool RaceJudge::raceFinished() {
+    //cars number is equal to the number of cars that finished the race
     return (arrivalOrder.size() == lapsDone.size());
 }
 

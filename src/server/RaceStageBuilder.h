@@ -24,10 +24,10 @@ private:
     int startingPosIndex;
 public:
     explicit RaceStageBuilder(std::string& mapName, std::map<std::string, float>& config);
-    World* buildWorld();
-    void addRaceSurface(World* world, std::vector<Floor*>& floors,
+    World buildWorld();
+    void addRaceSurface(World& world, std::vector<Floor*>& floors,
                         std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge);
-    void addGrandstands(World* world, std::vector<Grandstand*>& grandstands);
+    void addGrandstands(World& world, std::vector<Grandstand*>& grandstands);
     std::vector<float>& getStartingPosition();
     ~RaceStageBuilder();
 };

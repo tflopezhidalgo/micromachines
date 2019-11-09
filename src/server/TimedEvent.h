@@ -17,7 +17,8 @@ public:
     TimedEvent(Runnable& cb, float timeout);
     TimedEvent(TimedEvent &&other);
     bool update(float delta);
-
+    float remainingTimeout() const;
+    bool operator< (const TimedEvent& timedEvent);
 };
 
 
