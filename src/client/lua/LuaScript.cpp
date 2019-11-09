@@ -21,8 +21,6 @@ LuaScript::LuaScript() {
     luaL_dofile(L, PLAYER_SCRIPT);
     luaL_dofile(L, ENTITIES_SCRIPT);
     luaL_dofile(L, FLOOR_SCRIPT);
-    matrixWidth = 15;
-    matrixHeight = 11;
 }
 
 std::string LuaScript::getAction(int angle, int pos_x, int pos_y) {

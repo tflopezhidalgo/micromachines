@@ -5,8 +5,9 @@
 #ifndef MICROMACHINES_CONVERTER_H
 #define MICROMACHINES_CONVERTER_H
 
-//#include "../../common/Constants.h"
+#include "../../common/Constants.h"
 #include <tuple>
+#include <cmath>
 
 class Converter {
 public:
