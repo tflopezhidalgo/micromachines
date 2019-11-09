@@ -32,10 +32,6 @@ bool RaceManager::raceFinished() {
 }
 
 void RaceManager::updateModel(std::vector<Event> &events) {
-    if (raceJudge.raceFinished()) {
-        std::cout<<raceJudge.getWinnerId()<<std::endl;
-    }
-
     entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
 

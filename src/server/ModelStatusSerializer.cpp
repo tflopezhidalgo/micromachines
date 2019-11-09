@@ -35,7 +35,7 @@ std::string ModelStatusSerializer::serialize(RaceJudge& raceJudge,
     }
     data["entitiesData"] = entitiesData;
 
-    //todo winner?
+    data["carsArrivalOrder"] = raceJudge.getCarsArrivalOrder();
 
     std::string dumpedData = data.dump();
     return std::move(dumpedData);
