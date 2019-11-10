@@ -20,22 +20,45 @@ private:
     std::vector<Tire*> tires;
     Health health;
     int carCollisionDamage;
+    int actualSurface;
+    b2Vec2 lastPosOnTrack;
+    b2Vec2 respawnPosition;
+    float respawnAngle;
+
 public:
-    Car(std::string id, b2Body* body, std::vector<Tire*> tires,
+    Car(std::string id, b2Body* body,
+        b2Vec2 startingPosition,
+        std::vector<Tire*> tires,
         int carCollisionDamage,
         b2RevoluteJoint* flJoint,
         b2RevoluteJoint* frJoint);
+
     void updateFriction();
+
     void updateMove(std::vector<char>& actions);
+
     void beginCollision(Entity* entity) override;
+
     void endCollision(Entity* object) override;
+
     void receiveHealing(int healingPoints);
+
     void receiveDamage(int damagePoints);
+
     void setTiresFriction(float newFriction);
-    int getRacePosition();
+
     void setMaxForwardSpeed(float newMaxForwardSpeed);
+
     int getHealth();
+
+    void updateSurface(int surface);
+
+    void setLastPosOnTrack(b2Vec2 position);
+
+    void setRespawnCoordinates(b2Vec2 position, float angle);
+
     std::string& getId();
+
     ~Car();
 };
 

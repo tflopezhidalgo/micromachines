@@ -23,6 +23,7 @@ public:
     EntityIdentifier getIdentifier();
     bool isDead();
     void die();
+    void move(b2Vec2 position, float angle);
     virtual ~Entity();
 };
 

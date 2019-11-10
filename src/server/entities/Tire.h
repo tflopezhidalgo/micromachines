@@ -28,6 +28,7 @@ public:
     void updateDrive(std::vector<char>& actions);
     void updateFriction();
     void setFriction(float newFriction);
+    void setTransform(b2Vec2 position, float angle);
     void setMaxForwardSpeed(float newMaxForwardSpeed);
     ~Tire();
 };

@@ -7,9 +7,9 @@
 
 void IncreaseSpeed::updateModel(World *world, std::vector<Car *> cars) {
     for (auto car : cars) {
-        if (car->getRacePosition() == cars.size()) {
+        /* if (car->getRacePosition() == cars.size()) {
             car->setMaxForwardSpeed(NEWFORDWARDSPEED);
-        }
+        } */
     }
 }
 
