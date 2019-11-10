@@ -84,6 +84,12 @@ void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {
     maxForwardSpeed = newMaxForwardSpeed;
 }
 
+void Tire::setTransform(b2Vec2 position, float angle) {
+    body->SetLinearVelocity({0,0});
+    body->SetAngularVelocity(0);
+    body->SetTransform(position, angle);
+}
+
 Tire::~Tire() {
     //todo if tire is a entity in a future, delete this
     body->GetWorld()->DestroyBody(body);

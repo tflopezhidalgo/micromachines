@@ -14,7 +14,7 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
     world(std::move(stageBuilder.buildWorld())),
     raceJudge(raceLaps),
     entitiesManager(world) {
-    stageBuilder.addRaceSurface(world, floors, checkpoints, raceJudge);
+    stageBuilder.addRaceSurface(world, tracks, grassTiles, checkpoints, raceJudge);
     stageBuilder.addGrandstands(world, grandstands);
 }
 
@@ -67,12 +67,13 @@ RaceManager::~RaceManager() {
     for (auto it = cars.begin(); it != cars.end(); ++it) {
         delete it->second;
     }
-
     for (auto it = grandstands.begin(); it != grandstands.end(); ++it) {
         delete (*it);
     }
-
-    for (auto it = floors.begin(); it != floors.end(); ++it) {
+    for (auto it = tracks.begin(); it != tracks.end(); ++it) {
+        delete (*it);
+    }
+    for (auto it = grassTiles.begin(); it != grassTiles.end(); ++it) {
         delete (*it);
     }
     for (auto it = checkpoints.begin(); it != checkpoints.end(); ++it) {

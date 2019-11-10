@@ -9,7 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <entities/Car.h>
-#include <entities/Floor.h>
+#include <entities/Track.h>
 #include <entities/Checkpoint.h>
 #include <set>
 #include "Client.h"
@@ -26,8 +26,10 @@ private:
     EntitiesManager entitiesManager;
     std::multiset<TimedEvent> timedEvents;
     std::unordered_map<std::string, Car*> cars;
+
     std::vector<Grandstand*> grandstands;
-    std::vector<Floor*> floors;
+    std::vector<Track*> tracks;
+    std::vector<Grass*> grassTiles;
     std::vector<Checkpoint*> checkpoints;
 public:
     RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps);

@@ -29,14 +29,14 @@ RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, f
     startingPositions = map["carsStartingPositions"].get<std::vector<std::vector<float>>>();
 }
 
-//builds physical word and adds tracks references in tracks vector.
 World RaceStageBuilder::buildWorld() {
     World world(height, width, config);
     return std::move(world);
 }
 
-void RaceStageBuilder::addRaceSurface(World& world, std::vector<Floor*>& floors,
-                                      std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge) {
+void RaceStageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
+        std::vector<Grass*> &grassTiles, std::vector<Checkpoint*>& checkpoints,
+        RaceJudge& raceJudge) {
 
     int idx = 0;
     std::vector<int> checkpointsOrder = map["checkpointsOrder"].get<std::vector<int>>();
@@ -51,28 +51,29 @@ void RaceStageBuilder::addRaceSurface(World& world, std::vector<Floor*>& floors,
 
         std::vector<int> tilesRow = row.get<std::vector<int>>();
 
-        for (int & tile : tilesRow) {
+        for (int & floorId : tilesRow) {
 
-            if (tile == GRASS_ID) {
+            if (floorId == GRASS_TILE) {
 
-                floors.push_back(world.addFloor(w + i, h + j, grassFriction));
+                grassTiles.push_back(world.addGrass(w + i, h + j, grassFriction));
 
-            } else if (tile == HORIZONTAL_TRACK_ID || tile == VERTICAL_TRACK_ID ||
-            tile == FIRST_QUAD_CURVE_TRACK_ID || tile == SECOND_QUAD_CURVE_TRACK_ID ||
-            tile == THIRD_QUAD_CURVE_TRACK_ID || tile == FOURTH_QUAD_CURVE_TRACK_ID) {
+            } else if (floorId == LEFT_TRACK || floorId == RIGHT_TRACK ||
+                floorId == UP_TRACK || floorId == DOWN_TRACK ||
+                floorId == THIRD_QUAD_TRACK || floorId == SECOND_QUAD_TRACK ||
+                floorId == FIRST_QUAD_TRACK || floorId == FOURTH_QUAD_TRACK) {
 
-                floors.push_back(world.addFloor(w + i, h + j, trackFriction));
+                tracks.push_back(world.addTrack(w + i, h + j, floorId, trackFriction));
 
-            } else if (tile == HOR_TRACK_CHECKPOINT_ID) {
+            } else if (floorId == LEFT_CHECKPOINTED_TRACK || floorId == RIGHT_CHECKPOINTED_TRACK) {
 
-                floors.push_back(world.addFloor(w + i, h + j, trackFriction));
+                tracks.push_back(world.addTrack(w + i, h + j, floorId, trackFriction));
                 checkpoints.push_back(world.addCheckpoint(w + i,h + j,
                         false, checkpointsOrder[idx], raceJudge));
                 idx++;
 
-            } else if (tile == VER_TRACK_CHECKPOINT_ID) {
+            } else if (floorId == UP_CHECKPOINTED_TRACK || floorId == DOWN_CHECKPOINTED_TRACK) {
 
-                floors.push_back(world.addFloor(w + i, h + j, trackFriction));
+                tracks.push_back(world.addTrack(w + i, h + j, floorId, trackFriction));
                 checkpoints.push_back(world.addCheckpoint(w + i, h + j,
                         true, checkpointsOrder[idx], raceJudge));
                 idx++;

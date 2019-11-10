@@ -33,6 +33,12 @@ void Entity::die() {
     status = DEAD;
 }
 
+void Entity::move(b2Vec2 position, float angle) {
+    body->SetLinearVelocity({0,0});
+    body->SetAngularVelocity(0);
+    body->SetTransform(position, angle);
+}
+
 Entity::~Entity() {
     body->GetWorld()->DestroyBody(body);
 }

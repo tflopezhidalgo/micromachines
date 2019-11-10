@@ -14,9 +14,10 @@ class IncreaseSpeed {
 public:
     void updateModel(std::vector<Car*> cars, World* world) {
         for (auto car : cars) {
-            if (car->getRacePosition() == cars.size()) {
+            //todo
+            /*if (car->getRacePosition() == cars.size()) {
                 car->setMaxForwardSpeed(NEWFORDWARDSPEED);
-            }
+            }*/
         }
     }
 };

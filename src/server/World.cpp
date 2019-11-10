@@ -182,7 +182,7 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle) {
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, frontRightTirePosition);
     tires.push_back(tire);
 
-    Car* car = new Car(id, carBody, tires,
+    Car* car = new Car(id, carBody, {x_pos, y_pos}, tires,
             int(config.find(CAR_COLLISION_DAMAGE_KEY)->second), flJoint, frJoint);
     carBody->SetUserData(car);
     return car;
@@ -201,12 +201,18 @@ b2Body* World::addFloorBody(b2Vec2 pos, b2Vec2 size) {
     return boxBody;
 }
 
-//actually, vertical and horizontal tracks have the same shape
-Floor* World::addFloor(float x_pos, float y_pos, float friction) {
+Track* World::addTrack(float x_pos, float y_pos, int floorId, float friction) {
     b2Body* body = addFloorBody({x_pos, y_pos}, {TILE_WIDTH, TILE_HEIGHT});
-    auto floor = new Floor(body, friction);
-    body->SetUserData(floor);
-    return floor;
+    auto track = new Track(body, {x_pos, y_pos}, floorId, friction);
+    body->SetUserData(track);
+    return track;
+}
+
+Grass* World::addGrass(float x_pos, float y_pos, float friction) {
+    b2Body* body = addFloorBody({x_pos, y_pos}, {TILE_WIDTH, TILE_HEIGHT});
+    auto grass = new Grass(body, friction);
+    body->SetUserData(grass);
+    return grass;
 }
 
 b2Body* World::getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal) {

@@ -9,13 +9,14 @@
 #include <map>
 #include <vector>
 #include <entities/Projectile.h>
+#include <entities/Grass.h>
 #include "entities/Car.h"
 #include "entities/HealthBooster.h"
 #include "entities/CollisionsProcessor.h"
 #include "entities/Stone.h"
 #include "entities/Oil.h"
 #include "entities/SpeedBooster.h"
-#include "entities/Floor.h"
+#include "entities/Track.h"
 #include "Identifiers.h"
 #include "entities/Checkpoint.h"
 
@@ -63,7 +64,9 @@ public:
 
     Oil* addOil(float x_pos, float y_pos);
 
-    Floor* addFloor(float x_pos, float y_pos, float friction);
+    Track* addTrack(float x_pos, float y_pos, int floorId, float friction);
+
+    Grass* addGrass(float x_pos, float y_pos, float friction);
 
     void step();
 

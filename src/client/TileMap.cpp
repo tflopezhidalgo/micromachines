@@ -20,29 +20,29 @@ window(window) {
         int size2 = tiles2.size();
         x = - (size2 - 1) * TILE_WIDTH * zoom / 2;
         for (int j : tiles2) {
-            this->tiles.emplace_back(std::move(Tile(window, GRASS_TILE, x, y,  TILE_HEIGHT, TILE_WIDTH)));
-            if (j == THIRD_QUAD_CURVE_TRACK_ID) {
+            this->tiles.emplace_back(std::move(Tile(window, TILE_0, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+            if (j == THIRD_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_1, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == SECOND_QUAD_CURVE_TRACK_ID) {
+            else if (j == SECOND_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_2, x, y, TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == FOURTH_QUAD_CURVE_TRACK_ID) {
+            else if (j == FOURTH_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_3, x, y, TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == FIRST_QUAD_CURVE_TRACK_ID) {
+            else if (j == FIRST_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_4, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == HORIZONTAL_TRACK_ID) {
+            else if (j == LEFT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_5, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == HORIZONTAL_MIRRORED_TRACK_ID) {
+            else if (j == RIGHT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_6, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == VERTICAL_TRACK_ID) {
+            else if (j == UP_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_7, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            else if (j == VERTICAL_MIRRORED_TRACK_ID) {
+            else if (j == DOWN_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_8, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
             x += (zoom * TILE_WIDTH);
