@@ -6,8 +6,8 @@
 #define MICROMACHINES_ADDOIL_CPP
 
 #include <stdlib.h>
-#include "entities/Car.h"
-#include "World.h"
+#include "../entities/Car.h"
+#include "../World.h"
 #include "Plugin.h"
 
 #define MAX 100

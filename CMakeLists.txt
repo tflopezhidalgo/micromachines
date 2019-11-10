@@ -23,7 +23,7 @@ file(GLOB SERVER_SRC_FILES "src/server/*.cpp")
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
 file(GLOB ENTITIES_SRC_FILES "src/server/entities/*.cpp")
-file(GLOB PLUGINS_SRC_FILES "src/server/plugins/*.cpp")
+file(GLOB PLUGINS_SRC_FILES "src/server/plugins/Plugin.cpp")
 file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
