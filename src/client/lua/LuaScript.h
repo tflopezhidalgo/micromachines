@@ -8,6 +8,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <tuple>
+#include "Converter.h"
+#include "../../common/Event.h"
 
 extern "C" {
 # include <lua.h>
@@ -18,18 +22,27 @@ extern "C" {
 class LuaScript {
 private:
     lua_State *L;
-    const char* action;
-    char* lastAction;
+    std::string& clientId;
+    Converter converter;
+    int matrixHeight;
+    int matrixWidth;
+
+    void luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable);
+
+    Event createEvent(const char *luaEvent);
+
+    void emptyStack();
 public:
-    LuaScript();
+    explicit LuaScript(std::string& clientId);
 
-    const char* getAction(int angle, int pos_x, int pos_y);
+    Event getEvent(int angle, int pos_x, int pos_y);
 
-    char* getLastAction();
+    void createMap(std::vector<std::vector<int>> table);
 
-    void createTable(std::vector<std::vector<int>> mapVector);
+    void setEntities(std::vector<std::vector<int>> table);
 
     ~LuaScript();
+
 };
 
 
