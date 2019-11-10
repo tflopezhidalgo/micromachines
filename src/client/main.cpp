@@ -21,12 +21,11 @@ using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
 
+    SDL_Init(SDL_INIT_VIDEO);
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     a.exec();
-
-    SDL_Init(SDL_INIT_VIDEO);
 
     Proxy* proxy = w.getProxy();
 

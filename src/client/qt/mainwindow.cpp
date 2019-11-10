@@ -138,8 +138,8 @@ void MainWindow::on_buttonBox_accepted()
     this->proxy->sendMessage(serializedMsg);
     ui->stackedWidget->setCurrentIndex(3);
 
-    this->proxy->receiveMessage();
-
+    nlohmann::json j = nlohmann::json::parse(this->proxy->receiveMessage());
+    std::cout << "Se recibe " << j.dump() << " .. cerrando GUI\n";
     close();
 }
 

@@ -10,7 +10,7 @@ main(main), model(model){
 
 void Drawer::run() {
 
-    std::chrono::high_resolution_clock::duration fixed_time(60);
+    std::chrono::high_resolution_clock::duration fixed_time(1/60);
 
     while (running){
         std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();

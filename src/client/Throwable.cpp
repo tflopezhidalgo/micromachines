@@ -2,14 +2,14 @@
 
 Throwable::Throwable(Throwable&& other) :
 sprite(std::move(other.sprite)){
-    this->alive = other.alive;
+    this->state = other.state;
     this->x = other.x;
     this->y = other.y;
 }
 
-Throwable::Throwable(BaseSprite sprite, bool alive, int x, int y) :
+Throwable::Throwable(BaseSprite sprite, EntityStatus state, int x, int y) :
 sprite(sprite){
-    this->alive = alive;
+    this->state = state;
     this->x = x;
     this->y = y;
 }
@@ -19,12 +19,14 @@ void Throwable::setPos(int x, int y) {
     this->y = y;
 }
 
-void Throwable::setState(bool state) {
-    this->alive = state;
+void Throwable::setState(EntityStatus state) {
+    this->state = state;
 }
 
 void Throwable::render(Camera &cam) {
-    if (alive)
+    if (state == RECENTLY_THROWN)
+        //renderizar bolita viajando
+    if (state == ALIVE)
         this->sprite.render(x, y, 0, cam);
 }
 

@@ -25,12 +25,11 @@ void Receiver::run() {
         for (auto& obj : j["entitiesData"]) {
             int key = obj[0].get<int>();
             int type = obj[1].get<int>();
-            int state = obj[3].get<int>();
+            EntityStatus state = obj[3].get<EntityStatus >();
             int x = obj[3].get<int>();
-            int y = obj[4].get<int>();
+            int y = obj[4].get<EntityIdentifier >();
             this->model.updateObject(key, type, x, y, state);
         }
-
     }
 }
 

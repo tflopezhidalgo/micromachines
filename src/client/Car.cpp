@@ -31,8 +31,8 @@ int Car::getYPos() {
 }
 
 void Car::render(Camera& cam) {
-    this->sprite.render(x, y, this->angle, cam);
     this->health.renderAt(x, y, cam);
+    this->sprite.render(x, y, this->angle, cam);
 }
 
 Car::~Car() { }
