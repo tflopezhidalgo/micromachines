@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     char c = '\0';
     while (c != 'q') {
         std::cin >> c;
-        //todo matchesAdministrator.deleteFinishedMatches();
+        //todo matchesAdministrator.deleteFinishedMatches(); (another thread)
     }
     acceptor.stop();
     acceptor.join();

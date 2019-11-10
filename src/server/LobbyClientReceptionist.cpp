@@ -26,9 +26,8 @@ void LobbyClientReceptionist::run() {
 
             } else {  //client wants to join a match
 
-                nlohmann::json availableMatches(matchesAdministrator.getAvailableMatches());
-                std::string availableMatchesDump = availableMatches.dump();
-                proxy.sendMessage(availableMatchesDump);
+                std::string availableMatches = std::move(matchesAdministrator.getAvailableMatches());
+                proxy.sendMessage(availableMatches);
 
                 std::string message = proxy.receiveMessage();
                 nlohmann::json matchInfo = nlohmann::json::parse(message);
