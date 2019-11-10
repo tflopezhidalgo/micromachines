@@ -34,7 +34,7 @@ void ProtectedModel::updateCar(std::string& id,
     }
 }
 
-void ProtectedModel::updateObject(int id, int type, int x, int y, EntityStatus state) {
+void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
     std::unique_lock<std::mutex> lck(m);
 
     if (objects.count(id) == 0) {

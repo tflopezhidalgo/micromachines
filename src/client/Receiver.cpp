@@ -24,7 +24,7 @@ void Receiver::run() {
 
         for (auto& obj : j["entitiesData"]) {
             int key = obj[0].get<int>();
-            int type = obj[1].get<int>();
+            EntityIdentifier type = obj[1].get<EntityIdentifier >();
             EntityStatus state = obj[3].get<EntityStatus >();
             int x = obj[3].get<int>();
             int y = obj[4].get<EntityIdentifier >();
