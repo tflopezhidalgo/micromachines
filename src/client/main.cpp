@@ -15,7 +15,8 @@
 #include "Dispatcher.h"
 #include <nlohmann/json.hpp>
 #include <QApplication>
-#include "qt/mainwindow.h"
+#include "mainwindow.h"
+#include "LuaPlayer.h"
 
 using json = nlohmann::json;
 
@@ -33,12 +34,15 @@ int main(int argc, char* argv[]) {
     Window main("Game", 900, 600);
     //Window main("game");
 
+    std::cout << "inicia SDL\n";
+
     ProtectedQueue<Event> q;
     ProtectedModel model(main, w.getPlayerID());
 
     Receiver receiver(model, *proxy);
     Drawer drawer(main, model);
-    EventListener handler(w.getPlayerID(), q);
+    //EventListener handler(w.getPlayerID(), q);
+    LuaPlayer handler(q, model, w.getPlayerID());
     Dispatcher dispatcher(q, *proxy);
 
     receiver.start();

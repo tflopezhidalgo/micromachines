@@ -13,7 +13,7 @@ ProtectedModel::ProtectedModel(Window& main, std::string playerID) :
     playerID(playerID), 
 	main(main), 
 	cam(main), 
-	map(main, "../media/maps/simple.json",  cam.getZoom(), 100) {}
+	map(main, "../media/maps/simple.json",  cam.getZoom()) {}
 
 void ProtectedModel::updateCar(std::string& id,
                                   int x,
@@ -28,7 +28,8 @@ void ProtectedModel::updateCar(std::string& id,
     if (!cam.targetSet()) 
         cam.setOnTarget(this->entities[this->playerID]);
 
-    entities[id]->setPos(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle);
+    if (entities[id] != NULL)
+        entities[id]->setPos(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle);
 }
 
 void ProtectedModel::updateObject(int id, int type, int x, int y, bool state) {
@@ -57,9 +58,35 @@ void ProtectedModel::renderAll() {
 }
 
 ProtectedModel::~ProtectedModel(){
-    std::map<std::string, Entity*>::iterator it;
     for (auto& car : entities)
         delete car.second;
     for (auto& object : objects)
         delete object.second;
+}
+
+
+std::vector<int> ProtectedModel::getActualState() {
+    std::unique_lock<std::mutex> lock(m);
+    std::vector<int> state;
+    state.push_back(this->entities[playerID]->getAngle());
+    state.push_back(this->entities[playerID]->getXPos());
+    state.push_back(this->entities[playerID]->getYPos());
+    return state;
+}
+
+std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
+    std::unique_lock<std::mutex> lock(m);
+    std::vector<std::vector<int>> entities_buf;
+    for (auto& object : objects) {
+        std::vector<int> entity_buf;
+        entity_buf.push_back(object.first);
+        entity_buf.push_back(object.second->getXPos());
+        entity_buf.push_back(object.second->getYPos());
+        entities_buf.push_back(std::move(entity_buf));
+    }
+    return entities_buf;
+}
+
+std::vector<std::vector<int>>& ProtectedModel::getMap() {
+    return map.getTileNumbers();
 }

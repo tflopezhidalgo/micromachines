@@ -17,6 +17,7 @@ private:
 public:
     Car(const std::string& file, Window& win);
     void setPos(int x, int y, int angle);
+    int getAngle();
     int getXPos();
     int getYPos();
     void render(Camera& cam);

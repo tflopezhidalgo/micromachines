@@ -27,6 +27,9 @@ public:
     void updateCar(std::string& id, int x, int y, int angle, int health);
     void updateObject(int id, int type, int x, int y, bool state);
     void renderAll();
+    std::vector<int> getActualState();
+    std::vector<std::vector<int>> getEntitiesPos();
+    std::vector<std::vector<int>>& getMap();
     ~ProtectedModel();
 };
 

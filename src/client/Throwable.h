@@ -15,6 +15,8 @@ public:
     Throwable(BaseSprite sprite, bool alive, int x, int y);
     Throwable(Throwable&& other);
     void setPos(int x, int y);
+    int getXPos();
+    int getYPos();
     void setState(bool state);
     void render(Camera& cam);
 

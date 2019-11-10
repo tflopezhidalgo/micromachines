@@ -17,6 +17,10 @@ void Car::setPos(int x, int y, int angle) {
     this->angle = angle;
 }
 
+int Car::getAngle(){
+    return this->angle;
+}
+
 int Car::getXPos() {
     return x;
 }

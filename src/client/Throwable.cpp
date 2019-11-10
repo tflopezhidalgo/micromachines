@@ -27,3 +27,11 @@ void Throwable::render(Camera &cam) {
     if (alive)
         this->sprite.render(x, y, 0, cam);
 }
+
+int Throwable::getXPos() {
+    return x;
+}
+
+int Throwable::getYPos() {
+    return y;
+}

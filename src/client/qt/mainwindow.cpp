@@ -66,17 +66,29 @@ void MainWindow::on_join_match_button_clicked()
     int row = 0;
 
     for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
-   /*   std::string matchName = it.key();
-      std::string mapName = it.value()[0].get<std::string>();
-      int playersAmount = it.value()[1].get<int>();
-      int laps = it.value()[2].get<int>();*/
-        ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-        std::string match(it.value().get<std::string>());
-        QTableWidgetItem* item = new QTableWidgetItem(QString(QString::fromStdString(match)));
-        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-        ui->tableWidget->setItem(row++, 0, item);
-    }
+        std::string matchName = it.key();
+        std::string mapName = it.value()[0].get<std::string>();
+        int playersAmount = it.value()[1].get<int>();
+        int laps = it.value()[2].get<int>();
 
+        ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+
+        QTableWidgetItem* matchItem = new QTableWidgetItem(QString::fromStdString(matchName));
+        matchItem->setFlags(matchItem->flags() & ~Qt::ItemIsEditable);
+        ui->tableWidget->setItem(row, 0, matchItem);
+
+        QTableWidgetItem* playersAmountItem = new QTableWidgetItem(QString::number(playersAmount));
+        playersAmountItem->setFlags(playersAmountItem->flags() & ~Qt::ItemIsEditable);
+        ui->tableWidget->setItem(row, 1, playersAmountItem);
+
+        QTableWidgetItem* mapItem = new QTableWidgetItem(QString::fromStdString(mapName));
+        mapItem->setFlags(mapItem->flags() & ~Qt::ItemIsEditable);
+        ui->tableWidget->setItem(row, 2, mapItem);
+
+        QTableWidgetItem* lapsItem = new QTableWidgetItem(QString::number(laps));
+        lapsItem->setFlags(lapsItem->flags() & ~Qt::ItemIsEditable);
+        ui->tableWidget->setItem(row++, 3, lapsItem);
+    }
 }
 
 
@@ -95,6 +107,8 @@ void MainWindow::on_tableWidget_cellDoubleClicked(int row, int column)
     std::string dumped = msg.dump();
     this->proxy->sendMessage(dumped);
     std::cout << "Se envia " << dumped << std::endl;
+
+    close();
 }
 
 Proxy* MainWindow::getProxy() {

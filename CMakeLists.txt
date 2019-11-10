@@ -30,7 +30,7 @@ file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
 file(GLOB ENTITIES_SRC_FILES "src/server/entities/*.cpp")
 file(GLOB PLUGINS_SRC_FILES "src/server/plugins/*.cpp")
 file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
-#file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
+file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 
