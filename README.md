@@ -1,4 +1,19 @@
-# EntityStatus ![Build EntityStatus](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
+# Status ![Build EntityStatus](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
+
+# Dependencias
+
+Instalar las dependencias necesarias:
+
+```
+sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev 
+                                                libgles2-mesa-dev  
+                                                libsdl2-dev 
+                                                libsdl2-image-dev 
+                                                nlohmann-json-dev 
+                  						        lua5.3 
+						                        liblua5.3-dev
+                                                qt5-default
+``` 
 
 # Reglas para el repo
 
