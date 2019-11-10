@@ -14,7 +14,6 @@ sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev
 						                        liblua5.3-dev
                                                 qt5-default
 ``` 
-
 # Reglas para el repo
 
 - Mantener siempre un branch *master* con una versión estable (y aprobada por todos)
@@ -40,7 +39,7 @@ sudo apt install lua5.3 liblua5.3-dev
 ```
 cd <PATH_TO_MICROMACHINES>/micromachines
 mkdir build
-cd buildWorld
+cd build
 cmake ..
 make <CLIENT/SERVER>
 ```

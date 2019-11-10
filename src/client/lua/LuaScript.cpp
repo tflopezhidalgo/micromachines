@@ -36,8 +36,9 @@ Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     lua_pop(L, 1); // elimina lua_action
 
     int stackSize = lua_gettop(L);
-    std::cout << stackSize << std::endl;
+    //std::cout << stackSize << std::endl;
     //lua_pop(L, 1); // elimina entities
+    std::cout << "Se genero " << luaEvent << std::endl;
     return createEvent(luaEvent);
 }
 

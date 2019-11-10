@@ -10,6 +10,7 @@
 #include "TileMap.h"
 #include "Car.h"
 #include "Throwable.h"
+#include "Identifiers.h"
 
 class ProtectedModel {
 private:
@@ -25,8 +26,11 @@ private:
 public:
     ProtectedModel(Window& main, std::string playerID);
     void updateCar(std::string& id, int x, int y, int angle, int health);
-    void updateObject(int id, int type, int x, int y, bool state);
+    void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();
+    std::vector<int> getActualState();
+    std::vector<std::vector<int>> getEntitiesPos();
+    std::vector<std::vector<int>>& getMap();
     ~ProtectedModel();
 };
 

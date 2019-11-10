@@ -1,4 +1,3 @@
-#include <sys/param.h>
 #include "TileMap.h"
 #include "Window.h"
 #include "Constants.h"
@@ -6,14 +5,14 @@
 #include <nlohmann/json.hpp>
 #include <Identifiers.h>
 
-TileMap::TileMap(Window& window, const std::string& mapFile, int zoom, int offset) :
+TileMap::TileMap(Window& window, const std::string& mapFile, int zoom) :
 window(window) {
     std::ifstream in(mapFile);
     nlohmann::json json_p;
     in >> json_p;
+    this->numbers = json_p["tiles"].get<std::vector<std::vector<int>>>();
     int sized = json_p["tiles"].size();
-    int x = - (sized - 1) * TILE_WIDTH * zoom / 2;
-    int y = - (sized - 1) * TILE_HEIGHT * zoom / 2;
+    int x, y = - (sized - 1) * TILE_HEIGHT * zoom / 2;
 
     for (auto& tileList : json_p["tiles"]) {
         std::vector<int> tiles2 = tileList.get<std::vector<int>>();
@@ -56,6 +55,10 @@ window(window) {
 void TileMap::render(Camera& cam ){
     for (Tile &tile : this->tiles)
         tile.render(cam);
+}
+
+std::vector<std::vector<int>>& TileMap::getTileNumbers() {
+    return this->numbers;
 }
 
 TileMap::~TileMap() { }

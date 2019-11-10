@@ -22,13 +22,14 @@ class TileMap: public Entity{
     private:
         std::vector<Tile> tiles;
         Window& window;
+        std::vector<std::vector<int>> numbers;
 
     public:
         TileMap(Window& window,
                 const std::string& mapFile,
-                int zoom,
-                int offset);
+                int zoom);
         void render(Camera& cam);
+        std::vector<std::vector<int>>& getTileNumbers();
         ~TileMap();
 };
 

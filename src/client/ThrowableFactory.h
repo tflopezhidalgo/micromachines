@@ -11,7 +11,7 @@ private:
 
 public:
     explicit ThrowableFactory(Window& window);
-    Throwable* generateThrowable(int type);
+    Throwable* generateThrowable(EntityIdentifier type);
 
 };
 

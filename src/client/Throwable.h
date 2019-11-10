@@ -3,19 +3,22 @@
 
 #include "Entity.h"
 #include "BaseSprite.h"
+#include "Identifiers.h"
 
 class Throwable : Entity {
 private:
-    bool alive;
+    EntityStatus state;
     BaseSprite sprite;
     int x;
     int y;
 
 public:
-    Throwable(BaseSprite sprite, bool alive, int x, int y);
+    Throwable(BaseSprite sprite, EntityStatus state, int x, int y);
     Throwable(Throwable&& other);
     void setPos(int x, int y);
-    void setState(bool state);
+    int getXPos();
+    int getYPos();
+    void setState(EntityStatus state);
     void render(Camera& cam);
 
 

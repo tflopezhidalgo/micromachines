@@ -4,17 +4,22 @@
 #include "Constants.h"
 
 Car::Car(const std::string &file, Window& win) :
-    sprite(win, file, CAR_H, CAR_W) {
+    sprite(win, file, CAR_H, CAR_W),
+    health(win){
         this->x = 0;
         this->y = 0;
-        this->health = 0;
         this->angle = 0;
 }
 
-void Car::setPos(int x, int y, int angle) {
+void Car::setState(int x, int y, int angle, int health) {
     this->x = x;
     this->y = y;
     this->angle = angle;
+    this->health.setActualHealth(health);
+}
+
+int Car::getAngle(){
+    return this->angle;
 }
 
 int Car::getXPos() {
@@ -26,6 +31,7 @@ int Car::getYPos() {
 }
 
 void Car::render(Camera& cam) {
+    this->health.renderAt(x, y, cam);
     this->sprite.render(x, y, this->angle, cam);
 }
 
