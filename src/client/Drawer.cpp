@@ -9,11 +9,16 @@ main(main), model(model){
 }
 
 void Drawer::run() {
+
+    std::chrono::high_resolution_clock::duration fixed_time(60);
+
     while (running){
-        usleep(15000);
+        std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
         this->main.clear();
         this->model.renderAll();
         this->main.update();
+        std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+        std::this_thread::sleep_for(fixed_time - (start - end));
     }
 }
 

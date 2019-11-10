@@ -28,8 +28,11 @@ void ProtectedModel::updateCar(std::string& id,
     if (!cam.targetSet()) 
         cam.setOnTarget(this->entities[this->playerID]);
 
-    if (entities[id] != NULL)
-        entities[id]->setPos(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle);
+    if (entities[id] != NULL) {
+        std::cout << "Se setea estado en auto\n";
+        entities[id]->setState(0, 0, angle, health);
+        //entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health);
+    }
 }
 
 void ProtectedModel::updateObject(int id, int type, int x, int y, bool state) {
@@ -47,6 +50,7 @@ void ProtectedModel::updateObject(int id, int type, int x, int y, bool state) {
 
 void ProtectedModel::renderAll() {
     std::unique_lock<std::mutex> lock(m);
+    std::cout << "Se renderiza modelo" << std::endl;
     if (this->cam.targetSet()) {
         map.render(cam);
         cam.update();

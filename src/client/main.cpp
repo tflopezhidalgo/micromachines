@@ -11,7 +11,6 @@
 #include "ProtectedModel.h"
 #include "Receiver.h"
 #include "Proxy.h"
-#include "Socket.h"
 #include "Dispatcher.h"
 #include <nlohmann/json.hpp>
 #include <QApplication>
@@ -34,15 +33,13 @@ int main(int argc, char* argv[]) {
     Window main("Game", 900, 600);
     //Window main("game");
 
-    std::cout << "inicia SDL\n";
-
     ProtectedQueue<Event> q;
     ProtectedModel model(main, w.getPlayerID());
 
     Receiver receiver(model, *proxy);
     Drawer drawer(main, model);
-    //EventListener handler(w.getPlayerID(), q);
-    LuaPlayer handler(q, model, w.getPlayerID());
+    EventListener handler(w.getPlayerID(), q);
+    //LuaPlayer handler(q, model, w.getPlayerID());
     Dispatcher dispatcher(q, *proxy);
 
     receiver.start();
@@ -58,5 +55,7 @@ int main(int argc, char* argv[]) {
     receiver.join();
 
     SDL_Quit();
+    delete proxy;
+
     return 0;
 }
