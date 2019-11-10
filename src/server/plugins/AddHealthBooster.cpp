@@ -1,28 +1,19 @@
 //
-// Created by eliana on 27/10/19.
+// Created by eliana on 9/11/19.
 //
 
-#ifndef BOX2D_ADDHEALTHBOOSTER_H
-#define BOX2D_ADDHEALTHBOOSTER_H
+#include "AddHealthBooster.h"
 
-#include <stdlib.h>
-#include "entities/Car.h"
-#include "World.h"
+float AddHealthBooster::getPosition() {
+    auto val = rand() % MAX;
+    float newVal = val + val % 5;
+    return newVal;
+}
 
-#define MAX 100
+void AddHealthBooster::updateModel(World *world, std::vector<Car *> cars) {
+    world->addHealthBooster(getPosition(), getPosition());
+}
 
-class AddHealthBooster {
-public:
-    // Agrega 2 cajas de vida en lugares random del mapa
-    void updateModel(std::vector<Car*> cars, World* world) {
-        world->addHealthBooster(getPosition(), getPosition());
-    }
-
-    float getPosition() {
-        auto val = rand() % MAX;
-        float newVal = val + val % 5;
-        return newVal;
-    }
-};
-
-#endif //BOX2D_ADDHEALTHBOOSTER_H
+extern "C" Plugin* create() {
+    return new AddHealthBooster;
+}

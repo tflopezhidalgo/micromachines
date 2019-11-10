@@ -10,6 +10,9 @@
 #include <iostream>
 #include <map>
 #include <dlfcn.h>
+#include "World.h"
+#include "entities/Car.h"
+#include "plugins/Plugin.h"
 
 class PluginsReader {
 private:
@@ -17,7 +20,7 @@ private:
 public:
     PluginsReader();
 
-    void applyPlugin();
+    void applyPlugin(World* world, std::vector<Car*> cars);
 
     ~PluginsReader();
 };

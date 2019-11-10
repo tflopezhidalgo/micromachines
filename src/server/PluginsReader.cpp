@@ -4,10 +4,10 @@
 
 #include "PluginsReader.h"
 
-#define DIRECTORY "plugins"
+#define DIRECTORY "./plugins"
 #define EXTENSION "so"
+#define CREATE "create"
 
-typedef void (*func_pointer)(void);
 
 PluginsReader::PluginsReader() {
     DIR* dir;
@@ -30,10 +30,10 @@ PluginsReader::PluginsReader() {
     closedir(dir);
 }
 
-void PluginsReader::applyPlugin() {
-    func_pointer plugin;
+void PluginsReader::applyPlugin(World* world, std::vector<Car*> cars) {
     for (auto it = files.begin(); it != files.end(); ++it) {
-        *(void **) (&plugin) = dlsym(it->second, (const char*)it->first.c_str());
+        Plugin* plug = (Plugin*)dlsym(it->second, CREATE);
+        plug->updateModel(world, cars);
     }
 }
 
