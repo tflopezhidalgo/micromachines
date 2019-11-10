@@ -27,8 +27,7 @@ void RaceManager::addPlayer(std::string& nickname) {
 }
 
 bool RaceManager::raceFinished() {
-    return false;
-    //todo return raceJudge.raceFinished();
+    return raceJudge.raceFinished();
 }
 
 void RaceManager::updateModel(std::vector<Event> &events) {
