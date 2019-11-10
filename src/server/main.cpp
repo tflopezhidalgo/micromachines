@@ -8,7 +8,7 @@
 #include <Constants.h>
 
 int main(int argc, char* argv[]) {
-    MatchesAdministrator matchesAdministrator("../config.cfg");
+    MatchesAdministrator matchesAdministrator("/home/tomas/config.cfg");
     LobbyClientAcceptor acceptor(BACKLOG, argv[1], matchesAdministrator);
     acceptor.start();
     char c = '\0';

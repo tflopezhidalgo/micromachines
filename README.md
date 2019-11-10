@@ -1,4 +1,8 @@
-# EntityStatus ![Build EntityStatus](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
+# Dependencias
+
+
+
+
 
 # Reglas para el repo
 
@@ -19,7 +23,7 @@
 ```
 cd <PATH_TO_MICROMACHINES>/micromachines
 mkdir build
-cd buildWorld
+cd build
 cmake ..
 make <CLIENT/SERVER>
 ```
