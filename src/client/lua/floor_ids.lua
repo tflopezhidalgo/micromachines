@@ -5,48 +5,49 @@
 
 floor_id = {
     [0] = {
-        ["name"] = "glass",
-        ["safe"] = false
+        ["name"] = "GRASS_TILE",
+        ["safe"] = false,
+        ["direction"] = 2
     },
     [1] = {
-        ["name"] = "vertical",
+        ["name"] = "THIRD_QUAD_TRACK",
         ["safe"] = true,
-        ["U"] = 0,
-        ["D"] = 0,
-        ["R"] = -1,
-        ["L"] = 1
+        ["direction"] = -1
     },
     [2] = {
-        ["name"] = "horizontal",
+        ["name"] = "SECOND_QUAD_TRACK",
         ["safe"] = true,
-        ["R"] = 0,
-        ["L"] = 0,
-        ["U"] = 1,
-        ["D"] = -1,
+        ["direction"] = -1
     },
     [3] = {
-        ["name"] = "first_quadrant",
+        ["name"] = "FOURTH_QUAD_TRACK",
         ["safe"] = true,
-        ["U"] = 1,
-        ["R"] = -1
+        ["direction"] = -1
     },
     [4] = {
-        ["name"] = "second_quadrant",
+        ["name"] = "FIRST_QUAD_TRACK",
         ["safe"] = true,
-        ["L"] = 1,
-        ["U"] = -1
+        ["direction"] = -1
     },
     [5] = {
-        ["name"] = "third_quadrant",
+        ["name"] = "LEFT_TRACK",
         ["safe"] = true,
-        ["D"] = 1,
-        ["L"] = -1
+        ["direction"] = 0
     },
     [6] = {
-        ["name"] = "fourth_quadrant",
+        ["name"] = "RIGHT_TRACK,",
         ["safe"] = true,
-        ["R"] = 1,
-        ["D"] = -1
+        ["direction"] = 0,
+    },
+    [7] = {
+        ["name"] = "UP_TRACK",
+        ["safe"] = true,
+        ["direction"] = 0
+    },
+    [8] = {
+        ["name"] = "DOWN_TRACK",
+        ["safe"] = true,
+        ["direction"] = 0
     }
 }
 

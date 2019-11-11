@@ -19,25 +19,29 @@ next_position = {
     [-1] = "L", -- IZQUIERDA
     [0] = "F", -- ADELANTE
     [1] = "R", -- DERECHA
-    ["reverse"] = "B"
+    ["reverse"] = "B",
+    [2] = "B"
 }
 -- end variables macro
 
 -- Depende el angulo tiene una direccion a seguir
 function getEvent(angle, pos_x, pos_y)
+    angle = tonumber(string.format("%d", angle))
+    print(pos_x)
+    print(pos_y)
     local action = ""
     if (angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) then
-        action = action_vertical("U", pos_x, pos_y) -- pos_y -1
-
-    elseif (angle >= MIN_ANGLE_LEFT and angle <= MAX_ANGLE_LEFT) then
-        action = action_horizontal("L", pos_x, pos_y) -- pos_x -1
-
-    elseif (angle >= MIN_ANGLE_DOWN and angle <= MAX_ANGLE_LEFT) then
-        action = action_vertical("D", pos_x, pos_y) --pos_y +1
-
-    elseif ((angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT1) or
+        return action_vertical("U", pos_x, pos_y) -- pos_y -1
+    end
+    if (angle >= MIN_ANGLE_LEFT and angle <= MAX_ANGLE_LEFT) then
+        return action_horizontal("L", pos_x, pos_y) -- pos_x -1
+    end
+    if (angle >= MIN_ANGLE_DOWN and angle <= MAX_ANGLE_LEFT) then
+        return action_vertical("D", pos_x, pos_y) --pos_y +1
+    end
+    if ((angle >= MIN_ANGLE_RIGHT1 and angle <= MAX_ANGLE_RIGHT1) or
         (angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT2)) then
-        action = action_horizontal("R", pos_x, pos_y) --pos_x +1
+        return action_horizontal("R", pos_x, pos_y) --pos_x +1
     end
     return action
 end
@@ -60,7 +64,8 @@ function is_in_border(pos)
 end
 
 function next_recommended_position(floor_type, direction)
-    return floor_id[floor_type][direction]
+    print(floor_id[floor_type]["name"])
+    return floor_id[floor_type]["direction"]
 end
 
 function check_floor(floor_type)
@@ -86,7 +91,7 @@ function action_vertical(direction, pos_x, next_y)
     -- checkeo que la posicion es segura en las entidades y si es segura avanzo
     -- si no pruebo con otra direccion: -1 0 1 y eso lo relaciona R F L
     local try_pos = next_recommended_position(map[next_y][pos_x], direction)
-    if (next_y_try ~= nil and check_entity(map[next_y][pos_x + try_pos])) then
+    if (check_entity(map[next_y][pos_x + try_pos])) then
         return next_position[try_pos]
     end
     local st, en = getLimit(pos_x)
@@ -115,5 +120,8 @@ function action_horizontal(direction, next_x, pos_y)
             return next_position[i]
         end
     end
-    return next_position[try_pos]
+    print("fin")
+    print(try_pos)
+    print(next_position[try_pos])
+    return next_position[0]
 end
