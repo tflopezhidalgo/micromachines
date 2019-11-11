@@ -19,7 +19,7 @@
 
 
 //Movement ID's
-#define FORWARD 'W'
+#define FORWARD 'F'
 #define BACKWARD 'B'
 #define LEFT 'L'
 #define RIGHT 'R'

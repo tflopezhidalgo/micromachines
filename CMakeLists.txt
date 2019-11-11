@@ -34,6 +34,10 @@ file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 
+install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${CMAKE_BINARY_DIR})
+
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES} ${UIS_HDRS} src/client/qt/mainwindow.cpp)
 target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets)
 

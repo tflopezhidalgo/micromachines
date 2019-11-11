@@ -24,6 +24,7 @@ private:
     lua_State *L;
     std::string& clientId;
     Converter converter;
+    std::string action;
     int matrixHeight;
     int matrixWidth;
 

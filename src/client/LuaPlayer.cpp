@@ -12,7 +12,7 @@ void LuaPlayer::run() {
     script.createMap(model.getMap());
 
     while (alive) {
-        usleep(2000);
+        usleep(5000);
         script.setEntities(model.getEntitiesPos());
         std::vector<int> state = std::move(model.getActualState());
         Event e(std::move(script.getEvent(state[0], state[1], state[2])));

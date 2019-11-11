@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <thread>
 #include <condition_variable>
+#include <iostream>
 
 // Implementa cola bloqueante sólo para el pop
 
@@ -21,6 +22,7 @@ class ProtectedQueue {
 
         void push(T object){
             std::unique_lock<std::mutex> lck(m);
+            std::cout << object.serialize();
             q.push(std::move(object));
             cv.notify_all();
         }
