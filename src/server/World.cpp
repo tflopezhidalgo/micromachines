@@ -116,7 +116,8 @@ Stone* World::addStone(float x_pos, float y_pos) {
     return stone;
 }
 
-Car* World::addCar(std::string id, float x_pos, float y_pos, float angle) {
+Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
+        std::vector<TimedEvent>& timedEvents) {
     //todo use x_pos, y_pos
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -182,7 +183,7 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle) {
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, frontRightTirePosition);
     tires.push_back(tire);
 
-    Car* car = new Car(id, carBody, {x_pos, y_pos}, tires,
+    Car* car = new Car(id, timedEvents, carBody, {x_pos, y_pos}, tires,
             int(config.find(CAR_COLLISION_DAMAGE_KEY)->second), flJoint, frJoint);
     carBody->SetUserData(car);
     return car;

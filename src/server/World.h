@@ -10,6 +10,7 @@
 #include <vector>
 #include <entities/Projectile.h>
 #include <entities/Grass.h>
+#include <set>
 #include "entities/Car.h"
 #include "entities/HealthBooster.h"
 #include "entities/CollisionsProcessor.h"
@@ -19,6 +20,7 @@
 #include "entities/Track.h"
 #include "Identifiers.h"
 #include "entities/Checkpoint.h"
+#include "TimedEvent.h"
 
 class World {
 private:
@@ -47,7 +49,7 @@ public:
 
     World(World&& other);
 
-    Car* addCar(std::string id, float x_pos, float y_pos, float angle);
+    Car* addCar(std::string id, float x_pos, float y_pos, float angle, std::vector<TimedEvent>& timedEvents);
 
     b2Body* getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal);
 

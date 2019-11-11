@@ -20,23 +20,28 @@
 
 class RaceManager {
 private:
+    std::map<std::string,float> &config;
+    std::vector<TimedEvent> timedEvents;
     RaceStageBuilder stageBuilder;
     World world;
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
-    std::multiset<TimedEvent> timedEvents;
     std::unordered_map<std::string, Car*> cars;
-
     std::vector<Grandstand*> grandstands;
     std::vector<Track*> tracks;
     std::vector<Grass*> grassTiles;
     std::vector<Checkpoint*> checkpoints;
 public:
     RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps);
+
     void addPlayer(std::string& nickname);
+
     bool raceFinished();
+
     void updateModel(std::vector<Event> &events);
+
     std::string getRaceStatus();
+
     ~RaceManager();
 };
 
