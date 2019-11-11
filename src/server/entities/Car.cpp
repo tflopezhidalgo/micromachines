@@ -28,7 +28,7 @@ Car::Car(std::string id, b2Body* body, b2Vec2 startingPosition,
         frontRightJoint(frJoint),
         actualSurface(TRACK),
         lastPosOnTrack(startingPosition),
-        respawnPosition({0,0}),
+        respawnPosition(startingPosition),
         respawnAngle(0) {}
 
 void Car::updateFriction() {
@@ -38,6 +38,7 @@ void Car::updateFriction() {
 }
 
 void Car::updateMove(std::vector<char>& actions) {
+
     if (isDead()) {
         return;
     }
@@ -164,6 +165,10 @@ int Car::getHealth() {
 
 std::string& Car::getId() {
     return id;
+}
+
+bool Car::isDead() {
+    return health.isDead();
 }
 
 void Car::updateSurface(int surface) {

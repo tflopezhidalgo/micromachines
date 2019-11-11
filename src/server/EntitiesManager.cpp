@@ -4,14 +4,15 @@
 
 #include "EntitiesManager.h"
 
-#define MAX_PROJECTILES_SIZE 3
+#define MAX_PROJECTILES_NUMBER 3
+#define MAX_ENTITIES_NUMBER 5
 
 EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
     world(stageWorld) {}
 
 void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse) {
-    if (projectiles.size() >= MAX_PROJECTILES_SIZE) { //todo check
+    if (projectiles.size() >= MAX_PROJECTILES_NUMBER|| entities.size() >= MAX_ENTITIES_NUMBER) {
         return;
     }
 
