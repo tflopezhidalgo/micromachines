@@ -4,14 +4,14 @@
 
 #include "EntitiesManager.h"
 
-#define MAX_PROJECTILES_SIZE 30
+#define MAX_PROJECTILES_SIZE 3
 
 EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
     world(stageWorld) {}
 
 void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse) {
-    if (projectiles.size() > MAX_PROJECTILES_SIZE) {
+    if (projectiles.size() >= MAX_PROJECTILES_SIZE) { //todo check
         return;
     }
 
@@ -26,7 +26,6 @@ void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_p
 void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
     //todo
     entitiesCounter++;
-
 }
 
 void EntitiesManager::deleteDeadEntities() {
@@ -87,8 +86,10 @@ void EntitiesManager::updateProjectilesStatus() {
 }
 
 void EntitiesManager::updateProjectilesFriction() {
-    for (int i = 0; i < projectiles.size(); i++) {
-        projectiles[i]->updateFriction();
+    auto it = projectiles.begin();
+    while (it != projectiles.end()) {
+        it->second->updateFriction();
+        it++;
     }
 }
 

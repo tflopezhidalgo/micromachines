@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "Identifiers.h"
 
-#define THROWABLE_OBJECTS_NUMBER 5
+#define THROWABLE_OBJECTS_NUMBER 2 //todo replace with 5
 #define MAX_LINEAR_IMPULSE 20
 #define MIN_LINEAR_IMPULSE 10
 #define PROJECTILE_INITIAL_DISTANCE 0.5f
@@ -21,8 +21,9 @@ Grandstand::Grandstand(b2Body* body, int objectsThrownNumber, float x_pos,
     y_pos(y_pos) {}
 
 void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
-
-    EntityIdentifier projectiles[5] = {HEALTHBOOSTER, OIL, SPEEDBOOSTER, STONE, MUG};
+    //todo
+    //EntityIdentifier projectiles[5] = {HEALTHBOOSTER, OIL, SPEEDBOOSTER, STONE, MUG};
+    EntityIdentifier projectiles[2] = {HEALTHBOOSTER, STONE};
 
     for (int i = 0; i < objectsThrownNumber; i++) {
 

@@ -21,7 +21,7 @@ void Projectile::applyLinearImpulse(b2Vec2& impulse) {
 
 b2Vec2 Projectile::getForwardVelocity() {
     b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
-    return b2Dot( currentForwardNormal, body->GetLinearVelocity() ) * currentForwardNormal;
+    return b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal;
 }
 
 void Projectile::updateFriction() {
@@ -37,6 +37,4 @@ bool Projectile::isStill() {
     return velocityNorm < LOWER_SPEED_LIMIT;
 }
 
-Projectile::~Projectile() {
-    body->GetWorld()->DestroyBody(body);
-}
+Projectile::~Projectile() { }
