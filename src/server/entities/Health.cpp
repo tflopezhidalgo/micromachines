@@ -4,9 +4,9 @@
 
 #include "Health.h"
 
-Health::Health(int initialHealth) :
-        actualHealth(initialHealth),
-        maximumHealth(initialHealth) {}
+Health::Health() :
+        actualHealth(100),
+        maximumHealth(100) {}
 
 void Health::receiveDamage(int damagePoints) {
     if (actualHealth - damagePoints < 0) {

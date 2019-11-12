@@ -7,14 +7,19 @@
 
 #include <vector>
 #include <unordered_map>
+#include <TimedEvent.h>
+#include <set>
 #include "Box2D/Box2D.h"
 #include "Tire.h"
 #include "Health.h"
 #include "Entity.h"
 
+class TimedEvent;
+
 class Car : public Entity {
 private:
     std::string id;
+    std::vector<TimedEvent>& timedEvents;
     b2RevoluteJoint* frontLeftJoint;
     b2RevoluteJoint* frontRightJoint;
     std::vector<Tire*> tires;
@@ -26,12 +31,10 @@ private:
     float respawnAngle;
 
 public:
-    Car(std::string id, b2Body* body,
-        b2Vec2 startingPosition,
-        std::vector<Tire*> tires,
-        int carCollisionDamage,
-        b2RevoluteJoint* flJoint,
-        b2RevoluteJoint* frJoint);
+    Car(std::string id, std::vector<TimedEvent>& timedEvents,
+        b2Body* body, b2Vec2 startingPosition,
+        std::vector<Tire*> tires, int carCollisionDamage,
+        b2RevoluteJoint* flJoint, b2RevoluteJoint* frJoint);
 
     void updateFriction();
 
@@ -45,11 +48,15 @@ public:
 
     void receiveDamage(int damagePoints);
 
+    void recoverHealth();
+
     void setTiresFriction(float newFriction);
 
     void setMaxForwardSpeed(float newMaxForwardSpeed);
 
     int getHealth();
+
+    bool isDead() override;
 
     void updateSurface(int surface);
 
