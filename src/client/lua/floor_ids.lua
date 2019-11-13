@@ -7,7 +7,7 @@ floor_id = {
     [0] = {
         ["name"] = "GRASS_TILE",
         ["safe"] = false,
-        ["direction"] = 2
+        ["direction"] = 1
     },
     [1] = {
         ["name"] = "THIRD_QUAD_TRACK",

@@ -30,8 +30,6 @@ private:
 
     void luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable);
 
-    Event createEvent(const char *luaEvent);
-
     void emptyStack();
 public:
     explicit LuaScript(std::string& clientId);
@@ -44,6 +42,7 @@ public:
 
     ~LuaScript();
 
+    Event createEvent(const char *luaEvent);
 };
 
 
