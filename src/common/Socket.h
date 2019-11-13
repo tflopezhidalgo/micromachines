@@ -14,7 +14,7 @@ private:
     int bind(addrinfo* ptr);
     addrinfo* getAddrInfo(const char* host, const char* port, int flags);
     bool iterateAddrInfo(addrinfo* result, bool passive, int backlog);
-    bool operationalizeSocket(addrinfo* ptr, int backlog, bool passive);
+    bool operationalize(addrinfo* ptr, int backlog, bool passive);
 public:
     Socket(const char* host, const char* service);
     Socket(int backlog, const char* service);
