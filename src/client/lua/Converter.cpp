@@ -5,17 +5,18 @@
 #include "Converter.h"
 
 std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matrixHeight, int matrixWidth) {
+    std::cout << "x:" <<pos_x << " y:" << pos_y << " - ";
     int widthMap = matrixWidth * TILE_WIDTH;
     int heightMap = matrixHeight * TILE_HEIGHT;
 
     int refCenterX = widthMap / 2;
     int refCenterY = heightMap / 2;
 
-    double realPosX = refCenterX + pos_x;
-    double realPosY = refCenterY + pos_y;
+    float realPosX = (refCenterX + pos_x);
+    float realPosY = (refCenterY + pos_y);
 
-    double luaPosX = round(realPosX / (matrixWidth+TILE_WIDTH)) + 1;
-    double luaPosY = round(realPosY / (matrixHeight+TILE_HEIGHT)) + 1;
+    int luaPosX = abs(round((double)realPosX /1000*3)) + 1;
+    int luaPosY = abs(round((double)realPosY /1000 *3*3)) + 1;
 
-    return std::make_tuple((int)luaPosX, (int)luaPosY);
+    return std::make_tuple(luaPosX, luaPosY);
 }

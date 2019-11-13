@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <thread>
 #include <condition_variable>
+#include <iostream>
 
 // Implementa cola bloqueante sólo para el pop
 

@@ -24,12 +24,11 @@ private:
     lua_State *L;
     std::string& clientId;
     Converter converter;
+    std::string action;
     int matrixHeight;
     int matrixWidth;
 
     void luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable);
-
-    Event createEvent(const char *luaEvent);
 
     void emptyStack();
 public:
@@ -43,6 +42,7 @@ public:
 
     ~LuaScript();
 
+    Event createEvent(const char *luaEvent);
 };
 
 

@@ -26,8 +26,9 @@ Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     auto tuplePos = converter.getLuaMapPosition(pos_x, pos_y,
             matrixHeight, matrixWidth);
 
+    int ang = abs(round(angle));
     lua_getglobal(L, "getEvent");
-    lua_pushnumber(L, angle);
+    lua_pushnumber(L, ang);
     lua_pushnumber(L, std::get<0>(tuplePos));
     lua_pushnumber(L, std::get<1>(tuplePos));
 
@@ -35,18 +36,20 @@ Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     const char* luaEvent = lua_tostring(L, 1);
     lua_pop(L, 1); // elimina lua_action
 
-    int stackSize = lua_gettop(L);
-    //std::cout << stackSize << std::endl;
-    //lua_pop(L, 1); // elimina entities
-    std::cout << "Se genero " << luaEvent << std::endl;
-    return createEvent(luaEvent);
+    return std::move(createEvent(luaEvent));
 }
 
 Event LuaScript::createEvent(const char* luaEvent) {
     std::vector<char> v_event;
-    v_event.push_back(luaEvent[0]);
+    action = std::string(luaEvent);
+
+    std::cout << "action:" << action[0] << std::endl;
+    v_event.push_back(action[0]);
+    if (action[0] != BACKWARD || action[0] != FORWARD) {
+        v_event.push_back(FORWARD);
+    }
     Event event(clientId, v_event);
-    return event;
+    return std::move(event);
 }
 
 void LuaScript::luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable) {
