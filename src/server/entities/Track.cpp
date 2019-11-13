@@ -2,14 +2,15 @@
 // Created by leobellaera on 31/10/19.
 //
 
-#include <iostream>
+#include <Constants.h>
 #include "Track.h"
 #include "Car.h"
 
 Track::Track(b2Body* body, b2Vec2 position, int floorId, float friction) :
     Entity(TRACK, body),
     friction(friction),
-    position(position) {
+    position(position),
+    floorId(floorId) {
 
     if (floorId == LEFT_TRACK || floorId == LEFT_CHECKPOINTED_TRACK) {
         angle = 90;
@@ -17,13 +18,23 @@ Track::Track(b2Body* body, b2Vec2 position, int floorId, float friction) :
     } else if (floorId == RIGHT_TRACK || floorId == RIGHT_CHECKPOINTED_TRACK) {
         angle = -90;
 
-    } else if (floorId == UP_TRACK || floorId == UP_CHECKPOINTED_TRACK ||
-        floorId == SECOND_QUAD_TRACK || floorId == THIRD_QUAD_TRACK) {
+    } else if (floorId == UP_TRACK || floorId == UP_CHECKPOINTED_TRACK) {
         angle = 180;
 
-    } else if (floorId == DOWN_TRACK || floorId == DOWN_CHECKPOINTED_TRACK ||
-        floorId == FIRST_QUAD_TRACK || floorId == FOURTH_QUAD_TRACK) {
+    } else if (floorId == DOWN_TRACK || floorId == DOWN_CHECKPOINTED_TRACK) {
         angle = 0;
+
+    } else if (floorId == FIRST_QUAD_TRACK) {
+        angle = -45;
+
+    } else if (floorId == SECOND_QUAD_TRACK) {
+        angle = -135;
+
+    } else if (floorId == THIRD_QUAD_TRACK) {
+        angle = 135;
+
+    } else if (floorId == FOURTH_QUAD_TRACK) {
+        angle = 45;
     }
 }
 
@@ -43,8 +54,29 @@ void Track::endCollision(Entity* entity) {
 }
 
 void Track::updateRespawnData(Car* car) {
+    if (!car) {
+        return;
+    }
+
     car->setLastPosOnTrack(car->getPosition());
-    car->setRespawnCoordinates(position, angle);
+
+    if (floorId == FIRST_QUAD_TRACK || floorId == SECOND_QUAD_TRACK ||
+    floorId == THIRD_QUAD_TRACK || floorId == FOURTH_QUAD_TRACK) {
+        car->setRespawnCoordinates(position, angle);
+        return;
+    }
+
+    float loX = -TILE_WIDTH/2;
+    float hiX =  TILE_WIDTH/2;
+    float xPos = loX + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hiX-loX)));
+
+    float loY = -TILE_HEIGHT/2;
+    float hiY =  TILE_HEIGHT/2;
+    float yPos = loY + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hiY-loY)));
+
+    b2Vec2 randPos = {position.x + xPos, position.y + yPos};
+
+    car->setRespawnCoordinates(randPos, angle);
 }
 
 void Track::setCarFriction(Car* car) {

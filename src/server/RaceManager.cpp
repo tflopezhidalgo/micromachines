@@ -4,12 +4,14 @@
 
 #include "RaceManager.h"
 #include "ModelStatusSerializer.h"
+#include "Constants.h"
 
 #define X_POS_IDX 0
 #define Y_POS_IDX 1
 #define ANGLE_IDX 2
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
+    config(config),
     stageBuilder(mapName, config),
     world(std::move(stageBuilder.buildWorld())),
     raceJudge(raceLaps),
@@ -21,7 +23,7 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
 void RaceManager::addPlayer(std::string& nickname) {
     std::vector<float> startingPosition = stageBuilder.getStartingPosition();
     Car* car = world.addCar(nickname, startingPosition[X_POS_IDX],
-            startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX]);
+            startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX], timedEvents);
     cars.emplace(nickname, car);
     raceJudge.addCar(nickname);
 }
@@ -37,6 +39,15 @@ void RaceManager::updateModel(std::vector<Event> &events) {
 
     for (int i = 0; i < grandstands.size(); i++) {
         grandstands[i]->throwProjectiles(entitiesManager);
+    }
+
+    auto it = timedEvents.begin();
+    while (it != timedEvents.end()) {
+        if (it->update(1.f / config.find(FPS_KEY)->second)) {
+            it = timedEvents.erase(it);
+        } else {
+            it++;
+        }
     }
 
     std::unordered_map<std::string, bool> updatedCars;

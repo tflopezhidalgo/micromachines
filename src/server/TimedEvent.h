@@ -5,20 +5,22 @@
 #ifndef MICROMACHINES_TIMEDEVENT_H
 #define MICROMACHINES_TIMEDEVENT_H
 
-#include <functional>
+#include <entities/Car.h>
+
+class Car;
 
 class TimedEvent {
-    typedef std::function<void ()> Runnable;
 private:
     float timeout;
     float elapsed;
-    Runnable& cb;
+    Car* car;
+    void (Car::*cb)(void);
 public:
-    TimedEvent(Runnable& cb, float timeout);
+    TimedEvent(Car* car, void (Car::*cb)(void), float timeout);
     TimedEvent(TimedEvent &&other);
+    TimedEvent& operator=(TimedEvent&& other);
     bool update(float delta);
-    float remainingTimeout() const;
-    bool operator< (const TimedEvent& timedEvent);
+    ~TimedEvent();
 };
 
 

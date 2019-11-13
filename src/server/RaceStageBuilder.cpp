@@ -93,10 +93,12 @@ void RaceStageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& gr
         float y_pos = grandstandData[1].get<float>();
         bool horizontalDisposal = grandstandData[2].get<bool>();
         bool positiveOrientation = grandstandData[3].get<bool>();
+
         b2Body* body = world.getGrandstandBody(x_pos, y_pos, horizontalDisposal);
         Grandstand* grandstand = new Grandstand(body,
                 config.find(GRANDSTAND_OBJECTS_THROWN)->second,
                 x_pos, y_pos, horizontalDisposal, positiveOrientation);
+        grandstands.push_back(grandstand);
     }
 }
 

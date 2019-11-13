@@ -37,7 +37,8 @@
 #define GRANDSTAND_HEIGHT 50
 #define PROJECTILE_RADIUS 2
 
-//Bodies types
+//Car constants
+#define MAX_DISTANCE_TO_TRACK 100
 
 
 //Config Keys
