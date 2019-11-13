@@ -10,12 +10,7 @@ script(playerId) { }
 void LuaPlayer::run() {
 
     script.createMap(model.getMap());
-    for (auto x : model.getMap()) {
-        for (auto y : x) {
-            std::cout << y  << " ";
-        }
-        std::cout << std::endl;
-    }
+
     while (alive) {
         usleep(2000);
         script.setEntities(model.getEntitiesPos());

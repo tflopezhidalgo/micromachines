@@ -36,19 +36,7 @@ Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     const char* luaEvent = lua_tostring(L, 1);
     lua_pop(L, 1); // elimina lua_action
 
-    int st = lua_gettop(L);
-    std::cout << "len:" << st;
-    std::vector<char> v_event;
-    action = std::string(luaEvent);
-
-    std::cout << "action:" << action[0] << std::endl;
-    v_event.push_back(action[0]);
-    if (action[0] != BACKWARD || action[0] != FORWARD) {
-        v_event.push_back(FORWARD);
-    }
-    Event event(clientId, v_event);
-    return std::move(event);
-    //return createEvent(luaEvent);
+    return std::move(createEvent(luaEvent));
 }
 
 Event LuaScript::createEvent(const char* luaEvent) {
@@ -57,9 +45,9 @@ Event LuaScript::createEvent(const char* luaEvent) {
 
     std::cout << "action:" << action[0] << std::endl;
     v_event.push_back(action[0]);
-    /*if (action[0] != BACKWARD || action[0] != FORWARD) {
+    if (action[0] != BACKWARD || action[0] != FORWARD) {
         v_event.push_back(FORWARD);
-    }*/
+    }
     Event event(clientId, v_event);
     return std::move(event);
 }
