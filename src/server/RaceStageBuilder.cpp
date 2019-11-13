@@ -11,7 +11,7 @@
 #define PREFIX "../media/maps/"
 
 #define OPENING_ERROR_MSG "An error occurred while\
- trying to open the config file.\n"
+ trying to open the map data file.\n"
 
 RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, float>& config) :
     config(config),

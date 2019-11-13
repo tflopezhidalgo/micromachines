@@ -29,8 +29,8 @@ void Client::sendMessage(std::string& message) {
 }
 
 void Client::stop() {
-    proxy.stop();
     finished = true;
+    proxy.stop();
 }
 
 Client::~Client() {

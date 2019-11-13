@@ -127,6 +127,8 @@ void Match::startCountdown() {
 
 Match::~Match() {
     for (auto it = clients.begin(); it != clients.end(); ++it) {
+        it->second->stop();
+        it->second->join();
         delete (it->second);
     }
 }

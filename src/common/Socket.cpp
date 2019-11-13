@@ -125,13 +125,13 @@ bool Socket::iterateAddrInfo(addrinfo* result, bool passive, int backlog) {
         if (fd == -1) {
             std::cerr << "Error: " << strerror(errno) << std::endl;
         } else {
-            success = operationalizeSocket(ptr, backlog, passive);
+            success = operationalize(ptr, backlog, passive);
         }
     }
     return success;
 }
 
-bool Socket::operationalizeSocket(addrinfo* ptr, int backlog, bool passive) {
+bool Socket::operationalize(addrinfo* ptr, int backlog, bool passive) {
     bool success;
     if (passive) {
         success = (bind(ptr) == 0 && listen(backlog) == 0);
