@@ -81,7 +81,7 @@ void RaceManager::applyPlugins() {
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
             (end-start).count();
     if (elapsed_seconds > TIME_ELAPSE_PLUGINS) {
-        pluginsManager->applyPlugins(cars);
+        pluginsManager->applyRandomPlugin(cars);
         start = std::chrono::system_clock::now();
     }
 }
