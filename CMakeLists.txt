@@ -11,7 +11,7 @@ message("LUA_VERSION_STRING: ${LUA_VERSION_STRING}")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_FLAGS "-ggdb -DDebug -fno-inline -O3 -std=c++11")    # Flags de la cátedra
+set(CMAKE_CXX_FLAGS "-ggdb -DDebug -fno-inline -O3 -std=c++11")    # Flags setting
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build)
 
@@ -42,8 +42,11 @@ install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${C
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES} ${UIS_HDRS} src/client/qt/mainwindow.cpp)
 target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets)
 
-add_library(model ${COMMON_SRC_FILES} ${MODEL_SRC_FILES})
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build) #Box2D library building
 
-add_executable(Server src/server/main.cpp ${COMMON_SRC_FILES} ${MATCHES_MANAGEMENT_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES})
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build)
-target_link_libraries(Server model Box2D pthread dl)
+add_library(model ${COMMON_SRC_FILES} ${MODEL_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES}) # Model library building
+target_link_libraries(model Box2D)
+
+add_executable(Server src/server/main.cpp ${MATCHES_MANAGEMENT_SRC_FILES})
+
+target_link_libraries(Server model pthread dl)

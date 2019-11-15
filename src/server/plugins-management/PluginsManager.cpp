@@ -44,10 +44,10 @@ void PluginsManager::readPluginsDirectory() {
     }
 }
 
-void PluginsManager::applyPlugins() {
+void PluginsManager::applyPlugins(std::unordered_map<std::string, Car*>& cars) {
     std::unique_lock<std::mutex> lck(mutex);
     for (auto & plugin : plugins) {
-        plugin.second->updateModel();
+        plugin.second->updateModel(cars);
     }
 }
 

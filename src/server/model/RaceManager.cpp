@@ -43,7 +43,7 @@ void RaceManager::updateModel(std::vector<Event> &events) {
         grandstand->throwProjectiles(entitiesManager);
     }
 
-    pluginsManager->applyPlugins(); //todo temporizar
+    pluginsManager->applyPlugins(cars); //todo temporizar
 
     auto it = timedEvents.begin();
     while (it != timedEvents.end()) {
