@@ -10,16 +10,21 @@
 #define Y_POS_IDX 1
 #define ANGLE_IDX 2
 
+#define TIME_ELAPSE_PLUGINS 5
+
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     config(config),
     stageBuilder(mapName, config),
     world(std::move(stageBuilder.buildWorld())),
     raceJudge(raceLaps),
-    entitiesManager(world) {
+    entitiesManager(world),
+    start(std::chrono::system_clock::now()){
+
     pluginsManager = new PluginsManager();
     pluginsManager->start();
     stageBuilder.addRaceSurface(world, tracks, grassTiles, checkpoints, raceJudge);
     stageBuilder.addGrandstands(world, grandstands);
+
 }
 
 void RaceManager::addPlayer(std::string& nickname) {
@@ -43,17 +48,16 @@ void RaceManager::updateModel(std::vector<Event> &events) {
         grandstand->throwProjectiles(entitiesManager);
     }
 
-    pluginsManager->applyPlugins(); //todo temporizar
+    updateTimedEvents();
 
-    auto it = timedEvents.begin();
-    while (it != timedEvents.end()) {
-        if (it->update(1.f / config.find(FPS_KEY)->second)) {
-            it = timedEvents.erase(it);
-        } else {
-            it++;
-        }
-    }
+    updateCars(events);
 
+    applyPlugins();
+
+    world.step();
+}
+
+void RaceManager::updateCars(std::vector<Event> &events) {
     std::unordered_map<std::string, bool> updatedCars;
 
     for (auto & event : events) {
@@ -70,8 +74,27 @@ void RaceManager::updateModel(std::vector<Event> &events) {
             car.second->updateMove(nullAction);
         }
     }
+}
 
-    world.step();
+void RaceManager::applyPlugins() {
+    auto end = std::chrono::system_clock::now();
+    int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
+            (end-start).count();
+    if (elapsed_seconds > TIME_ELAPSE_PLUGINS) {
+        pluginsManager->applyRandomPlugin(cars);
+        start = std::chrono::system_clock::now();
+    }
+}
+
+void RaceManager::updateTimedEvents() {
+    auto it = timedEvents.begin();
+    while (it != timedEvents.end()) {
+        if (it->update(1.f / config.find(FPS_KEY)->second)) {
+            it = timedEvents.erase(it);
+        } else {
+            it++;
+        }
+    }
 }
 
 std::string RaceManager::getRaceStatus() {

@@ -44,11 +44,16 @@ void PluginsManager::readPluginsDirectory() {
     }
 }
 
-void PluginsManager::applyPlugins() {
+void PluginsManager::applyRandomPlugin(std::unordered_map<std::string, Car*>& cars) {
     std::unique_lock<std::mutex> lck(mutex);
-    for (auto & plugin : plugins) {
-        plugin.second->updateModel();
+    if (plugins.empty()) {
+        return;
     }
+
+    int index = rand() % plugins.size();
+    auto pluginsIt = std::next(std::begin(plugins), index);
+    pluginsIt->second->updateModel(cars);
+
 }
 
 void PluginsManager::stop() {

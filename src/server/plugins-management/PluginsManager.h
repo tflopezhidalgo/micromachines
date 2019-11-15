@@ -27,7 +27,7 @@ public:
     void readPluginsDirectory();
     void run() override;
     void stop();
-    void applyPlugins();
+    void applyRandomPlugin(std::unordered_map<std::string, Car*>&cars);
     ~PluginsManager();
 };
 
