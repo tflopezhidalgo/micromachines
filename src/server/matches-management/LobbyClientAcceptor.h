@@ -6,8 +6,8 @@
 #define MICROMACHINES_LOBBYCLIENTACCEPTOR_H
 
 
-#include "../common/Thread.h"
-#include "../common/Socket.h"
+#include "Thread.h"
+#include "Socket.h"
 #include "MatchesAdministrator.h"
 #include "LobbyClientReceptionist.h"
 #include <atomic>

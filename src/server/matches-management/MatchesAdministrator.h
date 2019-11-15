@@ -9,7 +9,7 @@
 #include <string>
 #include <mutex>
 #include "Match.h"
-#include "../common/Proxy.h"
+#include "Proxy.h"
 #include "ConfigMapBuilder.h"
 
 class MatchesAdministrator {

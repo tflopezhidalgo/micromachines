@@ -12,11 +12,11 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include <RaceStageBuilder.h>
-#include "../common/Thread.h"
+#include "Thread.h"
 #include "Client.h"
 #include "../model/Car.h"
 #include "World.h"
-#include "../model/RaceManager.h"
+#include "RaceManager.h"
 
 class Match : public Thread {
 private:
