@@ -3,7 +3,7 @@
 //
 
 #include "RaceManager.h"
-#include "ModelStatusSerializer.h"
+#include "StatusSerializer.h"
 #include "Constants.h"
 
 #define X_POS_IDX 0
@@ -16,6 +16,8 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
     world(std::move(stageBuilder.buildWorld())),
     raceJudge(raceLaps),
     entitiesManager(world) {
+    pluginsManager = new PluginsManager();
+    pluginsManager->start();
     stageBuilder.addRaceSurface(world, tracks, grassTiles, checkpoints, raceJudge);
     stageBuilder.addGrandstands(world, grandstands);
 }
@@ -37,9 +39,11 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
 
-    for (int i = 0; i < grandstands.size(); i++) {
-        grandstands[i]->throwProjectiles(entitiesManager);
+    for (auto & grandstand : grandstands) {
+        grandstand->throwProjectiles(entitiesManager);
     }
+
+    pluginsManager->applyPlugins(); //todo temporizar
 
     auto it = timedEvents.begin();
     while (it != timedEvents.end()) {
@@ -71,23 +75,28 @@ void RaceManager::updateModel(std::vector<Event> &events) {
 }
 
 std::string RaceManager::getRaceStatus() {
-    return std::move(ModelStatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
+    return std::move(StatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
 }
 
 RaceManager::~RaceManager() {
-    for (auto it = cars.begin(); it != cars.end(); ++it) {
-        delete it->second;
+
+    pluginsManager->stop();
+    pluginsManager->join();
+    delete pluginsManager;
+
+    for (auto & car : cars) {
+        delete car.second;
     }
-    for (auto it = grandstands.begin(); it != grandstands.end(); ++it) {
-        delete (*it);
+    for (auto & grandstand : grandstands) {
+        delete grandstand;
     }
-    for (auto it = tracks.begin(); it != tracks.end(); ++it) {
-        delete (*it);
+    for (auto & track : tracks) {
+        delete track;
     }
-    for (auto it = grassTiles.begin(); it != grassTiles.end(); ++it) {
-        delete (*it);
+    for (auto & grassTile : grassTiles) {
+        delete grassTile;
     }
-    for (auto it = checkpoints.begin(); it != checkpoints.end(); ++it) {
-        delete (*it);
+    for (auto & checkpoint : checkpoints) {
+        delete checkpoint;
     }
 }

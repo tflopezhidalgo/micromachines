@@ -8,15 +8,15 @@
 
 #include <string>
 #include <unordered_map>
-#include <entities/Car.h>
-#include <entities/Track.h>
-#include <entities/Checkpoint.h>
-#include <set>
+#include "Car.h"
+#include "Track.h"
+#include "Checkpoint.h"
 #include "Client.h"
 #include "World.h"
 #include "RaceStageBuilder.h"
 #include "EntitiesManager.h"
 #include "TimedEvent.h"
+#include "../plugins-management/PluginsManager.h"
 
 class RaceManager {
 private:
@@ -26,6 +26,7 @@ private:
     World world;
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
+    PluginsManager* pluginsManager;
     std::unordered_map<std::string, Car*> cars;
     std::vector<Grandstand*> grandstands;
     std::vector<Track*> tracks;

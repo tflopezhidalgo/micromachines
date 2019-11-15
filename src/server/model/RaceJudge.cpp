@@ -2,7 +2,6 @@
 // Created by leobellaera on 4/11/19.
 //
 
-#include <iostream>
 #include "RaceJudge.h"
 
 RaceJudge::RaceJudge(int raceLaps) :

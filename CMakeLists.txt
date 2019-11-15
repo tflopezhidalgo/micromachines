@@ -19,16 +19,17 @@ qt5_wrap_ui(UIS_HDRS ${PROJECT_SOURCE_DIR}/src/client/qt/*.ui)
 
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/src/client)
-include_directories(${PROJECT_SOURCE_DIR}/src/server)
+include_directories(${PROJECT_SOURCE_DIR}/src/server/model)
+include_directories(${PROJECT_SOURCE_DIR}/src/server/matches-management)
 include_directories(${PROJECT_SOURCE_DIR}/src/common)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/qt)
 
-file(GLOB SERVER_SRC_FILES "src/server/*.cpp")
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
-file(GLOB ENTITIES_SRC_FILES "src/server/entities/*.cpp")
-file(GLOB PLUGINS_SRC_FILES "src/server/plugins/Plugin.cpp")
+file(GLOB MODEL_SRC_FILES "src/server/model/*.cpp")
+file(GLOB MATCHES_MANAGEMENT_SRC_FILES "src/server/matches-management/*.cpp")
+file(GLOB PLUGINS_MANAGEMENT_SRC_FILES "src/server/plugins-management/*.cpp")
 file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
 file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
 
@@ -41,8 +42,8 @@ install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${C
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES} ${UIS_HDRS} src/client/qt/mainwindow.cpp)
 target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets)
 
-add_executable(Server src/server/main.cpp ${SERVER_SRC_FILES} ${COMMON_SRC_FILES} ${ENTITIES_SRC_FILES} ${PLUGINS_SRC_FILES})
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/server ${PROJECT_SOURCE_DIR}/build/Box2D-build)
-target_link_libraries(Server Box2D pthread dl)
+add_library(model ${COMMON_SRC_FILES} ${MODEL_SRC_FILES})
 
-
+add_executable(Server src/server/main.cpp ${COMMON_SRC_FILES} ${MATCHES_MANAGEMENT_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES})
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build)
+target_link_libraries(Server model Box2D pthread dl)

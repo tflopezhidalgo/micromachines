@@ -9,9 +9,9 @@
 #include <fstream>
 #include <map>
 #include <string>
-#include <entities/Checkpoint.h>
-#include <entities/Grandstand.h>
-#include <entities/Grass.h>
+#include "Checkpoint.h"
+#include "Grandstand.h"
+#include "Grass.h"
 #include "World.h"
 
 class RaceStageBuilder {

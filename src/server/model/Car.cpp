@@ -37,20 +37,17 @@ void Car::updateFriction() {
 }
 
 void Car::updateMove(std::vector<char>& actions) {
-
-    bool invalidPosition = actualSurface == GRASS &&
-            (getPosition() - lastPosOnTrack).Length() > MAX_DISTANCE_TO_TRACK;
-
-    if (isDead() || invalidPosition) {
-        move(respawnPosition, respawnAngle);
-        updateSurface(TRACK);
-        lastPosOnTrack = getPosition();
-        for (auto & tire : tires) {
-            tire->setTransform(respawnPosition, respawnAngle);
-        }
+    if (isDead()) {
         return;
     }
 
+    if (actualSurface == GRASS && (getPosition() - lastPosOnTrack).Length() > MAX_DISTANCE_TO_TRACK) {
+        updatePosition();
+        receiveDamage(100);
+        timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
+        return;
+    }
+    
     for (size_t i = 0; i < tires.size(); i++) {
         tires[i]->updateDrive(actions);
     }
@@ -120,9 +117,11 @@ void Car::beginCollision(Entity* entity) {
         this->receiveDamage(carCollisionDamage);
 
         if (car->isDead()) {
+            car->updatePosition();
             timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 3));
         }
         if (this->isDead()) {
+            updatePosition();
             timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
         }
 
@@ -183,6 +182,15 @@ bool Car::isDead() {
 
 void Car::updateSurface(int surface) {
     actualSurface = surface;
+}
+
+void Car::updatePosition() {
+    move(respawnPosition, respawnAngle);
+    updateSurface(TRACK);
+    for (auto & tire : tires) {
+        tire->setTransform(respawnPosition, respawnAngle);
+    }
+    lastPosOnTrack = getPosition();
 }
 
 void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {

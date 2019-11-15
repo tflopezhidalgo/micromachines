@@ -5,8 +5,8 @@
 #ifndef MICROMACHINES_ENTITIESMANAGER_H
 #define MICROMACHINES_ENTITIESMANAGER_H
 
-#include <entities/Entity.h>
-#include <entities/Projectile.h>
+#include "Entity.h"
+#include "Projectile.h"
 #include <unordered_map>
 #include "World.h"
 

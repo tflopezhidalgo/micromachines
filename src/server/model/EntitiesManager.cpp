@@ -99,11 +99,12 @@ std::unordered_map<int, Entity*>& EntitiesManager::getEntities() {
 }
 
 EntitiesManager::~EntitiesManager() {
-    for (auto it = entities.begin(); it != entities.end(); ++it) {
-        delete (it->second);
+    for (auto & entity : entities) {
+        projectiles.erase(entity.first);
+        delete (entity.second);
     }
 
-    for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
-        delete (it->second);
+    for (auto & projectile : projectiles) {
+        delete (projectile.second);
     }
 }

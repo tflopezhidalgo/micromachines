@@ -4,7 +4,7 @@
 
 #include <unordered_set>
 #include <nlohmann/json.hpp>
-#include <SocketException.h>
+#include "SocketException.h"
 #include "Match.h"
 #include "Constants.h"
 
@@ -81,7 +81,7 @@ void Match::sendMessageToClients(std::string& message) {
         }
     }
 
-    if (clients.size() == 0) {
+    if (clients.empty()) {
         dead = true;
     }
 
@@ -126,9 +126,9 @@ void Match::startCountdown() {
 }
 
 Match::~Match() {
-    for (auto it = clients.begin(); it != clients.end(); ++it) {
-        it->second->stop();
-        it->second->join();
-        delete (it->second);
+    for (auto & client : clients) {
+        client.second->stop();
+        client.second->join();
+        delete (client.second);
     }
 }
