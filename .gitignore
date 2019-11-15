@@ -1,7 +1,6 @@
 cmake-build-debug/
 build/
 .idea/
-Box2dSFMLTestings/*
 CMakeFiles/
 Makefile
 cmake_install.cmake
@@ -11,3 +10,4 @@ src/server/CMakeFiles/*
 src/server/Box2D-cmake.cbp
 /test/
 src/client/test.cpp
+src/server/plugins-management/plugins/cmake-build-debug
