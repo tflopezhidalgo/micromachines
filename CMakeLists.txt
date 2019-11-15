@@ -25,7 +25,6 @@ include_directories(${PROJECT_SOURCE_DIR}/src/common)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/qt)
 
-file(GLOB SERVER_SRC_FILES "src/server/*.cpp")
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
 file(GLOB MODEL_SRC_FILES "src/server/model/*.cpp")
@@ -43,7 +42,7 @@ install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${C
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES} ${UIS_HDRS} src/client/qt/mainwindow.cpp)
 target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets)
 
-add_executable(Server src/server/main.cpp
-        ${SERVER_SRC_FILES} ${COMMON_SRC_FILES} ${MODEL_SRC_FILES} ${MATCHES_MANAGEMENT_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES})
+add_executable(Server src/server/main.cpp ${COMMON_SRC_FILES} ${MODEL_SRC_FILES} ${MATCHES_MANAGEMENT_SRC_FILES}
+        ${PLUGINS_MANAGEMENT_SRC_FILES})
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build)
 target_link_libraries(Server Box2D pthread dl)
