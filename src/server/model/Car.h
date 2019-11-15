@@ -59,6 +59,8 @@ public:
     bool isDead() override;
 
     void updateSurface(int surface);
+    
+    void updatePosition();
 
     void setLastPosOnTrack(b2Vec2 position);
 

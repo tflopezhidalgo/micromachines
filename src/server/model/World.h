@@ -8,18 +8,17 @@
 #include "Box2D/Box2D.h"
 #include <map>
 #include <vector>
-#include <entities/Projectile.h>
-#include <entities/Grass.h>
-#include <set>
-#include "entities/Car.h"
-#include "entities/HealthBooster.h"
-#include "entities/CollisionsProcessor.h"
-#include "entities/Stone.h"
-#include "entities/Oil.h"
-#include "entities/SpeedBooster.h"
-#include "entities/Track.h"
+#include "Projectile.h"
+#include "Grass.h"
+#include "Car.h"
+#include "HealthBooster.h"
+#include "CollisionsProcessor.h"
+#include "Stone.h"
+#include "Oil.h"
+#include "SpeedBooster.h"
+#include "Track.h"
 #include "Identifiers.h"
-#include "entities/Checkpoint.h"
+#include "Checkpoint.h"
 #include "TimedEvent.h"
 
 class World {

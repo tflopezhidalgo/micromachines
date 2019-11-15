@@ -6,7 +6,7 @@
 #define MICROMACHINES_PLUGIN_H
 
 #include "EntitiesManager.h"
-#include "entities/Car.h"
+#include "../model/Car.h"
 
 class Plugin {
 public:

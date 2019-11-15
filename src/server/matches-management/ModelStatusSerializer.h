@@ -6,7 +6,7 @@
 #define MICROMACHINES_MODELSTATUSSERIALIZER_H
 
 #include <nlohmann/json.hpp>
-#include "entities/Car.h"
+#include "../model/Car.h"
 #include "RaceJudge.h"
 #include <unordered_map>
 #include <string>

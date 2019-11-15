@@ -14,9 +14,9 @@
 #include <RaceStageBuilder.h>
 #include "../common/Thread.h"
 #include "Client.h"
-#include "entities/Car.h"
+#include "../model/Car.h"
 #include "World.h"
-#include "RaceManager.h"
+#include "../model/RaceManager.h"
 
 class Match : public Thread {
 private:

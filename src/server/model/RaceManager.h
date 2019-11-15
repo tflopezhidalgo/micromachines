@@ -8,10 +8,9 @@
 
 #include <string>
 #include <unordered_map>
-#include <entities/Car.h>
-#include <entities/Track.h>
-#include <entities/Checkpoint.h>
-#include <set>
+#include "Car.h"
+#include "Track.h"
+#include "Checkpoint.h"
 #include "Client.h"
 #include "World.h"
 #include "RaceStageBuilder.h"

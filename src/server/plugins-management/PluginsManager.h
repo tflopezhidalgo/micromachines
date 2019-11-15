@@ -10,7 +10,7 @@
 #include <dlfcn.h>
 #include <EntitiesManager.h>
 #include "World.h"
-#include "entities/Car.h"
+#include "../model/Car.h"
 #include "Plugin.h"
 
 class PluginsManager {
