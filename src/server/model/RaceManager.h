@@ -27,11 +27,20 @@ private:
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
     PluginsManager* pluginsManager;
+    
     std::unordered_map<std::string, Car*> cars;
+    
     std::vector<Grandstand*> grandstands;
     std::vector<Track*> tracks;
     std::vector<Grass*> grassTiles;
     std::vector<Checkpoint*> checkpoints;
+    
+    std::chrono::time_point<std::chrono::system_clock> start;
+    
+    void applyPlugins();
+    void updateTimedEvents();
+    void updateCars(std::vector<Event> &events);
+    
 public:
     RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps);
 
