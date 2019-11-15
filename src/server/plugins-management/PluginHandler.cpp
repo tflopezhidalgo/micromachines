@@ -26,8 +26,8 @@ void PluginHandler::checkDlError() {
     }
 }
 
-std::unique_ptr<Plugin> PluginHandler::create() const {
-    return std::unique_ptr<Plugin>(creator());
+Plugin* PluginHandler::create() const {
+    return creator();
 }
 
 PluginHandler::~PluginHandler() {

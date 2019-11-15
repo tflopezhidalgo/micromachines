@@ -6,23 +6,35 @@
 #include "PluginHandler.h"
 #include "PluginHandlerException.h"
 
-#define DIRECTORY "./plugins"
+#define DIRECTORY "../src/server/plugins-management/plugins/"
 #define EXTENSION "so"
 
-PluginsManager::PluginsManager() {}
+PluginsManager::PluginsManager():
+    finished(false) {}
+
+void PluginsManager::run() {
+    while (!finished) {
+        readPluginsDirectory();
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+}
 
 void PluginsManager::readPluginsDirectory() {
+    std::unique_lock<std::mutex> lck(mutex);
     DIR* dir;
     struct dirent* file;
-
     dir = opendir(DIRECTORY);
     if (dir != nullptr) {
         while ((file = readdir(dir)) != nullptr) {
-            std::string name = std::string(file->d_name);
-            if(name.substr(name.find_last_of(".") + 1) == EXTENSION && plugins.count(name) != 0) {
+            std::string fileName = std::string(file->d_name);
+            if(fileName.substr(fileName.find_last_of('.') + 1) == EXTENSION
+                    && plugins.count(fileName) == 0) {
                 try {
-                    PluginHandler handler(file->d_name);
-                    plugins.emplace(name, handler.create());
+                    std::string path = DIRECTORY + fileName;
+                    auto handler = new PluginHandler(path.c_str());
+                    Plugin* plugin = handler->create();
+                    handlers.push_back(handler);
+                    plugins.emplace(fileName, plugin);
                 } catch (const PluginHandlerException& e) {
                     continue;
                 }
@@ -32,11 +44,22 @@ void PluginsManager::readPluginsDirectory() {
     }
 }
 
-void PluginsManager::apply(EntitiesManager& entitiesManager,
-        std::unordered_map<std::string, Car*> cars, RaceJudge& raceJudge) {
+void PluginsManager::applyPlugins() {
+    std::unique_lock<std::mutex> lck(mutex);
     for (auto & plugin : plugins) {
-        plugin.second->updateModel(entitiesManager, cars, raceJudge);
+        plugin.second->updateModel();
     }
 }
 
-PluginsManager::~PluginsManager() {}
+void PluginsManager::stop() {
+    finished = true;
+}
+
+PluginsManager::~PluginsManager() {
+    for (auto & plugin : plugins) {
+        delete plugin.second;
+    }
+    for (auto & handler : handlers) {
+        delete handler;
+    }
+}

@@ -7,6 +7,7 @@
 
 #include "Plugin.h"
 #include <dlfcn.h>
+#include <memory>
 
 class PluginHandler {
 private:
@@ -16,7 +17,7 @@ private:
     static void checkDlError();
 public:
     PluginHandler(const char* file);
-    std::unique_ptr<Plugin> create() const;
+    Plugin* create() const;
     ~PluginHandler();
 
 };

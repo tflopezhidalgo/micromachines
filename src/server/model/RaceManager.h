@@ -16,6 +16,7 @@
 #include "RaceStageBuilder.h"
 #include "EntitiesManager.h"
 #include "TimedEvent.h"
+#include "../plugins-management/PluginsManager.h"
 
 class RaceManager {
 private:
@@ -25,6 +26,7 @@ private:
     World world;
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
+    PluginsManager* pluginsManager;
     std::unordered_map<std::string, Car*> cars;
     std::vector<Grandstand*> grandstands;
     std::vector<Track*> tracks;

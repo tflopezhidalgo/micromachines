@@ -2,12 +2,12 @@
 // Created by leobellaera on 29/10/19.
 //
 
-#include "ModelStatusSerializer.h"
+#include "StatusSerializer.h"
 #include "Constants.h"
 
-std::string ModelStatusSerializer::serialize(RaceJudge& raceJudge,
-                                             std::unordered_map<std::string, Car*>& cars,
-                                             std::unordered_map<int, Entity*>& entities) {
+std::string StatusSerializer::serialize(RaceJudge& raceJudge,
+                                        std::unordered_map<std::string, Car*>& cars,
+                                        std::unordered_map<int, Entity*>& entities) {
     nlohmann::json data;
     nlohmann::json carsData = nlohmann::json::array();
     for (auto &car : cars) {

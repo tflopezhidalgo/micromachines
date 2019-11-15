@@ -8,18 +8,26 @@
 #include <dirent.h>
 #include <cstdio>
 #include <dlfcn.h>
-#include <EntitiesManager.h>
-#include "World.h"
-#include "../model/Car.h"
+#include <mutex>
+#include <unordered_map>
+#include <atomic>
+#include <vector>
 #include "Plugin.h"
+#include "Thread.h"
+#include "PluginHandler.h"
 
-class PluginsManager {
+class PluginsManager : public Thread {
 private:
-    std::unordered_map<std::string, std::unique_ptr<Plugin>> plugins;
+    std::mutex mutex;
+    std::unordered_map<std::string, Plugin*> plugins;
+    std::vector<PluginHandler*> handlers;
+    std::atomic<bool> finished;
 public:
     PluginsManager();
     void readPluginsDirectory();
-    void apply(EntitiesManager& entitiesManager, std::unordered_map<std::string, Car*> cars, RaceJudge& raceJudge);
+    void run() override;
+    void stop();
+    void applyPlugins();
     ~PluginsManager();
 };
 

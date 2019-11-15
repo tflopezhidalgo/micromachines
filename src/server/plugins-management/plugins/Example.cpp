@@ -5,8 +5,10 @@
 #include <iostream>
 #include "Example.h"
 
-void Example::updateModel(EntitiesManager& entitiesManager,
-                 std::unordered_map<std::string, Car*> cars,
-                 RaceJudge& raceJudge) {
+void Example::updateModel() {
     std::cout<<"Working\n";
+}
+
+extern "C" Plugin* create() {
+    return new Example;
 }

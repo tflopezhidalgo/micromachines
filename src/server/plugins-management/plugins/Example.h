@@ -8,9 +8,7 @@
 #include "../Plugin.h"
 
 class Example : public Plugin {
-    void updateModel(EntitiesManager& entitiesManager,
-                     std::unordered_map<std::string, Car*> cars,
-                     RaceJudge& raceJudge) override;
+    void updateModel() override;
 };
 
 #endif //MICROMACHINES_EXAMPLE_H
