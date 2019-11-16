@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 13/11/19.
-//
-
 #include "PluginHandler.h"
 #include "PluginHandlerException.h"
 

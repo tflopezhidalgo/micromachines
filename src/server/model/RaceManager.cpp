@@ -10,12 +10,10 @@
 #define Y_POS_IDX 1
 #define ANGLE_IDX 2
 
-#define TIME_ELAPSE_PLUGINS 5
-
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     config(config),
     stageBuilder(mapName, config),
-    world(std::move(stageBuilder.buildWorld())),
+    world(std::move(stageBuilder.buildWorld(timedEvents))),
     raceJudge(raceLaps),
     entitiesManager(world),
     start(std::chrono::system_clock::now()){
@@ -30,7 +28,7 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
 void RaceManager::addPlayer(std::string& nickname) {
     std::vector<float> startingPosition = stageBuilder.getStartingPosition();
     Car* car = world.addCar(nickname, startingPosition[X_POS_IDX],
-            startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX], timedEvents);
+            startingPosition[Y_POS_IDX]);
     cars.emplace(nickname, car);
     raceJudge.addCar(nickname);
 }
@@ -44,9 +42,7 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
 
-    for (auto & grandstand : grandstands) {
-        grandstand->throwProjectiles(entitiesManager);
-    }
+    activateGrandstands();
 
     updateTimedEvents();
 
@@ -76,6 +72,26 @@ void RaceManager::updateCars(std::vector<Event> &events) {
     }
 }
 
+void RaceManager::activateGrandstands() {
+    auto end = std::chrono::system_clock::now();
+    int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
+            (end-start).count();
+
+    if (elapsed_seconds > TIME_ELAPSE_GRANDSTANDS) {
+
+        if (!grandstands.empty()) {
+
+            int index = rand() % grandstands.size();
+            auto grandstandsIt = std::next(std::begin(grandstands), index);
+            (*grandstandsIt)->throwProjectiles(entitiesManager);
+
+        }
+
+        start = std::chrono::system_clock::now();
+
+    }
+}
+
 void RaceManager::applyPlugins() {
     auto end = std::chrono::system_clock::now();
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
@@ -101,6 +117,10 @@ std::string RaceManager::getRaceStatus() {
     return std::move(StatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
 }
 
+std::string RaceManager::getMapData() {
+    return std::move(stageBuilder.getMapData());
+}
+
 RaceManager::~RaceManager() {
 
     pluginsManager->stop();
@@ -110,15 +130,19 @@ RaceManager::~RaceManager() {
     for (auto & car : cars) {
         delete car.second;
     }
+
     for (auto & grandstand : grandstands) {
         delete grandstand;
     }
+
     for (auto & track : tracks) {
         delete track;
     }
+
     for (auto & grassTile : grassTiles) {
         delete grassTile;
     }
+
     for (auto & checkpoint : checkpoints) {
         delete checkpoint;
     }

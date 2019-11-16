@@ -1,7 +1,3 @@
-//
-// Created by eliana on 7/11/19.
-//
-
 #include "PluginsManager.h"
 #include "PluginHandler.h"
 #include "PluginHandlerException.h"
@@ -46,14 +42,11 @@ void PluginsManager::readPluginsDirectory() {
 
 void PluginsManager::applyRandomPlugin(std::unordered_map<std::string, Car*>& cars) {
     std::unique_lock<std::mutex> lck(mutex);
-    if (plugins.empty()) {
-        return;
+    if (!plugins.empty()) {
+        int index = rand() % plugins.size();
+        auto pluginsIt = std::next(std::begin(plugins), index);
+        pluginsIt->second->updateModel(cars);
     }
-
-    int index = rand() % plugins.size();
-    auto pluginsIt = std::next(std::begin(plugins), index);
-    pluginsIt->second->updateModel(cars);
-
 }
 
 void PluginsManager::stop() {

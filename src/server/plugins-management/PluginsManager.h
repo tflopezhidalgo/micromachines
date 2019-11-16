@@ -1,7 +1,3 @@
-//
-// Created by eliana on 7/11/19.
-//
-
 #ifndef MICROMACHINES_PLUGINSMANAGER_H
 #define MICROMACHINES_PLUGINSMANAGER_H
 

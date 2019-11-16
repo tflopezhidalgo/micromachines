@@ -13,12 +13,12 @@ void HealthBooster::beginCollision(Entity* entity) {
     if (entity->getIdentifier() == CAR && !isDead()) {
         Car* car = dynamic_cast<Car*>(entity);
         car->receiveHealing(healthBoost);
-        die();
     }
 }
 
 void HealthBooster::heal(Car* car) {
     car->receiveHealing(healthBoost);
+    die();
 }
 
 void HealthBooster::endCollision(Entity *entity) {}

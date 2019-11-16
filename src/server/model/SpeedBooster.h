@@ -11,14 +11,13 @@
 
 class SpeedBooster : public Entity {
 private:
-    float defaultMaxForwardSpeed;
     float speedBoost;
+    std::vector<TimedEvent>& timedEvents;
 public:
-    SpeedBooster(b2Body *body,
-            float speedBoost,
-            float defaultMaxForwardSpeed);
+    SpeedBooster(b2Body *body, float speedBoost, std::vector<TimedEvent>& timedEvents);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
+    void boostMaxSpeed(Car* car);
     ~SpeedBooster();
 };
 
