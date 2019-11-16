@@ -30,18 +30,14 @@ function getEvent(angle, pos_x, pos_y)
 
     local action = ""
     angle = 0
-    if (angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) then
-        return action_vertical(pos_x, pos_y) -- pos_y -1
+    if ((angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) or
+            (angle >= MIN_ANGLE_DOWN and angle <= MAX_ANGLE_LEFT)) then
+        return action_vertical(pos_x, pos_y) -- pos_y -1 /+1
     end
-    if (angle >= MIN_ANGLE_LEFT and angle <= MAX_ANGLE_LEFT) then
-        return action_horizontal(pos_x, pos_y) -- pos_x -1
-    end
-    if (angle >= MIN_ANGLE_DOWN and angle <= MAX_ANGLE_LEFT) then
-        return action_vertical(pos_x, pos_y) --pos_y +1
-    end
-    if ((angle >= MIN_ANGLE_RIGHT1 and angle <= MAX_ANGLE_RIGHT1) or
-        (angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT2)) then
-        return action_horizontal(pos_x, pos_y) --pos_x +1
+    if ((angle >= MIN_ANGLE_LEFT and angle <= MAX_ANGLE_LEFT) or
+            ((angle >= MIN_ANGLE_RIGHT1 and angle <= MAX_ANGLE_RIGHT1) or
+                    (angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT2))) then
+        return action_horizontal(pos_x, pos_y) -- pos_x -1 / +1
     end
     return action
 end

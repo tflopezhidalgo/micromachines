@@ -1,11 +1,8 @@
 #include "ProtectedModel.h"
-#include "Entity.h"
-#include "Camera.h"
 #include "Car.h"
 #include <vector>
 #include <mutex>
 #include "Window.h"
-#include "TileMap.h"
 #include "ThrowableFactory.h"
 #include <string>
 #include "Identifiers.h"

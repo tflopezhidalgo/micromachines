@@ -1,8 +1,9 @@
 #include "Camera.h"
 #include "Entity.h"
 #include "Window.h"
+#include "../common/Constants.h"
 
-#define MtoP 3     // Relación metros a píxeles
+//#define MtoP 3     // Relación metros a píxeles
 
 Camera::Camera(Window& w) :
     window(w) {

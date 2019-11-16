@@ -11,3 +11,8 @@ src/server/Box2D-cmake.cbp
 /test/
 src/client/test.cpp
 src/server/plugins-management/plugins/cmake-build-debug
+CMakeCache.txt
+Client_autogen/
+Server_autogen/
+libmodel.a
+model_autogen/
