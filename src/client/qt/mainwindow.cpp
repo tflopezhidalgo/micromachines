@@ -1,4 +1,7 @@
+#include <QMessageBox>
+#include "Constants.h"
 #include "mainwindow.h"
+#include <QDialog>
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include <iostream>
@@ -6,19 +9,16 @@
 #include "Proxy.h"
 #include "Socket.h"
 
-MainWindow::MainWindow(Proxy* proxy){
-    this->proxy = proxy;
-    MainWindow();
-}
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QObject::connect(this, &MainWindow::waitStatus, this, &MainWindow::handleResponseStatus);
+    this->proxy = NULL;
+    this->luaPlayer = false;
     ui->stackedWidget->setCurrentIndex(0);
-    QPixmap img("/home/tomas/micromachines/header.jpg");
+    QPixmap img("../src/client/qt/header.jpg");
     ui->label->setPixmap(img);
 }
 
@@ -28,87 +28,109 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_create_match_button_clicked()
+void MainWindow::on_create_match_button_clicked() // Crear partida
 {
     std::string hostName = ui->hostNameField->text().toStdString();
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
-    Socket socket(hostName.c_str(), serviceName.c_str());
+    try {
+        Socket socket(hostName.c_str(), serviceName.c_str());
+        proxy = new Proxy(std::move(socket));
+        ui->stackedWidget->setCurrentIndex(2);
 
-    proxy = new Proxy(std::move(socket));
-    ui->stackedWidget->setCurrentIndex(2);
-}
-
-void MainWindow::on_join_match_button_clicked()
-{
-    std::string hostName = ui->hostNameField->text().toStdString();
-    std::string serviceName = ui->serviceNameField->text().toStdString();
-
-    Socket socket(hostName.c_str(), serviceName.c_str());
-
-    proxy = new Proxy(std::move(socket));
-
-    nlohmann::json msg;
-    msg["mode"] = "join";
-    std::string msgDump = msg.dump();
-    proxy->sendMessage(msgDump);
-    ui->stackedWidget->setCurrentIndex(1);
-
-    QStringList columnas;
-    columnas << "Nombre partida" << "Cantidad de jugadores" << "Mapa" << "Cantidad de vueltas";
-    ui->tableWidget->setColumnCount(4);
-    ui->tableWidget->setHorizontalHeaderLabels(columnas);
-
-    nlohmann::json j = nlohmann::json::parse(proxy->receiveMessage());
-
-    std::cout << "Se recibe " << j.dump() << std::endl;
-
-    int row = 0;
-
-    for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
-        std::string matchName = it.key();
-        std::string mapName = it.value()[0].get<std::string>();
-        int playersAmount = it.value()[1].get<int>();
-        int laps = it.value()[2].get<int>();
-
-        ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-
-        QTableWidgetItem* matchItem = new QTableWidgetItem(QString::fromStdString(matchName));
-        matchItem->setFlags(matchItem->flags() & ~Qt::ItemIsEditable);
-        ui->tableWidget->setItem(row, 0, matchItem);
-
-        QTableWidgetItem* playersAmountItem = new QTableWidgetItem(QString::number(playersAmount));
-        playersAmountItem->setFlags(playersAmountItem->flags() & ~Qt::ItemIsEditable);
-        ui->tableWidget->setItem(row, 1, playersAmountItem);
-
-        QTableWidgetItem* mapItem = new QTableWidgetItem(QString::fromStdString(mapName));
-        mapItem->setFlags(mapItem->flags() & ~Qt::ItemIsEditable);
-        ui->tableWidget->setItem(row, 2, mapItem);
-
-        QTableWidgetItem* lapsItem = new QTableWidgetItem(QString::number(laps));
-        lapsItem->setFlags(lapsItem->flags() & ~Qt::ItemIsEditable);
-        ui->tableWidget->setItem(row++, 3, lapsItem);
+    } catch (std::runtime_error &e){
+        QMessageBox msg(this);
+        msg.setText(e.what());
+        std::cout << "ERROR - Se produjo error en linea " << __LINE__ << std::endl;
+        msg.exec();
     }
 }
 
-
-void MainWindow::on_tableWidget_cellClicked(int row, int column)
+void MainWindow::on_join_match_button_clicked() // Unirse a partida
 {
+    std::string hostName = ui->hostNameField->text().toStdString();
+    std::string serviceName = ui->serviceNameField->text().toStdString();
+
+    try {
+        Socket socket(hostName.c_str(), serviceName.c_str());
+
+        proxy = new Proxy(std::move(socket));
+
+        nlohmann::json msg;
+        msg["mode"] = "join";
+        std::string msgDump = msg.dump();
+        proxy->sendMessage(msgDump);            // Envio mensaje de join
+        ui->stackedWidget->setCurrentIndex(1);
+
+        nlohmann::json j = nlohmann::json::parse(proxy->receiveMessage());  // Recibo información de partidas
+
+        std::cout << "Se recibe " << j.dump() << std::endl;
+
+        int row = 0;
+
+        if (j.empty()){
+            QMessageBox m;
+            m.setText("No hay partidas disponibles para unirse");
+            m.exec();
+            ui->stackedWidget->setCurrentIndex(0);
+            return;
+        }
+
+        for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
+            std::string matchName = it.key();
+            std::string mapName = it.value()[0].get<std::string>();
+            int playersAmount = it.value()[1].get<int>();
+            int laps = it.value()[2].get<int>();
+
+            ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+
+            QTableWidgetItem* matchItem = new QTableWidgetItem(QString::fromStdString(matchName));
+            matchItem->setFlags(matchItem->flags() & ~Qt::ItemIsEditable);
+            ui->tableWidget->setItem(row, 0, matchItem);
+
+            QTableWidgetItem* playersAmountItem = new QTableWidgetItem(QString::number(playersAmount));
+            playersAmountItem->setFlags(playersAmountItem->flags() & ~Qt::ItemIsEditable);
+            ui->tableWidget->setItem(row, 1, playersAmountItem);
+
+            QTableWidgetItem* mapItem = new QTableWidgetItem(QString::fromStdString(mapName));
+            mapItem->setFlags(mapItem->flags() & ~Qt::ItemIsEditable);
+            ui->tableWidget->setItem(row, 2, mapItem);
+
+            QTableWidgetItem* lapsItem = new QTableWidgetItem(QString::number(laps));
+            lapsItem->setFlags(lapsItem->flags() & ~Qt::ItemIsEditable);
+            ui->tableWidget->setItem(row++, 3, lapsItem);
+        }
+    } catch (std::runtime_error &e) {
+        QMessageBox m(this);
+        m.setText(e.what());
+        std::cout << "ERROR - Se produjo " << e.what() << " en " << __LINE__ << std::endl;
+        m.exec();
+    }
 
 }
 
 void MainWindow::on_tableWidget_cellDoubleClicked(int row, int column)
 {
-    ui->tableWidget->selectRow(row);
-    nlohmann::json msg;
-    msg["clientId"] = ui->playerNameField->text().toStdString();
-    PlayerID = msg["clientId"];
-    msg["matchName"] = ui->tableWidget->item(row, 0)->text().toStdString();
-    std::string dumped = msg.dump();
-    this->proxy->sendMessage(dumped);
-    std::cout << "Se envia " << dumped << std::endl;
+    try {
+        ui->tableWidget->selectRow(row);
+        nlohmann::json msg;
+        msg["clientId"] = ui->playerNameField->text().toStdString();
+        if (ui->playerNameField->text().isEmpty())
+            throw std::runtime_error("Campo nombre está vacío");
+        PlayerID = msg["clientId"];
+        msg["matchName"] = ui->tableWidget->item(row, 0)->text().toStdString();
+        std::string dumped = msg.dump();
+        this->proxy->sendMessage(dumped);
+        std::cout << "LOG - Se envia " << dumped << std::endl;
 
-    close();
+        ui->stackedWidget->setCurrentWidget(ui->waitingPlayersScreen);
+    } catch(std::runtime_error &e) {
+        QMessageBox m(this);
+        m.setText(e.what());
+        std::cout << "ERROR - Se produjo " << e.what() << " en " << __LINE__ << std::endl;
+        m.exec();
+    }
+
 }
 
 Proxy* MainWindow::getProxy() {
@@ -119,46 +141,107 @@ std::string MainWindow::getPlayerID(){
     return this->PlayerID;
 }
 
-
-void MainWindow::on_buttonBox_accepted()
-{
-    nlohmann::json msg;
-    msg["mode"] = "create";
-    msg["matchName"] = ui->matchNameField->text().toStdString();
-    //msg["map"] = ui->comboBox->currentText().toStdString();
-    msg["map"] = "simple";
-    msg["clientId"] = ui->playerNameField_2->text().toStdString();
-    this->PlayerID = msg["clientId"];
-    msg["playersAmount"] = ui->spinBox->text().toInt();
-    msg["raceLaps"] = ui->spinBox_2->text().toInt();
-    std::string serializedMsg = msg.dump();
-
-    std::cout << "Se envia: " << msg.dump() << std::endl;
-
-    this->proxy->sendMessage(serializedMsg);
-    ui->stackedWidget->setCurrentIndex(3);
-
-    nlohmann::json j = nlohmann::json::parse(this->proxy->receiveMessage());
-    std::cout << "Se recibe " << j.dump() << " .. cerrando GUI\n";
-    close();
+bool MainWindow::isLuaPlayer() {
+    return luaPlayer;
 }
 
-void MainWindow::on_buttonBox_rejected()
+
+void MainWindow::on_buttonBox_accepted() // Accept en crear partida
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    try {
+        nlohmann::json msg;
+        msg["mode"] = "create";
+        msg["matchName"] = ui->matchNameField->text().toStdString();
+        msg["map"] = ui->comboBox->currentText().toStdString();
+        msg["clientId"] = ui->playerNameField_2->text().toStdString();
+        this->PlayerID = msg["clientId"];
+        msg["playersAmount"] = ui->spinBox->text().toInt();
+        msg["raceLaps"] = ui->spinBox_2->text().toInt();
+        std::string serializedMsg = msg.dump();
+
+        this->proxy->sendMessage(serializedMsg);
+        std::cout << "LOG - Se envia: " << msg.dump() << std::endl;
+
+        emit waitStatus();
+    } catch (std::runtime_error &e) {
+        QMessageBox m;
+        m.setText(e.what());
+        std::cout << "ERROR - Se produjo " << e.what() << " en " << __LINE__ << std::endl;
+        m.exec();
+    }
 }
 
-void MainWindow::on_buttonBox_2_accepted()
-{
-
-}
-
-void MainWindow::on_buttonBox_2_rejected()
+void MainWindow::on_buttonBox_rejected() // Cancel en crear partida
 {
     ui->stackedWidget->setCurrentIndex(0);
+    proxy->stop();
 }
 
-void MainWindow::on_okCancelButtons_accepted()
+void MainWindow::on_okCancelButtons_accepted() // Accept en partidas disponibles
 {
-    close();
+    if (this->ui->tableWidget->selectedRanges().empty()){
+        QMessageBox m;
+        m.setText("Debe seleccionar alguna fila");
+        m.exec();
+        return;
+    }
+    try {
+        nlohmann::json msg;
+        int row = this->ui->tableWidget->currentRow();
+        ui->tableWidget->selectRow(row);
+        msg["clientId"] = ui->playerNameField->text().toStdString();
+        if (ui->playerNameField->text().isEmpty())
+            throw std::runtime_error("Campo nombre está vacío");
+        PlayerID = msg["clientId"];
+        msg["matchName"] = ui->tableWidget->item(row, 0)->text().toStdString();
+        std::string dumped = msg.dump();
+        this->proxy->sendMessage(dumped);
+        std::cout << "LOG - Se envia " << dumped << std::endl;
+        emit waitStatus();
+
+    } catch(std::runtime_error &e){
+        QMessageBox q;
+        q.setText(e.what());
+        std::cout << "ERROR - Se produjo " << e.what() << " en " << __LINE__ << std::endl;
+        q.exec();
+    }
+
 }
+
+void MainWindow::handleResponseStatus(){
+    nlohmann::json j = nlohmann::json::parse(proxy->receiveMessage());
+    std::cout << "LOG - " << j.dump() << std::endl;
+    QMessageBox m;
+    switch(j["status"].get<int>()) {
+        case VALID:
+            this->ui->stackedWidget->setCurrentWidget(ui->waitingPlayersScreen);
+            break;
+        case MATCH_HAS_STARTED:
+            m.setText("La partida está en progreso");
+            m.exec();
+            break;
+        case MATCH_EQUAL_NAMED:
+            m.setText("Ya existe una partida con ese nombre");
+            m.exec();
+            break;
+        case CLIENT_EQUAL_NAMED:
+            m.setText("Ya existe un cliente con ese nombre");
+            m.exec();
+            break;
+    }
+}
+
+void MainWindow::on_okCancelButtons_rejected() // Cancel en partidas disponibles
+{
+    ui->stackedWidget->setCurrentIndex(0);
+    proxy->stop();
+}
+
+void MainWindow::on_playerSelectComboBox_currentIndexChanged(int index) // Selecciona jugador inicial
+{
+    if (index == 0)
+        this->luaPlayer = false;
+    else
+        this->luaPlayer = true;
+}
+
