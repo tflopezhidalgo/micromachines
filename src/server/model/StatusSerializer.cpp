@@ -38,6 +38,5 @@ std::string StatusSerializer::serialize(RaceJudge& raceJudge,
 
     data["carsArrivalOrder"] = raceJudge.getCarsArrivalOrder();
 
-    std::string dumpedData = data.dump();
-    return std::move(dumpedData);
+    return std::move(data.dump());
 }

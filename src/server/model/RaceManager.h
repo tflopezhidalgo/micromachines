@@ -13,7 +13,7 @@
 #include "Checkpoint.h"
 #include "Client.h"
 #include "World.h"
-#include "RaceStageBuilder.h"
+#include "StageBuilder.h"
 #include "EntitiesManager.h"
 #include "TimedEvent.h"
 #include "../plugins-management/PluginsManager.h"
@@ -22,7 +22,7 @@ class RaceManager {
 private:
     std::map<std::string,float> &config;
     std::vector<TimedEvent> timedEvents;
-    RaceStageBuilder stageBuilder;
+    StageBuilder stageBuilder;
     World world;
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
@@ -43,6 +43,7 @@ private:
     void updateCars(std::vector<Event> &events);
     
 public:
+
     RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps);
 
     void addPlayer(std::string& nickname);
@@ -52,6 +53,8 @@ public:
     void updateModel(std::vector<Event> &events);
 
     std::string getRaceStatus();
+
+    std::string getMapData();
 
     ~RaceManager();
 };

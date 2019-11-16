@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <string>
 #include <nlohmann/json.hpp>
-#include <RaceStageBuilder.h>
+#include <StageBuilder.h>
 #include "Thread.h"
 #include "Client.h"
 #include "../model/Car.h"
@@ -20,6 +20,7 @@
 
 class Match : public Thread {
 private:
+    
     RaceManager raceManager;
     std::atomic<bool> dead;
     std::atomic<bool> matchStarted;
@@ -29,20 +30,33 @@ private:
     long timeStep;
     ProtectedQueue<Event> eventsQueue;
     std::unordered_map<std::string, Client*> clients;
+    
+    void sendMatchDataToClients();
     void startCountdown();
     void startClientsThread();
     void sendMessageToClients(std::string& message);
+    
 public:
+    
     Match(std::string& mapName, int playersAmount,
             int raceLaps, std::map<std::string, float> &config);
+    
     void showIfAvailable(nlohmann::json& availableMatches, std::string& matchName);
+    
     void addClient(std::string nickname, Client* client);
+    
     bool hasStarted();
+    
     bool finished();
+    
     bool nicknameIsAvailable(std::string& nickname);
+    
     ProtectedQueue<Event>& getEventsQueue();
+    
     void run() override;
+    
     void stop();
+    
     ~Match();
 
 };

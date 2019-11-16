@@ -117,6 +117,10 @@ std::string RaceManager::getRaceStatus() {
     return std::move(StatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
 }
 
+std::string RaceManager::getMapData() {
+    return std::move(stageBuilder.getMapData());
+}
+
 RaceManager::~RaceManager() {
 
     pluginsManager->stop();

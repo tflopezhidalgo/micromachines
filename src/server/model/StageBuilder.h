@@ -2,8 +2,8 @@
 // Created by leobellaera on 29/10/19.
 //
 
-#ifndef MICROMACHINES_RACESTAGEBUILDER_H
-#define MICROMACHINES_RACESTAGEBUILDER_H
+#ifndef MICROMACHINES_STAGEBUILDER_H
+#define MICROMACHINES_STAGEBUILDER_H
 
 
 #include <fstream>
@@ -14,7 +14,7 @@
 #include "Grass.h"
 #include "World.h"
 
-class RaceStageBuilder {
+class StageBuilder {
 private:
     std::ifstream file;
     std::map<std::string, float>& config;
@@ -24,7 +24,7 @@ private:
     std::vector<std::vector<float>> startingPositions;
     int startingPosIndex;
 public:
-    explicit RaceStageBuilder(std::string& mapName, std::map<std::string, float>& config);
+    explicit StageBuilder(std::string& mapName, std::map<std::string, float>& config);
 
     World buildWorld(std::vector<TimedEvent>& timedEvents);
 
@@ -35,7 +35,9 @@ public:
 
     std::vector<float>& getStartingPosition();
 
-    ~RaceStageBuilder();
+    std::string getMapData();
+
+    ~StageBuilder();
 };
 
-#endif //MICROMACHINES_RACESTAGEBUILDER_H
+#endif //MICROMACHINES_STAGEBUILDER_H

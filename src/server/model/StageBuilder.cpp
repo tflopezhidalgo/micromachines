@@ -4,7 +4,7 @@
 
 #include <nlohmann/json.hpp>
 #include "FileReadingException.h"
-#include "RaceStageBuilder.h"
+#include "StageBuilder.h"
 #include "Constants.h"
 
 #define EXTENSION ".map"
@@ -13,7 +13,7 @@
 #define OPENING_ERROR_MSG "An error occurred while\
  trying to open the map data file.\n"
 
-RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, float>& config) :
+StageBuilder::StageBuilder(std::string &mapName, std::map<std::string, float>& config) :
     config(config),
     startingPosIndex(0) {
     std::string mapPath(mapName);
@@ -29,14 +29,14 @@ RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, f
     startingPositions = map["carsStartingPositions"].get<std::vector<std::vector<float>>>();
 }
 
-World RaceStageBuilder::buildWorld(std::vector<TimedEvent>& timedEvents) {
+World StageBuilder::buildWorld(std::vector<TimedEvent>& timedEvents) {
     World world(height, width, config, timedEvents);
     return std::move(world);
 }
 
-void RaceStageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
-        std::vector<Grass*> &grassTiles, std::vector<Checkpoint*>& checkpoints,
-        RaceJudge& raceJudge) {
+void StageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
+                                  std::vector<Grass*> &grassTiles, std::vector<Checkpoint*>& checkpoints,
+                                  RaceJudge& raceJudge) {
 
     int idx = 0;
     std::vector<int> checkpointsOrder = map["checkpointsOrder"].get<std::vector<int>>();
@@ -87,7 +87,7 @@ void RaceStageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
     }
 }
 
-void RaceStageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grandstands) {
+void StageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grandstands) {
     for (auto& grandstandData : map["grandstandsData"]) {
         float x_pos = grandstandData[0].get<float>();
         float y_pos = grandstandData[1].get<float>();
@@ -103,9 +103,13 @@ void RaceStageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& gr
 }
 
 //returns a starting position available for a car.
-std::vector<float>& RaceStageBuilder::getStartingPosition() {
+std::vector<float>& StageBuilder::getStartingPosition() {
     startingPosIndex++;
     return startingPositions[startingPosIndex - 1];
 }
 
-RaceStageBuilder::~RaceStageBuilder() {}
+std::string StageBuilder::getMapData() {
+    return std::move(map.dump());
+}
+
+StageBuilder::~StageBuilder() {}
