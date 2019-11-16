@@ -41,10 +41,10 @@
 #define GRANDSTAND_HEIGHT 50
 #define MUD_WIDTH 30
 #define MUD_HEIGHT 30
-#define PROJECTILE_RADIUS 2
+#define PROJECTILE_RADIUS 10
 
 //Car constants
-#define MAX_DISTANCE_TO_TRACK 100
+#define MAX_DISTANCE_TO_TRACK 200
 
 
 //Config Keys
@@ -56,7 +56,7 @@
 #define BACK_MAX_LAT_IMPULSE_KEY "backTireMaxLateralImpulse"
 #define FPS_KEY "framesPerSecond"
 #define HEALTH_BOOST_KEY "healthBoost"
-#define OIL_GRIP_KEY "oilGrip"
+#define OIL_GRIP_DECREMENT_KEY "oilGripDecrement"
 #define TRACK_FRICTION_KEY "trackFriction"
 #define GRASS_FRICTION_KEY "grassFriction"
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"

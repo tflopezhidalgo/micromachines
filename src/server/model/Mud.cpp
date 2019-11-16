@@ -12,13 +12,13 @@ void Mud::beginCollision(Entity* entity) {
     if (entity->getIdentifier() == CAR && !isDead()) {
         Car* car = dynamic_cast<Car*>(entity);
         reduceVision(car);
-        die();
     }
 }
 
 void Mud::reduceVision(Car* car) {
     car->reduceVision();
     timedEvents.emplace_back(TimedEvent(car, &Car::recoverTotalVision, 3));
+    die();
 }
 
 void Mud::endCollision(Entity* entity) {}

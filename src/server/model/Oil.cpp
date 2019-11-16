@@ -4,17 +4,22 @@
 
 #include "Oil.h"
 
-Oil::Oil(b2Body *body, float grip, std::vector<TimedEvent>& timedEvents) :
+Oil::Oil(b2Body *body, float gripDecrement, std::vector<TimedEvent>& timedEvents) :
         Entity(OIL, body),
         timedEvents(timedEvents),
-        grip(grip) {}
+        gripDecrement(gripDecrement) {}
 
 void Oil::beginCollision(Entity *entity) {
     if (entity->getIdentifier() == CAR && !isDead()) {
         Car* car = dynamic_cast<Car*>(entity);
-        //todo
-        die();
+        reduceGrip(car);
     }
+}
+
+void Oil::reduceGrip(Car* car) {
+    car->updateMaxLateralImpulse(gripDecrement);
+    timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxLateralImpulse, 15));
+    die();
 }
 
 void Oil::endCollision(Entity *entity) {}

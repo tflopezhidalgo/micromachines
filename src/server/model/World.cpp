@@ -105,7 +105,7 @@ SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
 
 Oil* World::addOil(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, OIL_RADIUS, false, true);
-    auto oil = new Oil(body, config.find(OIL_GRIP_KEY)->second, timedEvents);
+    auto oil = new Oil(body, config.find(OIL_GRIP_DECREMENT_KEY)->second, timedEvents);
     body->SetUserData(oil);
     return oil;
 }

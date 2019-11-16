@@ -10,12 +10,13 @@
 
 class Oil : public Entity {
 private:
-    float grip;
+    float gripDecrement;
     std::vector<TimedEvent>& timedEvents;
 public:
-    Oil(b2Body *body, float grip, std::vector<TimedEvent>& timedEvents);
+    Oil(b2Body *body, float gripDecrement, std::vector<TimedEvent>& timedEvents);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
+    void reduceGrip(Car* car);
     ~Oil();
 };
 

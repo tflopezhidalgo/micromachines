@@ -54,6 +54,12 @@ public:
 
     void updateMaxForwardSpeed(float difference);
 
+    void resetMaxForwardSpeed();
+
+    void updateMaxLateralImpulse(float difference);
+
+    void resetMaxLateralImpulse();
+
     int getHealth();
 
     bool isDead() override;
@@ -71,8 +77,6 @@ public:
     void setLastPosOnTrack(b2Vec2 position);
 
     void setRespawnCoordinates(b2Vec2 position, float angle);
-
-    void resetMaxForwardSpeed();
 
     std::string& getId();
 

@@ -34,8 +34,8 @@ Car::Car(std::string id, std::vector<TimedEvent>& timedEvents, b2Body* body,
         reducedVision(false) {}
 
 void Car::updateFriction() {
-    for (size_t i = 0; i < tires.size(); i++) {
-        tires[i]->updateFriction();
+    for (auto & tire : tires) {
+        tire->updateFriction();
     }
 }
 
@@ -45,9 +45,9 @@ void Car::updateMove(std::vector<char>& actions) {
     }
 
     if (actualSurface == GRASS && (getPosition() - lastPosOnTrack).Length() > MAX_DISTANCE_TO_TRACK) {
-        updatePosition();
         receiveDamage(100);
-        timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
+        timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
+        timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
         return;
     }
     
@@ -55,7 +55,7 @@ void Car::updateMove(std::vector<char>& actions) {
         tire->updateDrive(actions);
     }
 
-    float lockAngle = 40 * DEGTORAD;
+    float lockAngle = 30 * DEGTORAD;
     float turnSpeedPerSec = 320 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
 
@@ -102,27 +102,22 @@ void Car::beginCollision(Entity* entity) {
     if (identifier == HEALTHBOOSTER) {
         auto healthBooster = dynamic_cast<HealthBooster*>(entity);
         healthBooster->heal(this);
-        healthBooster->die();
 
     } else if (identifier == STONE) {
         auto stone = dynamic_cast<Stone *>(entity);
         stone->damageCar(this);
-        stone->die();
 
     } else if (identifier == SPEEDBOOSTER) {
         auto speedBooster = dynamic_cast<SpeedBooster*>(entity);
         speedBooster->boostMaxSpeed(this);
-        speedBooster->die();
 
     } else if (identifier == OIL) {
         auto oil = dynamic_cast<Oil*>(entity);
-        //todo
-        oil->die();
+        oil->reduceGrip(this);
 
     } else if (identifier == MUD) {
         auto mud = dynamic_cast<Mud*>(entity);
         mud->reduceVision(this);
-        mud->die();
 
     } else if (identifier == CAR) {
         auto car = dynamic_cast<Car*>(entity);
@@ -131,11 +126,11 @@ void Car::beginCollision(Entity* entity) {
 
         if (car->isDead()) {
             timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 2));
-            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 3));
+            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 2));
         }
         if (this->isDead()) {
             timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
-            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
+            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
         }
 
     } else if (identifier == TRACK) {
@@ -225,6 +220,18 @@ void Car::updateMaxForwardSpeed(float difference) {
 void Car::resetMaxForwardSpeed() {
     for (auto tire : tires) {
         tire->resetMaxForwardSpeed();
+    }
+}
+
+void Car::updateMaxLateralImpulse(float difference) {
+    for (auto tire : tires) {
+        tire->updateMaxLateralImpulse(difference);
+    }
+}
+
+void Car::resetMaxLateralImpulse() {
+    for (auto tire : tires) {
+        tire->resetMaxLateralImpulse();
     }
 }
 
