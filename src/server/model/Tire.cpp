@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 18/10/19.
-//
-
 #include "Tire.h"
 #include "Constants.h"
 

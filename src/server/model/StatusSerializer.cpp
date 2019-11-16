@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 29/10/19.
-//
-
 #include "StatusSerializer.h"
 #include "Constants.h"
 

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 13/10/19.
-//
-
 #include "Health.h"
 
 Health::Health() :

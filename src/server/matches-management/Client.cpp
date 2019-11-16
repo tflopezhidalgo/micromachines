@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 25/10/19.
-//
-
 #include <SocketException.h>
 #include "Client.h"
 

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 28/10/19.
-//
-
 #include "ConfigMapBuilder.h"
 #include "FileReadingException.h"
 #include <sstream>

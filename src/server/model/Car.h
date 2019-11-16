@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 18/10/19.
-//
-
 #ifndef TESTING_CAR_H
 #define TESTING_CAR_H
 

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 13/10/19.
-//
-
 #include "LobbyClientReceptionist.h"
 #include "Constants.h"
 #include "Client.h"

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 6/11/19.
-//
-
 #include "Projectile.h"
 
 #define LOWER_SPEED_LIMIT 1.f

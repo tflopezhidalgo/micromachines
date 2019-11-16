@@ -1,7 +1,3 @@
-//
-// Created by eliana on 20/10/19.
-//
-
 #ifndef TESTING_STONE_H
 #define TESTING_STONE_H
 

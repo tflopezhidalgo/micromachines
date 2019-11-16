@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 13/10/19.
-//
-
 #ifndef MICROMACHINES_MATCHESADMINISTRATOR_H
 #define MICROMACHINES_MATCHESADMINISTRATOR_H
 

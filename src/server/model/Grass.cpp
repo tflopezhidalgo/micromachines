@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 10/11/19.
-//
-
 #include "Grass.h"
 
 Grass::Grass(b2Body* body, float friction) :

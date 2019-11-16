@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 24/10/19.
-//
-
 #ifndef TESTING_HEALTHBOOSTER_H
 #define TESTING_HEALTHBOOSTER_H
 

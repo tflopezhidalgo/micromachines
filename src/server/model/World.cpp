@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 22/10/19.
-//
-
 #include "World.h"
 #include "Constants.h"
 

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 29/10/19.
-//
-
 #ifndef MICROMACHINES_STAGEBUILDER_H
 #define MICROMACHINES_STAGEBUILDER_H
 

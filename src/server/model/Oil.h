@@ -1,7 +1,3 @@
-//
-// Created by eliana on 20/10/19.
-//
-
 #ifndef TESTING_OIL_H
 #define TESTING_OIL_H
 
