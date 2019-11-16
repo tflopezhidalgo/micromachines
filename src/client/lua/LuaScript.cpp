@@ -45,7 +45,16 @@ Event LuaScript::createEvent(const char* luaEvent) {
 
     std::cout << "action:" << action[0] << std::endl;
     v_event.push_back(action[0]);
-    if (action[0] != BACKWARD || action[0] != FORWARD) {
+    if (action[0] == RIGHT && action[0] != LEFT) {
+        count_turns++;
+        if (count_turns > 20) {
+            //v_event.push_back(BACKWARD);
+        } else {
+            //v_event.push_back(FORWARD);
+        }
+        if (count_turns > 40) {
+            count_turns = 0;
+        }
         v_event.push_back(FORWARD);
     }
     Event event(clientId, v_event);

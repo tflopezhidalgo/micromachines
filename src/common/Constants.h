@@ -2,6 +2,9 @@
 #ifndef MICROMACHINES_CONSTANTS_H
 #define MICROMACHINES_CONSTANTS_H
 
+// Client Macro
+#define MtoP 3     // Relación metros a píxeles
+
 
 //Sv constants
 #define BACKLOG 15

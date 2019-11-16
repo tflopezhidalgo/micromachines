@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 
     Proxy* proxy = w.getProxy();
 
-    Window main("Game", 900, 600);
+    Window main("Micromachines", 900, 600);
     //Window main("game");
 
     ProtectedQueue<Event> q;
@@ -37,8 +37,8 @@ int main(int argc, char* argv[]) {
 
     Receiver receiver(model, *proxy);
     Drawer drawer(main, model);
-    EventListener handler(w.getPlayerID(), q);
-    //LuaPlayer handler(q, model, w.getPlayerID());
+    //EventListener handler(w.getPlayerID(), q);
+    LuaPlayer handler(q, model, w.getPlayerID());
     Dispatcher dispatcher(q, *proxy);
 
     receiver.start();
