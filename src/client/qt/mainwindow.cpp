@@ -122,8 +122,8 @@ void MainWindow::on_tableWidget_cellDoubleClicked(int row, int column)
         std::string dumped = msg.dump();
         this->proxy->sendMessage(dumped);
         std::cout << "LOG - Se envia " << dumped << std::endl;
+        emit waitStatus();
 
-        ui->stackedWidget->setCurrentWidget(ui->waitingPlayersScreen);
     } catch(std::runtime_error &e) {
         QMessageBox m(this);
         m.setText(e.what());
