@@ -116,14 +116,14 @@ void Match::startCountdown() {
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     nlohmann::json set;
-    ready["message"] = 'S';
+    set["message"] = 'S';
     std::string setDump = set.dump();
     sendMessageToClients(setDump);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     nlohmann::json go;
-    ready["message"] = 'G';
+    go["message"] = 'G';
     std::string goDump = go.dump();
     sendMessageToClients(goDump);
 }
