@@ -4,6 +4,7 @@
 
 #include "EntitiesManager.h"
 #include "Constants.h"
+#include "Mud.h"
 
 EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
@@ -36,7 +37,8 @@ void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, 
         entities.emplace(entitiesCounter, oil);
 
     } else if (entityIdentifier == MUD) {
-        return;
+        Mud* mud = world.addMud(x_pos, y_pos);
+        entities.emplace(entitiesCounter, mud);
 
     } else if (entityIdentifier == STONE) {
         Stone* stone = world.addStone(x_pos, y_pos);
@@ -90,7 +92,8 @@ void EntitiesManager::updateProjectilesStatus() {
                 entities.find(projectileId)->second = healthBooster;
 
             } else if (identifier == MUD) {
-                //todo
+                Mud* mud = world.addMud(pos.x, pos.y);
+                entities.find(projectileId)->second = mud;
 
             }
 

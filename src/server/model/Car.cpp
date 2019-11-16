@@ -12,6 +12,7 @@
 #include "Checkpoint.h"
 #include "Grass.h"
 #include "SpeedBooster.h"
+#include "Mud.h"
 
 #define DEGTORAD 0.017453292f
 
@@ -106,19 +107,22 @@ void Car::beginCollision(Entity* entity) {
     } else if (identifier == STONE) {
         auto stone = dynamic_cast<Stone *>(entity);
         stone->damageCar(this);
-        timedEvents.emplace_back(TimedEvent(this, &Car::resetMaxForwardSpeed, 10));
         stone->die();
 
     } else if (identifier == SPEEDBOOSTER) {
         auto speedBooster = dynamic_cast<SpeedBooster*>(entity);
         speedBooster->boostMaxSpeed(this);
-        timedEvents.emplace_back(TimedEvent(this, &Car::resetMaxForwardSpeed, 10));
         speedBooster->die();
 
     } else if (identifier == OIL) {
         auto oil = dynamic_cast<Oil*>(entity);
         //todo
         oil->die();
+
+    } else if (identifier == MUD) {
+        auto mud = dynamic_cast<Mud*>(entity);
+        mud->reduceVision(this);
+        mud->die();
 
     } else if (identifier == CAR) {
         auto car = dynamic_cast<Car*>(entity);
@@ -189,6 +193,14 @@ bool Car::isDead() {
 
 bool Car::hasReducedVision() {
     return reducedVision;
+}
+
+void Car::reduceVision() {
+    reducedVision = true;
+}
+
+void Car::recoverTotalVision() {
+    reducedVision = false;
 }
 
 void Car::updateSurface(int surface) {

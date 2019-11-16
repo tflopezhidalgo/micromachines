@@ -60,6 +60,10 @@ public:
 
     bool hasReducedVision();
 
+    void reduceVision();
+
+    void recoverTotalVision();
+
     void updateSurface(int surface);
     
     void updatePosition();

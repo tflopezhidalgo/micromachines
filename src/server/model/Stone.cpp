@@ -14,7 +14,6 @@ void Stone::beginCollision(Entity* entity) {
     if (entity->getIdentifier() == CAR && !isDead()) {
         Car* car = dynamic_cast<Car*>(entity);
         damageCar(car);
-        timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
         die();
     }
 }
@@ -22,6 +21,7 @@ void Stone::beginCollision(Entity* entity) {
 void Stone::damageCar(Car* car) {
     car->receiveDamage(damage);
     car->updateMaxForwardSpeed(speedDecrement);
+    timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
 }
 
 void Stone::endCollision(Entity *entity) {}

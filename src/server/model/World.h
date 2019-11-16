@@ -20,6 +20,7 @@
 #include "Identifiers.h"
 #include "Checkpoint.h"
 #include "TimedEvent.h"
+#include "Mud.h"
 
 class World {
 private:
@@ -39,7 +40,7 @@ private:
 
     b2Body* addFloorBody(b2Vec2 pos, b2Vec2 size);
 
-    b2Body* createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos, float angle) ;
+    b2Body* createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos);
 
     b2RevoluteJoint* joinTireToChassis(b2RevoluteJointDef* jointDef,
             b2Body* tireBody, b2Vec2& pos);
@@ -65,6 +66,8 @@ public:
     SpeedBooster* addSpeedBooster(float x_pos, float y_pos);
 
     Oil* addOil(float x_pos, float y_pos);
+
+    Mud* addMud(float x_pos, float y_pos);
 
     Track* addTrack(float x_pos, float y_pos, int floorId, float friction);
 

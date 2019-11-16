@@ -37,6 +37,8 @@
 #define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
+#define MUD_WIDTH 30
+#define MUD_HEIGHT 30
 #define PROJECTILE_RADIUS 2
 
 //Car constants

@@ -34,6 +34,7 @@ void RaceManager::addPlayer(std::string& nickname) {
             startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX]);
     cars.emplace(nickname, car);
     raceJudge.addCar(nickname);
+    entitiesManager.addEntity(MUD, 340.f, 0.f);
 }
 
 bool RaceManager::raceFinished() {

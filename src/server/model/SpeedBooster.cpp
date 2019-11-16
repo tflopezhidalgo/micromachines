@@ -13,7 +13,6 @@ void SpeedBooster::beginCollision(Entity *entity) {
     if (entity->getIdentifier() == CAR && !isDead()) {
         auto car = dynamic_cast<Car*>(entity);
         boostMaxSpeed(car);
-        timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
         die();
     }
 }
@@ -22,6 +21,7 @@ void SpeedBooster::endCollision(Entity *entity) {}
 
 void SpeedBooster::boostMaxSpeed(Car* car) {
     car->updateMaxForwardSpeed(speedBoost);
+    timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
 }
 
 SpeedBooster::~SpeedBooster() {}
