@@ -12,6 +12,9 @@ Receiver::Receiver(ProtectedModel& model,
 void Receiver::run() {
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
+
+        //std::cout << "Se recibe " << j.dump() << std::endl;
+
         for (auto& car : j["carsData"]) {
             std::string key = car[0].get<std::string>();
             int x = car[1].get<int>();

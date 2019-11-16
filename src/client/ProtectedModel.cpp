@@ -34,7 +34,7 @@ void ProtectedModel::updateCar(std::string& id,
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
     std::unique_lock<std::mutex> lck(m);
 
-    if (objects.count(id) == 0) {
+    if (objects[id] == NULL) {
         ThrowableFactory factory(this->main);
         this->objects[id] = factory.generateThrowable(type);
     }
