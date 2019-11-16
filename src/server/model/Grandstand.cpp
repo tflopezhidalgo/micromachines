@@ -39,7 +39,7 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
 
         float randLinearImpulse = MIN_LINEAR_IMPULSE + static_cast<float>(rand()) /
                 (static_cast<float>(float(RAND_MAX)/(MAX_LINEAR_IMPULSE - MIN_LINEAR_IMPULSE)));
-        b2Vec2 linearImpulse = {0,3}; //todo apply impulse
+        b2Vec2 linearImpulse = {0,500}; //todo apply impulse
 
         entitiesManager.addProjectile(entityIdentifier, xPos, yPos, linearImpulse);
     }

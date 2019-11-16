@@ -56,14 +56,14 @@ void Tire::updateDrive(std::vector<char>& actions) {
     }
 
     //find current speed in forward direction
-    b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
-    float currentSpeed = b2Dot( getForwardVelocity(), currentForwardNormal );
+    b2Vec2 currentForwardNormal = body->GetWorldVector(b2Vec2(0,1));
+    float currentSpeed = b2Dot(getForwardVelocity(), currentForwardNormal);
 
     //apply necessary force
     float force = 0;
-    if ( desiredSpeed > currentSpeed )
+    if (desiredSpeed > currentSpeed)
         force = maxDriveForce;
-    else if ( desiredSpeed < currentSpeed )
+    else if (desiredSpeed < currentSpeed)
         force = -maxDriveForce;
     else
         return;

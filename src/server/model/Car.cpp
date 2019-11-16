@@ -27,7 +27,9 @@ Car::Car(std::string id, std::vector<TimedEvent>& timedEvents, b2Body* body,
         lastPosOnTrack(startingPosition),
         respawnPosition(startingPosition),
         respawnAngle(0),
-        reducedVision(false) {}
+        reducedVision(false),
+        forwardSpeedBoosted(false),
+        lateralImpulseBoosted(false) {}
 
 void Car::updateFriction() {
     for (auto & tire : tires) {
@@ -208,6 +210,10 @@ void Car::updatePosition() {
 }
 
 void Car::updateMaxForwardSpeed(float difference) {
+    if (forwardSpeedBoosted) {
+        return;
+    }
+    forwardSpeedBoosted = true;
     for (auto tire : tires) {
         tire->updateMaxForwardSpeed(difference);
     }
@@ -217,9 +223,14 @@ void Car::resetMaxForwardSpeed() {
     for (auto tire : tires) {
         tire->resetMaxForwardSpeed();
     }
+    forwardSpeedBoosted = false;
 }
 
 void Car::updateMaxLateralImpulse(float difference) {
+    if (lateralImpulseBoosted) {
+        return;
+    }
+    lateralImpulseBoosted = true;
     for (auto tire : tires) {
         tire->updateMaxLateralImpulse(difference);
     }
@@ -229,6 +240,7 @@ void Car::resetMaxLateralImpulse() {
     for (auto tire : tires) {
         tire->resetMaxLateralImpulse();
     }
+    lateralImpulseBoosted = false;
 }
 
 Car::~Car() {
