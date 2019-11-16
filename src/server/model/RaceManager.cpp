@@ -42,7 +42,7 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
 
-    //activateGrandstands();
+    activateGrandstands();
 
     updateTimedEvents();
 
