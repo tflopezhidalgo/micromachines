@@ -24,7 +24,7 @@ private:
     std::vector<std::vector<float>> startingPositions;
     int startingPosIndex;
 public:
-    explicit StageBuilder(std::string& mapName, std::map<std::string, float>& config);
+    StageBuilder(std::string& mapName, std::map<std::string, float>& config);
 
     World buildWorld(std::vector<TimedEvent>& timedEvents);
 
