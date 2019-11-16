@@ -51,7 +51,6 @@ void Match::run() {
         raceManager.updateModel(events);
 
         if (raceManager.raceFinished()) {
-            //todo send finish msg and return
             dead = true;
         }
 

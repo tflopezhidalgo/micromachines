@@ -41,8 +41,6 @@ void Tire::updateFriction() {
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -actualFriction * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
-
-    //todo drifting
 }
 
 void Tire::updateDrive(std::vector<char>& actions) {
@@ -104,6 +102,5 @@ void Tire::setTransform(b2Vec2 position, float angle) {
 }
 
 Tire::~Tire() {
-    //todo if tire is a entity in a future, delete this
     body->GetWorld()->DestroyBody(body);
 }
