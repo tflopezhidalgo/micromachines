@@ -36,7 +36,7 @@ void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, 
         entities.emplace(entitiesCounter, oil);
 
     } else if (entityIdentifier == MUD) {
-        //todo
+        return;
 
     } else if (entityIdentifier == STONE) {
         Stone* stone = world.addStone(x_pos, y_pos);
@@ -45,6 +45,7 @@ void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, 
     }
 
     entitiesCounter++;
+
 }
 
 void EntitiesManager::deleteDeadEntities() {

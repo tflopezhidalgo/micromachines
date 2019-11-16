@@ -10,7 +10,8 @@
 #define Y_POS_IDX 1
 #define ANGLE_IDX 2
 
-#define TIME_ELAPSE_PLUGINS 5
+#define TIME_ELAPSE_PLUGINS 30
+#define TIME_ELAPSE_GRANDSTANDS 15
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     config(config),
@@ -44,9 +45,7 @@ void RaceManager::updateModel(std::vector<Event> &events) {
     entitiesManager.updateProjectilesStatus();
     entitiesManager.updateProjectilesFriction();
 
-    for (auto & grandstand : grandstands) {
-        grandstand->throwProjectiles(entitiesManager);
-    }
+    //activateGrandstands();
 
     updateTimedEvents();
 
@@ -73,6 +72,26 @@ void RaceManager::updateCars(std::vector<Event> &events) {
         if (updatedCars.count(car.first) == 0) {
             car.second->updateMove(nullAction);
         }
+    }
+}
+
+void RaceManager::activateGrandstands() {
+    auto end = std::chrono::system_clock::now();
+    int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
+            (end-start).count();
+
+    if (elapsed_seconds > TIME_ELAPSE_GRANDSTANDS) {
+
+        if (!grandstands.empty()) {
+
+            int index = rand() % grandstands.size();
+            auto grandstandsIt = std::next(std::begin(grandstands), index);
+            (*grandstandsIt)->throwProjectiles(entitiesManager);
+
+        }
+
+        start = std::chrono::system_clock::now();
+
     }
 }
 

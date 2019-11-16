@@ -126,11 +126,11 @@ void Car::beginCollision(Entity* entity) {
         this->receiveDamage(carCollisionDamage);
 
         if (car->isDead()) {
-            car->updatePosition();
+            timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 2));
             timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 3));
         }
         if (this->isDead()) {
-            updatePosition();
+            timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
             timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
         }
 

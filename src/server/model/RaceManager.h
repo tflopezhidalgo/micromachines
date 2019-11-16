@@ -39,6 +39,7 @@ private:
     
     void applyPlugins();
     void updateTimedEvents();
+    void activateGrandstands();
     void updateCars(std::vector<Event> &events);
     
 public:
