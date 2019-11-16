@@ -15,7 +15,7 @@
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     config(config),
     stageBuilder(mapName, config),
-    world(std::move(stageBuilder.buildWorld())),
+    world(std::move(stageBuilder.buildWorld(timedEvents))),
     raceJudge(raceLaps),
     entitiesManager(world),
     start(std::chrono::system_clock::now()){
@@ -30,7 +30,7 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
 void RaceManager::addPlayer(std::string& nickname) {
     std::vector<float> startingPosition = stageBuilder.getStartingPosition();
     Car* car = world.addCar(nickname, startingPosition[X_POS_IDX],
-            startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX], timedEvents);
+            startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX]);
     cars.emplace(nickname, car);
     raceJudge.addCar(nickname);
 }
@@ -110,15 +110,19 @@ RaceManager::~RaceManager() {
     for (auto & car : cars) {
         delete car.second;
     }
+
     for (auto & grandstand : grandstands) {
         delete grandstand;
     }
+
     for (auto & track : tracks) {
         delete track;
     }
+
     for (auto & grassTile : grassTiles) {
         delete grassTile;
     }
+
     for (auto & checkpoint : checkpoints) {
         delete checkpoint;
     }

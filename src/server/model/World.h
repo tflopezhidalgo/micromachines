@@ -29,6 +29,7 @@ private:
     float width;
     float timeStep;
     std::map<std::string, float> &config;
+    std::vector<TimedEvent>& timedEvents;
 
     b2Body* addBody(b2Vec2 pos, bool dynamic, float angle = 0);
 
@@ -44,11 +45,11 @@ private:
             b2Body* tireBody, b2Vec2& pos);
 
 public:
-    World(float height, float width, std::map<std::string, float> &config);
+    World(float height, float width, std::map<std::string, float> &config, std::vector<TimedEvent>& timedEvents);
 
     World(World&& other);
 
-    Car* addCar(std::string id, float x_pos, float y_pos, float angle, std::vector<TimedEvent>& timedEvents);
+    Car* addCar(std::string id, float x_pos, float y_pos, float angle);
 
     b2Body* getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal);
 

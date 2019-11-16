@@ -26,7 +26,7 @@ private:
 public:
     explicit RaceStageBuilder(std::string& mapName, std::map<std::string, float>& config);
 
-    World buildWorld();
+    World buildWorld(std::vector<TimedEvent>& timedEvents);
 
     void addRaceSurface(World& world, std::vector<Track*>& tracks, std::vector<Grass*> &grassTiles,
             std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge);

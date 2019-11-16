@@ -9,6 +9,7 @@ Tire::Tire(b2Body* body, float maxFwSpeed, float maxBwSpeed,
             float maxDriveForce, float maxLatImpulse, float defaultFriction) :
             body(body),
             maxForwardSpeed(maxFwSpeed),
+            defaultMaxForwardSpeed(maxFwSpeed),
             maxBackwardSpeed(maxBwSpeed),
             maxDriveForce(maxDriveForce),
             maxLateralImpulse(maxLatImpulse),
@@ -80,8 +81,12 @@ void Tire::setFriction(float newFriction) {
     actualFriction = newFriction;
 }
 
-void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {
-    maxForwardSpeed = newMaxForwardSpeed;
+void Tire::updateMaxForwardSpeed(float difference) {
+    maxForwardSpeed += difference;
+}
+
+void Tire::resetMaxForwardSpeed() {
+    maxForwardSpeed = defaultMaxForwardSpeed;
 }
 
 void Tire::setTransform(b2Vec2 position, float angle) {

@@ -3,8 +3,10 @@
 #define MICROMACHINES_CONSTANTS_H
 
 
-//Sv macros
+//Sv constants
 #define BACKLOG 15
+#define MAX_PROJECTILES_NUMBER 3
+#define MAX_ENTITIES_NUMBER 5
 
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
@@ -56,6 +58,7 @@
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"
 #define SPEED_BOOST_KEY "speedBoost"
 #define STONE_DAMAGE_KEY "stoneDamage"
+#define STONE_SPEED_DECREMENT_KEY "stoneSpeedDecrement"
 #define GRANDSTAND_OBJECTS_THROWN "grandStandObjectsThrown"
 
 #endif //MICROMACHINES_CONSTANTS_H

@@ -12,6 +12,7 @@ private:
     float maxBackwardSpeed;
     float maxDriveForce;
     float maxLateralImpulse;
+    float defaultMaxForwardSpeed;
     float actualFriction;
     b2Body* body;
     b2Vec2 getLateralVelocity();
@@ -29,7 +30,8 @@ public:
     void updateFriction();
     void setFriction(float newFriction);
     void setTransform(b2Vec2 position, float angle);
-    void setMaxForwardSpeed(float newMaxForwardSpeed);
+    void updateMaxForwardSpeed(float difference);
+    void resetMaxForwardSpeed();
     ~Tire();
 };
 

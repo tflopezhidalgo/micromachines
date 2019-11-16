@@ -29,7 +29,7 @@ private:
     b2Vec2 lastPosOnTrack;
     b2Vec2 respawnPosition;
     float respawnAngle;
-
+    bool reducedVision;
 public:
     Car(std::string id, std::vector<TimedEvent>& timedEvents,
         b2Body* body, b2Vec2 startingPosition,
@@ -52,11 +52,13 @@ public:
 
     void setTiresFriction(float newFriction);
 
-    void setMaxForwardSpeed(float newMaxForwardSpeed);
+    void updateMaxForwardSpeed(float difference);
 
     int getHealth();
 
     bool isDead() override;
+
+    bool hasReducedVision();
 
     void updateSurface(int surface);
     
@@ -65,6 +67,8 @@ public:
     void setLastPosOnTrack(b2Vec2 position);
 
     void setRespawnCoordinates(b2Vec2 position, float angle);
+
+    void resetMaxForwardSpeed();
 
     std::string& getId();
 

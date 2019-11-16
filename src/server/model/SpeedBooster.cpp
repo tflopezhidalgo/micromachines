@@ -4,18 +4,24 @@
 
 #include "SpeedBooster.h"
 
-SpeedBooster::SpeedBooster(
-        b2Body *body,
-        float speedBoost,
-        float defaultMaxSpeed) :
+SpeedBooster::SpeedBooster(b2Body *body, float speedBoost, std::vector<TimedEvent>& timedEvents) :
         Entity(SPEEDBOOSTER, body),
-        defaultMaxForwardSpeed(defaultMaxSpeed),
+        timedEvents(timedEvents),
         speedBoost(speedBoost) {}
 
 void SpeedBooster::beginCollision(Entity *entity) {
-    //todo
+    if (entity->getIdentifier() == CAR && !isDead()) {
+        auto car = dynamic_cast<Car*>(entity);
+        boostMaxSpeed(car);
+        timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
+        die();
+    }
 }
 
 void SpeedBooster::endCollision(Entity *entity) {}
 
-SpeedBooster::~SpeedBooster(){}
+void SpeedBooster::boostMaxSpeed(Car* car) {
+    car->updateMaxForwardSpeed(speedBoost);
+}
+
+SpeedBooster::~SpeedBooster() {}

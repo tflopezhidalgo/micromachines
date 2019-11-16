@@ -8,11 +8,12 @@
 #define ANGULAR_DAMPING 5
 #define DEGTORAD 0.017453292f
 
-World::World(float height, float width, std::map<std::string, float> &config) :
+World::World(float height, float width, std::map<std::string, float> &config, std::vector<TimedEvent>& timedEvents) :
     height(height),
     width(width),
     timeStep(1.f / config.find(FPS_KEY)->second),
-    config(config) {
+    config(config),
+    timedEvents(timedEvents) {
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
 
@@ -35,7 +36,8 @@ World::World(float height, float width, std::map<std::string, float> &config) :
 }
 
 World::World(World&& other) :
-    config(other.config) {
+    config(other.config),
+    timedEvents(other.timedEvents) {
     this->world = other.world;
     world->SetContactListener(&collisionsProcessor);
 
@@ -96,9 +98,8 @@ HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
 
 SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, BOOSTERS_RADIUS, false, true);
-    auto speedBooster = new SpeedBooster(body,
-            config.find(SPEED_BOOST_KEY)->second,
-            config.find(MAX_FORWARD_SPEED_KEY)->second);
+    auto speedBooster = new SpeedBooster(body, config.find(SPEED_BOOST_KEY)->second, timedEvents);
+    body->SetUserData(speedBooster);
     return speedBooster;
 }
 
@@ -111,13 +112,13 @@ Oil* World::addOil(float x_pos, float y_pos) {
 
 Stone* World::addStone(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, STONE_RADIUS, false, false);
-    auto stone = new Stone(body, int(config.find(STONE_DAMAGE_KEY)->second));
+    auto stone = new Stone(body, int(config.find(STONE_DAMAGE_KEY)->second),
+            config.find(STONE_SPEED_DECREMENT_KEY)->second, timedEvents);
     body->SetUserData(stone);
     return stone;
 }
 
-Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
-        std::vector<TimedEvent>& timedEvents) {
+Car* World::addCar(std::string id, float x_pos, float y_pos, float angle) {
     //todo use x_pos, y_pos
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;

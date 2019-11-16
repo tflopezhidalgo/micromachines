@@ -29,8 +29,8 @@ RaceStageBuilder::RaceStageBuilder(std::string &mapName, std::map<std::string, f
     startingPositions = map["carsStartingPositions"].get<std::vector<std::vector<float>>>();
 }
 
-World RaceStageBuilder::buildWorld() {
-    World world(height, width, config);
+World RaceStageBuilder::buildWorld(std::vector<TimedEvent>& timedEvents) {
+    World world(height, width, config, timedEvents);
     return std::move(world);
 }
 
