@@ -11,6 +11,8 @@
 #include "Constants.h"
 #include "Checkpoint.h"
 #include "Grass.h"
+#include "SpeedBooster.h"
+#include "Mud.h"
 
 #define DEGTORAD 0.017453292f
 
@@ -28,11 +30,12 @@ Car::Car(std::string id, std::vector<TimedEvent>& timedEvents, b2Body* body,
         actualSurface(TRACK),
         lastPosOnTrack(startingPosition),
         respawnPosition(startingPosition),
-        respawnAngle(0) {}
+        respawnAngle(0),
+        reducedVision(false) {}
 
 void Car::updateFriction() {
-    for (size_t i = 0; i < tires.size(); i++) {
-        tires[i]->updateFriction();
+    for (auto & tire : tires) {
+        tire->updateFriction();
     }
 }
 
@@ -42,17 +45,17 @@ void Car::updateMove(std::vector<char>& actions) {
     }
 
     if (actualSurface == GRASS && (getPosition() - lastPosOnTrack).Length() > MAX_DISTANCE_TO_TRACK) {
-        updatePosition();
         receiveDamage(100);
-        timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
+        timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
+        timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
         return;
     }
     
-    for (size_t i = 0; i < tires.size(); i++) {
-        tires[i]->updateDrive(actions);
+    for (auto & tire : tires) {
+        tire->updateDrive(actions);
     }
 
-    float lockAngle = 40 * DEGTORAD;
+    float lockAngle = 30 * DEGTORAD;
     float turnSpeedPerSec = 320 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
 
@@ -99,17 +102,22 @@ void Car::beginCollision(Entity* entity) {
     if (identifier == HEALTHBOOSTER) {
         auto healthBooster = dynamic_cast<HealthBooster*>(entity);
         healthBooster->heal(this);
-        healthBooster->die();
 
     } else if (identifier == STONE) {
-        auto stone = dynamic_cast<Stone*>(entity);
+        auto stone = dynamic_cast<Stone *>(entity);
         stone->damageCar(this);
-        stone->die();
+
+    } else if (identifier == SPEEDBOOSTER) {
+        auto speedBooster = dynamic_cast<SpeedBooster*>(entity);
+        speedBooster->boostMaxSpeed(this);
 
     } else if (identifier == OIL) {
         auto oil = dynamic_cast<Oil*>(entity);
-        //todo
-        oil->die();
+        oil->reduceGrip(this);
+
+    } else if (identifier == MUD) {
+        auto mud = dynamic_cast<Mud*>(entity);
+        mud->reduceVision(this);
 
     } else if (identifier == CAR) {
         auto car = dynamic_cast<Car*>(entity);
@@ -117,12 +125,12 @@ void Car::beginCollision(Entity* entity) {
         this->receiveDamage(carCollisionDamage);
 
         if (car->isDead()) {
-            car->updatePosition();
-            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 3));
+            timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 2));
+            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 2));
         }
         if (this->isDead()) {
-            updatePosition();
-            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 3));
+            timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
+            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
         }
 
     } else if (identifier == TRACK) {
@@ -143,9 +151,7 @@ void Car::endCollision(Entity* entity) {
 
     EntityIdentifier identifier = entity->getIdentifier();
 
-    if (identifier == OIL) {
-        //todo
-    } else if (identifier == TRACK) {
+    if (identifier == TRACK) {
         auto track = dynamic_cast<Track*>(entity);
         track->updateRespawnData(this);
     }
@@ -180,6 +186,18 @@ bool Car::isDead() {
     return health.isDead();
 }
 
+bool Car::hasReducedVision() {
+    return reducedVision;
+}
+
+void Car::reduceVision() {
+    reducedVision = true;
+}
+
+void Car::recoverTotalVision() {
+    reducedVision = false;
+}
+
 void Car::updateSurface(int surface) {
     actualSurface = surface;
 }
@@ -193,9 +211,27 @@ void Car::updatePosition() {
     lastPosOnTrack = getPosition();
 }
 
-void Car::setMaxForwardSpeed(float newMaxForwardSpeed) {
+void Car::updateMaxForwardSpeed(float difference) {
     for (auto tire : tires) {
-        tire->setMaxForwardSpeed(newMaxForwardSpeed);
+        tire->updateMaxForwardSpeed(difference);
+    }
+}
+
+void Car::resetMaxForwardSpeed() {
+    for (auto tire : tires) {
+        tire->resetMaxForwardSpeed();
+    }
+}
+
+void Car::updateMaxLateralImpulse(float difference) {
+    for (auto tire : tires) {
+        tire->updateMaxLateralImpulse(difference);
+    }
+}
+
+void Car::resetMaxLateralImpulse() {
+    for (auto tire : tires) {
+        tire->resetMaxLateralImpulse();
     }
 }
 

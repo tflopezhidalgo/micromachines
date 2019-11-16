@@ -66,12 +66,12 @@ void Track::updateRespawnData(Car* car) {
         return;
     }
 
-    float loX = -TILE_WIDTH/2;
-    float hiX =  TILE_WIDTH/2;
+    float loX = float(-TILE_WIDTH)/2;
+    float hiX =  float(TILE_WIDTH)/2;
     float xPos = loX + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hiX-loX)));
 
-    float loY = -TILE_HEIGHT/2;
-    float hiY =  TILE_HEIGHT/2;
+    float loY = float(-TILE_HEIGHT)/2;
+    float hiY =  float(TILE_HEIGHT)/2;
     float yPos = loY + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hiY-loY)));
 
     b2Vec2 randPos = {position.x + xPos, position.y + yPos};

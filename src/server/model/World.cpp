@@ -8,11 +8,12 @@
 #define ANGULAR_DAMPING 5
 #define DEGTORAD 0.017453292f
 
-World::World(float height, float width, std::map<std::string, float> &config) :
+World::World(float height, float width, std::map<std::string, float> &config, std::vector<TimedEvent>& timedEvents) :
     height(height),
     width(width),
     timeStep(1.f / config.find(FPS_KEY)->second),
-    config(config) {
+    config(config),
+    timedEvents(timedEvents) {
     world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
 
@@ -35,7 +36,8 @@ World::World(float height, float width, std::map<std::string, float> &config) :
 }
 
 World::World(World&& other) :
-    config(other.config) {
+    config(other.config),
+    timedEvents(other.timedEvents) {
     this->world = other.world;
     world->SetContactListener(&collisionsProcessor);
 
@@ -96,33 +98,37 @@ HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
 
 SpeedBooster* World::addSpeedBooster(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, BOOSTERS_RADIUS, false, true);
-    auto speedBooster = new SpeedBooster(body,
-            config.find(SPEED_BOOST_KEY)->second,
-            config.find(MAX_FORWARD_SPEED_KEY)->second);
+    auto speedBooster = new SpeedBooster(body, config.find(SPEED_BOOST_KEY)->second, timedEvents);
+    body->SetUserData(speedBooster);
     return speedBooster;
 }
 
 Oil* World::addOil(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, OIL_RADIUS, false, true);
-    auto oil = new Oil(body, config.find(OIL_GRIP_KEY)->second);
+    auto oil = new Oil(body, config.find(OIL_GRIP_DECREMENT_KEY)->second, timedEvents);
     body->SetUserData(oil);
     return oil;
 }
 
 Stone* World::addStone(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, STONE_RADIUS, false, false);
-    auto stone = new Stone(body, int(config.find(STONE_DAMAGE_KEY)->second));
+    auto stone = new Stone(body, int(config.find(STONE_DAMAGE_KEY)->second),
+            config.find(STONE_SPEED_DECREMENT_KEY)->second, timedEvents);
     body->SetUserData(stone);
     return stone;
 }
 
-Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
-        std::vector<TimedEvent>& timedEvents) {
-    //todo use x_pos, y_pos
+Mud* World::addMud(float x_pos, float y_pos) {
+    b2Body* body = addFloorBody({x_pos, y_pos}, {MUD_WIDTH, MUD_HEIGHT});
+    auto mud = new Mud(body, timedEvents);
+    body->SetUserData(mud);
+    return mud;
+}
+
+Car* World::addCar(std::string id, float x_pos, float y_pos) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = {x_pos, y_pos};
-    //bodyDef.angle = angle*DEGTORAD;
     b2Body* carBody = world->CreateBody(&bodyDef);
 
     carBody->SetAngularDamping(ANGULAR_DAMPING);
@@ -153,7 +159,7 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
 
     //back left tire
     b2Vec2 backLeftTirePosition = {-3, -6.f};
-    b2Body* body = createTireBody({x_pos, y_pos}, backLeftTirePosition, angle);
+    b2Body* body = createTireBody({x_pos, y_pos}, backLeftTirePosition);
     Tire* tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, initialFriction);
     joinTireToChassis(&jointDef, body, backLeftTirePosition);
@@ -161,7 +167,7 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
 
     //back right tire
     b2Vec2 backRightTirePosition = {3, -6.f};
-    body = createTireBody({x_pos, y_pos}, backRightTirePosition, angle);
+    body = createTireBody({x_pos, y_pos}, backRightTirePosition);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             backTireMaxDriveForce, backTireMaxLatImpulse, initialFriction);
     joinTireToChassis(&jointDef, body, backRightTirePosition);
@@ -169,7 +175,7 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
 
     //front left tire
     b2Vec2 frontLeftTirePosition = {-3, 6.f};
-    body = createTireBody({x_pos, y_pos}, frontLeftTirePosition, angle);
+    body = createTireBody({x_pos, y_pos}, frontLeftTirePosition);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
             frontTireMaxDriveForce, frontTireMaxLatImpulse, initialFriction);
     b2RevoluteJoint* flJoint = joinTireToChassis(&jointDef, body, frontLeftTirePosition);
@@ -177,7 +183,7 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
 
     //front right tire
     b2Vec2 frontRightTirePosition = {3, 6.f};
-    body = createTireBody({x_pos, y_pos}, frontRightTirePosition, angle);
+    body = createTireBody({x_pos, y_pos}, frontRightTirePosition);
     tire = new Tire(body, maxForwardSpeed, maxBackwardSpeed,
                     frontTireMaxDriveForce, frontTireMaxLatImpulse, initialFriction);
     b2RevoluteJoint* frJoint = joinTireToChassis(&jointDef, body, frontRightTirePosition);
@@ -190,16 +196,16 @@ Car* World::addCar(std::string id, float x_pos, float y_pos, float angle,
 }
 
 b2Body* World::addFloorBody(b2Vec2 pos, b2Vec2 size) {
-    b2Body* boxBody = addBody(pos, false);
+    b2Body* floorBody = addBody(pos, false);
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(size.x / 2.f, size.y / 2.f);
 
     b2FixtureDef fixture_def;
     fixture_def.shape = &polygonShape;
     fixture_def.isSensor = true;
-    boxBody->CreateFixture(&fixture_def);
+    floorBody->CreateFixture(&fixture_def);
 
-    return boxBody;
+    return floorBody;
 }
 
 Track* World::addTrack(float x_pos, float y_pos, int floorId, float friction) {
@@ -230,7 +236,7 @@ b2Body* World::getGrandstandBody(float x_pos, float y_pos, bool horizontalDispos
 
 Projectile* World::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, PROJECTILE_RADIUS, true, false);
-    Projectile* projectile = new Projectile(entityIdentifier, body);
+    auto projectile = new Projectile(entityIdentifier, body);
     return projectile;
 }
 
@@ -244,17 +250,16 @@ Checkpoint* World::addCheckpoint(float x_pos, float y_pos, bool horizontalDispos
     }
     b2Body* body = addBoxBody({x_pos, y_pos}, size, false, true);
 
-    Checkpoint* checkpoint = new Checkpoint(body, checkpointOrder, raceJudge);
+    auto checkpoint = new Checkpoint(body, checkpointOrder, raceJudge);
     body->SetUserData(checkpoint);
 
     return checkpoint;
 }
 
-b2Body* World::createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos, float angle) {
+b2Body* World::createTireBody(b2Vec2 chassisPosition, b2Vec2 tirePos) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = {chassisPosition.x + tirePos.x, chassisPosition.y + tirePos.y};
-    //bodyDef.angle = angle*DEGTORAD;
 
     b2Body* body = world->CreateBody(&bodyDef);
     b2PolygonShape polygonShape;
