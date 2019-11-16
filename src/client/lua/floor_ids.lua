@@ -1,8 +1,3 @@
---
--- User: eliana
--- Date: 5/11/19
---
-
 floor_id = {
     [0] = {
         ["name"] = "GRASS_TILE",

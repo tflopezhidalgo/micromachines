@@ -1,7 +1,3 @@
-//
-// Created by eliana on 30/10/19.
-//
-
 #ifndef MICROMACHINES_LUASCRIPT_H
 #define MICROMACHINES_LUASCRIPT_H
 

@@ -1,7 +1,3 @@
-//
-// Created by eliana on 5/11/19.
-//
-
 #ifndef MICROMACHINES_CONVERTER_H
 #define MICROMACHINES_CONVERTER_H
 

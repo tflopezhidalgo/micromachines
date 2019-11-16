@@ -1,7 +1,3 @@
-//
-// Created by eliana on 16/11/19.
-//
-
 #include "FormatContext.h"
 #include <stdexcept>
 #include <string>

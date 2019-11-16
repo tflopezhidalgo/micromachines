@@ -1,7 +1,3 @@
-//
-// Created by eliana on 16/11/19.
-//
-
 #ifndef MICROMACHINES_FORMATCONTEXT_H
 #define MICROMACHINES_FORMATCONTEXT_H
 

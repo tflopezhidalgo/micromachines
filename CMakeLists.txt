@@ -24,6 +24,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src/server/matches-management)
 include_directories(${PROJECT_SOURCE_DIR}/src/common)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/qt)
+include_directories(${PROJECT_SOURCE_DIR}/src/client/ffmpeg)
 
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
@@ -32,6 +33,7 @@ file(GLOB MATCHES_MANAGEMENT_SRC_FILES "src/server/matches-management/*.cpp")
 file(GLOB PLUGINS_MANAGEMENT_SRC_FILES "src/server/plugins-management/*.cpp")
 file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
 file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
+file(GLOB FFMPEG_SRC_FILES "src/client/ffmpeg/.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 

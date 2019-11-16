@@ -1,8 +1,5 @@
-//
-// Created by eliana on 5/11/19.
-//
-#include <iostream>
 #include "Converter.h"
+#include <iostream>
 
 std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matrixHeight, int matrixWidth) {
     //std::cout << "x:" <<pos_x << " y:" << pos_y << " - ";

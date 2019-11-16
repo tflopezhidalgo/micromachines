@@ -1,6 +1,3 @@
-//
-// Created by eliana on 30/10/19.
-//
 #include <iostream>
 #include "LuaScript.h"
 
@@ -66,10 +63,7 @@ void LuaScript::luaCreateTable(std::vector<std::vector<int>> table, std::string 
     for(int i = 0; i < table.size(); i++) {
         lua_pushnumber(L, i + 1);    // indice de la tabla
         lua_newtable(L);                    // tabla
-
         int size = table[i].size();
-        //if (typeTable == ENTITIES) size -= 1;
-
         for(int j = 0; j < size; j++) {
             lua_pushnumber(L, j + 1);       // indice del valor
             lua_pushnumber(L, table[i][j]);     // valor
