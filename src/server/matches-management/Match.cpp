@@ -108,23 +108,29 @@ void Match::stop() {
 }
 
 void Match::startCountdown() {
-    std::string countdownMsg = "Ready";
-    sendMessageToClients(countdownMsg);
+    nlohmann::json ready;
+    ready["message"] = READY;
+    std::string readyDump = ready.dump();
+    sendMessageToClients(readyDump);
+
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
-    countdownMsg = "Set";
-    sendMessageToClients(countdownMsg);
+    nlohmann::json set;
+    set["message"] = SET;
+    std::string setDump = set.dump();
+    sendMessageToClients(setDump);
+
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
-    countdownMsg = "Go";
-    sendMessageToClients(countdownMsg);
+    nlohmann::json go;
+    go["message"] = GO;
+    std::string goDump = go.dump();
+    sendMessageToClients(goDump);
 }
 
 void Match::sendMatchDataToClients() {
-    std::string mapData = std::move(raceManager.getMapData());
-    std::string modelStatus = std::move(raceManager.getRaceStatus());
-    sendMessageToClients(mapData);
-    sendMessageToClients(modelStatus);
+    std::string raceData = std::move(raceManager.getRaceData());
+    sendMessageToClients(raceData);
 }
 
 Match::~Match() {

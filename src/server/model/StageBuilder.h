@@ -31,7 +31,7 @@ public:
 
     std::vector<float>& getStartingPosition();
 
-    std::string getMapData();
+    nlohmann::json getRaceData();
 
     ~StageBuilder();
 };

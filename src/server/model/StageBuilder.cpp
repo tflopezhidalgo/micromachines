@@ -85,13 +85,13 @@ void StageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
 
 void StageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grandstands) {
     for (auto& grandstandData : map["grandstandsData"]) {
-        float x_pos = grandstandData[0].get<float>();
-        float y_pos = grandstandData[1].get<float>();
+        auto x_pos = grandstandData[0].get<float>();
+        auto y_pos = grandstandData[1].get<float>();
         bool horizontalDisposal = grandstandData[2].get<bool>();
         bool positiveOrientation = grandstandData[3].get<bool>();
 
         b2Body* body = world.getGrandstandBody(x_pos, y_pos, horizontalDisposal);
-        Grandstand* grandstand = new Grandstand(body,
+        auto grandstand = new Grandstand(body,
                 config.find(GRANDSTAND_OBJECTS_THROWN)->second,
                 x_pos, y_pos, horizontalDisposal, positiveOrientation);
         grandstands.push_back(grandstand);
@@ -104,8 +104,13 @@ std::vector<float>& StageBuilder::getStartingPosition() {
     return startingPositions[startingPosIndex - 1];
 }
 
-std::string StageBuilder::getMapData() {
-    return std::move(map.dump());
+nlohmann::json StageBuilder::getRaceData() {
+    nlohmann::json mapSerialization = map;
+    mapSerialization.erase("height");
+    mapSerialization.erase("width");
+    mapSerialization.erase("carsStartingPositions");
+    mapSerialization.erase("checkpointsOrder");
+    return std::move(mapSerialization);
 }
 
 StageBuilder::~StageBuilder() {}

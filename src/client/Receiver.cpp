@@ -12,7 +12,6 @@ Receiver::Receiver(ProtectedModel& model,
 void Receiver::run() {
     while (alive) {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
-
         for (auto& car : j["carsData"]) {
             std::string key = car[0].get<std::string>();
             int x = car[1].get<int>();
@@ -24,10 +23,10 @@ void Receiver::run() {
 
         for (auto& obj : j["entitiesData"]) {
             int key = obj[0].get<int>();
-            EntityIdentifier type = obj[1].get<EntityIdentifier >();
-            EntityStatus state = obj[3].get<EntityStatus >();
+            EntityIdentifier type = obj[1].get<EntityIdentifier>();
+            EntityStatus state = obj[2].get<EntityStatus>();
             int x = obj[3].get<int>();
-            int y = obj[4].get<EntityIdentifier >();
+            int y = obj[4].get<int>();
             this->model.updateObject(key, type, x, y, state);
         }
     }
