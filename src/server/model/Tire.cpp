@@ -45,7 +45,6 @@ void Tire::updateFriction() {
 }
 
 void Tire::updateDrive(std::vector<char>& actions) {
-
     float desiredSpeed = 0;
 
     bool moveForward = std::find(actions.begin(), actions.end(), FORWARD) != actions.end();
