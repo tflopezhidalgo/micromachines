@@ -1,7 +1,3 @@
-//
-// Created by eliana on 20/10/19.
-//
-
 #include "Stone.h"
 
 Stone::Stone(b2Body* body, int damage, float speedDecrement, std::vector<TimedEvent>& timedEvents) :

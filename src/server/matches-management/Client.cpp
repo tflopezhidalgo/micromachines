@@ -1,10 +1,5 @@
-//
-// Created by leobellaera on 25/10/19.
-//
-
 #include <SocketException.h>
 #include "Client.h"
-
 
 Client::Client(Proxy proxy, std::string clientId, ProtectedQueue<Event>& eventsQueue) :
         proxy(std::move(proxy)),

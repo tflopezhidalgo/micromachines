@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 4/11/19.
-//
-
 #include "RaceManager.h"
 #include "StatusSerializer.h"
 #include "Constants.h"
@@ -117,8 +113,15 @@ std::string RaceManager::getRaceStatus() {
     return std::move(StatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities()));
 }
 
-std::string RaceManager::getMapData() {
-    return std::move(stageBuilder.getMapData());
+std::string RaceManager::getRaceData() {
+    std::string status = StatusSerializer::serialize(raceJudge, cars, entitiesManager.getEntities());
+    nlohmann::json raceStatus = nlohmann::json::parse(status);
+    raceStatus.erase("entitiesData");
+    raceStatus.erase("carsArrivalOrder");
+    nlohmann::json raceData = stageBuilder.getRaceData();
+
+    raceData["carsData"] = raceStatus["carsData"];
+    return std::move(raceData.dump());
 }
 
 RaceManager::~RaceManager() {

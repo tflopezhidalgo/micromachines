@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 13/10/19.
-//
-
 #ifndef MICROMACHINES_HEALTH_H
 #define MICROMACHINES_HEALTH_H
 

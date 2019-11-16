@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 26/10/19.
-//
-
 #ifndef MICROMACHINES_PROTECTEDQUEUE_H
 #define MICROMACHINES_PROTECTEDQUEUE_H
 

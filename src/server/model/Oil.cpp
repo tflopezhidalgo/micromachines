@@ -1,7 +1,3 @@
-//
-// Created by eliana on 20/10/19.
-//
-
 #include "Oil.h"
 
 Oil::Oil(b2Body *body, float gripDecrement, std::vector<TimedEvent>& timedEvents) :

@@ -40,7 +40,7 @@ function getEvent(angle, pos_x, pos_y)
                     (angle >= MIN_ANGLE_RIGHT2 and angle <= MAX_ANGLE_RIGHT2))) then
         return action_horizontal(pos_x, pos_y) -- pos_x -1 / +1
     end
-    return action
+    return next_position[0]
 end
 
 -- Si esta en un borde no tiene pasar el limite
@@ -56,8 +56,16 @@ function getLimit(pos)
     return start, ending
 end
 
-function is_in_border(pos)
-    return pos <= 1 or pos >= #map
+function is_in_border(pos_x, pos_y)
+    local border_x = false
+    if (pos_x < 1 or pos_x > #map[1]) then
+        border_x = true
+    end
+    local border_y = false
+    if (pos_y < 1 or pos_y > #map) then
+        border_y = true
+    end
+    return border_x or border_y
 end
 
 function next_recommended_position(floor_type)
@@ -80,7 +88,7 @@ function check_entity(pos_x, pos_y)
 end
 
 function action_vertical(pos_x, pos_y)
-    if (is_in_border(pos_y)) then
+    if (is_in_border(pos_x, pos_y)) then
         return next_position["reverse"]
     end
 
@@ -102,9 +110,9 @@ function action_vertical(pos_x, pos_y)
 end
 
 function action_horizontal(pos_x, pos_y)
-    --if (is_in_border(pos_x)) then
-      --  return next_position["reverse"]
-    --end
+    if (is_in_border(pos_x, pos_y)) then
+        return next_position["reverse"]
+    end
     local try_pos = next_recommended_position(map[pos_y][pos_x])
     if (check_entity(map[pos_y][pos_x + try_pos])) then
         return next_position[try_pos]

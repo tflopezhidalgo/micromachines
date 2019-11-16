@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 24/10/19.
-//
-
 #include "CollisionsProcessor.h"
 #include "Entity.h"
 

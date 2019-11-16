@@ -1,7 +1,3 @@
-//
-// Created by eliana on 26/10/19.
-//
-
 #ifndef TESTING_SPEEDBOOSTER_H
 #define TESTING_SPEEDBOOSTER_H
 

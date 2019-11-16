@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 10/11/19.
-//
-
 #ifndef MICROMACHINES_GRASS_H
 #define MICROMACHINES_GRASS_H
 

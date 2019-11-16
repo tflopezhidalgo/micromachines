@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 15/10/19.
-//
-
 #include <unordered_set>
 #include <nlohmann/json.hpp>
 #include "SocketException.h"
@@ -40,8 +36,8 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 }
 
 void Match::run() {
-    //sendMatchDataToClients();
-    //startCountdown();
+    sendMatchDataToClients();
+    startCountdown();
     startClientsThread();
 
     while (!dead) {
@@ -112,23 +108,29 @@ void Match::stop() {
 }
 
 void Match::startCountdown() {
-    std::string countdownMsg = "Ready";
-    sendMessageToClients(countdownMsg);
+    nlohmann::json ready;
+    ready["message"] = 'R';
+    std::string readyDump = ready.dump();
+    sendMessageToClients(readyDump);
+
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
-    countdownMsg = "Set";
-    sendMessageToClients(countdownMsg);
+    nlohmann::json set;
+    ready["message"] = 'S';
+    std::string setDump = set.dump();
+    sendMessageToClients(setDump);
+
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
-    countdownMsg = "Go";
-    sendMessageToClients(countdownMsg);
+    nlohmann::json go;
+    ready["message"] = 'G';
+    std::string goDump = go.dump();
+    sendMessageToClients(goDump);
 }
 
 void Match::sendMatchDataToClients() {
-    std::string mapData = std::move(raceManager.getMapData());
-    std::string modelStatus = std::move(raceManager.getRaceStatus());
-    sendMessageToClients(mapData);
-    sendMessageToClients(modelStatus);
+    std::string raceData = std::move(raceManager.getRaceData());
+    sendMessageToClients(raceData);
 }
 
 Match::~Match() {

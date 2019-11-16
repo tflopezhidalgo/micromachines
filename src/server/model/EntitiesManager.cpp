@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 6/11/19.
-//
-
 #include "EntitiesManager.h"
 #include "Constants.h"
 #include "Mud.h"

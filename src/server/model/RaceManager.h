@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 4/11/19.
-//
-
 #ifndef MICROMACHINES_RACEMANAGER_H
 #define MICROMACHINES_RACEMANAGER_H
 
@@ -54,7 +50,7 @@ public:
 
     std::string getRaceStatus();
 
-    std::string getMapData();
+    std::string getRaceData();
 
     ~RaceManager();
 };

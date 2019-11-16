@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 3/11/19.
-//
-
 #include "Grandstand.h"
 #include "Constants.h"
 #include "Identifiers.h"

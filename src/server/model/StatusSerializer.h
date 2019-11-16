@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 29/10/19.
-//
-
 #ifndef MICROMACHINES_STATUSSERIALIZER_H
 #define MICROMACHINES_STATUSSERIALIZER_H
 

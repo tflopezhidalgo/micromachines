@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 25/10/19.
-//
-
 #ifndef MICROMACHINES_CLIENT_H
 #define MICROMACHINES_CLIENT_H
 

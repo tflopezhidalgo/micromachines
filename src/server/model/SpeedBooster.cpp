@@ -1,7 +1,3 @@
-//
-// Created by eliana on 26/10/19.
-//
-
 #include "SpeedBooster.h"
 
 SpeedBooster::SpeedBooster(b2Body *body, float speedBoost, std::vector<TimedEvent>& timedEvents) :

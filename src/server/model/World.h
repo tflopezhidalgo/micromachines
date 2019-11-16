@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 22/10/19.
-//
-
 #ifndef TESTING_WORLD_H
 #define TESTING_WORLD_H
 

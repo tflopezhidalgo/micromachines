@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 9/11/19.
-//
-
 #include "TimedEvent.h"
 
 TimedEvent::TimedEvent(Car* car, void (Car::*cb)(void), float timeout):

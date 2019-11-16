@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 14/10/19.
-//
-
 #ifndef MICROMACHINES_PROXY_H
 #define MICROMACHINES_PROXY_H
 

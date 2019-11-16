@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 18/10/19.
-//
-
 #include <iostream>
 #include "Car.h"
 #include "Track.h"

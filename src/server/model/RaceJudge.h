@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 4/11/19.
-//
-
 #ifndef MICROMACHINES_RACEJUDGE_H
 #define MICROMACHINES_RACEJUDGE_H
 
