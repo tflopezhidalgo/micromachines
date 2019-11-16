@@ -1,6 +1,3 @@
-//
-// Created by leobellaera on 29/10/19.
-//
 #include <string>
 #include "Event.h"
 

@@ -1,7 +1,3 @@
-//
-// Created by eliana on 19/10/19.
-//
-
 #include "Entity.h"
 
 Entity::Entity(EntityIdentifier identifier, b2Body* body, EntityStatus entityStatus) :

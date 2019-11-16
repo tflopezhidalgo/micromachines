@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 4/11/19.
-//
-
 #include "RaceJudge.h"
 
 RaceJudge::RaceJudge(int raceLaps) :

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 9/11/19.
-//
-
 #ifndef MICROMACHINES_TIMEDEVENT_H
 #define MICROMACHINES_TIMEDEVENT_H
 

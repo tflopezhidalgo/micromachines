@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 19/9/19.
-//
-
 #include "Thread.h"
 
 Thread::Thread() {}

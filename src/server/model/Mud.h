@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 15/11/19.
-//
-
 #ifndef MICROMACHINES_MUD_H
 #define MICROMACHINES_MUD_H
 

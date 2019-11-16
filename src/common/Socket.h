@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 26/9/19.
-//
-
 #ifndef TP_SOCKET_H
 #define TP_SOCKET_H
 #include <netdb.h>

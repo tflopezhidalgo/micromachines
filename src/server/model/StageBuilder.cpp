@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 29/10/19.
-//
-
 #include <nlohmann/json.hpp>
 #include "FileReadingException.h"
 #include "StageBuilder.h"

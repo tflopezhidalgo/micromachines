@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 28/10/19.
-//
-
 #ifndef MICROMACHINES_CONFIGMAPBUILDER_H
 #define MICROMACHINES_CONFIGMAPBUILDER_H
 

@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 15/10/19.
-//
-
 #include <unordered_set>
 #include <nlohmann/json.hpp>
 #include "SocketException.h"

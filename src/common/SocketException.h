@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 26/9/19.
-//
-
 #ifndef TP_SOCKETEXCEPTION_H
 #define TP_SOCKETEXCEPTION_H
 

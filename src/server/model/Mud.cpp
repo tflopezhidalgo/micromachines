@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 15/11/19.
-//
-
 #include "Mud.h"
 
 Mud::Mud(b2Body *body, std::vector<TimedEvent> &timedEvents) :

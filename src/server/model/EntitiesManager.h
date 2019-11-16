@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 6/11/19.
-//
-
 #ifndef MICROMACHINES_ENTITIESMANAGER_H
 #define MICROMACHINES_ENTITIESMANAGER_H
 

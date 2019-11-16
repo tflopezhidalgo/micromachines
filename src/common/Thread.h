@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 19/9/19.
-//
-
 #ifndef FRAME_OF_REFERENCE_THREAD_H
 #define FRAME_OF_REFERENCE_THREAD_H
 
