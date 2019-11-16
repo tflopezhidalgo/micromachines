@@ -26,7 +26,7 @@ enum EntityIdentifier {
     OIL,
     SPEEDBOOSTER,
     STONE,
-    MUG,
+    MUD,
     TRACK,
     GRASS,
     CAR,

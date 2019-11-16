@@ -3,16 +3,15 @@
 //
 
 #include "EntitiesManager.h"
-
-#define MAX_PROJECTILES_NUMBER 3
-#define MAX_ENTITIES_NUMBER 5
+#include "Constants.h"
+#include "Mud.h"
 
 EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
     world(stageWorld) {}
 
 void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse) {
-    if (projectiles.size() >= MAX_PROJECTILES_NUMBER|| entities.size() >= MAX_ENTITIES_NUMBER) {
+    if (projectiles.size() >= MAX_PROJECTILES_NUMBER || entities.size() >= MAX_ENTITIES_NUMBER) {
         return;
     }
 
@@ -25,8 +24,30 @@ void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_p
 }
 
 void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
-    //todo
+    if (entityIdentifier == SPEEDBOOSTER) {
+        SpeedBooster* speedBooster = world.addSpeedBooster(x_pos, y_pos);
+        entities.emplace(entitiesCounter, speedBooster);
+
+    } else if (entityIdentifier == HEALTHBOOSTER) {
+        HealthBooster* healthBooster = world.addHealthBooster(x_pos, y_pos);
+        entities.emplace(entitiesCounter, healthBooster);
+
+    } else if (entityIdentifier == OIL) {
+        Oil* oil = world.addOil(x_pos, y_pos);
+        entities.emplace(entitiesCounter, oil);
+
+    } else if (entityIdentifier == MUD) {
+        Mud* mud = world.addMud(x_pos, y_pos);
+        entities.emplace(entitiesCounter, mud);
+
+    } else if (entityIdentifier == STONE) {
+        Stone* stone = world.addStone(x_pos, y_pos);
+        entities.emplace(entitiesCounter, stone);
+
+    }
+
     entitiesCounter++;
+
 }
 
 void EntitiesManager::deleteDeadEntities() {
@@ -55,28 +76,24 @@ void EntitiesManager::updateProjectilesStatus() {
             it = projectiles.erase(it);
 
             if (identifier == HEALTHBOOSTER) {
-
                 HealthBooster* healthBooster = world.addHealthBooster(pos.x, pos.y);
                 entities.find(projectileId)->second = healthBooster;
 
             } else if (identifier == STONE) {
-
                 Stone* stone = world.addStone(pos.x, pos.y);
                 entities.find(projectileId)->second = stone;
 
             } else if (identifier == OIL) {
-
                 Oil* oil = world.addOil(pos.x, pos.y);
                 entities.find(projectileId)->second = oil;
 
             } else if (identifier == SPEEDBOOSTER) {
-
                 HealthBooster* healthBooster = world.addHealthBooster(pos.x, pos.y);
                 entities.find(projectileId)->second = healthBooster;
 
-            } else if (identifier == MUG) {
-
-                //todo
+            } else if (identifier == MUD) {
+                Mud* mud = world.addMud(pos.x, pos.y);
+                entities.find(projectileId)->second = mud;
 
             }
 

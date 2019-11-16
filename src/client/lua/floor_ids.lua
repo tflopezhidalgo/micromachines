@@ -7,27 +7,27 @@ floor_id = {
     [0] = {
         ["name"] = "GRASS_TILE",
         ["safe"] = false,
-        ["direction"] = 1
+        ["direction"] = 0
     },
     [1] = {
         ["name"] = "THIRD_QUAD_TRACK",
         ["safe"] = true,
-        ["direction"] = -1
+        ["direction"] = 1
     },
     [2] = {
         ["name"] = "SECOND_QUAD_TRACK",
         ["safe"] = true,
-        ["direction"] = -1
+        ["direction"] = 1
     },
     [3] = {
         ["name"] = "FOURTH_QUAD_TRACK",
         ["safe"] = true,
-        ["direction"] = -1
+        ["direction"] = 1
     },
     [4] = {
         ["name"] = "FIRST_QUAD_TRACK",
         ["safe"] = true,
-        ["direction"] = -1
+        ["direction"] = 1
     },
     [5] = {
         ["name"] = "LEFT_TRACK",

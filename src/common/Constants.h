@@ -2,9 +2,16 @@
 #ifndef MICROMACHINES_CONSTANTS_H
 #define MICROMACHINES_CONSTANTS_H
 
+// Client Macro
+#define MtoP 3     // Relación metros a píxeles
 
-//Sv macros
+
+//Sv constants
 #define BACKLOG 15
+#define MAX_PROJECTILES_NUMBER 3
+#define MAX_ENTITIES_NUMBER 5
+#define TIME_ELAPSE_PLUGINS 30
+#define TIME_ELAPSE_GRANDSTANDS 15
 
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
@@ -35,10 +42,12 @@
 #define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
-#define PROJECTILE_RADIUS 2
+#define MUD_WIDTH 30
+#define MUD_HEIGHT 30
+#define PROJECTILE_RADIUS 10
 
 //Car constants
-#define MAX_DISTANCE_TO_TRACK 100
+#define MAX_DISTANCE_TO_TRACK 200
 
 
 //Config Keys
@@ -50,12 +59,13 @@
 #define BACK_MAX_LAT_IMPULSE_KEY "backTireMaxLateralImpulse"
 #define FPS_KEY "framesPerSecond"
 #define HEALTH_BOOST_KEY "healthBoost"
-#define OIL_GRIP_KEY "oilGrip"
+#define OIL_GRIP_DECREMENT_KEY "oilGripDecrement"
 #define TRACK_FRICTION_KEY "trackFriction"
 #define GRASS_FRICTION_KEY "grassFriction"
 #define CAR_COLLISION_DAMAGE_KEY "carCollisionDamage"
 #define SPEED_BOOST_KEY "speedBoost"
 #define STONE_DAMAGE_KEY "stoneDamage"
+#define STONE_SPEED_DECREMENT_KEY "stoneSpeedDecrement"
 #define GRANDSTAND_OBJECTS_THROWN "grandStandObjectsThrown"
 
 #endif //MICROMACHINES_CONSTANTS_H

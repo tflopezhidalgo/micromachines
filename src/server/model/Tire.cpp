@@ -9,9 +9,11 @@ Tire::Tire(b2Body* body, float maxFwSpeed, float maxBwSpeed,
             float maxDriveForce, float maxLatImpulse, float defaultFriction) :
             body(body),
             maxForwardSpeed(maxFwSpeed),
+            defaultMaxForwardSpeed(maxFwSpeed),
             maxBackwardSpeed(maxBwSpeed),
             maxDriveForce(maxDriveForce),
             maxLateralImpulse(maxLatImpulse),
+            defaultMaxLateralImpulse(maxLatImpulse),
             actualFriction(defaultFriction) {}
 
 b2Vec2 Tire::getLateralVelocity() {
@@ -39,12 +41,9 @@ void Tire::updateFriction() {
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -actualFriction * currentForwardSpeed;
     body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
-
-    //todo drifting
 }
 
 void Tire::updateDrive(std::vector<char>& actions) {
-
     float desiredSpeed = 0;
 
     bool moveForward = std::find(actions.begin(), actions.end(), FORWARD) != actions.end();
@@ -80,8 +79,20 @@ void Tire::setFriction(float newFriction) {
     actualFriction = newFriction;
 }
 
-void Tire::setMaxForwardSpeed(float newMaxForwardSpeed) {
-    maxForwardSpeed = newMaxForwardSpeed;
+void Tire::updateMaxForwardSpeed(float difference) {
+    maxForwardSpeed += difference;
+}
+
+void Tire::resetMaxForwardSpeed() {
+    maxForwardSpeed = defaultMaxForwardSpeed;
+}
+
+void Tire::updateMaxLateralImpulse(float difference) {
+    maxLateralImpulse += difference;
+}
+
+void Tire::resetMaxLateralImpulse() {
+    maxLateralImpulse = defaultMaxLateralImpulse;
 }
 
 void Tire::setTransform(b2Vec2 position, float angle) {
@@ -91,6 +102,5 @@ void Tire::setTransform(b2Vec2 position, float angle) {
 }
 
 Tire::~Tire() {
-    //todo if tire is a entity in a future, delete this
     body->GetWorld()->DestroyBody(body);
 }

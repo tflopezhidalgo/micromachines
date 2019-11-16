@@ -16,7 +16,7 @@ Throwable* ThrowableFactory::generateThrowable(EntityIdentifier type) {
         BaseSprite sprite(window, HEALTH_SPRITE, 2 * STONE_RADIUS, 2 * STONE_RADIUS);
         return new Throwable(std::move(sprite), DEAD, 0, 0);
     }
-    if (type == MUG) {
+    if (type == MUD) {
         BaseSprite sprite(window, HEALTH_SPRITE, 10, 10);
         return new Throwable(std::move(sprite), DEAD, 0, 0);
     }

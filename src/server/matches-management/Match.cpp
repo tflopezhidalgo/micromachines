@@ -40,8 +40,8 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 }
 
 void Match::run() {
-
-    //startCountdown(); todo uncomment
+    //sendMatchDataToClients();
+    //startCountdown();
     startClientsThread();
 
     while (!dead) {
@@ -51,12 +51,11 @@ void Match::run() {
         raceManager.updateModel(events);
 
         if (raceManager.raceFinished()) {
-            //todo send finish msg and return
             dead = true;
         }
 
-        std::string modelSerialized = std::move(raceManager.getRaceStatus());
-        sendMessageToClients(modelSerialized);
+        std::string modelStatus = std::move(raceManager.getRaceStatus());
+        sendMessageToClients(modelStatus);
 
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);
@@ -123,6 +122,13 @@ void Match::startCountdown() {
 
     countdownMsg = "Go";
     sendMessageToClients(countdownMsg);
+}
+
+void Match::sendMatchDataToClients() {
+    std::string mapData = std::move(raceManager.getMapData());
+    std::string modelStatus = std::move(raceManager.getRaceStatus());
+    sendMessageToClients(mapData);
+    sendMessageToClients(modelStatus);
 }
 
 Match::~Match() {
