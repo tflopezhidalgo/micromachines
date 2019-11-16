@@ -45,7 +45,7 @@ Event LuaScript::createEvent(const char* luaEvent) {
 
     std::cout << "action:" << action[0] << std::endl;
     v_event.push_back(action[0]);
-    if (action[0] != BACKWARD || action[0] != FORWARD) {
+    if (action[0] != BACKWARD && action[0] != FORWARD) {
         v_event.push_back(FORWARD);
     }
     Event event(clientId, v_event);

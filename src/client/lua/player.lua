@@ -20,6 +20,7 @@ next_position = {
     [0] = "F", -- ADELANTE
     [1] = "R", -- DERECHA
     ["reverse"] = "B",
+    [2] = "B"
 }
 -- end variables macro
 
@@ -101,9 +102,9 @@ function action_vertical(pos_x, pos_y)
 end
 
 function action_horizontal(pos_x, pos_y)
-    if (is_in_border(pos_x)) then
-        return next_position["reverse"]
-    end
+    --if (is_in_border(pos_x)) then
+      --  return next_position["reverse"]
+    --end
     local try_pos = next_recommended_position(map[pos_y][pos_x])
     if (check_entity(map[pos_y][pos_x + try_pos])) then
         return next_position[try_pos]
