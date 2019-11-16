@@ -104,8 +104,13 @@ std::vector<float>& StageBuilder::getStartingPosition() {
     return startingPositions[startingPosIndex - 1];
 }
 
-std::string StageBuilder::getMapData() {
-    return std::move(map.dump());
+nlohmann::json StageBuilder::getRaceData() {
+    nlohmann::json mapSerialization = map;
+    mapSerialization.erase("height");
+    mapSerialization.erase("width");
+    mapSerialization.erase("carsStartingPositions");
+    mapSerialization.erase("checkpointsOrder");
+    return std::move(mapSerialization);
 }
 
 StageBuilder::~StageBuilder() {}
