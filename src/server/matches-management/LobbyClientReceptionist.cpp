@@ -16,7 +16,7 @@ void LobbyClientReceptionist::run() {
             std::string clientInitiationMessage = proxy.receiveMessage();
             nlohmann::json initiationMsg = nlohmann::json::parse(clientInitiationMessage);
             std::string mode = initiationMsg["mode"].get<std::string>();
-            if (mode == CREATE_MATCH_MSG) {
+            if (mode == CREATE_MATCH) {
 
                 createNewMatch(initiationMsg);
 
