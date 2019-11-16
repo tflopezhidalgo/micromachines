@@ -1,7 +1,3 @@
-//
-// Created by leobellaera on 14/10/19.
-//
-
 #include <arpa/inet.h>
 #include <vector>
 #include "Proxy.h"
