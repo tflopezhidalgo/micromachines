@@ -10,9 +10,6 @@
 #define Y_POS_IDX 1
 #define ANGLE_IDX 2
 
-#define TIME_ELAPSE_PLUGINS 30
-#define TIME_ELAPSE_GRANDSTANDS 15
-
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
     config(config),
     stageBuilder(mapName, config),
@@ -31,10 +28,9 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
 void RaceManager::addPlayer(std::string& nickname) {
     std::vector<float> startingPosition = stageBuilder.getStartingPosition();
     Car* car = world.addCar(nickname, startingPosition[X_POS_IDX],
-            startingPosition[Y_POS_IDX], startingPosition[ANGLE_IDX]);
+            startingPosition[Y_POS_IDX]);
     cars.emplace(nickname, car);
     raceJudge.addCar(nickname);
-    entitiesManager.addEntity(MUD, 340.f, 0.f);
 }
 
 bool RaceManager::raceFinished() {

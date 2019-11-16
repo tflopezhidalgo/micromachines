@@ -50,7 +50,7 @@ public:
 
     World(World&& other);
 
-    Car* addCar(std::string id, float x_pos, float y_pos, float angle);
+    Car* addCar(std::string id, float x_pos, float y_pos);
 
     b2Body* getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal);
 

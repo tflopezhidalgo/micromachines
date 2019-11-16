@@ -125,7 +125,7 @@ Mud* World::addMud(float x_pos, float y_pos) {
     return mud;
 }
 
-Car* World::addCar(std::string id, float x_pos, float y_pos, float angle) {
+Car* World::addCar(std::string id, float x_pos, float y_pos) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = {x_pos, y_pos};
