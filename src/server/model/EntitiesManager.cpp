@@ -12,7 +12,7 @@ void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_p
     }
 
     Projectile* projectile = world.addProjectile(entityIdentifier, x_pos, y_pos);
-    projectile->applyLinearImpulse(impulse);
+    projectile->applyForce(impulse);
 
     projectiles.emplace(entitiesCounter, projectile);
     entities.emplace(entitiesCounter, projectile);

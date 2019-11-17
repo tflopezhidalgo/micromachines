@@ -11,8 +11,8 @@ void Projectile::beginCollision(Entity* entity) {}
 
 void Projectile::endCollision(Entity* entity) {}
 
-void Projectile::applyLinearImpulse(b2Vec2& impulse) {
-    body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
+void Projectile::applyForce(b2Vec2& impulse) {
+    body->ApplyForce(impulse, body->GetWorldCenter(), true);
 }
 
 b2Vec2 Projectile::getForwardVelocity() {

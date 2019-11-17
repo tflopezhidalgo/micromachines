@@ -3,8 +3,8 @@
 #include "Identifiers.h"
 
 #define THROWABLE_OBJECTS_NUMBER 5
-#define MAX_LINEAR_IMPULSE 20
-#define MIN_LINEAR_IMPULSE 10
+#define MAX_FORCE 15000
+#define MIN_FORCE 1000
 #define PROJECTILE_INITIAL_DISTANCE 0.5f
 
 Grandstand::Grandstand(b2Body* body, int objectsThrownNumber, float x_pos,
@@ -37,11 +37,26 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
             yPos = lo + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX/(hi-lo)));
         }
 
-        float randLinearImpulse = MIN_LINEAR_IMPULSE + static_cast<float>(rand()) /
-                (static_cast<float>(float(RAND_MAX)/(MAX_LINEAR_IMPULSE - MIN_LINEAR_IMPULSE)));
-        b2Vec2 linearImpulse = {0,500}; //todo apply impulse
+        float randForce = MIN_FORCE + static_cast<float>(rand()) /
+                (static_cast<float>(float(RAND_MAX)/(MAX_FORCE - MIN_FORCE)));
 
-        entitiesManager.addProjectile(entityIdentifier, xPos, yPos, linearImpulse);
+        b2Vec2 force;
+
+        if (horizontalDisposal) {
+            if (positiveOrientation) {
+                force = {0, randForce};
+            } else {
+                force = {0, -randForce};
+            }
+        } else {
+            if (positiveOrientation) {
+                force = {randForce, 0};
+            } else {
+                force = {-randForce, 0};
+            }
+        }
+
+        entitiesManager.addProjectile(entityIdentifier, xPos, yPos, force);
     }
 
 }
