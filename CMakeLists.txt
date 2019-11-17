@@ -24,11 +24,8 @@ include_directories(${PROJECT_SOURCE_DIR}/src/server/matches-management)
 include_directories(${PROJECT_SOURCE_DIR}/src/common)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/qt)
-<<<<<<< HEAD
 include_directories(${PROJECT_SOURCE_DIR}/src/client/ffmpeg)
-=======
 include_directories(${PROJECT_SOURCE_DIR}/build)
->>>>>>> fix-to-GUI
 
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
@@ -36,11 +33,8 @@ file(GLOB MODEL_SRC_FILES "src/server/model/*.cpp")
 file(GLOB MATCHES_MANAGEMENT_SRC_FILES "src/server/matches-management/*.cpp")
 file(GLOB PLUGINS_MANAGEMENT_SRC_FILES "src/server/plugins-management/*.cpp")
 file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
-<<<<<<< HEAD
 file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
 file(GLOB FFMPEG_SRC_FILES "src/client/ffmpeg/*.cpp")
-=======
->>>>>>> fix-to-GUI
 
 set(SOURCE CMAKE_SOURCE_DIR)
 

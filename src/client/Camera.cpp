@@ -4,7 +4,7 @@
 #include "../common/Constants.h"
 #include "Car.h"
 
-amera::Camera(Window& w, Texture& texture) :
+Camera::Camera(Window& w, Texture& texture) :
     window(w),
     texture(texture) {
     this->cameraInfo = {0, 0, 0, 0};
