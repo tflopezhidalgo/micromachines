@@ -1,5 +1,5 @@
-#ifndef MICROMACHINES_CODECONTEXT_H
-#define MICROMACHINES_CODECONTEXT_H
+#ifndef MICROMACHINES_CODECCONTEXT_H
+#define MICROMACHINES_CODECCONTEXT_H
 
 #include "FormatContext.h"
 #include "RecorderException.h"
@@ -13,11 +13,11 @@ extern "C" {
 #include <libavutil/opt.h>
 }
 
-class CodeContext {
+class CodecContext {
 private:
     AVCodecContext* codecContext;
 public:
-    explicit CodeContext(AVCodec* codec, int width, int height);
+    explicit CodecContext(AVCodec* codec, int width, int height);
 
     AVCodecContext *get();
 
@@ -27,8 +27,8 @@ public:
 
     int getPixFmt();
 
-    ~CodeContext();
+    ~CodecContext();
 };
 
 
-#endif //MICROMACHINES_CODECONTEXT_H
+#endif //MICROMACHINES_CODECCONTEXT_H

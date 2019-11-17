@@ -1,8 +1,8 @@
-#include "CodeContext.h"
+#include "CodecContext.h"
 
 #define ERROR_CODECCONTEXT "Error allocating memory for codeContext\n"
 
-CodeContext::CodeContext(AVCodec *codec, int width, int height) :
+CodecContext::CodecContext(AVCodec *codec, int width, int height) :
     codecContext(avcodec_alloc_context3(codec)) {
     if (!codecContext) {
         throw RecorderException(ERROR_CODECCONTEXT);
@@ -23,23 +23,23 @@ CodeContext::CodeContext(AVCodec *codec, int width, int height) :
     avcodec_open2(this->codecContext, codec, NULL);
 }
 
-int CodeContext::getHeight() {
+int CodecContext::getHeight() {
     return this->codecContext->height;
 }
 
-int CodeContext::getPixFmt() {
+int CodecContext::getPixFmt() {
     return this->codecContext->pix_fmt;
 }
 
-int CodeContext::getWidth() {
+int CodecContext::getWidth() {
     return this->codecContext->width;
 }
 
-AVCodecContext *CodeContext::get() {
+AVCodecContext *CodecContext::get() {
     return this->codecContext;
 }
 
-CodeContext::~CodeContext() {
+CodecContext::~CodecContext() {
     avcodec_close(this->codecContext);
     avcodec_free_context(&this->codecContext);
 }

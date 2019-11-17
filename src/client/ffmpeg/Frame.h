@@ -17,7 +17,7 @@ public:
 
     AVFrame* get();
 
-    // write
+    void write(const char *bufferData);
 
     ~Frame();
 };
