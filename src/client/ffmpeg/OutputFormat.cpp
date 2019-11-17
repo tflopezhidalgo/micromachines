@@ -11,20 +11,20 @@ OutputFormat::OutputFormat(const std::string& filename) {
         this->avOutputFormat = av_guess_format("mpeg", NULL, NULL);
     }
     if (!this->avOutputFormat) {
-        throw OutputFormatException(ERROR_FORMAT);
+        throw RecorderException(ERROR_FORMAT);
     }
     this->avOutputFormat->video_codec = AV_CODEC_ID_H264;
 
-    AVCodec *codec = avcodec_find_encoder(this->avOutputFormat->video_codec);
+    this->codec = avcodec_find_encoder(this->avOutputFormat->video_codec);
     if (!codec) {
-        throw OutputFormatException(INIT_CODEC);
+        throw RecorderException(INIT_CODEC);
     }
     //codecContextInit(codec);
     //this->outputFile = fopen(filename.c_str(), "wb");
 }
 
 OutputFormat::~OutputFormat() {
-
+    fclose(this->outputFile);
 }
 
 AVCodec *OutputFormat::getCodec() {

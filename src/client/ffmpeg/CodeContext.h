@@ -2,6 +2,7 @@
 #define MICROMACHINES_CODECONTEXT_H
 
 #include "FormatContext.h"
+#include "RecorderException.h"
 #include <cstdio>
 #include <string>
 #include <stdexcept>
@@ -16,7 +17,7 @@ class CodeContext {
 private:
     AVCodecContext* codecContext;
 public:
-    explicit CodeContext(AVCodec* codec);
+    explicit CodeContext(AVCodec* codec, int width, int height);
 
     AVCodecContext *get();
 

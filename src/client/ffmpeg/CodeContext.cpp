@@ -1,11 +1,16 @@
 #include "CodeContext.h"
 
-CodeContext::CodeContext(AVCodec *codec) :
+#define ERROR_CODECCONTEXT "Error allocating memory for codeContext\n"
+
+CodeContext::CodeContext(AVCodec *codec, int width, int height) :
     codecContext(avcodec_alloc_context3(codec)) {
+    if (!codecContext) {
+        throw RecorderException(ERROR_CODECCONTEXT);
+    }
 
     // La resolución debe ser múltiplo de 2
-    this->codecContext->width = 352;
-    this->codecContext->height = 288;
+    this->codecContext->width = width;
+    this->codecContext->height = height;
     this->codecContext->time_base = {1,25};
     this->codecContext->framerate = {25,1};
     this->codecContext->pix_fmt = AV_PIX_FMT_YUV420P;

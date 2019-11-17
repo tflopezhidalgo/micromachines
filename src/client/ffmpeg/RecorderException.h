@@ -4,9 +4,9 @@
 #include <stdexcept>
 #include <string>
 
-class OutputFormatException : public std::runtime_error {
+class RecorderException : public std::runtime_error {
 public:
-    explicit OutputFormatException(const char* error) : runtime_error(error)  {}
+    explicit RecorderException(const char* error) : runtime_error(error)  {}
 };
 
 
