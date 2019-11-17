@@ -21,8 +21,8 @@ void Receiver::run() {
                 int y = car[2].get<int>();
                 int angle = car[3].get<int>();
                 int health = car[4].get<int>();
-                int state = car[5].get<int>();
-                this->model.updateCar(key, x, y, angle, health, state);
+                bool onExploding = car[6].get<bool>();
+                this->model.updateCar(key, x, y, angle, health, onExploding);
             }
 
             for (auto &obj : j["entitiesData"]) {

@@ -20,8 +20,9 @@ playerID(playerID) {
         int y = carData[2].get<int>();
         int angle = carData[3].get<int>();
         int health = carData[4].get<int>();
+        bool state = carData[6].get<bool>();
 
-        this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health);
+        this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, state);
     }
 
     cam.setOnTarget(this->entities[this->playerID]);
@@ -33,12 +34,11 @@ void ProtectedModel::updateCar(std::string& id,
                                   int y,
                                   int angle,
                                   int health,
-                                  int state) {
+                                  bool onExploding) {
     std::unique_lock<std::mutex> lck(m);
 
     if (entities[id] != NULL) {
-        std::cout << "State vale " << state << std::endl;
-        entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health);
+        entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, onExploding);
     }
 }
 

@@ -7,7 +7,7 @@ sprite(std::move(other.sprite)){
     this->y = other.y;
 }
 
-Throwable::Throwable(BaseSprite sprite, EntityStatus state, int x, int y) :
+Throwable::Throwable(Sprite sprite, EntityStatus state, int x, int y) :
 sprite(sprite){
     this->state = state;
     this->x = x;
