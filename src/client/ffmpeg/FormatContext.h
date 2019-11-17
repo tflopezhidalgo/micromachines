@@ -1,6 +1,10 @@
 #ifndef MICROMACHINES_FORMATCONTEXT_H
 #define MICROMACHINES_FORMATCONTEXT_H
 
+extern "C" {
+#include <libavformat/avformat.h>
+}
+
 
 class FormatContext {
 private:
@@ -9,8 +13,6 @@ public:
     FormatContext();
 
     AVFormatContext* getContext() const;
-
-    void dumpFormat(const std::string& filename);
 
     ~FormatContext();
 };

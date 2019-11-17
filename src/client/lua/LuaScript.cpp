@@ -19,6 +19,9 @@ LuaScript::LuaScript(std::string& clientId) :
     luaL_dofile(L, FLOOR_SCRIPT);
 }
 
+/* Envia por el stack los parametros de la funcion
+ * Recibe string con el movimiento a realizar
+ */
 Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     auto tuplePos = converter.getLuaMapPosition(pos_x, pos_y,
             matrixHeight, matrixWidth);
@@ -36,6 +39,7 @@ Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     return std::move(createEvent(luaEvent));
 }
 
+/* Crea un evento a partir del string devuelto por sl scriptLua */
 Event LuaScript::createEvent(const char* luaEvent) {
     std::vector<char> v_event;
     action = std::string(luaEvent);
@@ -58,6 +62,9 @@ Event LuaScript::createEvent(const char* luaEvent) {
     return std::move(event);
 }
 
+/* Crea una tabla en lua que es guardada en el stack
+ * para ser usada por el script
+ */
 void LuaScript::luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable) {
     lua_newtable(L);
     for(int i = 0; i < table.size(); i++) {
@@ -92,7 +99,7 @@ void LuaScript::setEntities(std::vector<std::vector<int>> table) {
     luaCreateTable(table, ENTITIES);
 }
 
-
+/* Libera el stack de lua */
 void LuaScript::emptyStack() {
     int stackSize = lua_gettop(L);
     while(stackSize != 0) {

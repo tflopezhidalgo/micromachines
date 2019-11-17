@@ -1,6 +1,11 @@
 #include "Converter.h"
 #include <iostream>
 
+/* Convierte las posiciones recibidas por el modelo,
+ * en un numero dentro del rango del mapa.json en el que esta jugando
+ * esto hace que el script de lua pueda saber en que tipo de tile esta
+ * y actuar acorde (avanzar, girar, retroceder)
+ */
 std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matrixHeight, int matrixWidth) {
     //std::cout << "x:" <<pos_x << " y:" << pos_y << " - ";
     int widthMap = matrixWidth * TILE_WIDTH;
