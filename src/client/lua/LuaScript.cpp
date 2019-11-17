@@ -10,7 +10,8 @@
 #define INDEX_Y 2
 
 LuaScript::LuaScript(std::string& clientId) :
-    clientId(clientId) {
+    clientId(clientId),
+    last_action("F") {
     L = luaL_newstate();
     luaL_openlibs(L);
 
@@ -44,27 +45,19 @@ Event LuaScript::createEvent(const char* luaEvent) {
     std::vector<char> v_event;
     action = std::string(luaEvent);
 
-    std::cout << "action:" << action[0] << std::endl;
+    std::cout << "action:" << action[0];
     v_event.push_back(action[0]);
-    if (action[0] == RIGHT || action[0] == LEFT) {
+    if (last_action[0] == RIGHT || last_action[0] == LEFT) {
         count_turns++;
-        if (count_turns > 30) {
-            /*
-            if (action[0] == RIGHT) {
-                v_event.push_back(LEFT);
-            }
-            if (action[0] == LEFT) {
-                v_event.push_back(RIGHT);
-            }
-            */
-        } else {
+        if (count_turns == 10) {
+            std::cout << FORWARD << std::endl;
             v_event.push_back(FORWARD);
-        }
-        if (count_turns > 30) {
             count_turns = 0;
         }
-        //v_event.push_back(FORWARD);
+        //v_event.push_back(last_action[0]);
     }
+    if (action != last_action) last_action = action;
+
     Event event(clientId, v_event);
     return std::move(event);
 }

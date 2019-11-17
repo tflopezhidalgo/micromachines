@@ -24,6 +24,7 @@ private:
     int matrixHeight;
     int matrixWidth;
     int count_turns;
+    std::string last_action;
 
     void luaCreateTable(std::vector<std::vector<int>> table, std::string typeTable);
 

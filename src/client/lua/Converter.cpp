@@ -7,7 +7,7 @@
  * y actuar acorde (avanzar, girar, retroceder)
  */
 std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matrixHeight, int matrixWidth) {
-    std::cout << "x:" <<pos_x << " y:" << pos_y << " - ";
+    //std::cout << "x:" <<pos_x << " y:" << pos_y << " - ";
     int widthMap = matrixWidth * TILE_WIDTH;
     int heightMap = matrixHeight * TILE_HEIGHT;
 

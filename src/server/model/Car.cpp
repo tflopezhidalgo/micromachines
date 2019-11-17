@@ -53,7 +53,7 @@ void Car::updateMove(std::vector<char>& actions) {
         tire->updateDrive(actions);
     }
 
-    float lockAngle = 120 * DEGTORAD;
+    float lockAngle = 40 * DEGTORAD;
     float turnSpeedPerSec = 50 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
 
