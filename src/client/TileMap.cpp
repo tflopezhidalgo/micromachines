@@ -5,19 +5,16 @@
 #include <nlohmann/json.hpp>
 #include <Identifiers.h>
 
-TileMap::TileMap(Window& window, const std::string& mapFile, int zoom) :
-window(window) {
-    std::ifstream in(mapFile);
-    nlohmann::json json_p;
-    in >> json_p;
-    this->numbers = json_p["tiles"].get<std::vector<std::vector<int>>>();
-    int sized = json_p["tiles"].size();
-    int x, y = - (sized - 1) * TILE_HEIGHT * zoom / 2;
+TileMap::TileMap(Window& window, const nlohmann::json& map) :
+window(window) {;
+    this->numbers = map["tiles"].get<std::vector<std::vector<int>>>();
+    int sized = map["tiles"].size();
+    int x, y = - (sized - 1) * TILE_HEIGHT * MtoP / 2;
 
-    for (auto& tileList : json_p["tiles"]) {
+    for (auto& tileList : map["tiles"]) {
         std::vector<int> tiles2 = tileList.get<std::vector<int>>();
         int size2 = tiles2.size();
-        x = - (size2 - 1) * TILE_WIDTH * zoom / 2;
+        x = - (size2 - 1) * TILE_WIDTH * MtoP / 2;
         for (int j : tiles2) {
             this->tiles.emplace_back(std::move(Tile(window, TILE_0, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             if (j == THIRD_QUAD_TRACK) {
@@ -44,11 +41,10 @@ window(window) {
             else if (j == DOWN_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_8, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
-            x += (zoom * TILE_WIDTH);
+            x += (MtoP * TILE_WIDTH);
         }
-        y += (zoom*TILE_HEIGHT);
+        y += (MtoP * TILE_HEIGHT);
     }
-    in.close();
 }
 
 

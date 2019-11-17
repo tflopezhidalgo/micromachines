@@ -18,6 +18,7 @@ public:
 
     void renderAt(int x, int y, Camera& cam);
 
+    int getHealth();
 };
 
 #endif

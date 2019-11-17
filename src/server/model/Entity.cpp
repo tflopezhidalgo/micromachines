@@ -22,7 +22,7 @@ EntityStatus Entity::getStatus() {
 }
 
 bool Entity::isDead() {
-    return status == DEAD;
+    return (status == DEAD);
 }
 
 void Entity::die() {

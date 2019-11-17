@@ -16,7 +16,7 @@ Texture& TextureRepository::getTexture(const string& key,
                                              aux_surface);
         SDL_FreeSurface(aux_surface);
         if (!new_texture)
-            throw runtime_error("No se pudo crear textura");
+            throw runtime_error("No se pudo crear textura" + key);
 
         Texture unique_texture(new_texture, mainWindow);
         unique_textures.insert(pair<string, Texture>(key, move(unique_texture)));

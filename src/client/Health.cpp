@@ -24,3 +24,8 @@ void Health::renderAt(int x, int y, Camera& cam) {
     SDL_RenderFillRect(this->w.getRenderer(), &translatedHealthBar);
     SDL_SetRenderDrawColor(this->w.getRenderer(), 0, 0, 0, 0);
 }
+
+int Health::getHealth() {
+    return this->actualHealth;
+}
+

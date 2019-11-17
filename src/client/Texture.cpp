@@ -30,6 +30,10 @@ void Texture::render(SDL_Rect& src, int angle) {
                         angle);
 }
 
+void Texture::setRect(SDL_Rect& r){
+    this->textureInfo = r;
+}
+
 Texture::~Texture() {
     SDL_DestroyTexture(this->texture);
 }

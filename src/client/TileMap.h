@@ -7,6 +7,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <json.hpp>
 
 #define TILE_0 "../media/tiles/Grass_Tile.png"
 #define TILE_1 "../media/tiles/01_Road.png"
@@ -25,9 +26,7 @@ class TileMap: public Entity{
         std::vector<std::vector<int>> numbers;
 
     public:
-        TileMap(Window& window,
-                const std::string& mapFile,
-                int zoom);
+        TileMap(Window& window, const nlohmann::json& map);
         void render(Camera& cam);
         std::vector<std::vector<int>>& getTileNumbers();
         ~TileMap();

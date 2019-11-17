@@ -2,18 +2,19 @@
 #define MICROMACHINES_THROWABLE_H
 
 #include "Entity.h"
-#include "BaseSprite.h"
+#include "Sprite.h"
 #include "Identifiers.h"
 
 class Throwable : Entity {
 private:
     EntityStatus state;
-    BaseSprite sprite;
+    Sprite sprite;
+    Sprite onFlySprite;
     int x;
     int y;
 
 public:
-    Throwable(BaseSprite sprite, EntityStatus state, int x, int y);
+    Throwable(Sprite sprite, Sprite onFlySprite, EntityStatus state, int x, int y);
     Throwable(Throwable&& other);
     void setPos(int x, int y);
     int getXPos();
