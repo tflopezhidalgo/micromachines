@@ -36,8 +36,8 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 }
 
 void Match::run() {
-    sendMatchDataToClients();
-    startCountdown();
+    //sendMatchDataToClients();
+    //startCountdown();
     startClientsThread();
 
     while (!dead) {
@@ -109,21 +109,21 @@ void Match::stop() {
 
 void Match::startCountdown() {
     nlohmann::json ready;
-    ready["message"] = 'R';
+    ready["message"] = READY;
     std::string readyDump = ready.dump();
     sendMessageToClients(readyDump);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     nlohmann::json set;
-    set["message"] = 'S';
+    set["message"] = SET;
     std::string setDump = set.dump();
     sendMessageToClients(setDump);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     nlohmann::json go;
-    go["message"] = 'G';
+    go["message"] = GO;
     std::string goDump = go.dump();
     sendMessageToClients(goDump);
 }
