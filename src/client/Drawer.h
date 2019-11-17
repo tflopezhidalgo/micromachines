@@ -12,10 +12,9 @@ private:
     bool running;
     Window& main;
     ProtectedModel& model;
-    Counter& counter;
 
 public:
-    Drawer(Window& main, ProtectedModel& model, Counter& counter);
+    Drawer(Window& main, ProtectedModel& model);
     void run();
     void stop();
     ~Drawer() {

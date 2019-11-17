@@ -36,19 +36,15 @@ int main(int argc, char* argv[]) {
         TileMap map(main, w.getInitialData());
 
         ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
-        Counter counter(proxy, main);
-        Drawer drawer(main, model, counter);
+        Drawer drawer(main, model);
         drawer.start();
-
-        proxy->receiveMessage();
-        proxy->receiveMessage();
-        proxy->receiveMessage();
 
         ProtectedQueue<Event> q;
 
         Receiver receiver(model, *proxy);
         EventListener handler(w.getPlayerID(), q);
         //LuaPlayer handler(q, model, w.getPlayerID());
+
         Dispatcher dispatcher(q, *proxy);
 
         receiver.start();

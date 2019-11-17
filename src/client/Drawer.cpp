@@ -3,10 +3,10 @@
 #include "Window.h"
 #include "ProtectedModel.h"
 
-Drawer::Drawer(Window& main, ProtectedModel& model, Counter& counter) :
-main(main), model(model), counter(counter){
-    this->running = true;
-}
+Drawer::Drawer(Window& main, ProtectedModel& model) :
+main(main),
+model(model),
+running(true) { }
 
 void Drawer::run() {
 

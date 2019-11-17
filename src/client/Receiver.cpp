@@ -11,6 +11,13 @@ Receiver::Receiver(ProtectedModel& model,
 
 
 void Receiver::run() {
+    proxy.receiveMessage();
+    model.count();
+    proxy.receiveMessage();
+    model.count();
+    proxy.receiveMessage();
+    model.count();
+
     while (alive) {
         try {
             nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());

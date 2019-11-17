@@ -7,20 +7,30 @@
 #define SEM_SET "../media/sprites/sem_3_red.png"
 #define SEM_GO "../media/sprites/sem_all_green.png"
 
-Counter::Counter(Proxy *proxy, Window& window) :
-window(window) {
-    this->proxy = proxy;
-    textures.push_back(&window.createTextureFrom(SEM_INIT));
-    textures.push_back(&window.createTextureFrom(SEM_SET));
-    textures.push_back(&window.createTextureFrom(SEM_GO));
+Counter::Counter(Window& window) :
+window(window),
+ready(window.createTextureFrom(SEM_READY)),
+set(window.createTextureFrom(SEM_SET)),
+go(window.createTextureFrom(SEM_GO)),
+counter(0){
 }
 
 void Counter::count() {
-    int counter = 1;
-    for (Texture* txt : textures) {
-        proxy->receiveMessage();            // Ojo que genera race condition con el drawe
-        ++counter;
-        SDL_Rect rect = {0,0, 300, 300};
-        txt->render(rect, 0);
+    counter++;
+}
+
+void Counter::render(int x, int y){
+    SDL_Rect r = {x, y, 200, 200};
+    switch(counter){
+        case 0:
+            ready.render(r, 0);
+            break;
+        case 1:
+            set.render(r, 0);
+            break;
+        case 2:
+            go.render(r, 0);
+            break;
+
     }
 }

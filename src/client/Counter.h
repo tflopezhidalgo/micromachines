@@ -9,15 +9,16 @@
 
 class Counter {
 private:
-    Proxy* proxy;
     Window& window;
-    std::vector<Texture*> textures;
+    Texture& ready;
+    Texture& set;
+    Texture& go;
+    int counter;
 
 public:
-    Counter(Proxy* proxy, Window& window);
-
+    Counter(Window& window);
     void count();
-
+    void render(int x, int y);
 };
 
 

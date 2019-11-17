@@ -13,9 +13,9 @@ map(map),
 cam(cam),
 main(w),
 playerID(playerID),
+counter(w),
 grand_stand(w, "../media/sprites/public_sprite.png", GRANDSTAND_HEIGHT, GRANDSTAND_WIDTH)
 {
-    std::cout << "Data vale " << data.dump() << std::endl;
     for (auto& carData : data["carsData"]) {
         std::cout << "LOG - Creando auto" << carData << std::endl;
         this->entities[carData[0]] = new Car("../media/sprites/pitstop_car_1.png", w);
@@ -31,6 +31,11 @@ grand_stand(w, "../media/sprites/public_sprite.png", GRANDSTAND_HEIGHT, GRANDSTA
 
     cam.setOnTarget(this->entities[this->playerID]);
 
+}
+
+void ProtectedModel::count() {
+    std::unique_lock<std::mutex> lck(m);
+    this->counter.count();
 }
 
 void ProtectedModel::updateCar(std::string& id,
@@ -66,6 +71,7 @@ void ProtectedModel::renderAll() {
         car.second->render(cam);
     cam.render();
     this->grand_stand.render(GRANDSTAND_X * cam.getZoom() , GRANDSTAND_Y * cam.getZoom() ,   GRANDSTAND_ANGLE * SERIALIZING_RESCAILING / 2, cam);
+    counter.render(0, 0);
 }
 
 std::vector<int> ProtectedModel::getActualState() {
