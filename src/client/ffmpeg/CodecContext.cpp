@@ -23,16 +23,8 @@ CodecContext::CodecContext(AVCodec *codec, int width, int height) :
     avcodec_open2(this->codecContext, codec, NULL);
 }
 
-int CodecContext::getHeight() {
-    return this->codecContext->height;
-}
-
 int CodecContext::getPixFmt() {
     return this->codecContext->pix_fmt;
-}
-
-int CodecContext::getWidth() {
-    return this->codecContext->width;
 }
 
 AVCodecContext *CodecContext::get() {

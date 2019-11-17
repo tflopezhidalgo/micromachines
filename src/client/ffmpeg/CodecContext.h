@@ -21,10 +21,6 @@ public:
 
     AVCodecContext *get();
 
-    int getHeight();
-
-    int getWidth();
-
     int getPixFmt();
 
     ~CodecContext();
