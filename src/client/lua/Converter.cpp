@@ -24,5 +24,8 @@ std::tuple<int, int> Converter::getLuaMapPosition(int pos_x, int pos_y, int matr
     int luaPosX = abs(round((double)realPosX / TILE_WIDTH));
     int luaPosY = abs(round((double)realPosY / TILE_HEIGHT));
 
+    if (luaPosY < 12) {luaPosY++;}
+    if (luaPosY == 12) {luaPosY--;}
+
     return std::make_tuple(luaPosX, luaPosY);
 }

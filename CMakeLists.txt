@@ -37,9 +37,12 @@ file(GLOB FFMPEG_SRC_FILES "src/client/ffmpeg/*.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 
+
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${CMAKE_BINARY_DIR})
+
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/client/lua DESTINATION ${CMAKE_BINARY_DIR})
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES}
         ${UIS_HDRS} ${FFMPEG_SRC_FILES} src/client/qt/mainwindow.cpp)
