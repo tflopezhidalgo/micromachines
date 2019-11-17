@@ -29,42 +29,46 @@ int main(int argc, char* argv[]) {
     a.exec();
 
     Proxy* proxy = w.getProxy();
-    Window main("Micromachines", 900, 600);
+    try {
+        Window main("Micromachines", 900, 600);
 
-    Camera cam(main);
-    TileMap map(main, w.getInitialData());
+        Camera cam(main);
+        TileMap map(main, w.getInitialData());
 
-    ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
-    Counter counter(proxy, main);
-    Drawer drawer(main, model, counter);
-    drawer.start();
+        ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
+        Counter counter(proxy, main);
+        Drawer drawer(main, model, counter);
+        drawer.start();
 
-    proxy->receiveMessage();
-    proxy->receiveMessage();
-    proxy->receiveMessage();
+        proxy->receiveMessage();
+        proxy->receiveMessage();
+        proxy->receiveMessage();
 
-    ProtectedQueue<Event> q;
+        ProtectedQueue<Event> q;
 
-    Receiver receiver(model, *proxy);
-    EventListener handler(w.getPlayerID(), q);
-    //LuaPlayer handler(q, model, w.getPlayerID());
-    Dispatcher dispatcher(q, *proxy);
+        Receiver receiver(model, *proxy);
+        EventListener handler(w.getPlayerID(), q);
+        //LuaPlayer handler(q, model, w.getPlayerID());
+        Dispatcher dispatcher(q, *proxy);
 
-    receiver.start();
-    dispatcher.start();
-    handler.run();
+        receiver.start();
+        dispatcher.start();
+        handler.run();
 
-    drawer.stop();
-    dispatcher.stop();
-    receiver.stop();
+        drawer.stop();
+        dispatcher.stop();
+        receiver.stop();
 
-    drawer.join();
-    dispatcher.join();
-    receiver.join();
+        drawer.join();
+        dispatcher.join();
+        receiver.join();
+    } catch(std::runtime_error &e) {
+        // Avisar al server que catchee esta exception
+        std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
+    }
 
     SDL_Quit();
     a.quit();
-    proxy->stop();
     delete proxy;
 
     return 0;

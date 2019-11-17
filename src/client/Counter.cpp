@@ -22,6 +22,5 @@ void Counter::count() {
         ++counter;
         SDL_Rect rect = {0,0, 300, 300};
         txt->render(rect, 0);
-        std::cout << "Renderiza " << counter << std::endl;
     }
 }

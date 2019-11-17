@@ -24,8 +24,10 @@ void Throwable::setState(EntityStatus state) {
 }
 
 void Throwable::render(Camera &cam) {
-    if (state == RECENTLY_THROWN){}
-        //renderizar bolita viajando
+    if (state == RECENTLY_THROWN)
+        //std::cout << "Estado viajando..\n";
+        return;
+
     if (state == ALIVE)
         this->sprite.render(x, y, 0, cam);
 }

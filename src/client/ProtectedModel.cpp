@@ -32,10 +32,12 @@ void ProtectedModel::updateCar(std::string& id,
                                   int x,
                                   int y,
                                   int angle,
-                                  int health) {
+                                  int health,
+                                  int state) {
     std::unique_lock<std::mutex> lck(m);
 
     if (entities[id] != NULL) {
+        std::cout << "State vale " << state << std::endl;
         entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health);
     }
 }

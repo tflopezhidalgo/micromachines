@@ -36,8 +36,8 @@ ProtectedQueue<Event>& Match::getEventsQueue() {
 }
 
 void Match::run() {
-    //sendMatchDataToClients();
-    //startCountdown();
+    sendMatchDataToClients();
+    startCountdown();
     startClientsThread();
 
     while (!dead) {

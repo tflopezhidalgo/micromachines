@@ -3,8 +3,6 @@
 #include "Window.h"
 #include "../common/Constants.h"
 
-//#define MtoP 3     // Relación metros a píxeles
-
 Camera::Camera(Window& w) :
     window(w) {
     this->cameraInfo = {0, 0, 0, 0};
