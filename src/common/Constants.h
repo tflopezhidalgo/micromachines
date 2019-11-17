@@ -18,11 +18,14 @@
 
 
 //Protocol sv-client messages
-#define CREATE_MATCH_MSG "create"
+#define CREATE_MATCH "create"
 #define VALID 0
 #define MATCH_HAS_STARTED 1
 #define MATCH_EQUAL_NAMED 2
 #define CLIENT_EQUAL_NAMED 3
+#define READY 'R'
+#define SET 'S'
+#define GO 'G'
 
 
 //Movement ID's

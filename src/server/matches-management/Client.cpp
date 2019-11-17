@@ -1,7 +1,6 @@
 #include <SocketException.h>
 #include "Client.h"
 
-
 Client::Client(Proxy proxy, std::string clientId, ProtectedQueue<Event>& eventsQueue) :
         proxy(std::move(proxy)),
         clientId(clientId),

@@ -50,7 +50,7 @@ public:
 
     std::string getRaceStatus();
 
-    std::string getMapData();
+    std::string getRaceData();
 
     ~RaceManager();
 };
