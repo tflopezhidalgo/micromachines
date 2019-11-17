@@ -46,17 +46,24 @@ Event LuaScript::createEvent(const char* luaEvent) {
 
     std::cout << "action:" << action[0] << std::endl;
     v_event.push_back(action[0]);
-    if (action[0] == RIGHT && action[0] != LEFT) {
+    if (action[0] == RIGHT || action[0] == LEFT) {
         count_turns++;
-        if (count_turns > 20) {
-            //v_event.push_back(BACKWARD);
+        if (count_turns > 30) {
+            /*
+            if (action[0] == RIGHT) {
+                v_event.push_back(LEFT);
+            }
+            if (action[0] == LEFT) {
+                v_event.push_back(RIGHT);
+            }
+            */
         } else {
-            //v_event.push_back(FORWARD);
+            v_event.push_back(FORWARD);
         }
-        if (count_turns > 40) {
+        if (count_turns > 30) {
             count_turns = 0;
         }
-        v_event.push_back(FORWARD);
+        //v_event.push_back(FORWARD);
     }
     Event event(clientId, v_event);
     return std::move(event);
