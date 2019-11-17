@@ -6,12 +6,15 @@
 #include "ThrowableFactory.h"
 #include <string>
 #include "Identifiers.h"
+#include "Constants.h"
 
 ProtectedModel::ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& playerID) :
 map(map),
 cam(cam),
 main(w),
-playerID(playerID) {
+playerID(playerID),
+grand_stand(w, "../media/sprites/public_sprite.png", GRANDSTAND_HEIGHT, GRANDSTAND_WIDTH)
+{
     std::cout << "Data vale " << data.dump() << std::endl;
     for (auto& carData : data["carsData"]) {
         std::cout << "LOG - Creando auto" << carData << std::endl;
@@ -24,6 +27,7 @@ playerID(playerID) {
 
         this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, state);
     }
+
 
     cam.setOnTarget(this->entities[this->playerID]);
 
@@ -54,14 +58,13 @@ void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, E
 
 void ProtectedModel::renderAll() {
     std::unique_lock<std::mutex> lock(m);
-    if (this->cam.targetSet()) {
-        map.render(cam);
-        cam.update();
-        for (auto& object : objects)
-            object.second->render(cam);
-        for (auto& car : entities)
-            car.second->render(cam);
-    }
+    map.render(cam);
+    cam.update();
+    for (auto& object : objects)
+        object.second->render(cam);
+    for (auto& car : entities)
+        car.second->render(cam);
+    this->grand_stand.render(GRANDSTAND_X * cam.getZoom() , GRANDSTAND_Y * cam.getZoom() ,   GRANDSTAND_ANGLE * SERIALIZING_RESCAILING / 2, cam);
 }
 
 std::vector<int> ProtectedModel::getActualState() {

@@ -12,18 +12,17 @@ void Drawer::run() {
 
     //counter.count();
 
-    std::chrono::high_resolution_clock::duration fixed_time(60);
-
+    long fixed_time = 1000 / 60; // segundos / frames
     while (running){
         std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
         this->main.clear();
         this->model.renderAll();
         this->main.update();
         std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-        std::this_thread::sleep_for(fixed_time - (start - end));
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        if (duration.count() < fixed_time)
+            std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
     }
-
-    std::cout << "Cerrando drawer" << std::endl;
 }
 
 void Drawer::stop() {

@@ -13,6 +13,7 @@ EventListener::EventListener(std::string playerID,
 void EventListener::run() {
     SDL_Event e;
     while (alive) {
+        // Mejor : 15000
         usleep(15000);
 
         if (SDL_PollEvent(&e))

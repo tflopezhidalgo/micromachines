@@ -21,7 +21,7 @@ private:
     Window& main;
     Camera& cam;
     TileMap& map;
-
+    Sprite grand_stand;
 
 public:
     ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& player);
