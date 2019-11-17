@@ -2,19 +2,21 @@
 
 Mud::Mud(b2Body *body, std::vector<TimedEvent> &timedEvents) :
     Entity(MUD, body),
-    timedEvents(timedEvents) {}
+    timedEvents(timedEvents),
+    used(false) {}
 
 void Mud::beginCollision(Entity* entity) {
-    if (entity->getIdentifier() == CAR && !isDead()) {
+    if (entity->getIdentifier() == CAR && !isDead() && !used) {
         Car* car = dynamic_cast<Car*>(entity);
         reduceVision(car);
     }
 }
 
 void Mud::reduceVision(Car* car) {
+    used = true;
     car->reduceVision();
     timedEvents.emplace_back(TimedEvent(car, &Car::recoverTotalVision, 3));
-    die();
+    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 1.5f));
 }
 
 void Mud::endCollision(Entity* entity) {}

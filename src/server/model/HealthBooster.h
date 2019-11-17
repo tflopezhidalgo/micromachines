@@ -7,8 +7,10 @@
 class HealthBooster : public Entity {
 private:
     int healthBoost;
+    bool used;
+    std::vector<TimedEvent>& timedEvents;
 public:
-    explicit HealthBooster(b2Body* body, int healing);
+    explicit HealthBooster(b2Body* body, int healing, std::vector<TimedEvent>& timedEvents);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void heal(Car* car);
