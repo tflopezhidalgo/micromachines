@@ -38,10 +38,10 @@ void ProtectedModel::updateCar(std::string& id,
                                   int y,
                                   int angle,
                                   int health,
-                                  bool onExploding) {
+                                  bool blinded) {
     std::unique_lock<std::mutex> lck(m);
 
-    entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, onExploding);
+    entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, blinded);
 }
 
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
@@ -64,6 +64,7 @@ void ProtectedModel::renderAll() {
         object.second->render(cam);
     for (auto& car : entities)
         car.second->render(cam);
+    cam.render();
     this->grand_stand.render(GRANDSTAND_X * cam.getZoom() , GRANDSTAND_Y * cam.getZoom() ,   GRANDSTAND_ANGLE * SERIALIZING_RESCAILING / 2, cam);
 }
 

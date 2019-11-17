@@ -12,15 +12,15 @@ Car::Car(const std::string &file, Window& win) :
         this->x = 0;
         this->y = 0;
         this->angle = 0;
-        this->exploding = false;
+        this->blinded = false;
 }
 
-void Car::setState(int x, int y, int angle, int health, bool exploding) {
+void Car::setState(int x, int y, int angle, int health, bool blinded) {
     this->x = x;
     this->y = y;
     this->angle = angle;
     this->health.setActualHealth(health);
-    this->exploding = exploding;
+    this->blinded = blinded;
 }
 
 int Car::getAngle(){
@@ -36,12 +36,16 @@ int Car::getYPos() {
 }
 
 void Car::render(Camera& cam) {
-    if (!exploding && health.getHealth() != 0) {
+    if (health.getHealth() > 0) {
         this->health.renderAt(x, y, cam);
         this->sprite.render(x, y, this->angle, cam);
     } else {
         this->animation.render(x, y, 0, cam);
     }
+}
+
+bool Car::isBlinded() {
+    return blinded;
 }
 
 Car::~Car() { }

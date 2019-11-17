@@ -25,7 +25,7 @@ private:
 
 public:
     ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& player);
-    void updateCar(std::string& id, int x, int y, int angle, int health, bool state);
+    void updateCar(std::string& id, int x, int y, int angle, int health, bool blinded);
     void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();
     std::vector<int> getActualState();

@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     try {
         Window main("Micromachines", 900, 600);
 
-        Camera cam(main);
+        Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 
         ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());

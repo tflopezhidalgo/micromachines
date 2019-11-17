@@ -14,18 +14,19 @@ private:
     Sprite sprite;
     AnimatedSprite animation;
     Health health;
-    bool exploding;
     int x;
     int y;
     int angle;
+    bool blinded;
 
 public:
     Car(const std::string& file, Window& win);
-    void setState(int x, int y, int angle, int health, bool exploding);
+    void setState(int x, int y, int angle, int health, bool blinded);
     int getAngle();
     int getXPos();
     int getYPos();
     void render(Camera& cam);
+    bool isBlinded();
     ~Car();
 };
 

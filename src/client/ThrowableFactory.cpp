@@ -7,19 +7,21 @@
 #define HEALTH_SPRITE "../media/sprites/health_sprite.png"
 #define BOOST_SPRITE "../media/sprites/powerup.png"
 #define OIL_SPRITE "../media/sprites/oil.png"
+#define MUD_SPRITE "../media/sprites/mud_sprite.png"
+#define ROCK_SPRITE "../media/sprites/rock_sprite.png"
 #define FLY_SPRITE "../media/sprites/throwable_sprite.png"
 
 ThrowableFactory::ThrowableFactory(Window &window) :
 window(window) { }
 
 Throwable* ThrowableFactory::generateThrowable(EntityIdentifier type) {
-    Sprite onFlySprite(window, FLY_SPRITE, 6 , 6 );
+    Sprite onFlySprite(window, FLY_SPRITE, 2 * PROJECTILE_RADIUS , 2 * PROJECTILE_RADIUS);
     if (type == STONE) {
-        Sprite sprite(window, HEALTH_SPRITE, 2 * STONE_RADIUS, 2 * STONE_RADIUS);
+        Sprite sprite(window, ROCK_SPRITE, 2 * STONE_RADIUS, 2 * STONE_RADIUS);
         return new Throwable(std::move(sprite), std::move(onFlySprite), DEAD, 0, 0);
     }
     if (type == MUD) {
-        Sprite sprite(window, HEALTH_SPRITE, 10, 10);
+        Sprite sprite(window, MUD_SPRITE, MUD_HEIGHT, MUD_WIDTH);
         return new Throwable(std::move(sprite), std::move(onFlySprite), DEAD, 0, 0);
     }
     if (type == OIL) {
