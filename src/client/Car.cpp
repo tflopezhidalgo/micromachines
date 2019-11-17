@@ -7,7 +7,7 @@
 
 Car::Car(const std::string &file, Window& win) :
     sprite(win, file, CAR_H, CAR_W),
-    animation(win, "../media/animations/fire.png", 7, 185, 191, 15, 15),
+    animation(win, "../media/animations/fire.png", 7, 185, 191, 25, 25),
     health(win){
         this->x = 0;
         this->y = 0;

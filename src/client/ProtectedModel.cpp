@@ -37,9 +37,7 @@ void ProtectedModel::updateCar(std::string& id,
                                   bool onExploding) {
     std::unique_lock<std::mutex> lck(m);
 
-    if (entities[id] != NULL) {
-        entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, onExploding);
-    }
+    entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, onExploding);
 }
 
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {

@@ -3,7 +3,7 @@
 #define MICROMACHINES_CONSTANTS_H
 
 // Client Macro
-#define MtoP 5     // Relación metros a píxeles
+#define MtoP 6     // Relación metros a píxeles
 
 
 //Sv constants

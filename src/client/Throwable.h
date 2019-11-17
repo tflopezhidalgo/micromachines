@@ -9,11 +9,12 @@ class Throwable : Entity {
 private:
     EntityStatus state;
     Sprite sprite;
+    Sprite onFlySprite;
     int x;
     int y;
 
 public:
-    Throwable(Sprite sprite, EntityStatus state, int x, int y);
+    Throwable(Sprite sprite, Sprite onFlySprite, EntityStatus state, int x, int y);
     Throwable(Throwable&& other);
     void setPos(int x, int y);
     int getXPos();
