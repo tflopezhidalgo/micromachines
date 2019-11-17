@@ -7,11 +7,26 @@
 #include <string>
 #include "Identifiers.h"
 
-ProtectedModel::ProtectedModel(Window& main, std::string playerID) :
-    playerID(playerID), 
-	main(main), 
-	cam(main), 
-	map(main, "../media/maps/simple.json",  cam.getZoom()) {}
+ProtectedModel::ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& playerID) :
+map(map),
+cam(cam),
+main(w),
+playerID(playerID) {
+    std::cout << "Data vale " << data.dump() << std::endl;
+    for (auto& carData : data["carsData"]) {
+        std::cout << "LOG - Creando auto" << carData << std::endl;
+        this->entities[carData[0]] = new Car("../media/sprites/pitstop_car_1.png", w);
+        int x = carData[1].get<int>();
+        int y = carData[2].get<int>();
+        int angle = carData[3].get<int>();
+        int health = carData[4].get<int>();
+
+        this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health);
+    }
+
+    cam.setOnTarget(this->entities[this->playerID]);
+
+}
 
 void ProtectedModel::updateCar(std::string& id,
                                   int x,
@@ -19,12 +34,6 @@ void ProtectedModel::updateCar(std::string& id,
                                   int angle,
                                   int health) {
     std::unique_lock<std::mutex> lck(m);
-
-    if (entities[id] == NULL)
-        this->entities[id] = new Car("../media/sprites/pitstop_car_1.png", main);
-
-    if (!cam.targetSet())
-        cam.setOnTarget(this->entities[this->playerID]);
 
     if (entities[id] != NULL) {
         entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health);
@@ -34,7 +43,7 @@ void ProtectedModel::updateCar(std::string& id,
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
     std::unique_lock<std::mutex> lck(m);
 
-    if (objects.count(id) == 0) {
+    if (objects[id] == NULL) {
         ThrowableFactory factory(this->main);
         this->objects[id] = factory.generateThrowable(type);
     }
@@ -55,14 +64,6 @@ void ProtectedModel::renderAll() {
     }
 }
 
-ProtectedModel::~ProtectedModel(){
-    for (auto& car : entities)
-        delete car.second;
-    for (auto& object : objects)
-        delete object.second;
-}
-
-
 std::vector<int> ProtectedModel::getActualState() {
     std::unique_lock<std::mutex> lock(m);
     std::vector<int> state;
@@ -71,6 +72,7 @@ std::vector<int> ProtectedModel::getActualState() {
     state.push_back(this->entities[playerID]->getYPos());
     return state;
 }
+
 
 std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
     std::unique_lock<std::mutex> lock(m);
@@ -87,4 +89,11 @@ std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
 
 std::vector<std::vector<int>>& ProtectedModel::getMap() {
     return map.getTileNumbers();
+}
+
+ProtectedModel::~ProtectedModel(){
+    for (auto& car : entities)
+        delete car.second;
+    for (auto& object : objects)
+        delete object.second;
 }

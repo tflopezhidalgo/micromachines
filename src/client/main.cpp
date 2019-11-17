@@ -16,6 +16,7 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "LuaPlayer.h"
+#include "Counter.h"
 
 using json = nlohmann::json;
 
@@ -28,32 +29,42 @@ int main(int argc, char* argv[]) {
     a.exec();
 
     Proxy* proxy = w.getProxy();
-
     Window main("Micromachines", 900, 600);
-    //Window main("game");
+
+    Camera cam(main);
+    TileMap map(main, w.getInitialData());
+
+    ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
+    Counter counter(proxy, main);
+    Drawer drawer(main, model, counter);
+    drawer.start();
+
+    proxy->receiveMessage();
+    proxy->receiveMessage();
+    proxy->receiveMessage();
 
     ProtectedQueue<Event> q;
-    ProtectedModel model(main, w.getPlayerID());
 
     Receiver receiver(model, *proxy);
-    Drawer drawer(main, model);
     EventListener handler(w.getPlayerID(), q);
     //LuaPlayer handler(q, model, w.getPlayerID());
     Dispatcher dispatcher(q, *proxy);
 
     receiver.start();
     dispatcher.start();
-    drawer.start();
     handler.run();
 
     drawer.stop();
     dispatcher.stop();
     receiver.stop();
+
     drawer.join();
     dispatcher.join();
     receiver.join();
 
     SDL_Quit();
+    a.quit();
+    proxy->stop();
     delete proxy;
 
     return 0;

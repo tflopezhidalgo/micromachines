@@ -3,12 +3,14 @@
 #include "Window.h"
 #include "ProtectedModel.h"
 
-Drawer::Drawer(Window& main, ProtectedModel& model) :
-main(main), model(model){
+Drawer::Drawer(Window& main, ProtectedModel& model, Counter& counter) :
+main(main), model(model), counter(counter){
     this->running = true;
 }
 
 void Drawer::run() {
+
+    //counter.count();
 
     std::chrono::high_resolution_clock::duration fixed_time(1/60);
 

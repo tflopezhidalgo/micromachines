@@ -19,12 +19,12 @@ private:
     std::map<std::string, Car*> entities;
     std::map<int, Throwable*> objects;
     Window& main;
-    Camera cam;
-    TileMap map;
+    Camera& cam;
+    TileMap& map;
 
 
 public:
-    ProtectedModel(Window& main, std::string playerID);
+    ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& player);
     void updateCar(std::string& id, int x, int y, int angle, int health);
     void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();

@@ -8,6 +8,7 @@
 #include <nlohmann/json.hpp>
 #include "Proxy.h"
 #include "Socket.h"
+#include <thread>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -63,8 +64,6 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
         ui->stackedWidget->setCurrentIndex(1);
 
         nlohmann::json j = nlohmann::json::parse(proxy->receiveMessage());  // Recibo información de partidas
-
-        std::cout << "Se recibe " << j.dump() << std::endl;
 
         int row = 0;
 
@@ -137,7 +136,7 @@ Proxy* MainWindow::getProxy() {
     return this->proxy;
 }
 
-std::string MainWindow::getPlayerID(){
+std::string& MainWindow::getPlayerID(){
     return this->PlayerID;
 }
 
@@ -161,8 +160,8 @@ void MainWindow::on_buttonBox_accepted() // Accept en crear partida
 
         this->proxy->sendMessage(serializedMsg);
         std::cout << "LOG - Se envia: " << msg.dump() << std::endl;
-
         emit waitStatus();
+
     } catch (std::runtime_error &e) {
         QMessageBox m;
         m.setText(e.what());
@@ -202,7 +201,7 @@ void MainWindow::on_okCancelButtons_accepted() // Accept en partidas disponibles
     } catch(std::runtime_error &e){
         QMessageBox q;
         q.setText(e.what());
-        std::cout << "ERROR - Se produjo " << e.what() << " en " << __LINE__ << std::endl;
+        std::cout << "ERROR - Se produjo error en " << __LINE__ << std::endl;
         q.exec();
     }
 
@@ -215,6 +214,7 @@ void MainWindow::handleResponseStatus(){
     switch(j["status"].get<int>()) {
         case VALID:
             this->ui->stackedWidget->setCurrentWidget(ui->waitingPlayersScreen);
+            waitForInitialPosition();
             break;
         case MATCH_HAS_STARTED:
             m.setText("La partida está en progreso");
@@ -231,6 +231,17 @@ void MainWindow::handleResponseStatus(){
     }
 }
 
+void MainWindow::waitForInitialPosition(){
+    std::string j(proxy->receiveMessage());
+    std::cout << "LOG - INITIAL DATA: " << j << std::endl;
+    initialData = nlohmann::json::parse(j);
+    this->close();
+}
+
+nlohmann::json& MainWindow::getInitialData(){
+    return this->initialData;
+}
+
 void MainWindow::on_okCancelButtons_rejected() // Cancel en partidas disponibles
 {
     ui->stackedWidget->setCurrentIndex(0);
@@ -245,3 +256,8 @@ void MainWindow::on_playerSelectComboBox_currentIndexChanged(int index) // Selec
         this->luaPlayer = true;
 }
 
+
+void MainWindow::on_MainWindow_destroyed()
+{
+    std::cout << "Se cerro aplicacion\n";
+}
