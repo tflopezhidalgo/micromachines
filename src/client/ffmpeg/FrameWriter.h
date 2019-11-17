@@ -41,7 +41,7 @@ public:
     // cierra el stream de video
     void close();
 
-    void write(const char* data);
+    void write(const char *data, SwsContext *ctx);
 
     ~FrameWriter();
 };

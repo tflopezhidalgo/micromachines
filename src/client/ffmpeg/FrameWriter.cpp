@@ -48,7 +48,7 @@ FrameWriter::~FrameWriter() {
 }
 
 // Escribe un frame a disco.
-void FrameWriter::write(const char *data) {
-    frame.write(data); // ctx
+void FrameWriter::write(const char *data, SwsContext* ctx) {
+    frame.write(data, ctx); // ctx
     encode(&codecContext, &frame, &packet, outFile);
 }
