@@ -24,6 +24,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src/server/matches-management)
 include_directories(${PROJECT_SOURCE_DIR}/src/common)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/qt)
+include_directories(${PROJECT_SOURCE_DIR}/src/client/ffmpeg)
 
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
@@ -32,6 +33,7 @@ file(GLOB MATCHES_MANAGEMENT_SRC_FILES "src/server/matches-management/*.cpp")
 file(GLOB PLUGINS_MANAGEMENT_SRC_FILES "src/server/plugins-management/*.cpp")
 file(GLOB LUA_SRC_FILES "src/client/lua/*.cpp")
 file(GLOB QT_SRC_FILES "src/client/qt/.cpp")
+file(GLOB FFMPEG_SRC_FILES "src/client/ffmpeg/*.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 
@@ -39,8 +41,9 @@ install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAK
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${CMAKE_BINARY_DIR})
 
-add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES} ${UIS_HDRS} src/client/qt/mainwindow.cpp)
-target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets)
+add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES}
+        ${UIS_HDRS} ${FFMPEG_SRC_FILES} src/client/qt/mainwindow.cpp)
+target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets avformat avcodec avutil)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build) #Box2D library building
 

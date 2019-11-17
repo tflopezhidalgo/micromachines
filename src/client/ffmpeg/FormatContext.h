@@ -1,9 +1,9 @@
-//
-// Created by eliana on 16/11/19.
-//
-
 #ifndef MICROMACHINES_FORMATCONTEXT_H
 #define MICROMACHINES_FORMATCONTEXT_H
+
+extern "C" {
+#include <libavformat/avformat.h>
+}
 
 
 class FormatContext {
@@ -13,8 +13,6 @@ public:
     FormatContext();
 
     AVFormatContext* getContext() const;
-
-    void dumpFormat(const std::string& filename);
 
     ~FormatContext();
 };

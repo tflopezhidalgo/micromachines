@@ -1,9 +1,3 @@
---
--- User: eliana
--- Date: 1/11/19
---
-
-
 entities_id = {
     [0] = {
         ["name"] = "HEALTHBOOSTER",
