@@ -8,6 +8,7 @@
 class Mud : public Entity {
 private:
     std::vector<TimedEvent> &timedEvents;
+    bool used;
 public:
     Mud(b2Body *body, std::vector<TimedEvent> &timedEvents);
     void beginCollision(Entity* entity) override;

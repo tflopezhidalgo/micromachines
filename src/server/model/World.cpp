@@ -87,7 +87,7 @@ b2Body* World::addCircleBody(b2Vec2 pos, float radius, bool dynamic, bool sensor
 
 HealthBooster* World::addHealthBooster(float x_pos, float y_pos) {
     b2Body* body = addCircleBody({x_pos, y_pos}, BOOSTERS_RADIUS, false, true);
-    auto healthBooster = new HealthBooster(body, int(config.find(HEALTH_BOOST_KEY)->second));
+    auto healthBooster = new HealthBooster(body, int(config.find(HEALTH_BOOST_KEY)->second), timedEvents);
     body->SetUserData(healthBooster);
     return healthBooster;
 }
@@ -231,7 +231,7 @@ b2Body* World::getGrandstandBody(float x_pos, float y_pos, bool horizontalDispos
 }
 
 Projectile* World::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
-    b2Body* body = addCircleBody({x_pos, y_pos}, PROJECTILE_RADIUS, true, false);
+    b2Body* body = addCircleBody({x_pos, y_pos}, PROJECTILE_RADIUS, true, true);
     auto projectile = new Projectile(entityIdentifier, body);
     return projectile;
 }
