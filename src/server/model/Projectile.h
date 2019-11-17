@@ -14,7 +14,7 @@ public:
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void updateFriction();
-    void applyForce(b2Vec2& impulse);
+    void applyForce(b2Vec2& force);
     bool isStill();
     ~Projectile();
 };
