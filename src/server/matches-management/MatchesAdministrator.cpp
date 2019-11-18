@@ -5,8 +5,18 @@
 #include "Client.h"
 #include "Constants.h"
 
+#define NULL_MSG "{}"
+
 MatchesAdministrator::MatchesAdministrator(const char* configPath) :
-    configMapBuilder(configPath) {}
+    configMapBuilder(configPath),
+    dead(false) {}
+
+void MatchesAdministrator::run() {
+    while (!dead) {
+        std::this_thread::sleep_for (std::chrono::milliseconds(100));
+        deleteFinishedMatches();
+    }
+}
 
 bool MatchesAdministrator::createMatch(
         std::string& creatorNickname,
@@ -15,6 +25,7 @@ bool MatchesAdministrator::createMatch(
         std::string& mapName,
         int playersAmount,
         int raceLaps) {
+
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json initiationResponse;
 
@@ -41,6 +52,7 @@ bool MatchesAdministrator::addClientToMatch(
         std::string& clientNickname,
         Proxy& clientProxy,
         std::string& matchName) {
+
     std::unique_lock<std::mutex> lck(mutex);
     nlohmann::json initiationResponse;
     Match* match = matches.find(matchName)->second;
@@ -91,23 +103,27 @@ std::string MatchesAdministrator::getAvailableMatches() {
 
     nlohmann::json availableMatches;
 
-    for (auto it = matches.begin(); it != matches.end(); ++it) {
-        std::string matchName = it->first;
-        it->second->showIfAvailable(availableMatches, matchName);
+    for (auto & match : matches) {
+        std::string matchName = match.first;
+        match.second->showIfAvailable(availableMatches, matchName);
     }
 
     if (availableMatches.is_null()) {
-        std::string nullMessage = "{}";
+        std::string nullMessage = NULL_MSG;
         return std::move(nullMessage);
     }
 
     return std::move(availableMatches.dump());
 }
 
+void MatchesAdministrator::stop() {
+    dead = true;
+}
+
 MatchesAdministrator::~MatchesAdministrator() {
-    for (auto it = matches.begin(); it != matches.end(); ++it) {
-        it->second->stop();
-        it->second->join();
-        delete (it->second);
+    for (auto & match : matches) {
+        match.second->stop();
+        match.second->join();
+        delete (match.second);
     }
 }
