@@ -3,7 +3,7 @@
 #define MICROMACHINES_CONSTANTS_H
 
 // Client Macro
-#define MtoP 3     // Relación metros a píxeles
+#define MtoP 6     // Relación metros a píxeles
 
 
 //Sv constants
@@ -45,9 +45,12 @@
 #define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
+#define GRANDSTAND_ANGLE - 3.14f  // EN RADIANES
+#define GRANDSTAND_X 300
+#define GRANDSTAND_Y 0
 #define MUD_WIDTH 30
 #define MUD_HEIGHT 30
-#define PROJECTILE_RADIUS 10
+#define PROJECTILE_RADIUS 2
 
 //Car constants
 #define MAX_DISTANCE_TO_TRACK 200

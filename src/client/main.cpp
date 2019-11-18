@@ -16,6 +16,7 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "LuaPlayer.h"
+#include "Counter.h"
 
 using json = nlohmann::json;
 
@@ -28,32 +29,42 @@ int main(int argc, char* argv[]) {
     a.exec();
 
     Proxy* proxy = w.getProxy();
+    try {
+        Window main("Micromachines", 900, 600);
 
-    Window main("Micromachines", 900, 600);
-    //Window main("game");
+        Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
+        TileMap map(main, w.getInitialData());
 
-    ProtectedQueue<Event> q;
-    ProtectedModel model(main, w.getPlayerID());
+        ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
+        Drawer drawer(main, model);
+        drawer.start();
 
-    Receiver receiver(model, *proxy);
-    Drawer drawer(main, model);
-    EventListener handler(w.getPlayerID(), q);
-    //LuaPlayer handler(q, model, w.getPlayerID());
-    Dispatcher dispatcher(q, *proxy);
+        ProtectedQueue<Event> q;
 
-    receiver.start();
-    dispatcher.start();
-    drawer.start();
-    handler.run();
+        Receiver receiver(model, *proxy);
+        EventListener handler(w.getPlayerID(), q);
+        //LuaPlayer handler(q, model, w.getPlayerID());
 
-    drawer.stop();
-    dispatcher.stop();
-    receiver.stop();
-    drawer.join();
-    dispatcher.join();
-    receiver.join();
+        Dispatcher dispatcher(q, *proxy);
+
+        receiver.start();
+        dispatcher.start();
+        handler.run();
+
+        drawer.stop();
+        dispatcher.stop();
+        receiver.stop();
+
+        drawer.join();
+        dispatcher.join();
+        receiver.join();
+    } catch(std::runtime_error &e) {
+        // Avisar al server que catchee esta exception
+        std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
+    }
 
     SDL_Quit();
+    a.quit();
     delete proxy;
 
     return 0;

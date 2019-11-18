@@ -56,13 +56,25 @@ function getLimit(pos)
     return start, ending
 end
 
-function is_in_border(pos_x, pos_y)
+function is_in_border_bottom(pos_x, pos_y)
     local border_x = false
-    if (pos_x < 1 or pos_x > #map[1]) then
+    if (pos_x > #map[1]) then
         border_x = true
     end
     local border_y = false
-    if (pos_y < 1 or pos_y > #map) then
+    if (pos_y > #map) then
+        border_y = true
+    end
+    return border_x or border_y
+end
+
+function is_in_border_top(pos_x, pos_y)
+    local border_x = false
+    if (pos_x <= 1) then
+        border_x = true
+    end
+    local border_y = false
+    if (pos_y <= 1) then
         border_y = true
     end
     return border_x or border_y
@@ -88,8 +100,11 @@ function check_entity(pos_x, pos_y)
 end
 
 function action_vertical(pos_x, pos_y)
-    if (is_in_border(pos_x, pos_y)) then
-        return next_position["reverse"]
+    if (is_in_border_bottom(pos_x, pos_y)) then
+        return next_position[0]
+    end
+    if (is_in_border_top(pos_x, pos_y)) then
+        return next_position[2]
     end
 
     -- cada piso tiene una direccion recomendada a avanzar
@@ -110,9 +125,13 @@ function action_vertical(pos_x, pos_y)
 end
 
 function action_horizontal(pos_x, pos_y)
-    if (is_in_border(pos_x, pos_y)) then
-        return next_position["reverse"]
+    if (is_in_border_bottom(pos_x, pos_y)) then
+        return next_position[0]
     end
+    if (is_in_border_top(pos_x, pos_y)) then
+        return next_position[1]
+    end
+
     local try_pos = next_recommended_position(map[pos_y][pos_x])
     if (check_entity(map[pos_y][pos_x + try_pos])) then
         return next_position[try_pos]

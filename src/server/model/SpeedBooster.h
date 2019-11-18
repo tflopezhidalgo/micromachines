@@ -8,6 +8,7 @@
 class SpeedBooster : public Entity {
 private:
     float speedBoost;
+    bool used;
     std::vector<TimedEvent>& timedEvents;
 public:
     SpeedBooster(b2Body *body, float speedBoost, std::vector<TimedEvent>& timedEvents);

@@ -15,7 +15,7 @@ set(CMAKE_CXX_FLAGS "-ggdb -DDebug -fno-inline -O3 -std=c++11")    # Flags setti
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build)
 
-qt5_wrap_ui(UIS_HDRS ${PROJECT_SOURCE_DIR}/src/client/qt/*.ui)
+qt5_wrap_ui(UIS_HDRS ${PROJECT_SOURCE_DIR}/src/client/qt/mainwindow.ui)
 
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/src/client)
@@ -25,6 +25,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src/common)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/lua)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/qt)
 include_directories(${PROJECT_SOURCE_DIR}/src/client/ffmpeg)
+include_directories(${PROJECT_SOURCE_DIR}/build)
 
 file(GLOB COMMON_SRC_FILES "src/common/*.cpp")
 file(GLOB CLIENT_SRC_FILES "src/client/*.cpp")
@@ -37,9 +38,12 @@ file(GLOB FFMPEG_SRC_FILES "src/client/ffmpeg/*.cpp")
 
 set(SOURCE CMAKE_SOURCE_DIR)
 
+
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${CMAKE_BINARY_DIR})
+
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/client/lua DESTINATION ${CMAKE_BINARY_DIR})
 
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES}
         ${UIS_HDRS} ${FFMPEG_SRC_FILES} src/client/qt/mainwindow.cpp)

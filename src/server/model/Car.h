@@ -26,6 +26,9 @@ private:
     b2Vec2 respawnPosition;
     float respawnAngle;
     bool reducedVision;
+    bool forwardSpeedBoosted;
+    bool lateralImpulseBoosted;
+
 public:
     Car(std::string id, std::vector<TimedEvent>& timedEvents,
         b2Body* body, b2Vec2 startingPosition,

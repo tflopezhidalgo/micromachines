@@ -2,6 +2,7 @@
 #define MICROMACHINES_TIMEDEVENT_H
 
 #include "Car.h"
+#include "Entity.h"
 
 class Car;
 
@@ -10,9 +11,12 @@ private:
     float timeout;
     float elapsed;
     Car* car;
-    void (Car::*cb)(void);
+    Entity* entity;
+    void (Car::*cbCar)(void);
+    void (Entity::*cbEntity)(void);
 public:
-    TimedEvent(Car* car, void (Car::*cb)(void), float timeout);
+    TimedEvent(Car* car, void (Car::*cbCar)(void), float timeout);
+    TimedEvent(Entity* entity, void (Entity::*cbEntity)(void), float timeout);
     TimedEvent(TimedEvent &&other);
     TimedEvent& operator=(TimedEvent&& other);
     bool update(float delta);
