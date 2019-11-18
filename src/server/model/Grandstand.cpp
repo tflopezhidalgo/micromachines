@@ -8,13 +8,20 @@
 #define PROJECTILE_INITIAL_DISTANCE 0.5f
 
 Grandstand::Grandstand(b2Body* body, int objectsThrownNumber, float x_pos,
-        float y_pos, bool horizontalDisposal, bool positiveOrientation) :
-    body(body),
+        float y_pos, bool horizontalDisposal, bool positiveOrientation,
+        std::vector<TimedEvent> &timedEvents) :
+
+    timedEvents(timedEvents),
+    Entity(GRANDSTAND, body),
     objectsThrownNumber(objectsThrownNumber),
     horizontalDisposal(horizontalDisposal),
     positiveOrientation(positiveOrientation),
     x_pos(x_pos),
-    y_pos(y_pos) {}
+    y_pos(y_pos) {
+
+    body->SetUserData(this);
+
+}
 
 void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
     EntityIdentifier projectiles[5] = {HEALTHBOOSTER, OIL, SPEEDBOOSTER, STONE, MUD};
@@ -61,6 +68,24 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
 
 }
 
-Grandstand::~Grandstand() {
-    body->GetWorld()->DestroyBody(body);
+void Grandstand::beginCollision(Entity* entity) {
+    if (entity->getIdentifier() == CAR) {
+        auto car = dynamic_cast<Car*>(entity);
+        damageCar(car);
+    }
 }
+
+void Grandstand::endCollision(Entity* entity) {}
+
+void Grandstand::damageCar(Car* car) {
+    if (car->getSpeed() < 100) {
+        return;
+    }
+    car->receiveDamage(40);
+    if (car->isDead()) {
+        timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
+        timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
+    }
+}
+
+Grandstand::~Grandstand() {}

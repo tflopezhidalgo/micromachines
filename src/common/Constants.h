@@ -54,7 +54,7 @@
 #define PROJECTILE_RADIUS 2
 
 //Car constants
-#define MAX_DISTANCE_TO_TRACK 200
+#define MAX_DISTANCE_TO_TRACK 80
 
 
 //Config Keys

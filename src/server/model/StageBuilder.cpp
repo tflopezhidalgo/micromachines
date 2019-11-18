@@ -83,7 +83,8 @@ void StageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
     }
 }
 
-void StageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grandstands) {
+void StageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grandstands,
+        std::vector<TimedEvent> &timedEvents) {
     for (auto& grandstandData : map["grandstandsData"]) {
         auto x_pos = grandstandData[0].get<float>();
         auto y_pos = grandstandData[1].get<float>();
@@ -93,7 +94,7 @@ void StageBuilder::addGrandstands(World& world, std::vector<Grandstand*>& grands
         b2Body* body = world.getGrandstandBody(x_pos, y_pos, horizontalDisposal);
         auto grandstand = new Grandstand(body,
                 config.find(GRANDSTAND_OBJECTS_THROWN)->second,
-                x_pos, y_pos, horizontalDisposal, positiveOrientation);
+                x_pos, y_pos, horizontalDisposal, positiveOrientation, timedEvents);
         grandstands.push_back(grandstand);
     }
 }
