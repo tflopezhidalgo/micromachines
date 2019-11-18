@@ -1,19 +1,19 @@
-#include "BlockQueue.h"
+#include "ProtectedVector.h"
 
-BlockQueue::BlockQueue() : _shutdown(false) {}
+ProtectedVector::ProtectedVector() : _shutdown(false) {}
 
-void BlockQueue::push(std::vector<char> data) {
+void ProtectedVector::push(std::vector<char> data) {
     std::unique_lock<std::mutex> lock(m);
     queue.push(data);
     cv_pop.notify_all();
 }
 
-void BlockQueue::close() {
+void ProtectedVector::close() {
     _shutdown = true;
     cv_pop.notify_all();
 }
 
-bool BlockQueue::pop(std::vector<char> &data) {
+bool ProtectedVector::pop(std::vector<char> &data) {
     std::unique_lock<std::mutex> lock(m);
 
     while(!_shutdown && queue.empty()) {
@@ -28,4 +28,4 @@ bool BlockQueue::pop(std::vector<char> &data) {
     }
 }
 
-BlockQueue::~BlockQueue() = default;
+ProtectedVector::~ProtectedVector() = default;

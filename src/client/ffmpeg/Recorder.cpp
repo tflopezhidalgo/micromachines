@@ -1,6 +1,6 @@
 #include "Recorder.h"
 
-Recorder::Recorder(Window &window, BlockQueue &queueFrames, std::string& fileName) :
+Recorder::Recorder(Window &window, ProtectedVector &queueFrames, std::string& fileName) :
     queueFrames(queueFrames),
     frameWriter(context, fileName, window.getWidth(), window.getHeight()),
     ctx(sws_getContext(window.getWidth(), window.getHeight(),

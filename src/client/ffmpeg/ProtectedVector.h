@@ -1,5 +1,5 @@
-#ifndef MICROMACHINES_BLOCKQUEUE_H
-#define MICROMACHINES_BLOCKQUEUE_H
+#ifndef MICROMACHINES_PROTECTEDVECTOR_H
+#define MICROMACHINES_PROTECTEDVECTOR_H
 
 #include "../Window.h"
 #include <vector>
@@ -8,7 +8,7 @@
 #include <condition_variable>
 
 
-class BlockQueue {
+class ProtectedVector {
 private:
     std::queue <std::vector<char>> queue;
     std::mutex m;
@@ -16,7 +16,7 @@ private:
     bool _shutdown;
     Window& window;
 public:
-    BlockQueue();
+    ProtectedVector();
 
     void push(std::vector<char> data);
 
@@ -24,8 +24,8 @@ public:
 
     void close();
 
-    ~BlockQueue();
+    ~ProtectedVector();
 };
 
 
-#endif //MICROMACHINES_BLOCKQUEUE_H
+#endif //MICROMACHINES_PROTECTEDVECTOR_H
