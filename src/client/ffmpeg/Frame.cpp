@@ -21,7 +21,7 @@ AVFrame *Frame::get() {
 }
 
 void Frame::write(const char* bufferData, SwsContext *ctx) {
-    const u_int8_t* data = (const u_int8_t*)bufferData;
+    const auto* data = (const u_int8_t*)bufferData;
     // El ancho del video x3 por la cantidad de bytes
     int width = this->frame->width * 3;
 
