@@ -8,7 +8,6 @@ Recorder::Recorder(const int window_width, const int window_height,
     ctx(sws_getContext(window_width, window_height,
                        AV_PIX_FMT_RGB24, window_width, window_height,
                        AV_PIX_FMT_YUV420P, 0, 0, 0, 0)){
-    av_register_all();
     }
 
 void Recorder::run() {

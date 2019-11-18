@@ -9,7 +9,6 @@
 #include "Constants.h"
 
 extern "C" {
-#include "libswscale/swscale.h"
 #include <libswscale/swscale.h>
 }
 

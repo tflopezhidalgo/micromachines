@@ -38,6 +38,8 @@ int main(int argc, char* argv[]) {
         Window main(GAME_NAME, WIDTH, HEIGHT);
 
         std::string fileName = std::string(GAME_NAME) + std::string(EXTENCION);
+
+        av_register_all();
         ProtectedVector pv;
         Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
 

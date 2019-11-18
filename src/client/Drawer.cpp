@@ -27,6 +27,7 @@ void Drawer::run() {
 
         main.setTarget(videoTexture);
         this->model.renderAll();
+        // Obtengo los bytes de la textura en el buffer
         int res = SDL_RenderReadPixels(main.getRenderer(), NULL,
                 SDL_PIXELFORMAT_RGB24, currentFrame.data(), BUFFER_WIDTH * 3);
         if (res) {
