@@ -2,14 +2,15 @@
 #ifndef MICROMACHINES_CONSTANTS_H
 #define MICROMACHINES_CONSTANTS_H
 
-// Client Macro
-#define MtoP 6     // Relación metros a píxeles
+// Client constants
+#define MtoP 7     // Relación metros a píxeles
 
 
 //Sv constants
+#define CONFIG_PATH "../config.cfg"
 #define BACKLOG 15
 #define MAX_PROJECTILES_NUMBER 3
-#define MAX_ENTITIES_NUMBER 5
+#define MAX_ENTITIES_NUMBER 10
 #define TIME_ELAPSE_PLUGINS 30
 #define TIME_ELAPSE_GRANDSTANDS 15
 
