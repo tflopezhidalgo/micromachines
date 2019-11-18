@@ -16,17 +16,21 @@ pv(pv){ }
 void Drawer::run() {
 
     SDL_Texture* videoTexture = SDL_CreateTexture(main.getRenderer(),
-            SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_TARGET, BUFFER_WIDTH, BUFFER_HEIGHT);
-    std::vector<char> currentFrame(BUFFER_HEIGHT * BUFFER_WIDTH * 3);
+                                                  SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_TARGET, BUFFER_WIDTH, BUFFER_HEIGHT);
+    assert(videoTexture != NULL);
     long fixed_time = 1000 / 60; // segundos / frames
     while (running){
+        std::vector<char> currentFrame(BUFFER_HEIGHT * BUFFER_WIDTH * 3);
+
         std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
         this->main.clear();
         this->model.renderAll();
         this->main.update();
 
         main.setTarget(videoTexture);
+
         this->model.renderAll();
+        this->main.update();
         // Obtengo los bytes de la textura en el buffer
         int res = SDL_RenderReadPixels(main.getRenderer(), NULL,
                 SDL_PIXELFORMAT_RGB24, currentFrame.data(), BUFFER_WIDTH * 3);
@@ -42,6 +46,8 @@ void Drawer::run() {
         if (duration.count() < fixed_time)
             std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
     }
+
+    SDL_DestroyTexture(videoTexture);
 }
 
 void Drawer::stop() {
