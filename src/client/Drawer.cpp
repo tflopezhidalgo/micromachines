@@ -1,10 +1,11 @@
 #include <zconf.h>
+#include <ffmpeg/RecorderException.h>
 #include "Drawer.h"
 #include "Window.h"
+#include "../common/Constants.h"
 #include "ProtectedModel.h"
 
-#define BUFFER_WIDTH 352        // Mandar a Constants.h
-#define BUFFER_HEIGHT 288
+#define ERROR_RENDER "Render Read Pixeles error"
 
 Drawer::Drawer(Window& main, ProtectedModel& model, ProtectedVector& pv) :
 main(main),
@@ -26,8 +27,13 @@ void Drawer::run() {
 
         main.setTarget(videoTexture);
         this->model.renderAll();
-        SDL_RenderReadPixels(main.getRenderer(), NULL,
+        int res = SDL_RenderReadPixels(main.getRenderer(), NULL,
                 SDL_PIXELFORMAT_RGB24, currentFrame.data(), BUFFER_WIDTH * 3);
+        if (res) {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, ERROR_RENDER, SDL_GetError(), NULL);
+            throw RecorderException(ERROR_RENDER);
+        }
+        pv.push(currentFrame);
 
         main.setTarget(NULL);
         std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();

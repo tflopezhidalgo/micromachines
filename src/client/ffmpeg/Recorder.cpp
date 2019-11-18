@@ -1,5 +1,6 @@
 #include "Recorder.h"
 
+
 Recorder::Recorder(const int window_width, const int window_height,
         ProtectedVector &queueFrames, std::string& fileName) :
     queueFrames(queueFrames),
@@ -24,4 +25,8 @@ void Recorder::run() {
 Recorder::~Recorder() {
     frameWriter.close();
     sws_freeContext(ctx);
+}
+
+void Recorder::stop() {
+    queueFrames.close();
 }

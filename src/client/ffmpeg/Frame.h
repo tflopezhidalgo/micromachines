@@ -2,12 +2,10 @@
 #define MICROMACHINES_FRAME_H
 
 #include "RecorderException.h"
-#include "SwsContextWrapper.h"
 
 extern "C" {
-#include <libswscale/swscale.h>
+#include "libswscale/swscale.h"
 #include <libavutil/frame.h>
-#include <libswscale/swscale.h>
 }
 
 class Frame {

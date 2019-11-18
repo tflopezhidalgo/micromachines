@@ -9,6 +9,7 @@
 #include "Constants.h"
 
 extern "C" {
+#include "libswscale/swscale.h"
 #include <libswscale/swscale.h>
 }
 
@@ -25,6 +26,8 @@ public:
     virtual void run() override;
 
     ~Recorder();
+
+    void stop();
 };
 
 

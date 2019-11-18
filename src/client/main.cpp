@@ -15,9 +15,14 @@
 #include <nlohmann/json.hpp>
 #include <QApplication>
 #include "mainwindow.h"
+#include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Counter.h"
 
+#define GAME_NAME "Micromachines"
+#define EXTENCION ".mpeg"
+#define WIDTH 900
+#define HEIGHT 600
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -30,9 +35,11 @@ int main(int argc, char* argv[]) {
 
     Proxy* proxy = w.getProxy();
     try {
-        Window main("Micromachines", 900, 600);
+        Window main(GAME_NAME, WIDTH, HEIGHT);
 
+        std::string fileName = std::string(GAME_NAME) + std::string(EXTENCION);
         ProtectedVector pv;
+        Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
 
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
@@ -43,6 +50,7 @@ int main(int argc, char* argv[]) {
 
         ProtectedQueue<Event> q;
 
+
         Receiver receiver(model, *proxy);
         EventListener handler(w.getPlayerID(), q);
         //LuaPlayer handler(q, model, w.getPlayerID());
@@ -52,14 +60,17 @@ int main(int argc, char* argv[]) {
         receiver.start();
         dispatcher.start();
         handler.run();
+        recorder.start();
 
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
+        recorder.stop();
 
         drawer.join();
         dispatcher.join();
         receiver.join();
+        recorder.join();
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
