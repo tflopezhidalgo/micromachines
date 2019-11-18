@@ -26,7 +26,8 @@ void Drawer::run() {
 
         main.setTarget(videoTexture);
         this->model.renderAll();
-        SDL_RenderReadPixels(main.getRenderer(), NULL, SDL_PIXELFORMAT_RGB24, currentFrame.data(), BUFFER_WIDTH * 3);
+        SDL_RenderReadPixels(main.getRenderer(), NULL,
+                SDL_PIXELFORMAT_RGB24, currentFrame.data(), BUFFER_WIDTH * 3);
 
         main.setTarget(NULL);
         std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
