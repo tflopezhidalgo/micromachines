@@ -40,7 +40,7 @@ void LobbyClientReceptionist::run() {
         } catch (...) {
             std::cerr << UNKOWN_ERROR_MSG << std::endl;
             finished = true;
-            return;;
+            return;
         }
     }
 }

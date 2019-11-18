@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
     Proxy* proxy = w.getProxy();
     try {
-        Window main("Micromachines", 900, 600);
+        Window main("Micromachines", 1920, 1080);
 
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
