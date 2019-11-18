@@ -6,6 +6,7 @@
 #include "FormatContext.h"
 #include "FrameWriter.h"
 #include "../Window.h"
+#include "Constants.h"
 
 extern "C" {
 #include <libswscale/swscale.h>
@@ -19,7 +20,7 @@ private:
     SwsContext* ctx;
 
 public:
-    Recorder(Window& window, ProtectedVector& queueFrame, std::string& fileName);
+    Recorder(const int window_width, const int window_height, ProtectedVector& queueFrame, std::string& fileName);
 
     virtual void run() override;
 

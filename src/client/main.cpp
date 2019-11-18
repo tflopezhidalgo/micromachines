@@ -32,11 +32,13 @@ int main(int argc, char* argv[]) {
     try {
         Window main("Micromachines", 900, 600);
 
+        ProtectedVector pv;
+
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 
         ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
-        Drawer drawer(main, model);
+        Drawer drawer(main, model, pv);
         drawer.start();
 
         ProtectedQueue<Event> q;

@@ -2,9 +2,9 @@
 
 ProtectedVector::ProtectedVector() : _shutdown(false) {}
 
-void ProtectedVector::push(std::vector<char> data) {
+void ProtectedVector::push(std::vector<char>& data) {
     std::unique_lock<std::mutex> lock(m);
-    queue.push(data);
+    queue.push(std::move(data));
     cv_pop.notify_all();
 }
 

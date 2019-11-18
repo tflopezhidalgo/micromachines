@@ -14,11 +14,11 @@ private:
     std::mutex m;
     std::condition_variable cv_pop;
     bool _shutdown;
-    Window& window;
+
 public:
     ProtectedVector();
 
-    void push(std::vector<char> data);
+    void push(std::vector<char>& data);
 
     bool pop(std::vector<char> &data);
 
@@ -28,4 +28,4 @@ public:
 };
 
 
-#endif //MICROMACHINES_PROTECTEDVECTOR_H
+#endif
