@@ -7,10 +7,8 @@
 OutputFormat::OutputFormat(const std::string& filename) {
     // Intenta deducir formato según extensión
     this->avOutputFormat = av_guess_format(NULL, filename.c_str(), NULL);
-    std::cout << filename << std::endl;
     if (!this->avOutputFormat) {
         // Intenta usar el formato standard
-        std::cout << "entre";
         this->avOutputFormat = av_guess_format("mpeg", NULL, NULL);
     }
     if (!this->avOutputFormat) {
@@ -23,7 +21,7 @@ OutputFormat::OutputFormat(const std::string& filename) {
         throw RecorderException(INIT_CODEC);
     }
     //codecContextInit(codec);
-    this->outputFile = fopen(filename.c_str(), "wb");
+    //this->outputFile = fopen(filename.c_str(), "wb");
 }
 
 OutputFormat::~OutputFormat() {

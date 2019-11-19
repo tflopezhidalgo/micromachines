@@ -11,6 +11,7 @@ Recorder::Recorder(const int window_width, const int window_height,
     }
 
 void Recorder::run() {
+    std::cout << "recorder";
     try {
         std::vector<char> frame;
         while (this->queueFrames.pop(frame)) {

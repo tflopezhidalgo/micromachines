@@ -10,9 +10,10 @@
 
 class ProtectedVector {
 private:
-    std::queue <std::vector<char>> queue;
+    std::vector<char> actualFrame;
     std::mutex m;
     std::condition_variable cv_pop;
+    bool full;
     bool _shutdown;
 
 public:

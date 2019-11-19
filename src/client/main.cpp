@@ -52,27 +52,26 @@ int main(int argc, char* argv[]) {
 
         ProtectedQueue<Event> q;
 
-
         Receiver receiver(model, *proxy);
         EventListener handler(w.getPlayerID(), q);
         //LuaPlayer handler(q, model, w.getPlayerID());
 
         Dispatcher dispatcher(q, *proxy);
 
+        recorder.start();
         receiver.start();
         dispatcher.start();
         handler.run();
-        recorder.start();
 
+        recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
-        recorder.stop();
 
+        recorder.join();
         drawer.join();
         dispatcher.join();
         receiver.join();
-        recorder.join();
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;

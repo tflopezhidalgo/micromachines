@@ -4,8 +4,8 @@
 
 // Client Macro
 #define MtoP 6     // Relación metros a píxeles
-#define BUFFER_WIDTH 352
-#define BUFFER_HEIGHT 288
+#define BUFFER_WIDTH 900
+#define BUFFER_HEIGHT 600
 
 //Sv constants
 #define BACKLOG 15
