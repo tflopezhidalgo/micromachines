@@ -1,9 +1,9 @@
 #include <iostream>
 #include "LuaScript.h"
 
-#define PLAYER_SCRIPT "player.lua"
-#define ENTITIES_SCRIPT "entities_ids.lua"
-#define FLOOR_SCRIPT "floor_ids.lua"
+#define PLAYER_SCRIPT "../src/client/lua/player.lua"
+#define ENTITIES_SCRIPT "../src/client/lua/entities_ids.lua"
+#define FLOOR_SCRIPT "../src/client/lua/floor_ids.lua"
 #define ENTITIES "entities"
 #define MAP "map"
 #define INDEX_X 1

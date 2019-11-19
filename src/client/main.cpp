@@ -17,9 +17,9 @@
 #include "mainwindow.h"
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
+#include "ffmpeg/RecorderHandle.h"
 #include "Counter.h"
 
-#define GAME_NAME "Micromachines"
 #define EXTENSION ".mpeg"
 using json = nlohmann::json;
 
@@ -35,19 +35,19 @@ int main(int argc, char* argv[]) {
     try {
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
+        //std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
 
-        av_register_all();
+        //av_register_all();
         ProtectedVector pv;
-        Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
+        //Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
+        RecorderHandle recorderHandle(pv);
 
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 
         ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
         Drawer drawer(main, model, pv);
-        drawer.start();
-
+        
         ProtectedQueue<Event> q;
 
         Receiver receiver(model, *proxy);
@@ -56,17 +56,23 @@ int main(int argc, char* argv[]) {
 
         Dispatcher dispatcher(q, *proxy);
 
-        recorder.start();
+        //recorder.start();
+        drawer.start();
         receiver.start();
         dispatcher.start();
-        handler.run();
 
-        recorder.stop();
+        try {
+          handler.run();
+        } catch {
+          std::cout << "ocurrio una excepcion en el handler.run() :( " << e.what() << std::endl;
+        }
+
+        //recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
 
-        recorder.join();
+        //recorder.join();
         drawer.join();
         dispatcher.join();
         receiver.join();

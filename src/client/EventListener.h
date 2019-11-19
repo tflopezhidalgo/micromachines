@@ -5,6 +5,12 @@
 #include "../common/Thread.h"
 #include "ProtectedQueue.h"
 #include "../common/Event.h"
+#include "ffmpeg/RecorderHandle.h"
+#include <string>
+#include <SDL2/SDL.h>
+#include <zconf.h>
+#include <Constants.h>
+
 
 class EventListener: public Thread{
 private:
@@ -12,10 +18,11 @@ private:
     std::map<int, bool> keysHeld;
     ProtectedQueue<Event>& q;
 	std::string playerID;
-
+    RecorderHandle recorderHandle;
 public:
     EventListener(std::string playerID, 
-				  ProtectedQueue<Event>& e);
+				  ProtectedQueue<Event>& e,
+                  RecorderHandle &recorderHandle);
     void run() override;
     void detectEvent(SDL_Event& e);
     std::vector<char> createActionList();

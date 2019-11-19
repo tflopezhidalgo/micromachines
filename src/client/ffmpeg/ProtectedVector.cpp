@@ -15,6 +15,8 @@ void ProtectedVector::close() {
 }
 
 bool ProtectedVector::pop(std::vector<char> &data) {
+    if(!data.empty()) throw "ups";
+
     std::unique_lock<std::mutex> lock(m);
     while(!_shutdown && actualFrame.empty()) {
         cv_pop.wait(lock);
