@@ -7,7 +7,6 @@ void ProtectedVector::push(std::vector<char>& data) {
     std::unique_lock<std::mutex> lock(m);
     actualFrame.swap(data);
     cv_pop.notify_all();
-    full = true;
 }
 
 void ProtectedVector::close() {
