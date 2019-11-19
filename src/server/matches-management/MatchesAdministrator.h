@@ -8,8 +8,9 @@
 #include "Proxy.h"
 #include "ConfigMapBuilder.h"
 
-class MatchesAdministrator {
+class MatchesAdministrator : public Thread {
 private:
+    bool dead;
     std::unordered_map<std::string, Match*> matches;
     ConfigMapBuilder configMapBuilder;
     std::mutex mutex;
@@ -26,6 +27,8 @@ public:
                           std::string& matchName);
     void deleteFinishedMatches();
     std::string getAvailableMatches();
+    void run() override;
+    void stop();
     ~MatchesAdministrator();
 };
 

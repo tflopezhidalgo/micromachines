@@ -21,8 +21,6 @@
 
 #define GAME_NAME "Micromachines"
 #define EXTENCION ".mpeg"
-#define WIDTH 900
-#define HEIGHT 600
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -35,7 +33,7 @@ int main(int argc, char* argv[]) {
 
     Proxy* proxy = w.getProxy();
     try {
-        Window main(GAME_NAME, WIDTH, HEIGHT);
+        Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         std::string fileName = std::string(GAME_NAME) + std::string(EXTENCION);
 
