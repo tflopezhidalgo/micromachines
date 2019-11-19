@@ -6,7 +6,7 @@
 #include "ProtectedQueue.h"
 #include "../common/Event.h"
 
-class EventListener: public Thread{
+class EventListener : public Thread{
 private:
     bool alive;
     std::map<int, bool> keysHeld;
@@ -16,7 +16,8 @@ private:
 public:
     EventListener(std::string playerID, 
 				  ProtectedQueue<Event>& e);
-    void run() override;
+    void run();
+    void stop();
     void detectEvent(SDL_Event& e);
     std::vector<char> createActionList();
     ~EventListener();

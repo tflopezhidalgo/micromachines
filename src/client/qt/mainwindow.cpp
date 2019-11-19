@@ -21,6 +21,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
     QPixmap img("../src/client/qt/header.jpg");
     ui->label->setPixmap(img);
+    screen_h = 0;
+    screen_w = 0;
+    full_screen = false;
+    ui->height_line->setEnabled(false);
+    ui->width_line->setEnabled(false);
 }
 
 
@@ -38,6 +43,16 @@ void MainWindow::on_create_match_button_clicked() // Crear partida
         Socket socket(hostName.c_str(), serviceName.c_str());
         proxy = new Proxy(std::move(socket));
         ui->stackedWidget->setCurrentIndex(2);
+        if (ui->screen_mode_combo_box->currentIndex() == 1)
+            if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
+                throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
+            else{
+                this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
+                this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
+            }
+        else
+            full_screen = true;
 
     } catch (std::runtime_error &e){
         QMessageBox msg(this);
@@ -144,6 +159,17 @@ bool MainWindow::isLuaPlayer() {
     return luaPlayer;
 }
 
+int MainWindow::getWidthSelected() {
+    return this->screen_w;
+}
+
+int MainWindow::getHeightSelected() {
+    return this->screen_h;
+}
+
+bool MainWindow::isFullScreen(){
+    return this->full_screen;
+}
 
 void MainWindow::on_buttonBox_accepted() // Accept en crear partida
 {
@@ -227,6 +253,7 @@ void MainWindow::handleResponseStatus(){
         case CLIENT_EQUAL_NAMED:
             m.setText("Ya existe un cliente con ese nombre");
             m.exec();
+            this->ui->stackedWidget->setCurrentWidget(this->ui->createScreen);
             break;
     }
 }
@@ -256,8 +283,24 @@ void MainWindow::on_playerSelectComboBox_currentIndexChanged(int index) // Selec
         this->luaPlayer = true;
 }
 
-
-void MainWindow::on_MainWindow_destroyed()
+void MainWindow::on_screen_mode_combo_box_highlighted(int index)
 {
-    std::cout << "Se cerro aplicacion\n";
+    if (index == 0){
+        this->ui->height_line->setEnabled(false);
+        this->ui->width_line->setEnabled(false);
+    } else if (index == 1){
+        this->ui->height_line->setEnabled(true);
+        this->ui->width_line->setEnabled(true);
+    }
+}
+
+void MainWindow::on_screen_mode_combo_box_currentIndexChanged(int index)
+{
+    if (index == 0){
+        this->ui->height_line->setEnabled(false);
+        this->ui->width_line->setEnabled(false);
+    } else if (index == 1){
+        this->ui->height_line->setEnabled(true);
+        this->ui->width_line->setEnabled(true);
+    }
 }

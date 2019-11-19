@@ -10,8 +10,6 @@ running(true) { }
 
 void Drawer::run() {
 
-    //counter.count();
-
     long fixed_time = 1000 / 60; // segundos / frames
     while (running){
         std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();

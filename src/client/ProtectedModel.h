@@ -24,13 +24,16 @@ private:
     TileMap& map;
     Sprite grand_stand;
     Counter counter;
+    bool finished;
+    std::vector<std::string> podium;
 
 public:
     ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& player);
     void count();
-    void updateCar(std::string& id, int x, int y, int angle, int health, bool blinded);
+    void updateCar(std::string& id, int x, int y, int angle, int health, int lapsDone, bool blinded);
     void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();
+    void setFinishedGame(std::vector<std::string>& podium);
     std::vector<int> getActualState();
     std::vector<std::vector<int>> getEntitiesPos();
     std::vector<std::vector<int>>& getMap();

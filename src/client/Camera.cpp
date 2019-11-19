@@ -3,6 +3,8 @@
 #include "Window.h"
 #include "../common/Constants.h"
 #include "Car.h"
+#include "Text.h"
+#include <SDL2/SDL_ttf.h>
 
 Camera::Camera(Window& w, Texture& texture) :
     window(w),
@@ -49,6 +51,17 @@ void Camera::update() {
 }
 
 void Camera::render() {
+
+    std::string path("../media/fonts/myFont.TTF");
+    std::string text_msg(std::to_string(target->getLapsDone()));
+
+    Text text(this->window, path, 80);
+    text.setText(text_msg);
+    SDL_Color color = {230, 210, 20};
+    text.setColor(color);
+    SDL_Rect r = {window.getWidth() - 100, window.getHeight() - 150, 100, 150};
+    text.render(r);
+
     if (target->isBlinded()) {
         SDL_Rect r = {0, 0, window.getWidth(), window.getHeight()};
         this->texture.render(r, 0);

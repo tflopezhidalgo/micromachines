@@ -59,4 +59,8 @@ std::vector<char> EventListener::createActionList() {
     return actions;
 }
 
+void EventListener::stop() {
+    alive = false;
+}
+
 EventListener::~EventListener() {}

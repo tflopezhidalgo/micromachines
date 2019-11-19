@@ -20,12 +20,16 @@ public:
     std::string& getPlayerID();
     nlohmann::json& getInitialData();
     void waitForInitialPosition();
+    int getWidthSelected();
+    int getHeightSelected();
+    bool isFullScreen();
     bool isLuaPlayer();
     ~MainWindow();
 
 private slots:
-    void on_MainWindow_destroyed();
+    void on_screen_mode_combo_box_currentIndexChanged(int index);
 
+private slots:
     void on_create_match_button_clicked();
 
     void on_join_match_button_clicked();
@@ -44,6 +48,8 @@ private slots:
 
     void handleResponseStatus();
 
+    void on_screen_mode_combo_box_highlighted(int index);
+
 signals:
 
     void waitStatus();
@@ -55,6 +61,9 @@ private:
     std::string PlayerID;
     bool luaPlayer;
     nlohmann::json initialData;
+    int screen_w;
+    int screen_h;
+    bool full_screen;
 };
 
 #endif // MAINWINDOW_H
