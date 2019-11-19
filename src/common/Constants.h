@@ -4,7 +4,8 @@
 
 // Client constants
 #define MtoP 7     // Relación metros a píxeles
-
+#define WINDOW_WIDTH 900
+#define WINDOW_HEIGHT 600
 
 //Sv constants
 #define CONFIG_PATH "../config.cfg"

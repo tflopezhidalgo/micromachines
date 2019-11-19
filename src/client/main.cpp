@@ -15,9 +15,12 @@
 #include <nlohmann/json.hpp>
 #include <QApplication>
 #include "mainwindow.h"
+#include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Counter.h"
 
+#define GAME_NAME "Micromachines"
+#define EXTENCION ".mpeg"
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -30,13 +33,19 @@ int main(int argc, char* argv[]) {
 
     Proxy* proxy = w.getProxy();
     try {
-        Window main("Micromachines");
+        Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        std::string fileName = std::string(GAME_NAME) + std::string(EXTENCION);
+
+        av_register_all();
+        ProtectedVector pv;
+        Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
 
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 
         ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
-        Drawer drawer(main, model);
+        Drawer drawer(main, model, pv);
         drawer.start();
 
         ProtectedQueue<Event> q;
@@ -47,14 +56,17 @@ int main(int argc, char* argv[]) {
 
         Dispatcher dispatcher(q, *proxy);
 
+        recorder.start();
         receiver.start();
         dispatcher.start();
         handler.run();
 
+        recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
 
+        recorder.join();
         drawer.join();
         dispatcher.join();
         receiver.join();

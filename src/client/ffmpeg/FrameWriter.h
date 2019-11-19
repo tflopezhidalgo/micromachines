@@ -40,8 +40,9 @@ public:
 
     // cierra el stream de video
     void close();
-
-    void write(const char* data);
+    // Escribe un frame a disco. Utiliza `swsContext` para convertir
+    // de RGB24 a YUV420p
+    void write(const char *data, SwsContext *ctx);
 
     ~FrameWriter();
 };
