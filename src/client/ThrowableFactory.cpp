@@ -29,7 +29,7 @@ Throwable* ThrowableFactory::generateThrowable(EntityIdentifier type) {
         return new Throwable(std::move(sprite), std::move(onFlySprite), DEAD, 0, 0);
     }
     if (type == HEALTHBOOSTER) {
-        Sprite sprite(window, HEALTH_SPRITE, 20, 20);
+        Sprite sprite(window, HEALTH_SPRITE, 2 * BOOSTERS_RADIUS, 2 * BOOSTERS_RADIUS);
         return new Throwable(std::move(sprite), std::move(onFlySprite), DEAD, 0, 0);
     }
     if (type == SPEEDBOOSTER) {

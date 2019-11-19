@@ -16,7 +16,7 @@ void Mud::reduceVision(Car* car) {
     used = true;
     car->reduceVision();
     timedEvents.emplace_back(TimedEvent(car, &Car::recoverTotalVision, 3));
-    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 1.5f));
+    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 0.5f));
 }
 
 void Mud::endCollision(Entity* entity) {}

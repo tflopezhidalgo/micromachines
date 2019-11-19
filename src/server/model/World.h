@@ -50,7 +50,7 @@ public:
 
     b2Body* getGrandstandBody(float x_pos, float y_pos, bool horizontalDisposal);
 
-    Projectile* addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
+    Projectile* addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, bool horizontalTrajectory);
 
     Checkpoint* addCheckpoint(float x_pos, float y_pos,
             bool horizontalDisposal, int checkpointOrder, RaceJudge& raceJudge);

@@ -3,18 +3,25 @@
 #include "Identifiers.h"
 
 #define THROWABLE_OBJECTS_NUMBER 5
-#define MAX_FORCE 15000
-#define MIN_FORCE 1000
+#define MAX_FORCE 5000
+#define MIN_FORCE 3000
 #define PROJECTILE_INITIAL_DISTANCE 0.5f
 
 Grandstand::Grandstand(b2Body* body, int objectsThrownNumber, float x_pos,
-        float y_pos, bool horizontalDisposal, bool positiveOrientation) :
-    body(body),
+        float y_pos, bool horizontalDisposal, bool positiveOrientation,
+        std::vector<TimedEvent> &timedEvents) :
+
+    timedEvents(timedEvents),
+    Entity(GRANDSTAND, body),
     objectsThrownNumber(objectsThrownNumber),
     horizontalDisposal(horizontalDisposal),
     positiveOrientation(positiveOrientation),
     x_pos(x_pos),
-    y_pos(y_pos) {}
+    y_pos(y_pos) {
+
+    body->SetUserData(this);
+
+}
 
 void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
     EntityIdentifier projectiles[5] = {HEALTHBOOSTER, OIL, SPEEDBOOSTER, STONE, MUD};
@@ -30,11 +37,17 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
             hi = x_pos + float(GRANDSTAND_WIDTH)/2;
             xPos = lo + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hi-lo)));
             yPos = y_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
+            if (!positiveOrientation) {
+                yPos = yPos * -1;
+            }
         } else {
             lo = y_pos - float(GRANDSTAND_WIDTH)/2;
             hi = y_pos + float(GRANDSTAND_WIDTH)/2;
             xPos = x_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
-            yPos = lo + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX/(hi-lo)));
+            yPos = lo + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hi-lo)));
+            if (!positiveOrientation) {
+                xPos = xPos * -1;
+            }
         }
 
         float randForce = MIN_FORCE + static_cast<float>(rand()) /
@@ -50,17 +63,34 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
             }
         } else {
             if (positiveOrientation) {
-                force = {randForce, 0};
+                force = {randForce, 150};
             } else {
-                force = {-randForce, 0};
+                force = {-randForce, 150};
             }
         }
-
-        entitiesManager.addProjectile(entityIdentifier, xPos, yPos, force);
+        entitiesManager.addProjectile(entityIdentifier, xPos, yPos, force, !horizontalDisposal);
     }
 
 }
 
-Grandstand::~Grandstand() {
-    body->GetWorld()->DestroyBody(body);
+void Grandstand::beginCollision(Entity* entity) {
+    if (entity->getIdentifier() == CAR) {
+        auto car = dynamic_cast<Car*>(entity);
+        damageCar(car);
+    }
 }
+
+void Grandstand::endCollision(Entity* entity) {}
+
+void Grandstand::damageCar(Car* car) {
+    if (car->getSpeed() < 100) {
+        return;
+    }
+    car->receiveDamage(40);
+    if (car->isDead()) {
+        timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
+        timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
+    }
+}
+
+Grandstand::~Grandstand() {}

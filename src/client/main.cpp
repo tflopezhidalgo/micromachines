@@ -20,7 +20,7 @@
 #include "Counter.h"
 
 #define GAME_NAME "Micromachines"
-#define EXTENCION ".mpeg"
+#define EXTENSION ".mpeg"
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     try {
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        std::string fileName = std::string(GAME_NAME) + std::string(EXTENCION);
+        std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
 
         av_register_all();
         ProtectedVector pv;

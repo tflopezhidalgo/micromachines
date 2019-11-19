@@ -17,7 +17,7 @@ void HealthBooster::beginCollision(Entity* entity) {
 void HealthBooster::heal(Car* car) {
     used = true;
     car->receiveHealing(healthBoost);
-    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 1.5f));
+    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 0.5f));
 }
 
 void HealthBooster::endCollision(Entity *entity) {}

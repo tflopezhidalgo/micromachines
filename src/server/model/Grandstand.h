@@ -6,21 +6,31 @@
 #include <EntitiesManager.h>
 #include "Entity.h"
 
-class Grandstand {
+class Grandstand : public Entity {
 private:
-    b2Body* body;
     int objectsThrownNumber;
     bool horizontalDisposal;
     bool positiveOrientation;
     float x_pos;
     float y_pos;
+    std::vector<TimedEvent> &timedEvents;
 public:
-    Grandstand(b2Body* body,
-               int objectsThrownNumber,
-               float x_pos, float y_pos,
-               bool horizontalDisposal,
-               bool positiveOrientation);
+    Grandstand(
+            b2Body* body,
+            int objectsThrownNumber,
+            float x_pos, float y_pos,
+            bool horizontalDisposal,
+            bool positiveOrientation,
+            std::vector<TimedEvent> &timedEvents);
+
     void throwProjectiles(EntitiesManager& entitiesManager);
+
+    void beginCollision(Entity* entity) override;
+
+    void endCollision(Entity* entity) override;
+
+    void damageCar(Car* car);
+
     ~Grandstand();
 };
 

@@ -13,7 +13,7 @@
 #define MAX_PROJECTILES_NUMBER 3
 #define MAX_ENTITIES_NUMBER 10
 #define TIME_ELAPSE_PLUGINS 30
-#define TIME_ELAPSE_GRANDSTANDS 15
+#define TIME_ELAPSE_GRANDSTANDS 5
 
 //Serializing sv-client rescailing
 #define SERIALIZING_RESCAILING 1000
@@ -39,23 +39,23 @@
 //Bodies sizes
 #define CAR_H 15.f
 #define CAR_W 6.f
-#define STONE_RADIUS 20.f
-#define OIL_RADIUS 20.f
-#define BOOSTERS_RADIUS 20.f
+#define STONE_RADIUS 5.f
+#define OIL_RADIUS 9.f
+#define BOOSTERS_RADIUS 8.f
 #define EDGE_THICKNESS 0.5f
 #define TILE_WIDTH 50
 #define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
 #define GRANDSTAND_ANGLE - 3.14f  // EN RADIANES
-#define GRANDSTAND_X 300
+#define GRANDSTAND_X 290
 #define GRANDSTAND_Y 0
-#define MUD_WIDTH 30
-#define MUD_HEIGHT 30
+#define MUD_WIDTH 13
+#define MUD_HEIGHT 13
 #define PROJECTILE_RADIUS 2
 
 //Car constants
-#define MAX_DISTANCE_TO_TRACK 200
+#define MAX_DISTANCE_TO_TRACK 80
 
 
 //Config Keys

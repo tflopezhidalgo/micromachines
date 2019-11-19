@@ -17,7 +17,7 @@ RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &conf
     pluginsManager = new PluginsManager();
     pluginsManager->start();
     stageBuilder.addRaceSurface(world, tracks, grassTiles, checkpoints, raceJudge);
-    stageBuilder.addGrandstands(world, grandstands);
+    stageBuilder.addGrandstands(world, grandstands, timedEvents);
 
 }
 

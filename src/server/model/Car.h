@@ -61,6 +61,8 @@ public:
 
     int getHealth();
 
+    float getSpeed();
+
     bool isDead() override;
 
     bool hasReducedVision();

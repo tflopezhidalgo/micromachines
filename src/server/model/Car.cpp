@@ -9,6 +9,7 @@
 #include "Grass.h"
 #include "SpeedBooster.h"
 #include "Mud.h"
+#include "Grandstand.h"
 
 #define DEGTORAD 0.017453292f
 
@@ -119,16 +120,19 @@ void Car::beginCollision(Entity* entity) {
 
     } else if (identifier == CAR) {
         auto car = dynamic_cast<Car*>(entity);
+        if (car->getSpeed() < 100 && this->getSpeed() < 100) {
+            return;
+        }
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
 
         if (car->isDead()) {
-            timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 2));
-            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 2));
+            timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
+            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
         }
         if (this->isDead()) {
-            timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
-            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
+            timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 1.5f));
+            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 1.5f));
         }
 
     } else if (identifier == TRACK) {
@@ -142,6 +146,10 @@ void Car::beginCollision(Entity* entity) {
     } else if (identifier == CHECKPOINT) {
         auto checkpoint = dynamic_cast<Checkpoint*>(entity);
         checkpoint->activate(this);
+
+    } else if (identifier == GRANDSTAND) {
+        auto grandstand = dynamic_cast<Grandstand*>(entity);
+        grandstand->damageCar(this);
     }
 }
 
@@ -190,6 +198,10 @@ bool Car::hasReducedVision() {
 
 void Car::reduceVision() {
     reducedVision = true;
+}
+
+float Car::getSpeed() {
+    return tires[0]->getSpeed();
 }
 
 void Car::recoverTotalVision() {
