@@ -1,8 +1,7 @@
 #include "ProtectedVector.h"
 
 ProtectedVector::ProtectedVector() :
-    _shutdown(false),
-    full(false) {}
+    _shutdown(false) {}
 
 void ProtectedVector::push(std::vector<char>& data) {
     std::unique_lock<std::mutex> lock(m);

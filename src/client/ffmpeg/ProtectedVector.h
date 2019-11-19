@@ -13,7 +13,6 @@ private:
     std::vector<char> actualFrame;
     std::mutex m;
     std::condition_variable cv_pop;
-    bool full;
     bool _shutdown;
 
 public:
