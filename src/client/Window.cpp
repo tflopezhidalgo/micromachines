@@ -55,6 +55,10 @@ int Window::getWidth(){ return w; }
 
 SDL_Renderer* Window::getRenderer(){ return this->renderer; }
 
+void Window::setTarget(SDL_Texture* target) {
+    SDL_SetRenderTarget(this->renderer, target);
+}
+
 void Window::update() { SDL_RenderPresent(this->renderer); }
 
 void Window::clear() { SDL_RenderClear(this->renderer); }

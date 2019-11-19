@@ -7,11 +7,13 @@
 void encode(CodecContext *codec, Frame *frame, Packet *packet, FILE *outFile) {
     /* send the frame to the encoder */
     int ret = 0;
+
     if (!frame) {
         ret = avcodec_send_frame(codec->get(), NULL);
     } else {
         ret = avcodec_send_frame(codec->get(), frame->get());
     }
+
     if (ret < 0) {
         throw RecorderException(ERROR_SEND_FRAME);
     }
@@ -48,7 +50,7 @@ FrameWriter::~FrameWriter() {
 }
 
 // Escribe un frame a disco.
-void FrameWriter::write(const char *data) {
-    frame.write(data); // ctx
+void FrameWriter::write(const char *data, SwsContext* ctx) {
+    frame.write(data, ctx);
     encode(&codecContext, &frame, &packet, outFile);
 }

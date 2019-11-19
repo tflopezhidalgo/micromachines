@@ -4,6 +4,9 @@
 #include "FormatContext.h"
 #include "RecorderException.h"
 
+class AVOutputFormat;
+class AVCodecContext;
+
 extern "C" {
 #include <libavutil/opt.h>
 }

@@ -6,15 +6,17 @@
 #include <vector>
 #include "Window.h"
 #include "ProtectedModel.h"
+#include "ProtectedVector.h"
 
 class Drawer: public Thread {
 private:
     bool running;
     Window& main;
     ProtectedModel& model;
+    ProtectedVector& pv;
 
 public:
-    Drawer(Window& main, ProtectedModel& model);
+    Drawer(Window& main, ProtectedModel& model, ProtectedVector& pv);
     void run();
     void stop();
     ~Drawer() {
