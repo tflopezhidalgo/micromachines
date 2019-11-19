@@ -3,8 +3,8 @@
 #include "Identifiers.h"
 
 #define THROWABLE_OBJECTS_NUMBER 5
-#define MAX_FORCE 15000
-#define MIN_FORCE 1000
+#define MAX_FORCE 5000
+#define MIN_FORCE 3000
 #define PROJECTILE_INITIAL_DISTANCE 0.5f
 
 Grandstand::Grandstand(b2Body* body, int objectsThrownNumber, float x_pos,
@@ -37,11 +37,17 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
             hi = x_pos + float(GRANDSTAND_WIDTH)/2;
             xPos = lo + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hi-lo)));
             yPos = y_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
+            if (!positiveOrientation) {
+                yPos = yPos * -1;
+            }
         } else {
             lo = y_pos - float(GRANDSTAND_WIDTH)/2;
             hi = y_pos + float(GRANDSTAND_WIDTH)/2;
             xPos = x_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
-            yPos = lo + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX/(hi-lo)));
+            yPos = lo + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hi-lo)));
+            if (!positiveOrientation) {
+                xPos = xPos * -1;
+            }
         }
 
         float randForce = MIN_FORCE + static_cast<float>(rand()) /
@@ -57,13 +63,12 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
             }
         } else {
             if (positiveOrientation) {
-                force = {randForce, 0};
+                force = {randForce, 150};
             } else {
-                force = {-randForce, 0};
+                force = {-randForce, 150};
             }
         }
-
-        entitiesManager.addProjectile(entityIdentifier, xPos, yPos, force);
+        entitiesManager.addProjectile(entityIdentifier, xPos, yPos, force, !horizontalDisposal);
     }
 
 }

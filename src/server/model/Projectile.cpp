@@ -1,11 +1,12 @@
 #include "Projectile.h"
 
-#define LOWER_SPEED_LIMIT 1.f
+#define LOWER_SPEED_LIMIT 25.f
 #define PROJECTILE_FRICTION 1
 
-Projectile::Projectile(EntityIdentifier entityIdentifier, b2Body* body) :
-    Entity(entityIdentifier, body, RECENTLY_THROWN),
-    body(body) {}
+Projectile::Projectile(EntityIdentifier entityIdentifier, b2Body* body, bool horizontalTrajectory) :
+        Entity(entityIdentifier, body, RECENTLY_THROWN),
+        body(body),
+        horizontalTrajectory(horizontalTrajectory) {}
 
 void Projectile::beginCollision(Entity* entity) {}
 
@@ -16,7 +17,12 @@ void Projectile::applyForce(b2Vec2& force) {
 }
 
 b2Vec2 Projectile::getForwardVelocity() {
-    b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
+    b2Vec2 currentForwardNormal;
+    if (horizontalTrajectory) {
+        currentForwardNormal = body->GetWorldVector(b2Vec2(1,0));
+    } else {
+        currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
+    }
     return b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal;
 }
 
@@ -28,9 +34,8 @@ void Projectile::updateFriction() {
 }
 
 bool Projectile::isStill() {
-    b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
-    float velocityNorm = (b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal).Length();
-    return velocityNorm < LOWER_SPEED_LIMIT;
+    float currentSpeed = body->GetLinearVelocity().Length();
+    return currentSpeed < LOWER_SPEED_LIMIT;
 }
 
 Projectile::~Projectile() { }

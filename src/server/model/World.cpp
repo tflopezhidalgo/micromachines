@@ -230,9 +230,10 @@ b2Body* World::getGrandstandBody(float x_pos, float y_pos, bool horizontalDispos
     return body;
 }
 
-Projectile* World::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos) {
+Projectile* World::addProjectile(EntityIdentifier entityIdentifier,
+        float x_pos, float y_pos, bool horizontalTrajectory) {
     b2Body* body = addCircleBody({x_pos, y_pos}, PROJECTILE_RADIUS, true, true);
-    auto projectile = new Projectile(entityIdentifier, body);
+    auto projectile = new Projectile(entityIdentifier, body, horizontalTrajectory);
     return projectile;
 }
 

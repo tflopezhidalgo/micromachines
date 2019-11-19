@@ -6,13 +6,15 @@ EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
     world(stageWorld) {}
 
-void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse) {
+void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier,
+        float x_pos, float y_pos, b2Vec2 force, bool horizontalTrajectory) {
+
     if (projectiles.size() >= MAX_PROJECTILES_NUMBER || entities.size() >= MAX_ENTITIES_NUMBER) {
         return;
     }
 
-    Projectile* projectile = world.addProjectile(entityIdentifier, x_pos, y_pos);
-    projectile->applyForce(impulse);
+    Projectile* projectile = world.addProjectile(entityIdentifier, x_pos, y_pos, horizontalTrajectory);
+    projectile->applyForce(force);
 
     projectiles.emplace(entitiesCounter, projectile);
     entities.emplace(entitiesCounter, projectile);
