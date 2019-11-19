@@ -20,8 +20,6 @@ OutputFormat::OutputFormat(const std::string& filename) {
     if (!codec) {
         throw RecorderException(INIT_CODEC);
     }
-    //codecContextInit(codec);
-    //this->outputFile = fopen(filename.c_str(), "wb");
 }
 
 OutputFormat::~OutputFormat() {
