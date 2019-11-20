@@ -26,10 +26,10 @@ int main(int argc, char* argv[]) {
             std::cin >> c;
         }
 
-        acceptor.stop();
-        acceptor.join();
         matchesAdministrator.stop();
         matchesAdministrator.join();
+        acceptor.stop();
+        acceptor.join();
 
         return 0;
 

@@ -83,11 +83,12 @@ void Grandstand::beginCollision(Entity* entity) {
 void Grandstand::endCollision(Entity* entity) {}
 
 void Grandstand::damageCar(Car* car) {
-    if (car->getSpeed() < 100) {
+    if (car->getSpeed() < 70) {
         return;
     }
     car->receiveDamage(40);
     if (car->isDead()) {
+        car->resetMaxForwardSpeed();
         timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
         timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
     }

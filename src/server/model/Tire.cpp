@@ -19,7 +19,7 @@ b2Vec2 Tire::getLateralVelocity() {
 
 b2Vec2 Tire::getForwardVelocity() {
     b2Vec2 currentForwardNormal = body->GetWorldVector( b2Vec2(0,1) );
-    return b2Dot( currentForwardNormal, body->GetLinearVelocity() ) * currentForwardNormal;
+    return b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal;
 }
 
 float Tire::getSpeed() {

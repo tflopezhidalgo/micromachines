@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <atomic>
 #include <vector>
+#include <nlohmann/json.hpp>
 #include "Plugin.h"
 #include "Thread.h"
 #include "PluginHandler.h"
@@ -18,12 +19,12 @@ private:
     std::unordered_map<std::string, Plugin*> plugins;
     std::vector<PluginHandler*> handlers;
     std::atomic<bool> finished;
+    void readPluginsDirectory();
 public:
     PluginsManager();
-    void readPluginsDirectory();
     void run() override;
     void stop();
-    void applyRandomPlugin(std::unordered_map<std::string, Car*>&cars);
+    nlohmann::json applyRandomPlugin(nlohmann::json& model);
     ~PluginsManager();
 };
 

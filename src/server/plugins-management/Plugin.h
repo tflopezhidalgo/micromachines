@@ -5,14 +5,12 @@
 #ifndef MICROMACHINES_PLUGIN_H
 #define MICROMACHINES_PLUGIN_H
 
-#include "../model/Car.h"
-#include <unordered_map>
-#include <string>
+#include <nlohmann/json.hpp>
 
 class Plugin {
 public:
     Plugin() {}
-    virtual void updateModel(std::unordered_map<std::string, Car*>& cars) = 0;
+    virtual nlohmann::json updateModel(nlohmann::json& model) = 0;
     virtual ~Plugin() {}
 };
 

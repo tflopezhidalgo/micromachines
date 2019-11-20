@@ -16,19 +16,26 @@ private:
     std::mutex mutex;
 public:
     explicit MatchesAdministrator(const char* configPath);
+
     bool createMatch(std::string& creatorNickname,
             Proxy& clientProxy,
             std::string& matchName,
             std::string& mapName,
             int playersAmount,
             int raceLaps);
+
     bool addClientToMatch(std::string& clientNickname,
                           Proxy& clientProxy,
                           std::string& matchName);
+
     void deleteFinishedMatches();
+
     std::string getAvailableMatches();
+
     void run() override;
+
     void stop();
+
     ~MatchesAdministrator();
 };
 
