@@ -2,7 +2,7 @@
 #define MICROMACHINES_THROWABLEFACTORY_H
 
 #include "Throwable.h"
-#include "BaseSprite.h"
+#include "Sprite.h"
 #include "Window.h"
 
 class ThrowableFactory {

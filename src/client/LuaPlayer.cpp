@@ -9,7 +9,7 @@ LuaPlayer::LuaPlayer(ProtectedQueue<Event> &q, ProtectedModel &model,
     script(playerId, scriptFile) {}
 
 void LuaPlayer::run() {
-
+    std:::cout << "llegue";
     script.createMap(model.getMap());
 
     while (alive) {

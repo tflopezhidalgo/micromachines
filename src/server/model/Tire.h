@@ -27,6 +27,9 @@ public:
         float maxLatImpulse,
         float defaultFriction
     );
+
+    float getSpeed();
+
     void updateDrive(std::vector<char>& actions);
 
     void updateFriction();

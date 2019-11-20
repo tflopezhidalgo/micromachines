@@ -2,15 +2,17 @@
 #include "Entity.h"
 #include "Window.h"
 #include "../common/Constants.h"
+#include "Car.h"
 
-Camera::Camera(Window& w) :
-    window(w) {
+Camera::Camera(Window& w, Texture& texture) :
+    window(w),
+    texture(texture) {
     this->cameraInfo = {0, 0, 0, 0};
     target = NULL;
 	this->zoom = MtoP;
 }
 
-void Camera::setOnTarget(Entity* e) {
+void Camera::setOnTarget(Car* e) {
     this->target = e;
 }
 
@@ -44,6 +46,13 @@ void Camera::update() {
     this->cameraInfo.h = window.getHeight();
     this->cameraInfo.w = window.getWidth();
     this->zoom = MtoP;
+}
+
+void Camera::render() {
+    if (target->isBlinded()) {
+        SDL_Rect r = {0, 0, window.getWidth(), window.getHeight()};
+        this->texture.render(r, 0);
+    }
 }
 
 int Camera::getZoom() {

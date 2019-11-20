@@ -26,6 +26,7 @@ class Window {
         int getHeight();
         int getWidth();
         SDL_Renderer* getRenderer();
+        void setTarget(SDL_Texture* target);
         void update();
         void clear();
         ~Window();

@@ -8,13 +8,20 @@ Dispatcher::Dispatcher(ProtectedQueue<Event> &q, Proxy& proxy) :
 
 void Dispatcher::run() {
     while (alive) {
-        Event action(std::move(q.pop()));
-        std::string dumpedAction(std::move(action.serialize()));
-        proxy.sendMessage(dumpedAction);
+        try {
+            Event action(std::move(q.pop()));
+            std::string dumpedAction(std::move(action.serialize()));
+            if (action.getActions()[0] == 'Q')
+                break;
+
+            proxy.sendMessage(dumpedAction);
+        } catch (std::runtime_error &e) {
+            stop();
+        }
     }
 }
 
 void Dispatcher::stop() {
-    this->alive = false;
     proxy.stop();
+    this->alive = false;
 }

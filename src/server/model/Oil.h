@@ -7,6 +7,7 @@
 class Oil : public Entity {
 private:
     float gripDecrement;
+    bool used;
     std::vector<TimedEvent>& timedEvents;
 public:
     Oil(b2Body *body, float gripDecrement, std::vector<TimedEvent>& timedEvents);

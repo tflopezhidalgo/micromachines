@@ -13,12 +13,7 @@ EventListener::EventListener(std::string playerID,
 void EventListener::run() {
     SDL_Event e;
     while (alive) {
-
-        /* Si se pone muy rápido el server tiene más para
-         * desencolar (ya que desencola hasta que se vacia)
-         * y aplicar sobre el modelo, esto provoca que todo
-         * se mueva más rápido
-         */
+        // Mejor : 15000
         usleep(15000);
 
         if (SDL_PollEvent(&e))
@@ -56,7 +51,9 @@ std::vector<char> EventListener::createActionList() {
         actions.push_back(LEFT);
 
     if (this->keysHeld[SDLK_q]) {
-        this->alive = false;
+        actions.clear();
+        actions.push_back('Q');
+        alive = false;
     }
 
     return actions;

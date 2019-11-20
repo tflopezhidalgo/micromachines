@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <json.hpp>
 #include "Proxy.h"
 #include "Socket.h"
 
@@ -14,18 +15,20 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(Proxy* proxy);
     explicit MainWindow(QWidget *parent = 0);
     Proxy* getProxy();
-    std::string getPlayerID();
+    std::string& getPlayerID();
+    nlohmann::json& getInitialData();
+    void waitForInitialPosition();
+    bool isLuaPlayer();
     ~MainWindow();
 
 private slots:
+    void on_MainWindow_destroyed();
+
     void on_create_match_button_clicked();
 
     void on_join_match_button_clicked();
-
-    void on_tableWidget_cellClicked(int row, int column);
 
     void on_tableWidget_cellDoubleClicked(int row, int column);
 
@@ -33,16 +36,25 @@ private slots:
 
     void on_buttonBox_rejected();
 
-    void on_buttonBox_2_accepted();
-
-    void on_buttonBox_2_rejected();
-
     void on_okCancelButtons_accepted();
+
+    void on_playerSelectComboBox_currentIndexChanged(int index);
+
+    void on_okCancelButtons_rejected();
+
+    void handleResponseStatus();
+
+signals:
+
+    void waitStatus();
+
 
 private:
     Ui::MainWindow *ui;
     Proxy* proxy;
     std::string PlayerID;
+    bool luaPlayer;
+    nlohmann::json initialData;
 };
 
 #endif // MAINWINDOW_H
