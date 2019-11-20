@@ -17,6 +17,8 @@
 #include "mainwindow.h"
 #include "LuaPlayer.h"
 
+
+#define LUA_PLAYER
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -38,7 +40,7 @@ int main(int argc, char* argv[]) {
     Receiver receiver(model, *proxy);
     Drawer drawer(main, model);
     //EventListener handler(w.getPlayerID(), q);
-    LuaPlayer handler(q, model, w.getPlayerID());
+    LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
     Dispatcher dispatcher(q, *proxy);
 
     receiver.start();

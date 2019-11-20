@@ -1,20 +1,21 @@
 #include <iostream>
 #include "LuaScript.h"
 
-#define PLAYER_SCRIPT "player.lua"
-#define ENTITIES_SCRIPT "entities_ids.lua"
-#define FLOOR_SCRIPT "floor_ids.lua"
+#define RELATIVE_PATH "../src/client/lua/"
+#define ENTITIES_SCRIPT "../src/client/lua/entities_ids.lua"
+#define FLOOR_SCRIPT "../src/client/lua/floor_ids.lua"
 #define ENTITIES "entities"
 #define MAP "map"
 #define INDEX_X 1
 #define INDEX_Y 2
 
-LuaScript::LuaScript(std::string& clientId) :
+LuaScript::LuaScript(std::string& clientId, std::string& scriptFile) :
     clientId(clientId){
     L = luaL_newstate();
     luaL_openlibs(L);
 
-    luaL_dofile(L, PLAYER_SCRIPT);
+    std::string player = std::string(RELATIVE_PATH) + scriptFile;
+    luaL_dofile(L, player.c_str());
     luaL_dofile(L, ENTITIES_SCRIPT);
     luaL_dofile(L, FLOOR_SCRIPT);
 }
@@ -31,6 +32,8 @@ Event LuaScript::getEvent(int angle, int pos_x, int pos_y) {
     lua_pushnumber(L, ang);
     lua_pushnumber(L, std::get<0>(tuplePos));
     lua_pushnumber(L, std::get<1>(tuplePos));
+    lua_pushnumber(L, pos_x);
+    lua_pushnumber(L, pos_y);
 
     lua_pcall(L, 3, 1, 0);
     const char* luaEvent = lua_tostring(L, 1);
@@ -46,12 +49,10 @@ Event LuaScript::createEvent(const char* luaEvent) {
 
     if (action[0] == FORWARD) count_turns = 0;
 
-    std::cout << "action:" << action[0];
     v_event.push_back(action[0]);
     if (action[0] == RIGHT || action[0] == LEFT) {
         count_turns++;
         if (count_turns == 12) {
-            std::cout << FORWARD << std::endl;
             v_event.push_back(FORWARD);
             count_turns = 0;
         }

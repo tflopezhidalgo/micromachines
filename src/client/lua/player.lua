@@ -19,17 +19,13 @@ next_position = {
     [-1] = "L", -- IZQUIERDA
     [0] = "F", -- ADELANTE
     [1] = "R", -- DERECHA
-    ["reverse"] = "B",
-    [2] = "B"
+    [2] = "B" -- REVERSE
 }
 -- end variables macro
 
 -- Depende el angulo tiene una direccion a seguir
-function getEvent(angle, pos_x, pos_y)
-    angle = tonumber(string.format("%d", angle))
-    print("lua:" ,pos_x, pos_y)
-
-    local action = ""
+function getEvent(angle, pos_x, pos_y, real_pos_x, real_pos_y)
+    print(angle)
     angle = 0
     if ((angle >= MIN_ANGLE_UP and angle <= MAX_ANGLE_UP) or
             (angle >= MIN_ANGLE_DOWN and angle <= MAX_ANGLE_LEFT)) then
@@ -80,6 +76,7 @@ function is_in_border_top(pos_x, pos_y)
     return border_x or border_y
 end
 
+-- cada tile va a tener una posicion recomendada a avanzar
 function next_recommended_position(floor_type)
     print(floor_id[floor_type]["name"], floor_type)
     return floor_id[floor_type]["direction"]
@@ -89,6 +86,7 @@ function check_floor(floor_type)
     return floor_id[floor_type]["safe"]
 end
 
+-- verifica si hay una entidad en la posicion en la que quiere avanzar
 function check_entity(pos_x, pos_y)
     for _, entity in pairs(entities) do
         if (entity[2] == pos_x and entity[3] == pos_y) then
@@ -101,7 +99,7 @@ end
 
 function action_vertical(pos_x, pos_y)
     if (is_in_border_bottom(pos_x, pos_y)) then
-        return next_position[0]
+        return next_position[2]
     end
     if (is_in_border_top(pos_x, pos_y)) then
         return next_position[2]
@@ -126,10 +124,10 @@ end
 
 function action_horizontal(pos_x, pos_y)
     if (is_in_border_bottom(pos_x, pos_y)) then
-        return next_position[0]
+        return next_position[2]
     end
     if (is_in_border_top(pos_x, pos_y)) then
-        return next_position[1]
+        return next_position[2]
     end
 
     local try_pos = next_recommended_position(map[pos_y][pos_x])
