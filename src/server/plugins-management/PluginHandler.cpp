@@ -18,6 +18,7 @@ void PluginHandler::resetDlError() {
 void PluginHandler::checkDlError() {
     const char * dlsymError = dlerror();
     if (dlsymError) {
+        dlclose(handler);
         throw PluginHandlerException(dlsymError);
     }
 }

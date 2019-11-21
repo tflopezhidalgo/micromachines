@@ -10,7 +10,7 @@ private:
     void * handler = nullptr;
     PluginCreator creator = nullptr;
     static void resetDlError();
-    static void checkDlError();
+    void checkDlError();
 public:
     PluginHandler(const char* file);
     Plugin* create() const;

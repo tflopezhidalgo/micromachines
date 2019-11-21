@@ -130,6 +130,12 @@ bool Socket::iterateAddrInfo(addrinfo* result, bool passive, int backlog) {
 bool Socket::operationalize(addrinfo* ptr, int backlog, bool passive) {
     bool success;
     if (passive) {
+        int val = 1;
+        int s = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+        if (s == -1) {
+            std::cerr << "Error: " << strerror(errno) << std::endl;
+            return false;
+        }
         success = (bind(ptr) == 0 && listen(backlog) == 0);
     } else {
         success = (::connect(fd, ptr->ai_addr, ptr->ai_addrlen) != -1);

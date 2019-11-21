@@ -31,7 +31,8 @@ private:
     std::vector<Grass*> grassTiles;
     std::vector<Checkpoint*> checkpoints;
     
-    std::chrono::time_point<std::chrono::system_clock> start;
+    std::chrono::time_point<std::chrono::system_clock> grandstandsStart;
+    std::chrono::time_point<std::chrono::system_clock> pluginsStart;
     
     void applyPlugins();
     void updateTimedEvents();
@@ -51,6 +52,8 @@ public:
     std::string getRaceStatus();
 
     std::string getRaceData();
+
+    void processPluginRequests(nlohmann::json& requests);
 
     ~RaceManager();
 };

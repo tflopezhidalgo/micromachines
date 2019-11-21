@@ -20,7 +20,7 @@
 #include "ffmpeg/RecorderHandle.h"
 #include "Counter.h"
 
-#define EXTENSION ".mpeg"
+#define LUA_PLAYER "player.lua"
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -51,8 +51,8 @@ int main(int argc, char* argv[]) {
         ProtectedQueue<Event> q;
 
         Receiver receiver(model, *proxy);
-        EventListener handler(w.getPlayerID(), q);
-        //LuaPlayer handler(q, model, w.getPlayerID());
+        //EventListener handler(w.getPlayerID(), q);
+        LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
 
         Dispatcher dispatcher(q, *proxy);
 
