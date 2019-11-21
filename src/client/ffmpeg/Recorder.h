@@ -18,6 +18,7 @@ private:
     FormatContext context;
     FrameWriter frameWriter;
     SwsContext* ctx;
+    bool running;
 
 public:
     Recorder(const int window_width, const int window_height, ProtectedVector& queueFrame, std::string& fileName);

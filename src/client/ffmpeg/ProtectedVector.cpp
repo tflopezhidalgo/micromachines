@@ -1,4 +1,7 @@
 #include "ProtectedVector.h"
+#include "RecorderException.h"
+
+#define ERROR_NOT_EMPTY "Error not empty data"
 
 ProtectedVector::ProtectedVector() :
     _shutdown(false) {}
@@ -15,7 +18,7 @@ void ProtectedVector::close() {
 }
 
 bool ProtectedVector::pop(std::vector<char> &data) {
-    if(!data.empty()) throw "ups";
+    if(!data.empty()) throw RecorderException(ERROR_NOT_EMPTY);
 
     std::unique_lock<std::mutex> lock(m);
     while(!_shutdown && actualFrame.empty()) {
