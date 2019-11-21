@@ -19,6 +19,8 @@
 #include "LuaPlayer.h"
 #include "Counter.h"
 
+
+#define LUA_PLAYER "player.lua"
 #define GAME_NAME "Micromachines"
 #define EXTENSION ".mpeg"
 using json = nlohmann::json;
@@ -36,11 +38,9 @@ int main(int argc, char* argv[]) {
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
-
         av_register_all();
         ProtectedVector pv;
         Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
-
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 
@@ -51,8 +51,8 @@ int main(int argc, char* argv[]) {
         ProtectedQueue<Event> q;
 
         Receiver receiver(model, *proxy);
-        EventListener handler(w.getPlayerID(), q);
-        //LuaPlayer handler(q, model, w.getPlayerID());
+        //EventListener handler(w.getPlayerID(), q);
+        LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
 
         Dispatcher dispatcher(q, *proxy);
 
