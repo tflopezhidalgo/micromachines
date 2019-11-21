@@ -45,6 +45,7 @@ void Car::updateMove(std::vector<char>& actions) {
 
     if (actualSurface == GRASS && (getPosition() - lastPosOnTrack).Length() > MAX_DISTANCE_TO_TRACK) {
         receiveDamage(100);
+        resetMaxForwardSpeed();
         timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
         timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
         return;
@@ -120,17 +121,19 @@ void Car::beginCollision(Entity* entity) {
 
     } else if (identifier == CAR) {
         auto car = dynamic_cast<Car*>(entity);
-        if (car->getSpeed() < 100 && this->getSpeed() < 100) {
+        if (car->getSpeed() < 70 && this->getSpeed() < 70) {
             return;
         }
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
 
         if (car->isDead()) {
+            car->resetMaxForwardSpeed();
             timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
             timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
         }
         if (this->isDead()) {
+            resetMaxForwardSpeed();
             timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 1.5f));
             timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 1.5f));
         }

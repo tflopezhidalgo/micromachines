@@ -51,9 +51,7 @@ target_link_libraries(Client SDL2 SDL2_image pthread lua5.3 m dl Qt5::Widgets av
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build) #Box2D library building
 
-add_library(model ${COMMON_SRC_FILES} ${MODEL_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES}) # Model library building
-target_link_libraries(model Box2D)
+add_executable(Server src/server/main.cpp ${MATCHES_MANAGEMENT_SRC_FILES}
+        ${COMMON_SRC_FILES} ${MODEL_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES})
 
-add_executable(Server src/server/main.cpp ${MATCHES_MANAGEMENT_SRC_FILES})
-
-target_link_libraries(Server model pthread dl)
+target_link_libraries(Server Box2D pthread dl)

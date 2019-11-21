@@ -14,11 +14,12 @@ void Stone::beginCollision(Entity* entity) {
 }
 
 void Stone::damageCar(Car* car) {
-    if (car->getSpeed() < 100) {
+    if (car->getSpeed() < 70) {
         return;
     }
     car->receiveDamage(damage);
     if (car->isDead()) {
+        car->resetMaxForwardSpeed();
         timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
         timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
     }
