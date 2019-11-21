@@ -38,11 +38,9 @@ int main(int argc, char* argv[]) {
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
-
         av_register_all();
         ProtectedVector pv;
         Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
-
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 

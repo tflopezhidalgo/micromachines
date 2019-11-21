@@ -9,11 +9,10 @@ LuaPlayer::LuaPlayer(ProtectedQueue<Event> &q, ProtectedModel &model,
     script(playerId, scriptFile) {}
 
 void LuaPlayer::run() {
-    std:::cout << "llegue";
     script.createMap(model.getMap());
 
     while (alive) {
-        usleep(15000);
+        usleep(10000);
         script.setEntities(model.getEntitiesPos());
         std::vector<int> state = std::move(model.getActualState());
         Event e(std::move(script.getEvent(state[0], state[1], state[2])));
