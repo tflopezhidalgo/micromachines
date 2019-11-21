@@ -9,10 +9,15 @@
 
 class StatusSerializer {
 public:
-    static std::string serialize(
+
+    static std::string getClientsModelSerialization(
             RaceJudge& raceJudge,
             std::unordered_map<std::string, Car*>& cars,
             std::unordered_map<int, Entity*>& entities);
+
+    static nlohmann::json getPluginsModelSerialization(
+            RaceJudge& raceJudge,
+            std::unordered_map<std::string, Car*>& cars);
 };
 
 #endif //MICROMACHINES_STATUSSERIALIZER_H

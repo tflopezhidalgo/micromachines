@@ -1,10 +1,13 @@
 #include "StatusSerializer.h"
 #include "Constants.h"
 
-std::string StatusSerializer::serialize(RaceJudge& raceJudge,
-                                        std::unordered_map<std::string, Car*>& cars,
-                                        std::unordered_map<int, Entity*>& entities) {
+std::string StatusSerializer::getClientsModelSerialization(
+        RaceJudge& raceJudge,
+        std::unordered_map<std::string, Car*>& cars,
+        std::unordered_map<int, Entity*>& entities) {
+
     nlohmann::json data;
+
     nlohmann::json carsData = nlohmann::json::array();
     for (auto &car : cars) {
         std::string carId = car.first;
@@ -30,11 +33,30 @@ std::string StatusSerializer::serialize(RaceJudge& raceJudge,
             int(entity.second->getPosition().y * SERIALIZING_RESCAILING),
         });
     }
+
     data["entitiesData"] = entitiesData;
-
     data["carsArrivalOrder"] = raceJudge.getCarsArrivalOrder();
-
     data["matchFinished"] = raceJudge.raceFinished();
 
     return std::move(data.dump());
+}
+
+nlohmann::json StatusSerializer::getPluginsModelSerialization(
+        RaceJudge& raceJudge,
+        std::unordered_map<std::string, Car*>& cars) {
+
+    nlohmann::json data;
+
+    nlohmann::json carsData = nlohmann::json::array();
+
+    for (auto &car : cars) {
+        std::string carId = car.first;
+        carsData.push_back({
+            carId,
+            car.second->getHealth(),
+        });
+    }
+    data["carsData"] = carsData;
+
+    return std::move(data);
 }

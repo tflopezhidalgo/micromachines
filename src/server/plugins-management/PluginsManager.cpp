@@ -2,7 +2,7 @@
 #include "PluginHandler.h"
 #include "PluginHandlerException.h"
 
-#define DIRECTORY "../src/server/plugins-management/plugins/"
+#define DIRECTORY "../src/server/plugins-management/plugins/libs/"
 #define EXTENSION "so"
 
 PluginsManager::PluginsManager():
@@ -40,12 +40,15 @@ void PluginsManager::readPluginsDirectory() {
     }
 }
 
-void PluginsManager::applyRandomPlugin(std::unordered_map<std::string, Car*>& cars) {
+nlohmann::json PluginsManager::applyRandomPlugin(nlohmann::json& model) {
     std::unique_lock<std::mutex> lck(mutex);
     if (!plugins.empty()) {
         int index = rand() % plugins.size();
         auto pluginsIt = std::next(std::begin(plugins), index);
-        pluginsIt->second->updateModel(cars);
+        return std::move(pluginsIt->second->updateModel(model));
+    } else {
+        nlohmann::json null;
+        return std::move(null);
     }
 }
 
