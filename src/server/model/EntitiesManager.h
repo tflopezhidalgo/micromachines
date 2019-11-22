@@ -20,6 +20,8 @@ public:
 
     void addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
 
+    void deleteEntity(int entityId);
+
     void deleteDeadEntities();
 
     void updateProjectilesStatus();

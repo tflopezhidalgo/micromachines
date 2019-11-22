@@ -7,16 +7,16 @@
 #define ANGLE_IDX 2
 
 RaceManager::RaceManager(std::string& mapName, std::map<std::string,float> &config, int raceLaps) :
-    config(config),
-    stageBuilder(mapName, config),
-    world(std::move(stageBuilder.buildWorld(timedEvents))),
-    raceJudge(raceLaps),
-    entitiesManager(world),
-    grandstandsStart(std::chrono::system_clock::now()),
-    pluginsStart(std::chrono::system_clock::now()) {
+        config(config),
+        stageBuilder(mapName, config),
+        world(std::move(stageBuilder.buildWorld(timedEvents))),
+        raceJudge(raceLaps),
+        entitiesManager(world),
+        pluginRequestsProcessor(entitiesManager, cars),
+        grandstandsTimeStart(std::chrono::system_clock::now()),
+        pluginsTimeStart(std::chrono::system_clock::now()) {
 
-    pluginsManager = new PluginsManager();
-    pluginsManager->start();
+    pluginsManager.start();
     stageBuilder.addRaceSurface(world, tracks, grassTiles, checkpoints, raceJudge);
     stageBuilder.addGrandstands(world, grandstands, timedEvents);
 
@@ -72,7 +72,7 @@ void RaceManager::updateCars(std::vector<Event> &events) {
 void RaceManager::activateGrandstands() {
     auto end = std::chrono::system_clock::now();
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
-            (end - grandstandsStart).count();
+            (end - grandstandsTimeStart).count();
 
     if (elapsed_seconds > TIME_ELAPSE_GRANDSTANDS) {
 
@@ -84,7 +84,7 @@ void RaceManager::activateGrandstands() {
 
         }
 
-        grandstandsStart = std::chrono::system_clock::now();
+        grandstandsTimeStart = std::chrono::system_clock::now();
 
     }
 }
@@ -92,23 +92,14 @@ void RaceManager::activateGrandstands() {
 void RaceManager::applyPlugins() {
     auto end = std::chrono::system_clock::now();
     int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>
-            (end - pluginsStart).count();
+            (end - pluginsTimeStart).count();
     if (elapsed_seconds > TIME_ELAPSE_PLUGINS) {
-        nlohmann::json modelSerialization = std::move(StatusSerializer::getPluginsModelSerialization(raceJudge, cars));
-        nlohmann::json requests = std::move(pluginsManager->applyRandomPlugin(modelSerialization));
-        processPluginRequests(requests);
-        pluginsStart = std::chrono::system_clock::now();
-    }
-}
-
-//todo clase que se dedique a procesar requests de plugins.
-void RaceManager::processPluginRequests(nlohmann::json& requests) {
-    if (!requests.is_null()) {
-        for (auto& carModification : requests["carsModifications"]) {
-            std::string carId = carModification[0].get<std::string>();
-            float forwardSpeedDiff = carModification[1].get<float>();
-            cars.find(carId)->second->updateMaxForwardSpeed(forwardSpeedDiff);
-        }
+        nlohmann::json modelSerialization =
+                std::move(StatusSerializer::getPluginsModelSerialization(
+                        raceJudge, cars, entitiesManager.getEntities()));
+        nlohmann::json requests = std::move(pluginsManager.applyRandomPlugin(modelSerialization));
+        pluginRequestsProcessor.process(requests);
+        pluginsTimeStart = std::chrono::system_clock::now();
     }
 }
 
@@ -142,9 +133,8 @@ std::string RaceManager::getRaceData() {
 
 RaceManager::~RaceManager() {
 
-    pluginsManager->stop();
-    pluginsManager->join();
-    delete pluginsManager;
+    pluginsManager.stop();
+    pluginsManager.join();
 
     for (auto & car : cars) {
         delete car.second;
