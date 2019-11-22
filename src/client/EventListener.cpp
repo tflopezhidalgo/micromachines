@@ -1,10 +1,10 @@
 #include "EventListener.h"
 
 EventListener::EventListener(std::string playerID, 
-							 ProtectedQueue<Event>& q,
-							 RecorderHandle &recorderHandle):
+							 ProtectedQueue<Event>& q):
 							 alive(true),
-                             q(q), playerID(playerID) {}
+                             q(q),
+                             playerID(playerID) {}
 
 void EventListener::run() {
     SDL_Event e;
@@ -48,11 +48,10 @@ std::vector<char> EventListener::createActionList() {
 
     /* RECORDER HANDLE */
     if (this->keysHeld[SDLK_f])
-        recorderHandle.stopRecorder();
+        //recorderHandle.stopRecorder();
 
     if (this->keysHeld[SDLK_g])
-        recorderHandle.startRecorder();
-    /* **** */
+        //recorderHandle.startRecorder();
 
     if (this->keysHeld[SDLK_q]) {
         actions.clear();

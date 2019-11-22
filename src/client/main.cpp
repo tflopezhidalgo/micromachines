@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
 
     Proxy* proxy = w.getProxy();
     try {
+        std::cout << "window";
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         //std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
@@ -40,39 +41,44 @@ int main(int argc, char* argv[]) {
         //av_register_all();
         ProtectedVector pv;
         //Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
+        std::cout << "recorder";
+        std::string fileName = std::string(GAME_NAME) + std::string(".mp4");
+        av_register_all();
+        Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
+
         RecorderHandle recorderHandle(pv);
 
+        std::cout << "camara";
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
+        std::cout << "tile map";
         TileMap map(main, w.getInitialData());
 
+        std::cout << "protected model";
         ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
+
+        std::cout << "drawer";
         Drawer drawer(main, model, pv);
-        
+
+        drawer.start();
         ProtectedQueue<Event> q;
 
+        std::cout << "receiver";
         Receiver receiver(model, *proxy);
-        //EventListener handler(w.getPlayerID(), q);
-        LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
+        EventListener handler(w.getPlayerID(), q);
+        //LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
 
         Dispatcher dispatcher(q, *proxy);
 
-        //recorder.start();
-        drawer.start();
+        recorder.start();
         receiver.start();
         dispatcher.start();
 
-        try {
-          handler.run();
-        } catch {
-          std::cout << "ocurrio una excepcion en el handler.run() :( " << e.what() << std::endl;
-        }
-
-        //recorder.stop();
+        recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
 
-        //recorder.join();
+        recorder.join();
         drawer.join();
         dispatcher.join();
         receiver.join();
