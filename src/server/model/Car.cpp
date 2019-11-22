@@ -207,6 +207,10 @@ float Car::getSpeed() {
     return tires[0]->getSpeed();
 }
 
+float Car::getForwardSpeed() {
+    return tires[0]->getForwardSpeed();
+}
+
 void Car::recoverTotalVision() {
     reducedVision = false;
 }

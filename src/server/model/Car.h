@@ -63,6 +63,8 @@ public:
 
     float getSpeed();
 
+    float getForwardSpeed();
+
     bool isDead() override;
 
     bool hasReducedVision();

@@ -24,7 +24,6 @@ void Stone::damageCar(Car* car) {
         timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
     }
     car->updateMaxForwardSpeed(speedDecrement);
-    timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
     timedEvents.emplace_back(TimedEvent(this, &Entity::die, 0.5f));
 }
 
