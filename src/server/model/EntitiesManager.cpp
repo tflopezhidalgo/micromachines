@@ -48,6 +48,10 @@ void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, 
 
 }
 
+void EntitiesManager::deleteEntity(int entityId) {
+    entities.find(entityId)->second->die();
+}
+
 void EntitiesManager::deleteDeadEntities() {
     auto it = entities.begin();
     while (it != entities.end()) {
@@ -86,8 +90,8 @@ void EntitiesManager::updateProjectilesStatus() {
                 entities.find(projectileId)->second = oil;
 
             } else if (identifier == SPEEDBOOSTER) {
-                HealthBooster* healthBooster = world.addHealthBooster(pos.x, pos.y);
-                entities.find(projectileId)->second = healthBooster;
+                SpeedBooster* speedBooster = world.addSpeedBooster(pos.x, pos.y);
+                entities.find(projectileId)->second = speedBooster;
 
             } else if (identifier == MUD) {
                 Mud* mud = world.addMud(pos.x, pos.y);

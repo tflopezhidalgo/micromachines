@@ -104,7 +104,7 @@ void Car::beginCollision(Entity* entity) {
         healthBooster->heal(this);
 
     } else if (identifier == STONE) {
-        auto stone = dynamic_cast<Stone *>(entity);
+        auto stone = dynamic_cast<Stone*>(entity);
         stone->damageCar(this);
 
     } else if (identifier == SPEEDBOOSTER) {

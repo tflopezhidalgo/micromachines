@@ -17,3 +17,5 @@ Server_autogen/
 libmodel.a
 model_autogen/
 Micromachines.cbp
+src/server/plugins-management/plugins/cmake-build-debug
+
