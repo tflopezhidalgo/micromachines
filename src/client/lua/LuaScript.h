@@ -29,7 +29,7 @@ private:
 
     void emptyStack();
 public:
-    explicit LuaScript(std::string& clientId);
+    explicit LuaScript(std::string& clientId, std::string& scriptFile);
 
     Event getEvent(int angle, int pos_x, int pos_y);
 

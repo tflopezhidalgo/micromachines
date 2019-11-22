@@ -1,14 +1,14 @@
 #include <unistd.h>
 #include "LuaPlayer.h"
 
-LuaPlayer::LuaPlayer(ProtectedQueue<Event> &q, ProtectedModel &model, std::string playerId) :
+LuaPlayer::LuaPlayer(ProtectedQueue<Event> &q, ProtectedModel &model,
+        std::string playerId, std::string scriptFile) :
     q(q),
     model(model),
     alive(true),
-    script(playerId) {}
+    script(playerId, scriptFile) {}
 
 void LuaPlayer::run() {
-
     script.createMap(model.getMap());
 
     while (alive) {
