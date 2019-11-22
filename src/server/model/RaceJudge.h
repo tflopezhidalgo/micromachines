@@ -13,15 +13,23 @@ private:
     std::unordered_map<std::string, int> checkpointsTaken;
     std::unordered_map<std::string, int> nextCheckpoint;
     std::unordered_map<std::string, int> lapsDone;
-    std::string winnerId;
 public:
     RaceJudge(int raceLaps);
+
     void addCar(std::string& id);
+
     void increaseCheckpointsNumber();
+
     void activate(std::string carId, int checkpointOrder);
+
     bool raceFinished();
+
     int getLapsDone(std::string& carId);
+
+    int getCheckpointsTaken(std::string& carId);
+
     std::vector<std::string>& getCarsArrivalOrder();
+
     ~RaceJudge();
 };
 

@@ -17,7 +17,8 @@ public:
 
     static nlohmann::json getPluginsModelSerialization(
             RaceJudge& raceJudge,
-            std::unordered_map<std::string, Car*>& cars);
+            std::unordered_map<std::string, Car*>& cars,
+            std::unordered_map<int, Entity*>& entities);
 };
 
 #endif //MICROMACHINES_STATUSSERIALIZER_H
