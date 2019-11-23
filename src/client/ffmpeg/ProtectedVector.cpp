@@ -19,7 +19,6 @@ void ProtectedVector::close() {
 
 bool ProtectedVector::pop(std::vector<char> &data) {
     if(!data.empty()) throw RecorderException(ERROR_NOT_EMPTY);
-
     std::unique_lock<std::mutex> lock(m);
     while(!_shutdown && actualFrame.empty()) {
         cv_pop.wait(lock);
@@ -27,6 +26,14 @@ bool ProtectedVector::pop(std::vector<char> &data) {
     if (_shutdown) { return false; }
     data.swap(actualFrame);
     return true;
+}
+
+bool ProtectedVector::isClose() {
+    return _shutdown;
+}
+
+void ProtectedVector::open() {
+    _shutdown = false;
 }
 
 ProtectedVector::~ProtectedVector() = default;
