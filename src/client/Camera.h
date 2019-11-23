@@ -2,7 +2,7 @@
 #define MICROMACHINES_CAMERA_H
 
 #include "Window.h"
-#include "Entity.h"
+#include "Object.h"
 #include "Texture.h"
 
 class Car;

@@ -12,6 +12,7 @@
 #include "Dispatcher.h"
 #include <nlohmann/json.hpp>
 #include <QApplication>
+#include <SDL2/SDL_ttf.h>
 #include "mainwindow.h"
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
@@ -23,7 +24,8 @@ using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
 
-    SDL_Init(SDL_INIT_EVERYTHING);
+    TTF_Init();
+    SDL_Init(SDL_INIT_VIDEO);
     Audio audio;
     Music ambient_music("../media/sounds/ambience_music.wav");
     ambient_music.play(-1);
@@ -36,6 +38,7 @@ int main(int argc, char* argv[]) {
 
     if (!w.isValidUser()){
         SDL_Quit();
+        TTF_Quit();
         a.quit();
         delete proxy;
         return 1;
@@ -66,9 +69,9 @@ int main(int argc, char* argv[]) {
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
 
-        if (w.isLuaPlayer())
+        if (w.isLuaPlayer()) {
             event_handler = new LuaPlayer(q, model, w.getPlayerID(), LUA_PLAYER);
-        else
+        } else
             event_handler = new EventListener(w.getPlayerID(), q);
 
         drawer.start();
@@ -88,6 +91,9 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    SDL_Quit();
+    TTF_Quit();
+    a.quit();
     delete event_handler;
     delete main;
 

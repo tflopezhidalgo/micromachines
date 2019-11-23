@@ -1,7 +1,7 @@
 #ifndef MICROMACHINES_CAR_H
 #define MICROMACHINES_CAR_H
 
-#include "Entity.h"
+#include "Object.h"
 #include "Sprite.h"
 #include "Window.h"
 #include "Camera.h"
@@ -11,7 +11,7 @@
 #include "Identifiers.h"
 #include <SDL2/SDL_mixer.h>
 
-class Car: public Entity{
+class Car {
 private:
     Sprite sprite;
     AnimatedSprite animation;

@@ -3,14 +3,12 @@
 #include <vector>
 #include <mutex>
 #include "Window.h"
-#include "ThrowableFactory.h"
+#include "ObjectFactory.h"
 #include <string>
 #include "Identifiers.h"
 #include "Constants.h"
 #include "Text.h"
 #include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
-#include "Music.h"
 
 ProtectedModel::ProtectedModel(Window& w, Camera& cam, std::string& playerID) :
 cam(cam),
@@ -18,7 +16,6 @@ main(w),
 playerID(playerID),
 waiting_players_screen(std::move(main.createTextureFrom("../media/sprites/waiting_players.png"))),
 counter(w),
-grand_stand(w, "../media/sprites/public_sprite.png", GRANDSTAND_HEIGHT, GRANDSTAND_WIDTH),
 finished(false),
 initialized(false) { }
 
@@ -27,7 +24,7 @@ void ProtectedModel::initialize(nlohmann::json data) {
 
     this->map = new TileMap(this->main, data);
 
-    for (auto& carData : data["carsData"]) {
+    for (auto &carData : data["carsData"]) {
         std::cout << "LOG - Creando auto" << carData << std::endl;
         this->entities[carData[0]] = new Car("../media/sprites/pitstop_car_1.png", main);
         int x = carData[1].get<int>();
@@ -37,11 +34,20 @@ void ProtectedModel::initialize(nlohmann::json data) {
         int lapsDone = carData[5].get<int>();
         bool state = carData[6].get<bool>();
 
-        this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, lapsDone, state);
+        this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health,
+                                             lapsDone, state);
+    }
+
+    ObjectFactory factory(main);
+
+    for (auto &grandstandData : data["grandstandsData"]) {
+        int x = grandstandData[0].get<int>();
+        int y = grandstandData[1].get<int>();
+        this->objects[1000] = factory.generateObject(GRANDSTAND);
+        this->objects[1000]->setPosition(x * cam.getZoom(), y * cam.getZoom());
     }
 
     cam.setOnTarget(this->entities[this->playerID]);
-    TTF_Init();
 
     this->initialized = true;
 }
@@ -67,11 +73,11 @@ void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, E
     std::unique_lock<std::mutex> lck(m);
 
     if (objects[id] == NULL) {
-        ThrowableFactory factory(this->main);
-        this->objects[id] = factory.generateThrowable(type);
+        ObjectFactory factory(this->main);
+        this->objects[id] = factory.generateObject(type);
     }
 
-    this->objects[id]->setPos(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000);
+    this->objects[id]->setPosition(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000);
     this->objects[id]->setState(state);
 }
 
@@ -88,7 +94,6 @@ void ProtectedModel::renderAll() {
         object.second->render(cam);
     for (auto& car : entities)
         car.second->render(cam);
-    this->grand_stand.render(GRANDSTAND_X * cam.getZoom() , GRANDSTAND_Y * cam.getZoom() ,   GRANDSTAND_ANGLE * SERIALIZING_RESCAILING / 2, cam);
     counter.render(0, 0);
     cam.render();
     if (this->finished) {
@@ -115,6 +120,11 @@ void ProtectedModel::setFinishedGame(std::vector<std::string>& winner) {
     this->podium = std::move(winner);
 }
 
+bool ProtectedModel::isInitialized() {
+    std::unique_lock<std::mutex> lck(this->m);
+    return this->initialized;
+}
+
 std::vector<int> ProtectedModel::getActualState() {
     std::unique_lock<std::mutex> lock(m);
     std::vector<int> state;
@@ -139,6 +149,7 @@ std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
 }
 
 std::vector<std::vector<int>>& ProtectedModel::getMap() {
+    std::unique_lock<std::mutex> lock(m);
     return map->getTileNumbers();
 }
 

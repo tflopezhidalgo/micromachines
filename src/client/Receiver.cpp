@@ -15,6 +15,7 @@ void Receiver::run() {
     Sound count_sound("../media/sounds/counting_sound_2.wav");
 
     nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
+
     model.initialize(j);
 
     std::cout << "LOG - InitialData: " << j.dump() << std::endl;
@@ -41,7 +42,13 @@ void Receiver::run() {
                 int health = car[4].get<int>();
                 int lapsDone = car[5].get<int>();
                 bool onExploding = car[6].get<bool>();
+                int velocity = car[7].get<int>();
+                bool field1 = car[8].get<bool>(); // Agarró power-up
+                bool field2 = car[9].get<bool>();
                 this->model.updateCar(key, x, y, angle, health, lapsDone, onExploding);
+                if (field1)
+                    count_sound.play();
+
             }
 
             for (auto &obj : j["entitiesData"]) {

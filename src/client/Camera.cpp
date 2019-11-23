@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Entity.h"
+#include "Object.h"
 #include "Window.h"
 #include "../common/Constants.h"
 #include "Car.h"
