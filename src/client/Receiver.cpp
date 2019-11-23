@@ -54,6 +54,7 @@ void Receiver::run() {
             }
 
         } catch(std::runtime_error &e){
+            std::cout << "Exception in receiver\n";
             this->stop();
         }
     }

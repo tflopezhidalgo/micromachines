@@ -3,10 +3,8 @@
 #include <iostream>
 #include <zconf.h>
 #include "ProtectedQueue.h"
-#include "Car.h"
 #include "Camera.h"
 #include <vector>
-#include "TileMap.h"
 #include "Drawer.h"
 #include "ProtectedModel.h"
 #include "Receiver.h"
@@ -16,7 +14,7 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "LuaPlayer.h"
-#include "Counter.h"
+#include "Audio.h"
 
 using json = nlohmann::json;
 
@@ -28,6 +26,9 @@ struct UserData {
 int main(int argc, char* argv[]) {
 
     SDL_Init(SDL_INIT_EVERYTHING);
+    Audio audio;
+    Music ambient_music("ambience_music.wav");
+    ambient_music.play();
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

@@ -10,6 +10,7 @@
 #include "Text.h"
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include "Music.h"
 
 ProtectedModel::ProtectedModel(Window& w, Camera& cam, std::string& playerID) :
 cam(cam),
@@ -19,12 +20,7 @@ waiting_players_screen(std::move(main.createTextureFrom("../media/sprites/waitin
 counter(w),
 grand_stand(w, "../media/sprites/public_sprite.png", GRANDSTAND_HEIGHT, GRANDSTAND_WIDTH),
 finished(false),
-initialized(false) {
-    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-        throw std::runtime_error("No se puede abrir audio");
-    ambience = Mix_LoadMUS("../media/sounds/ambience_music.wav");
-    Mix_PlayMusic(ambience, 0);
-}
+initialized(false) { }
 
 void ProtectedModel::initialize(nlohmann::json data) {
     std::unique_lock<std::mutex> lck(m);
@@ -148,8 +144,6 @@ std::vector<std::vector<int>>& ProtectedModel::getMap() {
 }
 
 ProtectedModel::~ProtectedModel(){
-    Mix_FreeMusic(this->ambience);
-    Mix_CloseAudio();
     TTF_Quit();
     delete map;
     for (auto& car : entities)

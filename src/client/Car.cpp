@@ -4,23 +4,19 @@
 #include "Constants.h"
 #include "AnimatedSprite.h"
 #include "Identifiers.h"
+#include "Sound.h"
 #include <SDL2/SDL_mixer.h>
 
 Car::Car(const std::string &file, Window& win) :
     sprite(win, file, CAR_H, CAR_W),
     animation(win, "../media/animations/fire.png", 7, 185, 191, 25, 25),
-    health(win){
+    health(win),
+    crashSound("../media/sounds/exploding.wav") {
         this->x = 0;
         this->y = 0;
         this->angle = 0;
         this->lapsDone = 0;
         this->blinded = false;
-        this->crash_sound = NULL;
-        this->crash_sound = Mix_LoadWAV("../media/sounds/exploding.wav");
-        std::cout << "crash_sound vale " << this->crash_sound << std::endl;
-        if (this->crash_sound == NULL) {
-            std::cout << "Fallo al crear sonido\n";
-        }
     }
 
 void Car::setState(int x, int y, int angle, int health, int lapsDone, bool blinded) {
@@ -28,7 +24,7 @@ void Car::setState(int x, int y, int angle, int health, int lapsDone, bool blind
     this->y = y;
     this->angle = angle;
     if (health < this->health.getHealth()) {
-        Mix_PlayChannel(-1, this->crash_sound, 0);
+        this->crashSound.play();
     }
     this->health.setActualHealth(health);
     this->lapsDone = lapsDone;
@@ -64,6 +60,4 @@ void Car::render(Camera& cam) {
     }
 }
 
-Car::~Car() {
-    Mix_FreeChunk(this->crash_sound);
-}
+Car::~Car() { }

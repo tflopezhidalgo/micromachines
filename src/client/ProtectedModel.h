@@ -12,6 +12,7 @@
 #include "Throwable.h"
 #include "Identifiers.h"
 #include "Counter.h"
+#include "Music.h"
 
 class ProtectedModel {
 private:
@@ -28,7 +29,6 @@ private:
     Counter counter;
     bool finished;
     std::vector<std::string> podium;
-    Mix_Music* ambience;
 
 public:
     ProtectedModel(Window& w, Camera& cam, std::string& player);

@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Camera.h"
 #include "Health.h"
+#include "Sound.h"
 #include "AnimatedSprite.h"
 #include "Identifiers.h"
 #include <SDL2/SDL_mixer.h>
@@ -15,12 +16,12 @@ private:
     Sprite sprite;
     AnimatedSprite animation;
     Health health;
+    Sound crashSound;
     int x;
     int y;
     int angle;
     int lapsDone;
     bool blinded;
-    Mix_Chunk* crash_sound;
 
 public:
     Car(const std::string& file, Window& win);
