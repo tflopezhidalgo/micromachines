@@ -17,7 +17,6 @@
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Audio.h"
-#include "ffmpeg/RecorderHandle.h"
 
 #define LUA_PLAYER "player.lua"
 
@@ -62,11 +61,12 @@ int main(int argc, char* argv[]) {
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
 
-        if (w.isLuaPlayer())
+        if (w.isLuaPlayer()) {
             event_handler = new LuaPlayer(q, model, w.getPlayerID(), LUA_PLAYER);
-        else
+            recHandle.startRecorder();
+        } else {
             event_handler = new EventListener(w.getPlayerID(), q, recHandle);
-
+        }
         drawer.start();
         receiver.start();
         dispatcher.start();

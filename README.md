@@ -19,6 +19,7 @@ sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev
                                                 libavformat-dev
                                                 libavcodec-dev
                                                 libswscale-dev
+                                                libsdl2-ttf-dev
 
 ``` 
 # Reglas para el repo
