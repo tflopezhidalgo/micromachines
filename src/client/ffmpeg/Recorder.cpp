@@ -11,20 +11,20 @@ Recorder::Recorder(const int window_width, const int window_height,
                        running(true) {}
 
 void Recorder::run() {
-    int fixed_time = 900/ 60; // seconds/frames
+    int fixed_time = 1000 / 60; // seconds/frames
     try {
         while (running) {
             std::cout << "running";
             std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
             std::vector<char> frame;
             if (!this->queueFrames.pop(frame)) return;
-            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+            frameWriter.write(frame.data(), ctx);
 
+            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-            frameWriter.write(frame.data(), ctx);
             if (duration.count() < fixed_time) {
-                std::cout << "entre";
+                std::cout << "Se duerme por " << duration.count() << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
             }
 
