@@ -7,10 +7,6 @@ RecorderHandle::RecorderHandle(ProtectedVector& pv) :
         pv(pv),
         counter(0) {}
 
-bool RecorderHandle::isRecording() {
-    return recording;
-}
-
 void RecorderHandle::startRecorder() {
     if (!recording) {
         recording = true;
@@ -32,8 +28,10 @@ void RecorderHandle::stopRecorder() {
 
 RecorderHandle::~RecorderHandle() {
     for (auto th: recorders) {
-        th->stop();
-        th->join();
+        if (th->isAlive()) {
+            th->stop();
+            th->join();
+        }
         delete th;
         recording = false;
     }

@@ -18,8 +18,6 @@ public:
 
     void startRecorder();
 
-    bool isRecording();
-
     void stopRecorder();
 
     ~RecorderHandle();
