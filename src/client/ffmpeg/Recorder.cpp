@@ -14,7 +14,6 @@ void Recorder::run() {
     int fixed_time = 1000/ 60; // seconds/frames
     try {
         while (running) {
-            std::cout << "running";
             std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
             std::vector<char> frame;
             if (!this->queueFrames.pop(frame)) return;
@@ -24,7 +23,6 @@ void Recorder::run() {
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
             if (duration.count() < fixed_time) {
-                std::cout << "entre";
                 std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
             }
 

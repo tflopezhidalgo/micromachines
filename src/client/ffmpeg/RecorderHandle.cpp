@@ -23,8 +23,12 @@ void RecorderHandle::startRecorder() {
 void RecorderHandle::stopRecorder() {
     if (recording) {
         recorder->stop();
+
+        std::cout << "entre";
         recorder->join();
+        std::cout << "entre";
         recorder.reset();
+        std::cout << "entre";
         recording = false;
     }
 }

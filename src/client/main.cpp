@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
         ProtectedQueue<Event> q;
 
         Receiver receiver(model, *proxy);
-        EventListener handler(w.getPlayerID(), q);
+        EventListener handler(w.getPlayerID(), q, recHandle);
         //LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
 
         Dispatcher dispatcher(q, *proxy);
