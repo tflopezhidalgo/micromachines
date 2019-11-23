@@ -53,9 +53,9 @@ std::vector<char> EventListener::createActionList() {
     if (this->keysHeld[SDLK_a])
         actions.push_back(LEFT);
 
-    if (this->keysHeld[SDLK_f])
+    if (this->keysHeld[SDLK_f]) {
         recorderHandle.stopRecorder();
-
+    }
     if (this->keysHeld[SDLK_g])
         recorderHandle.startRecorder();
 

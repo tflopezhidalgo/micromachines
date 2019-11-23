@@ -67,7 +67,8 @@ int main(int argc, char* argv[]) {
         drawer.join();
         dispatcher.join();
         receiver.join();
-        pv.close(); //todo causa error si hay 2 grabaciones
+        recHandle.stopRecorder();
+        //pv.close(); //todo causa error si hay 2 grabaciones
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;

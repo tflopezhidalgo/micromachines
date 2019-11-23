@@ -48,6 +48,7 @@ void FrameWriter::close() {
 }
 
 FrameWriter::~FrameWriter() {
+    std::cout << "close file";
     fclose(this->outFile);
 }
 

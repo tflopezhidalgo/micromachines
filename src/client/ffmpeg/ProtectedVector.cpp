@@ -15,6 +15,7 @@ void ProtectedVector::push(std::vector<char>& data) {
 void ProtectedVector::close() {
     _shutdown = true;
     cv_pop.notify_all();
+    std::cout << "cERRAR";
 }
 
 bool ProtectedVector::pop(std::vector<char> &data) {
@@ -26,6 +27,14 @@ bool ProtectedVector::pop(std::vector<char> &data) {
     if (_shutdown) { return false; }
     data.swap(actualFrame);
     return true;
+}
+
+bool ProtectedVector::isClose() {
+    return _shutdown;
+}
+
+void ProtectedVector::open() {
+    _shutdown = false;
 }
 
 ProtectedVector::~ProtectedVector() = default;

@@ -16,25 +16,27 @@ bool RecorderHandle::isRecording() {
 void RecorderHandle::startRecorder() {
     if (!recording) {
         recording = true;
+        pv.open();
         std::string fileName = std::string(GAME_NAME) + std::to_string(counter) + std::string(EXTENSION);
-        recorder.reset(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
-        recorder->start();
-        counter++;
+        recorders.push_back(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
+        recorders[counter]->start();
     }
 }
 
 void RecorderHandle::stopRecorder() {
     if (recording) {
-        recorder->stop();
-        std::perror("stop");
-        //recorder->join();
-        std::perror("join");
-        recorder.reset(nullptr);
-        std::perror("reset");
+        recorders[counter]->stop();
+        recorders[counter]->join();
         recording = false;
+        counter++; // solo si ya esta cerrado el anterior puede crear un thread
     }
 }
 
 RecorderHandle::~RecorderHandle() {
-    stopRecorder();
+    for (auto th: recorders) {
+        th->stop();
+        th->join();
+        delete th;
+        recording = false;
+    }
 }

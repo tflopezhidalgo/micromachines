@@ -22,6 +22,10 @@ public:
 
     bool pop(std::vector<char> &data);
 
+    bool isClose();
+
+    void open();
+
     void close();
 
     ~ProtectedVector();

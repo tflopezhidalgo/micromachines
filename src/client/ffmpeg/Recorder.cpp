@@ -3,7 +3,7 @@
 
 Recorder::Recorder(const int window_width, const int window_height,
         ProtectedVector &pv, std::string& fileName) :
-    vectorFrames(pv),
+    pv(pv),
     frameWriter(context, fileName, window_width, window_height),
     ctx(sws_getContext(window_width, window_height,
                        AV_PIX_FMT_RGB24, window_width, window_height,
@@ -16,7 +16,7 @@ void Recorder::run() {
         while (running) {
             std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
             std::vector<char> frame;
-            if (!this->vectorFrames.pop(frame)) return;
+            if (!this->pv.pop(frame)) return;
             frameWriter.write(frame.data(), ctx);
 
             std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
@@ -25,7 +25,6 @@ void Recorder::run() {
             if (duration.count() < fixed_time) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
             }
-
         }
     } catch (RecorderException& e) {
         return;
@@ -38,6 +37,7 @@ Recorder::~Recorder() {
 }
 
 void Recorder::stop() {
+    pv.close();
     running = false;
 }
 
