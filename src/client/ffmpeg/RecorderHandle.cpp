@@ -3,33 +3,38 @@
 #define EXTENSION ".mpeg"
 
 RecorderHandle::RecorderHandle(ProtectedVector& pv) :
-    recording(false),
-    pv(pv),
-    counter(0) {
-    av_register_all();
-}
+        recording(false),
+        pv(pv),
+        counter(0) {}
 
 bool RecorderHandle::isRecording() {
     return recording;
 }
 
 void RecorderHandle::startRecorder() {
-    recording = true;
-
-    std::string fileName = std::string(GAME_NAME) + std::to_string(counter) + std::string(EXTENSION);
-    recorder.reset(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
-    counter++;
+    if (!recording) {
+        recording = true;
+        pv.open();
+        std::string fileName = std::string(GAME_NAME) + std::to_string(counter) + std::string(EXTENSION);
+        recorders.push_back(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
+        recorders[counter]->start();
+    }
 }
 
 void RecorderHandle::stopRecorder() {
     if (recording) {
-        recorder->stop();
-        recorder->join();
-        recorder.reset();
+        recorders[counter]->stop();
+        recorders[counter]->join();
         recording = false;
+        counter++; // solo si ya esta cerrado el anterior puede crear un thread
     }
 }
 
 RecorderHandle::~RecorderHandle() {
-    stopRecorder();
+    for (auto th: recorders) {
+        th->stop();
+        th->join();
+        delete th;
+        recording = false;
+    }
 }

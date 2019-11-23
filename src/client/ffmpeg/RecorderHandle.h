@@ -3,13 +3,14 @@
 
 
 #include <bits/unique_ptr.h>
+#include "ProtectedVector.h"
 #include "Recorder.h"
 #include "Constants.h"
 
 class RecorderHandle {
 private:
     bool recording;
-    std::unique_ptr<Recorder> recorder;
+    std::vector<Recorder*> recorders;
     ProtectedVector &pv;
     int counter;
 public:

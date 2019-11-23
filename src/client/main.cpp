@@ -13,13 +13,14 @@
 #include <nlohmann/json.hpp>
 #include <QApplication>
 #include <SDL2/SDL_ttf.h>
+#include "ffmpeg/RecorderHandle.h"
 #include "mainwindow.h"
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Audio.h"
-#include "ffmpeg/RecorderHandle.h"
 
 #define LUA_PLAYER "player.lua"
+
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -48,43 +49,38 @@ int main(int argc, char* argv[]) {
     Thread *event_handler = NULL;
 
     try {
-
         if (w.isFullScreen())
-            main = new Window("Micromachines");
+            main = new Window(GAME_NAME);
         else
-            main = new Window("Micromachines", w.getWidthSelected(), w.getHeightSelected());
+            main = new Window(GAME_NAME, w.getWidthSelected(), w.getHeightSelected());
 
         Camera cam(*main, main->createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         ProtectedModel model(*main, cam, w.getPlayerID());
         ProtectedQueue<Event> q;
         ProtectedVector pv;
+        RecorderHandle recHandle(pv);
         av_register_all();
 
-        std::string fileName = std::string(GAME_NAME) + std::string(".mp4");
-        //Recorder recorder(main->getWidth(), main->getHeight(), pv, fileName);
-
-        RecorderHandle recorderHandle(pv);
-        
         Drawer drawer(*main, model, pv);
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
 
         if (w.isLuaPlayer()) {
             event_handler = new LuaPlayer(q, model, w.getPlayerID(), LUA_PLAYER);
-        } else
-            event_handler = new EventListener(w.getPlayerID(), q);
-
+            recHandle.startRecorder();
+        } else {
+            event_handler = new EventListener(w.getPlayerID(), q, recHandle);
+        }
         drawer.start();
         receiver.start();
         dispatcher.start();
 
         event_handler->run();
         
-        //recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
- 
+        recHandle.stopRecorder();
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;

@@ -18,11 +18,13 @@ private:
     std::map<int, bool> keysHeld;
     ProtectedQueue<Event>& q;
 	std::string playerID;
-    //RecorderHandle &recorderHandle;
+	RecorderHandle& recorderHandle;
+
 public:
     EventListener(std::string playerID, 
-				  ProtectedQueue<Event>& e);
-    void run();
+				  ProtectedQueue<Event>& e,
+				  RecorderHandle& recorderHandle);
+    void run() override;
     void stop();
     void detectEvent(SDL_Event& e);
     std::vector<char> createActionList();
