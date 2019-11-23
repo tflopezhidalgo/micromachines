@@ -18,7 +18,7 @@ CodecContext::CodecContext(AVCodec *codec, int width, int height) :
     this->codecContext->max_b_frames = 60;
     if (codec->id == AV_CODEC_ID_H264) {
         this->codecContext->profile = FF_PROFILE_H264_BASELINE;
-        av_opt_set(this->codecContext->priv_data, "preset", "superfast", 0);
+        av_opt_set(this->codecContext->priv_data, "preset", "fast", 0);
     }
     avcodec_open2(this->codecContext, codec, NULL);
 }

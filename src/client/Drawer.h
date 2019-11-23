@@ -19,9 +19,7 @@ public:
     Drawer(Window& main, ProtectedModel& model, ProtectedVector& pv);
     void run();
     void stop();
-    ~Drawer() {
-
-    }
+    ~Drawer();
 };
 
 #endif

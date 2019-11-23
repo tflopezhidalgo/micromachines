@@ -18,7 +18,10 @@ std::string StatusSerializer::getClientsModelSerialization(
             int(car.second->getAngle() * SERIALIZING_RESCAILING),
             car.second->getHealth(),
             raceJudge.getLapsDone(carId),
-            car.second->hasReducedVision()
+            car.second->hasReducedVision(),
+            car.second->getForwardSpeed(),
+            car.second->isColliding(),
+            car.second->isCatchingBooster()
         });
     }
     data["carsData"] = carsData;
@@ -72,7 +75,8 @@ nlohmann::json StatusSerializer::getPluginsModelSerialization(
             id,
             entity.second->getIdentifier(),
             entity.second->getPosition().x,
-            entity.second->getPosition().y
+            entity.second->getPosition().y,
+            entity.second->getStatus()
             });
     }
 

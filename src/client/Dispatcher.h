@@ -16,6 +16,6 @@ class Dispatcher: public Thread {
         Dispatcher(ProtectedQueue<Event>& q, Proxy& proxy);
         void run();
         void stop();
-
+        ~Dispatcher();
 };
 #endif

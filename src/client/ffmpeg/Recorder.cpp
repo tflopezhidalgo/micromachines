@@ -2,8 +2,8 @@
 
 
 Recorder::Recorder(const int window_width, const int window_height,
-        ProtectedVector &queueFrames, std::string& fileName) :
-    queueFrames(queueFrames),
+        ProtectedVector &pv, std::string& fileName) :
+    pv(pv),
     frameWriter(context, fileName, window_width, window_height),
     ctx(sws_getContext(window_width, window_height,
                        AV_PIX_FMT_RGB24, window_width, window_height,
@@ -11,23 +11,20 @@ Recorder::Recorder(const int window_width, const int window_height,
                        running(true) {}
 
 void Recorder::run() {
-    int fixed_time = 1000 / 60; // seconds/frames
+    long fixed_time = 1000 / 60; // segundos / frames
     try {
         while (running) {
-            std::cout << "running";
             std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
             std::vector<char> frame;
-            if (!this->queueFrames.pop(frame)) return;
+            if (!this->pv.pop(frame)) return;
             frameWriter.write(frame.data(), ctx);
 
             std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
             if (duration.count() < fixed_time) {
-                std::cout << "Se duerme por " << duration.count() << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
             }
-
         }
     } catch (RecorderException& e) {
         return;
@@ -36,10 +33,12 @@ void Recorder::run() {
 
 Recorder::~Recorder() {
     frameWriter.close();
-    queueFrames.close(); //todo causa error si hay 2 grabaciones
     sws_freeContext(ctx);
+//    this->join();
 }
 
 void Recorder::stop() {
+    pv.close();
     running = false;
 }
+

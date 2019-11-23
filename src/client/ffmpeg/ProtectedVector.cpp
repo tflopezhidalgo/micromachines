@@ -28,4 +28,12 @@ bool ProtectedVector::pop(std::vector<char> &data) {
     return true;
 }
 
+bool ProtectedVector::isClose() {
+    return _shutdown;
+}
+
+void ProtectedVector::open() {
+    _shutdown = false;
+}
+
 ProtectedVector::~ProtectedVector() = default;

@@ -1,5 +1,5 @@
 #include <zconf.h>
-#include <ffmpeg/RecorderException.h>
+#include "ffmpeg/RecorderException.h"
 #include "Drawer.h"
 #include "Window.h"
 #include "../common/Constants.h"
@@ -19,6 +19,7 @@ void Drawer::run() {
             SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
     assert(videoTexture != NULL);
     long fixed_time = 1000 / 60; // segundos / frames
+
     while (running){
         std::vector<char> currentFrame(WINDOW_HEIGHT * WINDOW_WIDTH * 3);
 
@@ -37,12 +38,13 @@ void Drawer::run() {
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, ERROR_RENDER, SDL_GetError(), NULL);
             throw RecorderException(ERROR_RENDER);
         }
-        pv.push(currentFrame);
-
+        if (!pv.isClose()) {
+            pv.push(currentFrame);
+        }
         main.setTarget(NULL);
         std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        if (duration.count() < fixed_time)
+        if (duration.count() < fixed_time){}
             std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
     }
 
@@ -51,4 +53,8 @@ void Drawer::run() {
 
 void Drawer::stop() {
     running = false;
+}
+
+Drawer::~Drawer() {
+    this->join();
 }

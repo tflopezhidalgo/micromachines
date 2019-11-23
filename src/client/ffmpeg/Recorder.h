@@ -15,7 +15,7 @@ extern "C" {
 
 class Recorder : public Thread {
 private:
-    ProtectedVector& queueFrames;
+    ProtectedVector& pv;
     FormatContext context;
     FrameWriter frameWriter;
     SwsContext* ctx;
@@ -25,9 +25,9 @@ public:
 
     virtual void run() override;
 
-    ~Recorder();
-
     void stop();
+
+    ~Recorder();
 };
 
 
