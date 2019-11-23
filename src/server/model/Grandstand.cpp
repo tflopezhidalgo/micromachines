@@ -86,6 +86,8 @@ void Grandstand::damageCar(Car* car) {
     if (car->getSpeed() < 70) {
         return;
     }
+
+    car->setColliding();
     car->receiveDamage(40);
     if (car->isDead()) {
         car->resetMaxForwardSpeed();

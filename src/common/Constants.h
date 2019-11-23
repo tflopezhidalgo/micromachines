@@ -12,7 +12,7 @@
 #define BACKLOG 15
 #define MAX_PROJECTILES_NUMBER 3
 #define MAX_ENTITIES_NUMBER 10
-#define TIME_ELAPSE_PLUGINS 30
+#define TIME_ELAPSE_PLUGINS 40
 #define TIME_ELAPSE_GRANDSTANDS 5
 
 //Serializing sv-client rescailing

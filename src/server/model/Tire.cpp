@@ -26,6 +26,10 @@ float Tire::getSpeed() {
     return body->GetLinearVelocity().Length();
 }
 
+float Tire::getForwardSpeed() {
+    return getForwardVelocity().Length();
+}
+
 void Tire::updateFriction() {
     //lateral linear velocity
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();

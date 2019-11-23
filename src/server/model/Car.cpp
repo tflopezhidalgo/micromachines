@@ -30,7 +30,9 @@ Car::Car(std::string id, std::vector<TimedEvent>& timedEvents, b2Body* body,
         respawnAngle(0),
         reducedVision(false),
         forwardSpeedBoosted(false),
-        lateralImpulseBoosted(false) {}
+        lateralImpulseBoosted(false),
+        colliding(false),
+        catchingBooster(false) {}
 
 void Car::updateFriction() {
     for (auto & tire : tires) {
@@ -38,7 +40,10 @@ void Car::updateFriction() {
     }
 }
 
-void Car::updateMove(std::vector<char>& actions) {
+void Car::update(std::vector<char>& actions) {
+    colliding = false;
+    catchingBooster = false;
+
     if (isDead()) {
         return;
     }
@@ -124,6 +129,9 @@ void Car::beginCollision(Entity* entity) {
         if (car->getSpeed() < 70 && this->getSpeed() < 70) {
             return;
         }
+
+        this->setColliding();
+        car->setColliding();
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
 
@@ -195,6 +203,22 @@ bool Car::isDead() {
     return health.isDead();
 }
 
+void Car::setColliding() {
+    colliding = true;
+}
+
+void Car::setCatchingBooster() {
+    catchingBooster = true;
+}
+
+bool Car::isColliding() {
+    return colliding;
+}
+
+bool Car::isCatchingBooster() {
+    return catchingBooster;
+}
+
 bool Car::hasReducedVision() {
     return reducedVision;
 }
@@ -205,6 +229,10 @@ void Car::reduceVision() {
 
 float Car::getSpeed() {
     return tires[0]->getSpeed();
+}
+
+float Car::getForwardSpeed() {
+    return tires[0]->getForwardSpeed();
 }
 
 void Car::recoverTotalVision() {
