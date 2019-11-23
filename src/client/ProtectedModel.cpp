@@ -79,6 +79,10 @@ void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, E
 
     this->objects[id]->setPosition(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000);
     this->objects[id]->setState(state);
+    if (state == DEAD){
+        delete this->objects[id];
+        objects.erase(id);
+    }
 }
 
 void ProtectedModel::renderAll() {

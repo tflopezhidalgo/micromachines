@@ -14,6 +14,10 @@ Camera::Camera(Window& w, Texture& texture) :
 	this->zoom = MtoP;
 }
 
+void Camera::addWidget(CameraWidget* widget) {
+    this->widgets.push_back(widget);
+}
+
 void Camera::setOnTarget(Car* e) {
     this->target = e;
 }
@@ -66,6 +70,9 @@ void Camera::render() {
         SDL_Rect r = {0, 0, window.getWidth(), window.getHeight()};
         this->texture.render(r, 0);
     }
+
+    for (CameraWidget* widget: widgets)
+        widget->OnRender();
 }
 
 int Camera::getZoom() {

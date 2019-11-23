@@ -31,10 +31,13 @@ void RecorderHandle::stopRecorder() {
 }
 
 RecorderHandle::~RecorderHandle() {
-    for (auto th: recorders) {
-        th->stop();
-        th->join();
-        delete th;
-        recording = false;
+    while(recorders.size()) {
+        Recorder* aux = recorders.back();
+        aux->stop();
+        recorders.pop_back();
+        std::cout << "Valor de aux: " << aux << std::endl;
+        delete aux;
     }
+
+    recording = false;
 }

@@ -34,7 +34,7 @@ void Recorder::run() {
 Recorder::~Recorder() {
     frameWriter.close();
     sws_freeContext(ctx);
-//  this->join();
+    this->join();
 }
 
 void Recorder::stop() {
