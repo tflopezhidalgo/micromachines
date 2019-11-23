@@ -10,7 +10,7 @@ private:
 
 public:
     explicit Music(const std::string& file);
-    void play();
+    void play(int loop);
     ~Music();
 };
 

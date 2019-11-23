@@ -2,7 +2,7 @@
 #include "Proxy.h"
 #include <nlohmann/json.hpp>
 #include "SocketException.h"
-
+#include "Sound.h"
 Receiver::Receiver(ProtectedModel& model,
                    Proxy& proxy) :
                    model(model),
@@ -12,6 +12,8 @@ Receiver::Receiver(ProtectedModel& model,
 
 void Receiver::run() {
 
+    Sound count_sound("../media/sounds/counting_sound_2.wav");
+
     nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
     model.initialize(j);
 
@@ -19,10 +21,13 @@ void Receiver::run() {
 
     proxy.receiveMessage();
     model.count();
+    count_sound.play();
     proxy.receiveMessage();
     model.count();
+    count_sound.play();
     proxy.receiveMessage();
     model.count();
+    count_sound.play();
 
     while (alive) {
         try {

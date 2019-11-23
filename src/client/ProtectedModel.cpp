@@ -93,8 +93,7 @@ void ProtectedModel::renderAll() {
     cam.render();
     if (this->finished) {
         int h = -650;
-        std::string path = "../media/fonts/myFont.TTF";
-        Text text(this->main, path, 60);
+        Text text(this->main, "../media/fonts/myFont.TTF", 60);
         SDL_Rect r = {(main.getWidth() - 650) / 2, (main.getHeight() + h) / 2, 650, 200};
         std::string msg = "CARRERA FINALIZADA";
         text.setText(msg);

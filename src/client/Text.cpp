@@ -1,7 +1,7 @@
 #include "Text.h"
 #include <SDL2/SDL_ttf.h>
 
-Text::Text(Window &w, std::string &font_path, int size) :
+Text::Text(Window &w, const std::string &font_path, int size) :
 w(w),
 text("ahre"){
     this->font = TTF_OpenFont(font_path.c_str(), size);

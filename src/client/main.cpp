@@ -25,8 +25,8 @@ int main(int argc, char* argv[]) {
 
     SDL_Init(SDL_INIT_EVERYTHING);
     Audio audio;
-    Music ambient_music("ambience_music.wav");
-    ambient_music.play();
+    Music ambient_music("../media/sounds/ambience_music.wav");
+    ambient_music.play(-1);
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

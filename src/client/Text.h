@@ -14,7 +14,7 @@ private:
     std::string text;
 
 public:
-    Text(Window& w, std::string &font_path, int size);
+    Text(Window& w, const std::string &font_path, int size);
 
     void render(SDL_Rect r);
 

@@ -8,8 +8,8 @@ Music::Music(const std::string &file) {
         throw std::runtime_error("Fallo al abrir archivo de musica");
 }
 
-void Music::play() {
-    Mix_PlayMusic(this->musicPtr, 0);
+void Music::play(int loop = 0) {
+    Mix_PlayMusic(this->musicPtr, loop);
 }
 
 Music::~Music() {
