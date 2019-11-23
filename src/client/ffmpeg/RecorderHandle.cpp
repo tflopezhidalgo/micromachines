@@ -1,13 +1,11 @@
 #include "RecorderHandle.h"
-#include <cerrno>
 
 #define EXTENSION ".mpeg"
 
 RecorderHandle::RecorderHandle(ProtectedVector& pv) :
         recording(false),
         pv(pv),
-        counter(0) {
-}
+        counter(0) {}
 
 bool RecorderHandle::isRecording() {
     return recording;

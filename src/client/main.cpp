@@ -3,10 +3,8 @@
 #include <iostream>
 #include <zconf.h>
 #include "ProtectedQueue.h"
-#include "Car.h"
 #include "Camera.h"
 #include <vector>
-#include "TileMap.h"
 #include "Drawer.h"
 #include "ProtectedModel.h"
 #include "Receiver.h"
@@ -18,65 +16,75 @@
 #include "mainwindow.h"
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
-#include "Counter.h"
-
+#include "Audio.h"
+#include "ffmpeg/RecorderHandle.h"
 
 #define LUA_PLAYER "player.lua"
-#define EXTENSION ".mp4"
+
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
-
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_EVERYTHING);
+    Audio audio;
+    Music ambient_music("../media/sounds/ambience_music.wav");
+    ambient_music.play(-1);
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     a.exec();
 
     Proxy* proxy = w.getProxy();
-    try {
-        Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    if (!w.isValidUser()){
+        SDL_Quit();
+        a.quit();
+        delete proxy;
+        return 1;
+    }
+
+    Window *main = NULL;
+    Thread *event_handler = NULL;
+
+    try {
+        if (w.isFullScreen())
+            main = new Window(GAME_NAME);
+        else
+            main = new Window(GAME_NAME, w.getWidthSelected(), w.getHeightSelected());
+
+        Camera cam(*main, main->createTextureFrom("../media/sprites/mud_screen_sprite.png"));
+        ProtectedModel model(*main, cam, w.getPlayerID());
+        ProtectedQueue<Event> q;
         ProtectedVector pv;
         RecorderHandle recHandle(pv);
-
         av_register_all();
-        Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
-        TileMap map(main, w.getInitialData());
 
-        ProtectedModel model(main, w.getInitialData(), cam, map, w.getPlayerID());
-        Drawer drawer(main, model, pv);
-        drawer.start();
-
-        ProtectedQueue<Event> q;
-
+        Drawer drawer(*main, model, pv);
         Receiver receiver(model, *proxy);
-        EventListener handler(w.getPlayerID(), q, recHandle);
-        //LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
-
         Dispatcher dispatcher(q, *proxy);
 
+        if (w.isLuaPlayer())
+            event_handler = new LuaPlayer(q, model, w.getPlayerID(), LUA_PLAYER);
+        else
+            event_handler = new EventListener(w.getPlayerID(), q, recHandle);
+
+        drawer.start();
         receiver.start();
         dispatcher.start();
-        handler.run();
 
+        event_handler->run();
+        
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
-
-        drawer.join();
-        dispatcher.join();
-        receiver.join();
         recHandle.stopRecorder();
-        //pv.close(); //todo causa error si hay 2 grabaciones
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
+        return 1;
     }
 
-    SDL_Quit();
-    a.quit();
-    delete proxy;
+    delete event_handler;
+    delete main;
 
     return 0;
 }

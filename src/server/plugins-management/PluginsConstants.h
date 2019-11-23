@@ -17,6 +17,14 @@
 #define CAR_DATA_CHECKPOINTS_IDX 4
 #define CAR_DATA_LAPS_DONE_IDX 5
 
+//Entities data indexes
+#define ENTITY_DATA_ID_IDX 0
+#define ENTITY_DATA_IDENTIFIER_IDX 1
+#define ENTITY_DATA_POS_X_IDX 2
+#define ENTITY_DATA_POS_Y_IDX 3
+#define ENTITY_DATA_STATUS_IDX 4
+
+
 //Car modifications indexes
 #define CAR_ID_IDX 0
 #define CAR_SPEED_DIFF_IDX 1

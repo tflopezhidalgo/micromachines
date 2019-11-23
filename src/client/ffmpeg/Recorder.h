@@ -20,14 +20,18 @@ private:
     FrameWriter frameWriter;
     SwsContext* ctx;
     bool running;
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 public:
     Recorder(const int window_width, const int window_height, ProtectedVector& queueFrame, std::string& fileName);
 
     virtual void run() override;
 
-    ~Recorder();
-
     void stop();
+
+    ~Recorder();
 };
 
 

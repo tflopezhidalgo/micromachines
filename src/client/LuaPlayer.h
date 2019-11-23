@@ -7,7 +7,7 @@
 #include "lua/LuaScript.h"
 #include "Thread.h"
 
-class LuaPlayer: public Thread {
+class LuaPlayer : public Thread{
 private:
     ProtectedQueue<Event>& q;
     ProtectedModel& model;

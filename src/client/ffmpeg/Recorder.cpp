@@ -11,7 +11,7 @@ Recorder::Recorder(const int window_width, const int window_height,
                        running(true) {}
 
 void Recorder::run() {
-    int fixed_time = 1000/ 60; // seconds/frames
+    long fixed_time = 1000 / 60; // segundos / frames
     try {
         while (running) {
             std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
@@ -34,6 +34,7 @@ void Recorder::run() {
 Recorder::~Recorder() {
     frameWriter.close();
     sws_freeContext(ctx);
+//    this->join();
 }
 
 void Recorder::stop() {

@@ -1,9 +1,4 @@
 #include "EventListener.h"
-#include <string>
-#include <SDL2/SDL.h>
-#include <zconf.h>
-#include <Constants.h>
-#include "../common/Event.h"
 
 EventListener::EventListener(std::string playerID, 
 							 ProtectedQueue<Event>& q,
@@ -53,9 +48,9 @@ std::vector<char> EventListener::createActionList() {
     if (this->keysHeld[SDLK_a])
         actions.push_back(LEFT);
 
-    if (this->keysHeld[SDLK_f]) {
+    if (this->keysHeld[SDLK_f])
         recorderHandle.stopRecorder();
-    }
+
     if (this->keysHeld[SDLK_g])
         recorderHandle.startRecorder();
 
@@ -68,4 +63,8 @@ std::vector<char> EventListener::createActionList() {
     return actions;
 }
 
-EventListener::~EventListener() {}
+void EventListener::stop() {
+    alive = false;
+}
+
+EventListener::~EventListener() = default;
