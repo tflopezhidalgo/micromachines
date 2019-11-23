@@ -39,12 +39,12 @@ void ProtectedModel::initialize(nlohmann::json data) {
     }
 
     ObjectFactory factory(main);
-
+    int UP_LIMT = 1000;
     for (auto &grandstandData : data["grandstandsData"]) {
         int x = grandstandData[0].get<int>();
         int y = grandstandData[1].get<int>();
-        this->objects[1000] = factory.generateObject(GRANDSTAND);
-        this->objects[1000]->setPosition(x * cam.getZoom(), y * cam.getZoom());
+        this->objects[UP_LIMT] = factory.generateObject(GRANDSTAND);
+        this->objects[UP_LIMT++]->setPosition(x * cam.getZoom(), y * cam.getZoom());
     }
 
     cam.setOnTarget(this->entities[this->playerID]);

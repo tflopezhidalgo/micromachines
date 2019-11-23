@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
         } else {
             event_handler = new EventListener(w.getPlayerID(), q, recHandle);
         }
+
         drawer.start();
         receiver.start();
         dispatcher.start();
@@ -81,6 +82,7 @@ int main(int argc, char* argv[]) {
         dispatcher.stop();
         receiver.stop();
         recHandle.stopRecorder();
+
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
