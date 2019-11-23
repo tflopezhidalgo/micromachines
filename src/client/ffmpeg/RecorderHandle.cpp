@@ -1,9 +1,10 @@
 #include "RecorderHandle.h"
+#include <cerrno>
 
 #define EXTENSION ".mpeg"
 
 RecorderHandle::RecorderHandle(ProtectedVector& pv) :
-        recording(true),
+        recording(false),
         pv(pv),
         counter(0) {
 }
@@ -13,22 +14,23 @@ bool RecorderHandle::isRecording() {
 }
 
 void RecorderHandle::startRecorder() {
-    recording = true;
-    std::string fileName = std::string(GAME_NAME) + std::to_string(counter) + std::string(EXTENSION);
-    recorder.reset(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
-    recorder->start();
-    counter++;
+    if (!recording) {
+        recording = true;
+        std::string fileName = std::string(GAME_NAME) + std::to_string(counter) + std::string(EXTENSION);
+        recorder.reset(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
+        recorder->start();
+        counter++;
+    }
 }
 
 void RecorderHandle::stopRecorder() {
     if (recording) {
         recorder->stop();
-
-        std::cout << "entre";
-        recorder->join();
-        std::cout << "entre";
-        recorder.reset();
-        std::cout << "entre";
+        std::perror("stop");
+        //recorder->join();
+        std::perror("join");
+        recorder.reset(nullptr);
+        std::perror("reset");
         recording = false;
     }
 }

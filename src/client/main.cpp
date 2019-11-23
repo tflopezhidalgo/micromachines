@@ -37,10 +37,7 @@ int main(int argc, char* argv[]) {
     try {
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
-        //av_register_all();
         ProtectedVector pv;
-        //Recorder recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName);
         RecorderHandle recHandle(pv);
 
         av_register_all();
@@ -59,22 +56,18 @@ int main(int argc, char* argv[]) {
 
         Dispatcher dispatcher(q, *proxy);
 
-        recHandle.startRecorder();
-        //recorder.start();
         receiver.start();
         dispatcher.start();
         handler.run();
 
-        recHandle.stopRecorder();
-        //recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
 
-        //recorder.join();
         drawer.join();
         dispatcher.join();
         receiver.join();
+        pv.close(); //todo causa error si hay 2 grabaciones
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;

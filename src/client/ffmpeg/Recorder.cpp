@@ -2,8 +2,8 @@
 
 
 Recorder::Recorder(const int window_width, const int window_height,
-        ProtectedVector &queueFrames, std::string& fileName) :
-    queueFrames(queueFrames),
+        ProtectedVector &pv, std::string& fileName) :
+    vectorFrames(pv),
     frameWriter(context, fileName, window_width, window_height),
     ctx(sws_getContext(window_width, window_height,
                        AV_PIX_FMT_RGB24, window_width, window_height,
@@ -16,7 +16,7 @@ void Recorder::run() {
         while (running) {
             std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
             std::vector<char> frame;
-            if (!this->queueFrames.pop(frame)) return;
+            if (!this->vectorFrames.pop(frame)) return;
             frameWriter.write(frame.data(), ctx);
 
             std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
@@ -34,10 +34,10 @@ void Recorder::run() {
 
 Recorder::~Recorder() {
     frameWriter.close();
-    queueFrames.close(); //todo causa error si hay 2 grabaciones
     sws_freeContext(ctx);
 }
 
 void Recorder::stop() {
     running = false;
 }
+
