@@ -149,6 +149,7 @@ std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
 }
 
 std::vector<std::vector<int>>& ProtectedModel::getMap() {
+    std::unique_lock<std::mutex> lock(m);
     return map->getTileNumbers();
 }
 
