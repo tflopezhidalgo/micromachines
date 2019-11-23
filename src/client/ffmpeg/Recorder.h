@@ -7,6 +7,7 @@
 #include "FrameWriter.h"
 #include "../Window.h"
 #include "Constants.h"
+#include <zconf.h>
 
 extern "C" {
 #include <libswscale/swscale.h>
@@ -18,7 +19,7 @@ private:
     FormatContext context;
     FrameWriter frameWriter;
     SwsContext* ctx;
-
+    bool running;
 public:
     Recorder(const int window_width, const int window_height, ProtectedVector& queueFrame, std::string& fileName);
 

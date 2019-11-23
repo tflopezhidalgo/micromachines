@@ -14,6 +14,7 @@
 #include "Dispatcher.h"
 #include <nlohmann/json.hpp>
 #include <QApplication>
+#include "ffmpeg/RecorderHandle.h"
 #include "mainwindow.h"
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
@@ -21,8 +22,7 @@
 
 
 #define LUA_PLAYER "player.lua"
-#define GAME_NAME "Micromachines"
-#define EXTENSION ".mpeg"
+#define EXTENSION ".mp4"
 using json = nlohmann::json;
 
 int main(int argc, char* argv[]) {
@@ -38,9 +38,12 @@ int main(int argc, char* argv[]) {
         Window main(GAME_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         std::string fileName = std::string(GAME_NAME) + std::string(EXTENSION);
-        av_register_all();
+        //av_register_all();
         ProtectedVector pv;
-        Recorder recorder(main.getWidth(), main.getHeight(), pv, fileName);
+        //Recorder recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName);
+        RecorderHandle recHandle(pv);
+
+        av_register_all();
         Camera cam(main, main.createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         TileMap map(main, w.getInitialData());
 
@@ -51,22 +54,24 @@ int main(int argc, char* argv[]) {
         ProtectedQueue<Event> q;
 
         Receiver receiver(model, *proxy);
-        //EventListener handler(w.getPlayerID(), q);
-        LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
+        EventListener handler(w.getPlayerID(), q);
+        //LuaPlayer handler(q, model, w.getPlayerID(), std::string(LUA_PLAYER));
 
         Dispatcher dispatcher(q, *proxy);
 
-        recorder.start();
+        recHandle.startRecorder();
+        //recorder.start();
         receiver.start();
         dispatcher.start();
         handler.run();
 
-        recorder.stop();
+        recHandle.stopRecorder();
+        //recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
 
-        recorder.join();
+        //recorder.join();
         drawer.join();
         dispatcher.join();
         receiver.join();

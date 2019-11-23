@@ -6,6 +6,7 @@
 /* Codifica y escribe el archivo de salida en el frame actual */
 void encode(CodecContext *codec, Frame *frame, Packet *packet, FILE *outFile) {
     /* send the frame to the encoder */
+    //int ret = avcodec_send_frame(codec->get(), frame->get());
     int ret = 0;
 
     if (!frame) {
@@ -17,6 +18,7 @@ void encode(CodecContext *codec, Frame *frame, Packet *packet, FILE *outFile) {
     if (ret < 0) {
         throw RecorderException(ERROR_SEND_FRAME);
     }
+
     while (ret >= 0) {
         ret = avcodec_receive_packet(codec->get(), packet->get());
         if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)

@@ -7,14 +7,27 @@ Recorder::Recorder(const int window_width, const int window_height,
     frameWriter(context, fileName, window_width, window_height),
     ctx(sws_getContext(window_width, window_height,
                        AV_PIX_FMT_RGB24, window_width, window_height,
-                       AV_PIX_FMT_YUV420P, 0, 0, 0, 0)){
-    }
+                       AV_PIX_FMT_YUV420P, 0, 0, 0, 0)),
+                       running(true) {}
 
 void Recorder::run() {
+    int fixed_time = 900/ 60; // seconds/frames
     try {
-        std::vector<char> frame;
-        while (this->queueFrames.pop(frame)) {
+        while (running) {
+            std::cout << "running";
+            std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+            std::vector<char> frame;
+            if (!this->queueFrames.pop(frame)) return;
+            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
             frameWriter.write(frame.data(), ctx);
+            if (duration.count() < fixed_time) {
+                std::cout << "entre";
+                std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
+            }
+
         }
     } catch (RecorderException& e) {
         return;
@@ -23,9 +36,10 @@ void Recorder::run() {
 
 Recorder::~Recorder() {
     frameWriter.close();
+    queueFrames.close(); //todo causa error si hay 2 grabaciones
     sws_freeContext(ctx);
 }
 
 void Recorder::stop() {
-    queueFrames.close();
+    running = false;
 }
