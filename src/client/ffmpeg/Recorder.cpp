@@ -11,7 +11,7 @@ Recorder::Recorder(const int window_width, const int window_height,
                        running(true) {}
 
 void Recorder::run() {
-    int fixed_time = 900/ 60; // seconds/frames
+    int fixed_time = 500/ 60; // seconds/frames
     try {
         while (running) {
             std::cout << "running";
