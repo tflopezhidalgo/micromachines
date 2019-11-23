@@ -4,12 +4,11 @@
 #include <mutex>
 #include <map>
 #include <string>
-#include "Entity.h"
+#include "Object.h"
 #include "Window.h"
 #include "Camera.h"
 #include "TileMap.h"
 #include "Car.h"
-#include "Throwable.h"
 #include "Identifiers.h"
 #include "Counter.h"
 #include "Music.h"
@@ -20,12 +19,11 @@ private:
 	std::string playerID; 
     std::mutex m;
     std::map<std::string, Car*> entities;
-    std::map<int, Throwable*> objects;
+    std::map<int, Object*> objects;
+    TileMap* map;
     Window& main;
     Camera& cam;
-    TileMap* map;
     Texture waiting_players_screen;
-    Sprite grand_stand;
     Counter counter;
     bool finished;
     std::vector<std::string> podium;
@@ -38,6 +36,7 @@ public:
     void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();
     void setFinishedGame(std::vector<std::string>& podium);
+    bool isInitialized();
     std::vector<int> getActualState();
     std::vector<std::vector<int>> getEntitiesPos();
     std::vector<std::vector<int>>& getMap();

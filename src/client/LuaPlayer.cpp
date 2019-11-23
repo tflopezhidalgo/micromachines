@@ -9,17 +9,21 @@ LuaPlayer::LuaPlayer(ProtectedQueue<Event> &q, ProtectedModel &model,
     script(playerId, scriptFile) {}
 
 void LuaPlayer::run() {
+    while (!model.isInitialized()){
+        sleep(100);
+    }
     script.createMap(model.getMap());
 
     SDL_Event e;
     while (alive) {
 
-        if (SDL_PollEvent(&e)){
+        if (SDL_PollEvent(&e)) {
             if (e.key.keysym.sym == SDLK_q)
                 alive = false;
         }
 
         usleep(10000);
+        std::cout << "Pidiendo posiciones de entidades... \n";
         script.setEntities(model.getEntitiesPos());
         std::vector<int> state = std::move(model.getActualState());
         Event e(std::move(script.getEvent(state[0], state[1], state[2])));
