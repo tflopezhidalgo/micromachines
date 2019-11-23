@@ -11,6 +11,12 @@ Receiver::Receiver(ProtectedModel& model,
 
 
 void Receiver::run() {
+
+    nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
+    model.initialize(j);
+
+    std::cout << "LOG - InitialData: " << j.dump() << std::endl;
+
     proxy.receiveMessage();
     model.count();
     proxy.receiveMessage();
@@ -56,4 +62,8 @@ void Receiver::run() {
 void Receiver::stop() {
     proxy.stop();
     this->alive = false;
+}
+
+Receiver::~Receiver() {
+    this->join();
 }

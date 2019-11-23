@@ -8,6 +8,7 @@
 #include "Health.h"
 #include "AnimatedSprite.h"
 #include "Identifiers.h"
+#include <SDL2/SDL_mixer.h>
 
 class Car: public Entity{
 private:
@@ -19,6 +20,7 @@ private:
     int angle;
     int lapsDone;
     bool blinded;
+    Mix_Chunk* crash_sound;
 
 public:
     Car(const std::string& file, Window& win);

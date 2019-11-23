@@ -9,19 +9,31 @@
 #include "Constants.h"
 #include "Text.h"
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
-ProtectedModel::ProtectedModel(Window& w, nlohmann::json& data, Camera& cam, TileMap& map, std::string& playerID) :
-map(map),
+ProtectedModel::ProtectedModel(Window& w, Camera& cam, std::string& playerID) :
 cam(cam),
 main(w),
 playerID(playerID),
+waiting_players_screen(std::move(main.createTextureFrom("../media/sprites/waiting_players.png"))),
 counter(w),
 grand_stand(w, "../media/sprites/public_sprite.png", GRANDSTAND_HEIGHT, GRANDSTAND_WIDTH),
-finished(false)
-{
+finished(false),
+initialized(false) {
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+        throw std::runtime_error("No se puede abrir audio");
+    ambience = Mix_LoadMUS("../media/sounds/ambience_music.wav");
+    Mix_PlayMusic(ambience, 0);
+}
+
+void ProtectedModel::initialize(nlohmann::json data) {
+    std::unique_lock<std::mutex> lck(m);
+
+    this->map = new TileMap(this->main, data);
+
     for (auto& carData : data["carsData"]) {
         std::cout << "LOG - Creando auto" << carData << std::endl;
-        this->entities[carData[0]] = new Car("../media/sprites/pitstop_car_1.png", w);
+        this->entities[carData[0]] = new Car("../media/sprites/pitstop_car_1.png", main);
         int x = carData[1].get<int>();
         int y = carData[2].get<int>();
         int angle = carData[3].get<int>();
@@ -32,9 +44,10 @@ finished(false)
         this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, lapsDone, state);
     }
 
-
     cam.setOnTarget(this->entities[this->playerID]);
     TTF_Init();
+
+    this->initialized = true;
 }
 
 void ProtectedModel::count() {
@@ -67,16 +80,21 @@ void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, E
 }
 
 void ProtectedModel::renderAll() {
+    if (!initialized) {
+        SDL_Rect r = {0, 0, main.getWidth(), main.getHeight()};
+        this->waiting_players_screen.render(r, 0);
+        return;
+    }
     std::unique_lock<std::mutex> lock(m);
-    map.render(cam);
+    map->render(cam);
     cam.update();
     for (auto& object : objects)
         object.second->render(cam);
     for (auto& car : entities)
         car.second->render(cam);
-    cam.render();
     this->grand_stand.render(GRANDSTAND_X * cam.getZoom() , GRANDSTAND_Y * cam.getZoom() ,   GRANDSTAND_ANGLE * SERIALIZING_RESCAILING / 2, cam);
     counter.render(0, 0);
+    cam.render();
     if (this->finished) {
         int h = -650;
         std::string path = "../media/fonts/myFont.TTF";
@@ -126,11 +144,14 @@ std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
 }
 
 std::vector<std::vector<int>>& ProtectedModel::getMap() {
-    return map.getTileNumbers();
+    return map->getTileNumbers();
 }
 
 ProtectedModel::~ProtectedModel(){
+    Mix_FreeMusic(this->ambience);
+    Mix_CloseAudio();
     TTF_Quit();
+    delete map;
     for (auto& car : entities)
         delete car.second;
     for (auto& object : objects)

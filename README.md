@@ -10,9 +10,11 @@ sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev
                                                 libsdl2-dev 
                                                 libsdl2-image-dev 
                                                 nlohmann-json-dev 
-                  			  	lua5.3 
-						liblua5.3-dev
+                                  			  	lua5.3 
+				                        		liblua5.3-dev
                                                 qt5-default
+                                                libsdl2-mixer-dev
+
 ``` 
 # Reglas para el repo
 

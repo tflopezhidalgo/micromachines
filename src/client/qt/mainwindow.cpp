@@ -16,16 +16,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QObject::connect(this, &MainWindow::waitStatus, this, &MainWindow::handleResponseStatus);
+
     this->proxy = NULL;
     this->luaPlayer = false;
+    this->screen_h = 0;
+    this->screen_w = 0;
+    this->full_screen = false;
+    this->valid_data = false;
+
     ui->stackedWidget->setCurrentIndex(0);
     QPixmap img("../src/client/qt/header.jpg");
     ui->label->setPixmap(img);
-    screen_h = 0;
-    screen_w = 0;
-    full_screen = false;
-    ui->height_line->setEnabled(false);
-    ui->width_line->setEnabled(false);
 }
 
 
@@ -40,19 +41,21 @@ void MainWindow::on_create_match_button_clicked() // Crear partida
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
     try {
-        Socket socket(hostName.c_str(), serviceName.c_str());
-        proxy = new Proxy(std::move(socket));
-        ui->stackedWidget->setCurrentIndex(2);
         if (ui->screen_mode_combo_box->currentIndex() == 1)
             if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
                 throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
             else{
                 this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
                 this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                full_screen = false;
                 std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
             }
         else
             full_screen = true;
+
+        Socket socket(hostName.c_str(), serviceName.c_str());
+        proxy = new Proxy(std::move(socket));
+        ui->stackedWidget->setCurrentIndex(2);
 
     } catch (std::runtime_error &e){
         QMessageBox msg(this);
@@ -68,6 +71,18 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
     try {
+        if (ui->screen_mode_combo_box->currentIndex() == 1)
+            if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
+                throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
+            else{
+                this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
+                this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                full_screen = false;
+                std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
+            }
+        else
+            full_screen = true;
+
         Socket socket(hostName.c_str(), serviceName.c_str());
 
         proxy = new Proxy(std::move(socket));
@@ -93,8 +108,8 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
         for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
             std::string matchName = it.key();
             std::string mapName = it.value()[0].get<std::string>();
-            int playersAmount = it.value()[1].get<int>();
-            int laps = it.value()[2].get<int>();
+            int laps = it.value()[1].get<int>();
+            int playersAmount = it.value()[2].get<int>();
 
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
 
@@ -171,6 +186,10 @@ bool MainWindow::isFullScreen(){
     return this->full_screen;
 }
 
+bool MainWindow::isValidUser() {
+    return valid_data;
+}
+
 void MainWindow::on_buttonBox_accepted() // Accept en crear partida
 {
     try {
@@ -239,8 +258,8 @@ void MainWindow::handleResponseStatus(){
     QMessageBox m;
     switch(j["status"].get<int>()) {
         case VALID:
-            this->ui->stackedWidget->setCurrentWidget(ui->waitingPlayersScreen);
-            waitForInitialPosition();
+            this->close();
+            valid_data = true;
             break;
         case MATCH_HAS_STARTED:
             m.setText("La partida está en progreso");
@@ -256,13 +275,6 @@ void MainWindow::handleResponseStatus(){
             this->ui->stackedWidget->setCurrentWidget(this->ui->createScreen);
             break;
     }
-}
-
-void MainWindow::waitForInitialPosition(){
-    std::string j(proxy->receiveMessage());
-    std::cout << "LOG - INITIAL DATA: " << j << std::endl;
-    initialData = nlohmann::json::parse(j);
-    this->close();
 }
 
 nlohmann::json& MainWindow::getInitialData(){

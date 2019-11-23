@@ -19,17 +19,16 @@ public:
     Proxy* getProxy();
     std::string& getPlayerID();
     nlohmann::json& getInitialData();
-    void waitForInitialPosition();
     int getWidthSelected();
     int getHeightSelected();
     bool isFullScreen();
     bool isLuaPlayer();
+    bool isValidUser();
     ~MainWindow();
 
 private slots:
     void on_screen_mode_combo_box_currentIndexChanged(int index);
 
-private slots:
     void on_create_match_button_clicked();
 
     void on_join_match_button_clicked();
@@ -64,6 +63,7 @@ private:
     int screen_w;
     int screen_h;
     bool full_screen;
+    bool valid_data;
 };
 
 #endif // MAINWINDOW_H

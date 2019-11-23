@@ -11,8 +11,9 @@ void Dispatcher::run() {
         try {
             Event action(std::move(q.pop()));
             std::string dumpedAction(std::move(action.serialize()));
-            if (action.getActions()[0] == 'Q')
+            if (action.getActions()[0] == 'Q') {
                 break;
+            }
 
             proxy.sendMessage(dumpedAction);
         } catch (std::runtime_error &e) {
@@ -24,4 +25,8 @@ void Dispatcher::run() {
 void Dispatcher::stop() {
     proxy.stop();
     this->alive = false;
+}
+
+Dispatcher::~Dispatcher(){
+    this->join();
 }

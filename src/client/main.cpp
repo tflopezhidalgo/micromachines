@@ -20,31 +20,45 @@
 
 using json = nlohmann::json;
 
+struct UserData {
+
+};
+
+
 int main(int argc, char* argv[]) {
 
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_EVERYTHING);
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
     a.exec();
 
     Proxy* proxy = w.getProxy();
+
+    if (!w.isValidUser()){
+        SDL_Quit();
+        a.quit();
+        delete proxy;
+        return 1;
+    }
+
+    Window *main = NULL;
+    Thread *event_handler = NULL;
+
     try {
-        Window *main = NULL;
+
         if (w.isFullScreen())
             main = new Window("Micromachines");
         else
             main = new Window("Micromachines", w.getWidthSelected(), w.getHeightSelected());
 
         Camera cam(*main, main->createTextureFrom("../media/sprites/mud_screen_sprite.png"));
-        TileMap map(*main, w.getInitialData());
-        ProtectedModel model(*main, w.getInitialData(), cam, map, w.getPlayerID());
+        ProtectedModel model(*main, cam, w.getPlayerID());
         ProtectedQueue<Event> q;
 
         Drawer drawer(*main, model);
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
-        Thread *event_handler = NULL;
 
         if (w.isLuaPlayer())
             event_handler = new LuaPlayer(q, model, w.getPlayerID());
@@ -61,20 +75,19 @@ int main(int argc, char* argv[]) {
         dispatcher.stop();
         receiver.stop();
 
-        drawer.join();
-        dispatcher.join();
-        receiver.join();
+    /*  Tener cuidado de llamar primero a los joins y después a los destructores
+     *  de los objetos compartidos, si no se bloquea en el join / sigsev
+     */
 
-        delete event_handler;
-        delete main;
+
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
+        return 1;
     }
 
-    SDL_Quit();
-    a.quit();
-    delete proxy;
+    delete event_handler;
+    delete main;
 
     return 0;
 }

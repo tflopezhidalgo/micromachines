@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "AnimatedSprite.h"
 #include "Sprite.h"
 
@@ -18,13 +19,13 @@ AnimatedSprite::AnimatedSprite(Window &main,
 
 void AnimatedSprite::render(int x, int y, int angle, Camera& cam) {
     static float counter;
-    if (int(counter) > 7)
+    if (int(counter) > frames.size())
         counter = 0;
     SDL_Rect r = {x, y, h, w}; // Donde se renderiza
     r = cam.translate(r);
     texture.setRect(frames[counter]);
     texture.render(r, angle);
-    counter = counter + 0.10;
+    counter = counter + 0.065;
 }
 
 
