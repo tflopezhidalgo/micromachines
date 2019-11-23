@@ -17,6 +17,7 @@ void SpeedBooster::endCollision(Entity *entity) {}
 
 void SpeedBooster::boostMaxSpeed(Car* car) {
     used = true;
+    car->setCatchingBooster();
     car->updateMaxForwardSpeed(speedBoost);
     timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxForwardSpeed, 10));
     timedEvents.emplace_back(TimedEvent(this, &Entity::die, 0.5f));

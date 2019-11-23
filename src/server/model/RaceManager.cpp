@@ -56,7 +56,7 @@ void RaceManager::updateCars(std::vector<Event> &events) {
     for (auto & event : events) {
         std::string& clientId = event.getClientId();
         std::vector<char> actions = event.getActions();
-        cars.find(clientId)->second->updateMove(actions);
+        cars.find(clientId)->second->update(actions);
         updatedCars[clientId] = true;
     }
 
@@ -64,7 +64,7 @@ void RaceManager::updateCars(std::vector<Event> &events) {
     for (auto & car : cars) {
         car.second->updateFriction();
         if (updatedCars.count(car.first) == 0) {
-            car.second->updateMove(nullAction);
+            car.second->update(nullAction);
         }
     }
 }

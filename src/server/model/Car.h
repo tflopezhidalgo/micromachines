@@ -15,19 +15,27 @@ class TimedEvent;
 class Car : public Entity {
 private:
     std::string id;
+
     std::vector<TimedEvent>& timedEvents;
+
     b2RevoluteJoint* frontLeftJoint;
     b2RevoluteJoint* frontRightJoint;
     std::vector<Tire*> tires;
+
     Health health;
+
     int carCollisionDamage;
+
     int actualSurface;
     b2Vec2 lastPosOnTrack;
     b2Vec2 respawnPosition;
     float respawnAngle;
+
     bool reducedVision;
     bool forwardSpeedBoosted;
     bool lateralImpulseBoosted;
+    bool colliding;
+    bool catchingBooster;
 
 public:
     Car(std::string id, std::vector<TimedEvent>& timedEvents,
@@ -37,7 +45,7 @@ public:
 
     void updateFriction();
 
-    void updateMove(std::vector<char>& actions);
+    void update(std::vector<char>& actions);
 
     void beginCollision(Entity* entity) override;
 
@@ -66,6 +74,14 @@ public:
     float getForwardSpeed();
 
     bool isDead() override;
+
+    void setColliding();
+
+    void setCatchingBooster();
+
+    bool isColliding();
+
+    bool isCatchingBooster();
 
     bool hasReducedVision();
 

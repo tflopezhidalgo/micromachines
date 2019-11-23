@@ -19,7 +19,9 @@ std::string StatusSerializer::getClientsModelSerialization(
             car.second->getHealth(),
             raceJudge.getLapsDone(carId),
             car.second->hasReducedVision(),
-            car.second->getForwardSpeed()
+            car.second->getForwardSpeed(),
+            car.second->isColliding(),
+            car.second->isCatchingBooster()
         });
     }
     data["carsData"] = carsData;

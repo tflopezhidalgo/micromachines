@@ -17,6 +17,8 @@ void Stone::damageCar(Car* car) {
     if (car->getSpeed() < 70) {
         return;
     }
+
+    car->setColliding();
     car->receiveDamage(damage);
     if (car->isDead()) {
         car->resetMaxForwardSpeed();
