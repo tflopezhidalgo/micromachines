@@ -6,13 +6,15 @@ EntitiesManager::EntitiesManager(World& stageWorld) :
     entitiesCounter(0),
     world(stageWorld) {}
 
-void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse) {
+void EntitiesManager::addProjectile(EntityIdentifier entityIdentifier,
+        float x_pos, float y_pos, b2Vec2 force, bool horizontalTrajectory) {
+
     if (projectiles.size() >= MAX_PROJECTILES_NUMBER || entities.size() >= MAX_ENTITIES_NUMBER) {
         return;
     }
 
-    Projectile* projectile = world.addProjectile(entityIdentifier, x_pos, y_pos);
-    projectile->applyForce(impulse);
+    Projectile* projectile = world.addProjectile(entityIdentifier, x_pos, y_pos, horizontalTrajectory);
+    projectile->applyForce(force);
 
     projectiles.emplace(entitiesCounter, projectile);
     entities.emplace(entitiesCounter, projectile);
@@ -44,6 +46,10 @@ void EntitiesManager::addEntity(EntityIdentifier entityIdentifier, float x_pos, 
 
     entitiesCounter++;
 
+}
+
+void EntitiesManager::deleteEntity(int entityId) {
+    entities.find(entityId)->second->die();
 }
 
 void EntitiesManager::deleteDeadEntities() {
@@ -84,8 +90,8 @@ void EntitiesManager::updateProjectilesStatus() {
                 entities.find(projectileId)->second = oil;
 
             } else if (identifier == SPEEDBOOSTER) {
-                HealthBooster* healthBooster = world.addHealthBooster(pos.x, pos.y);
-                entities.find(projectileId)->second = healthBooster;
+                SpeedBooster* speedBooster = world.addSpeedBooster(pos.x, pos.y);
+                entities.find(projectileId)->second = speedBooster;
 
             } else if (identifier == MUD) {
                 Mud* mud = world.addMud(pos.x, pos.y);

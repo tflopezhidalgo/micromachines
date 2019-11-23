@@ -4,7 +4,7 @@
 #include "RecorderException.h"
 
 extern "C" {
-#include <libswscale/swscale.h>
+#include "libswscale/swscale.h"
 #include <libavutil/frame.h>
 }
 
@@ -17,7 +17,7 @@ public:
 
     AVFrame* get();
 
-    void write(const char *bufferData);
+    void write(const char *bufferData, SwsContext *ctx);
 
     ~Frame();
 };

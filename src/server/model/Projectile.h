@@ -9,8 +9,9 @@ class Projectile : public Entity {
 private:
     b2Body* body;
     b2Vec2 getForwardVelocity();
+    bool horizontalTrajectory;
 public:
-    Projectile(EntityIdentifier entityIdentifier, b2Body* body);
+    Projectile(EntityIdentifier entityIdentifier, b2Body* body, bool horizontalTrajectory);
     void beginCollision(Entity* entity) override;
     void endCollision(Entity* entity) override;
     void updateFriction();

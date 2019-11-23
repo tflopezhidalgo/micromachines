@@ -14,15 +14,24 @@ private:
     int entitiesCounter;
 public:
     EntitiesManager(World& stageWorld);
-    void addProjectile(EntityIdentifier entityIdentifier, float x_pos, float y_pos, b2Vec2 impulse);
+
+    void addProjectile(EntityIdentifier entityIdentifier,
+            float x_pos, float y_pos, b2Vec2 force, bool horizontalTrajectory);
+
     void addEntity(EntityIdentifier entityIdentifier, float x_pos, float y_pos);
+
+    void deleteEntity(int entityId);
+
     void deleteDeadEntities();
+
     void updateProjectilesStatus();
+
     void updateProjectilesFriction();
+
     std::unordered_map<int, Entity*>& getEntities();
+
     ~EntitiesManager();
 
 };
-
 
 #endif //MICROMACHINES_ENTITIESMANAGER_H

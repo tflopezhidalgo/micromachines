@@ -15,7 +15,8 @@ private:
     bool alive;
 
 public:
-    LuaPlayer(ProtectedQueue<Event>& q, ProtectedModel& model, std::string playerId);
+    LuaPlayer(ProtectedQueue<Event>& q, ProtectedModel& model,
+            std::string playerId, std::string scriptFile);
     void run();
     void stop();
     ~LuaPlayer() {}

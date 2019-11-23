@@ -27,7 +27,8 @@ public:
     void addRaceSurface(World& world, std::vector<Track*>& tracks, std::vector<Grass*> &grassTiles,
             std::vector<Checkpoint*>& checkpoints, RaceJudge& raceJudge);
 
-    void addGrandstands(World& world, std::vector<Grandstand*>& grandstands);
+    void addGrandstands(World& world, std::vector<Grandstand*>& grandstands,
+            std::vector<TimedEvent> &timedEvents);
 
     std::vector<float>& getStartingPosition();
 

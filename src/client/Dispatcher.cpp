@@ -17,7 +17,6 @@ void Dispatcher::run() {
 
             proxy.sendMessage(dumpedAction);
         } catch (std::runtime_error &e) {
-            std::cout << "Exception in dispatcher\n";
             stop();
         }
     }

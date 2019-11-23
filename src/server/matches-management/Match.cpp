@@ -46,12 +46,12 @@ void Match::run() {
         std::vector<Event> events = eventsQueue.emptyQueue();
         raceManager.updateModel(events);
 
+        std::string modelStatus = std::move(raceManager.getRaceStatus());
+        sendMessageToClients(modelStatus);
+
         if (raceManager.raceFinished()) {
             dead = true;
         }
-
-        std::string modelStatus = std::move(raceManager.getRaceStatus());
-        sendMessageToClients(modelStatus);
 
         auto final = std::chrono::high_resolution_clock::now();
         auto loopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(final - initial);

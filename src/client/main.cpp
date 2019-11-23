@@ -13,15 +13,13 @@
 #include <nlohmann/json.hpp>
 #include <QApplication>
 #include "mainwindow.h"
+#include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Audio.h"
+#include "ffmpeg/RecorderHandle.h"
 
+#define LUA_PLAYER "player.lua"
 using json = nlohmann::json;
-
-struct UserData {
-
-};
-
 
 int main(int argc, char* argv[]) {
 
@@ -56,13 +54,20 @@ int main(int argc, char* argv[]) {
         Camera cam(*main, main->createTextureFrom("../media/sprites/mud_screen_sprite.png"));
         ProtectedModel model(*main, cam, w.getPlayerID());
         ProtectedQueue<Event> q;
+        ProtectedVector pv;
+        av_register_all();
 
-        Drawer drawer(*main, model);
+        std::string fileName = std::string(GAME_NAME) + std::string(".mp4");
+        //Recorder recorder(main->getWidth(), main->getHeight(), pv, fileName);
+
+        RecorderHandle recorderHandle(pv);
+        
+        Drawer drawer(*main, model, pv);
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
 
         if (w.isLuaPlayer())
-            event_handler = new LuaPlayer(q, model, w.getPlayerID());
+            event_handler = new LuaPlayer(q, model, w.getPlayerID(), LUA_PLAYER);
         else
             event_handler = new EventListener(w.getPlayerID(), q);
 
@@ -71,16 +76,12 @@ int main(int argc, char* argv[]) {
         dispatcher.start();
 
         event_handler->run();
-
+        
+        //recorder.stop();
         drawer.stop();
         dispatcher.stop();
         receiver.stop();
-
-    /*  Tener cuidado de llamar primero a los joins y después a los destructores
-     *  de los objetos compartidos, si no se bloquea en el join / sigsev
-     */
-
-
+ 
     } catch(std::runtime_error &e) {
         // Avisar al server que catchee esta exception
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;

@@ -76,12 +76,12 @@ void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, E
 }
 
 void ProtectedModel::renderAll() {
+    std::unique_lock<std::mutex> lock(m);
     if (!initialized) {
         SDL_Rect r = {0, 0, main.getWidth(), main.getHeight()};
         this->waiting_players_screen.render(r, 0);
         return;
     }
-    std::unique_lock<std::mutex> lock(m);
     map->render(cam);
     cam.update();
     for (auto& object : objects)

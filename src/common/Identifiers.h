@@ -26,7 +26,8 @@ enum EntityIdentifier {
     TRACK,
     GRASS,
     CAR,
-    CHECKPOINT
+    CHECKPOINT,
+    GRANDSTAND
 };
 
 enum EntityStatus {

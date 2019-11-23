@@ -18,3 +18,4 @@ libmodel.a
 model_autogen/
 Micromachines.cbp
 CMakeLists.txt.user
+src/server/plugins-management/plugins/cmake-build-debug

@@ -9,6 +9,7 @@
 #include "Grass.h"
 #include "SpeedBooster.h"
 #include "Mud.h"
+#include "Grandstand.h"
 
 #define DEGTORAD 0.017453292f
 
@@ -44,6 +45,7 @@ void Car::updateMove(std::vector<char>& actions) {
 
     if (actualSurface == GRASS && (getPosition() - lastPosOnTrack).Length() > MAX_DISTANCE_TO_TRACK) {
         receiveDamage(100);
+        resetMaxForwardSpeed();
         timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
         timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
         return;
@@ -53,8 +55,8 @@ void Car::updateMove(std::vector<char>& actions) {
         tire->updateDrive(actions);
     }
 
-    float lockAngle = 40 * DEGTORAD;
-    float turnSpeedPerSec = 50 * DEGTORAD;
+    float lockAngle = 35 * DEGTORAD;
+    float turnSpeedPerSec = 320 * DEGTORAD;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
 
     bool turnRight = std::find(actions.begin(), actions.end(), RIGHT) != actions.end();
@@ -102,7 +104,7 @@ void Car::beginCollision(Entity* entity) {
         healthBooster->heal(this);
 
     } else if (identifier == STONE) {
-        auto stone = dynamic_cast<Stone *>(entity);
+        auto stone = dynamic_cast<Stone*>(entity);
         stone->damageCar(this);
 
     } else if (identifier == SPEEDBOOSTER) {
@@ -119,16 +121,21 @@ void Car::beginCollision(Entity* entity) {
 
     } else if (identifier == CAR) {
         auto car = dynamic_cast<Car*>(entity);
+        if (car->getSpeed() < 70 && this->getSpeed() < 70) {
+            return;
+        }
         car->receiveDamage(carCollisionDamage);
         this->receiveDamage(carCollisionDamage);
 
         if (car->isDead()) {
-            timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 2));
-            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 2));
+            car->resetMaxForwardSpeed();
+            timedEvents.emplace_back(TimedEvent(car, &Car::updatePosition, 1.5f));
+            timedEvents.emplace_back(TimedEvent(car, &Car::recoverHealth, 1.5f));
         }
         if (this->isDead()) {
-            timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 2));
-            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 2));
+            resetMaxForwardSpeed();
+            timedEvents.emplace_back(TimedEvent(this, &Car::updatePosition, 1.5f));
+            timedEvents.emplace_back(TimedEvent(this, &Car::recoverHealth, 1.5f));
         }
 
     } else if (identifier == TRACK) {
@@ -142,6 +149,10 @@ void Car::beginCollision(Entity* entity) {
     } else if (identifier == CHECKPOINT) {
         auto checkpoint = dynamic_cast<Checkpoint*>(entity);
         checkpoint->activate(this);
+
+    } else if (identifier == GRANDSTAND) {
+        auto grandstand = dynamic_cast<Grandstand*>(entity);
+        grandstand->damageCar(this);
     }
 }
 
@@ -190,6 +201,10 @@ bool Car::hasReducedVision() {
 
 void Car::reduceVision() {
     reducedVision = true;
+}
+
+float Car::getSpeed() {
+    return tires[0]->getSpeed();
 }
 
 void Car::recoverTotalVision() {

@@ -4,6 +4,8 @@
 #include <string>
 #include <SocketException.h>
 
+#define UNKOWN_ERROR_MSG "Unknown error happened"
+
 LobbyClientReceptionist::LobbyClientReceptionist(Socket socket,
         MatchesAdministrator& matchesAdministrator) :
         proxy(std::move(socket)),
@@ -32,6 +34,12 @@ void LobbyClientReceptionist::run() {
 
             }
         } catch (const SocketException& e) {
+            std::cerr << e.what() << std::endl;
+            finished = true;
+            return;
+        } catch (...) {
+            std::cerr << UNKOWN_ERROR_MSG << std::endl;
+            finished = true;
             return;
         }
     }

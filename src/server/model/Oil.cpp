@@ -17,7 +17,7 @@ void Oil::reduceGrip(Car* car) {
     used = true;
     car->updateMaxLateralImpulse(gripDecrement);
     timedEvents.emplace_back(TimedEvent(car, &Car::resetMaxLateralImpulse, 15));
-    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 1.5f));
+    timedEvents.emplace_back(TimedEvent(this, &Entity::die, 0.5f));
 }
 
 void Oil::endCollision(Entity *entity) {}

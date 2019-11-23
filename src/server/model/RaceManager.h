@@ -13,29 +13,41 @@
 #include "EntitiesManager.h"
 #include "TimedEvent.h"
 #include "../plugins-management/PluginsManager.h"
+#include "../plugins-management/PluginRequestsProcessor.h"
 
 class RaceManager {
 private:
     std::map<std::string,float> &config;
+
     std::vector<TimedEvent> timedEvents;
+
     StageBuilder stageBuilder;
     World world;
+
     RaceJudge raceJudge;
     EntitiesManager entitiesManager;
-    PluginsManager* pluginsManager;
-    
     std::unordered_map<std::string, Car*> cars;
-    
+
+    //plugins management
+    PluginsManager pluginsManager;
+    PluginRequestsProcessor pluginRequestsProcessor;
+
+    //surfaces
     std::vector<Grandstand*> grandstands;
     std::vector<Track*> tracks;
     std::vector<Grass*> grassTiles;
     std::vector<Checkpoint*> checkpoints;
+
     
-    std::chrono::time_point<std::chrono::system_clock> start;
+    std::chrono::time_point<std::chrono::system_clock> grandstandsTimeStart;
+    std::chrono::time_point<std::chrono::system_clock> pluginsTimeStart;
     
     void applyPlugins();
+
     void updateTimedEvents();
+
     void activateGrandstands();
+
     void updateCars(std::vector<Event> &events);
     
 public:
