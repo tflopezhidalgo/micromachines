@@ -30,6 +30,8 @@ public:
 
     float getSpeed();
 
+    float getForwardSpeed();
+
     void updateDrive(std::vector<char>& actions);
 
     void updateFriction();
