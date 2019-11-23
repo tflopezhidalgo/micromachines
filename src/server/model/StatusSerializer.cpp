@@ -73,7 +73,8 @@ nlohmann::json StatusSerializer::getPluginsModelSerialization(
             id,
             entity.second->getIdentifier(),
             entity.second->getPosition().x,
-            entity.second->getPosition().y
+            entity.second->getPosition().y,
+            entity.second->getStatus()
             });
     }
 

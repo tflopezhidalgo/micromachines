@@ -22,6 +22,7 @@
 #define ENTITY_DATA_IDENTIFIER_IDX 1
 #define ENTITY_DATA_POS_X_IDX 2
 #define ENTITY_DATA_POS_Y_IDX 3
+#define ENTITY_DATA_STATUS_IDX 4
 
 
 //Car modifications indexes

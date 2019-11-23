@@ -12,7 +12,8 @@ nlohmann::json DeleteMudZones::updateModel(nlohmann::json& model) {
     for (auto & entityData : model["entitiesData"]) {
         int id = entityData[ENTITY_DATA_ID_IDX].get<int>();
         auto identifier = entityData[ENTITY_DATA_IDENTIFIER_IDX].get<EntityIdentifier>();
-        if (identifier == MUD) {
+        auto status = entityData[ENTITY_DATA_STATUS_IDX].get<EntityStatus>();
+        if (identifier == MUD && status == ALIVE) {
             entitiesDeletions.emplace_back(std::make_tuple(id));
         }
     }

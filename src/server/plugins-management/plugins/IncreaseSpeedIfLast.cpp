@@ -16,6 +16,7 @@ nlohmann::json IncreaseSpeedIfLast::updateModel(nlohmann::json& model) {
         return requests;
     }
 
+    bool increase = false;
     std::string carId =  model["carsData"][0][CAR_DATA_ID_IDX];
     int checkpointsTaken = model["carsData"][0][CAR_DATA_CHECKPOINTS_IDX];
 
@@ -23,14 +24,17 @@ nlohmann::json IncreaseSpeedIfLast::updateModel(nlohmann::json& model) {
         std::string actualCarId = carData[CAR_DATA_ID_IDX].get<std::string>();
         int actualCheckpointsTaken = carData[CAR_DATA_HEALTH_IDX].get<int>();
         if (actualCheckpointsTaken < checkpointsTaken) {
+            increase = true;
             carId = actualCarId;
             checkpointsTaken = actualCheckpointsTaken;
         }
     }
 
-    carsModifications.emplace_back(std::make_tuple(carId, SPEED_BOOST, 0, 0));
+    if (increase) {
+        carsModifications.emplace_back(std::make_tuple(carId, SPEED_BOOST, 0, 0));
+        addCarsModifications(requests, carsModifications);
+    }
 
-    addCarsModifications(requests, carsModifications);
     return std::move(requests);
 }
 
