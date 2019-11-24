@@ -17,7 +17,8 @@ playerID(playerID),
 waiting_players_screen(std::move(main.createTextureFrom("../media/sprites/waiting_players.png"))),
 counter(w),
 finished(false),
-initialized(false) { }
+initialized(false),
+annunciator(w) { }
 
 void ProtectedModel::initialize(nlohmann::json data) {
     std::unique_lock<std::mutex> lck(m);
@@ -94,34 +95,22 @@ void ProtectedModel::renderAll() {
     }
     map->render(cam);
     cam.update();
-    for (auto& object : objects)
-        object.second->render(cam);
-    for (auto& car : entities)
+    for (auto &object : objects) {
+       object.second->render(cam);
+    }
+    for (auto& car : entities) {
         car.second->render(cam);
+    }
     counter.render(0, 0);
     cam.render();
-    if (this->finished) {
-        int h = -650;
-        Text text(this->main, "../media/fonts/myFont.TTF", 60);
-        SDL_Rect r = {(main.getWidth() - 650) / 2, (main.getHeight() + h) / 2, 650, 200};
-        std::string msg = "CARRERA FINALIZADA";
-        text.setText(msg);
-        text.render(r);
-        SDL_Color color = {255, 0, 0};
-        text.setColor(color);
-        for (std::string& car : podium) {
-            text.setText(car);
-            h += 350;
-            SDL_Rect r = {(main.getWidth() - 400) / 2, (main.getHeight() + h) / 2, 400, 150};
-            text.render(r);
-        }
-    }
+    annunciator.render();
 }
 
 void ProtectedModel::setFinishedGame(std::vector<std::string>& winner) {
     std::unique_lock<std::mutex> lock(m);
     this->finished = true;
-    this->podium = std::move(winner);
+    cam.setOnTarget(this->entities[winner[0]]);
+    this->annunciator.setWinners(winner);
 }
 
 bool ProtectedModel::isInitialized() {

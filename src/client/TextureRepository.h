@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include <map>
 #include <string>
+#include <mutex>
 
 // Genera un Singleton para cada textura, generandolas dentro de
 // mapa y devolviendo una referencia a ella cuando se la necesita

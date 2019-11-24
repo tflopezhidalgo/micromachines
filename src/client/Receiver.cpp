@@ -72,6 +72,7 @@ void Receiver::run() {
             }
 
         } catch(std::runtime_error &e){
+            std::cout << "Catcheo except en receiver\n";
             this->stop();
         }
     }

@@ -12,6 +12,8 @@ Camera::Camera(Window& w, Texture& texture) :
     text(this->window, "../media/fonts/myFont.TTF", 80){
     SDL_Color color = {230, 210, 20};
     text.setColor(color);
+    SDL_Rect r = {window.getWidth() - 100, window.getHeight() - 150, 100, 150};
+    text.setPositionAndSize(r);
     this->cameraInfo = {0, 0, 0, 0};
     target = NULL;
 	this->zoom = MtoP;
@@ -60,8 +62,7 @@ void Camera::update() {
 void Camera::render() {
     std::string text_msg(std::to_string(target->getLapsDone()));
     text.setText(text_msg);
-    SDL_Rect r = {window.getWidth() - 100, window.getHeight() - 150, 100, 150};
-    text.render(r);
+    text.render();
 
     static Sound mud_splash("../media/sounds/mud_splash.wav");
     static bool played = false;
