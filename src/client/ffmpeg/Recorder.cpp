@@ -31,10 +31,13 @@ void Recorder::run() {
     }
 }
 
+bool Recorder::isAlive() {
+    return running;
+}
+
 Recorder::~Recorder() {
     frameWriter.close();
     sws_freeContext(ctx);
-//    this->join();
 }
 
 void Recorder::stop() {
