@@ -14,22 +14,28 @@ text("ahre"){
 }
 
 void Text::render(SDL_Rect r) {
-    SDL_Surface* msg = TTF_RenderText_Blended_Wrapped(font, text.c_str(), actualColor, w.getWidth());
-    this->texture = SDL_CreateTextureFromSurface(w.getRenderer(), msg);
     Texture t(this->texture, w);
     t.render(r, 0);
 }
 
 void Text::setColor(SDL_Color& c){
+    SDL_DestroyTexture(texture);
     this->actualColor = c;
+    SDL_Surface* msg = TTF_RenderText_Blended_Wrapped(font, text.c_str(), actualColor, w.getWidth());
+    this->texture = SDL_CreateTextureFromSurface(w.getRenderer(), msg);
+    SDL_FreeSurface(msg);
 }
 
 void Text::setText(std::string &text) {
+    SDL_DestroyTexture(texture);
     this->text = text;
+    SDL_Surface* msg = TTF_RenderText_Blended_Wrapped(font, text.c_str(), actualColor, w.getWidth());
+    this->texture = SDL_CreateTextureFromSurface(w.getRenderer(), msg);
+    SDL_FreeSurface(msg);
 }
 
 Text::~Text() {
     SDL_DestroyTexture(texture);
-    TTF_CloseFont(font);
+   // TTF_CloseFont(font);
 }
 

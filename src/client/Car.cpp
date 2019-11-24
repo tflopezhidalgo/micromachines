@@ -23,7 +23,7 @@ void Car::setState(int x, int y, int angle, int health, int lapsDone, bool blind
     this->x = x;
     this->y = y;
     this->angle = angle;
-    if (health < this->health.getHealth()) {
+    if (health == 0 && this->health.getHealth() != 0) {
         this->crashSound.play();
     }
     this->health.setActualHealth(health);

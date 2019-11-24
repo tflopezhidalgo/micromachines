@@ -8,7 +8,10 @@
 
 Camera::Camera(Window& w, Texture& texture) :
     window(w),
-    texture(texture) {
+    texture(texture),
+    text(this->window, "../media/fonts/myFont.TTF", 80){
+    SDL_Color color = {230, 210, 20};
+    text.setColor(color);
     this->cameraInfo = {0, 0, 0, 0};
     target = NULL;
 	this->zoom = MtoP;
@@ -55,20 +58,20 @@ void Camera::update() {
 }
 
 void Camera::render() {
-
-    std::string path("../media/fonts/myFont.TTF");
     std::string text_msg(std::to_string(target->getLapsDone()));
-
-    Text text(this->window, path, 80);
     text.setText(text_msg);
-    SDL_Color color = {230, 210, 20};
-    text.setColor(color);
     SDL_Rect r = {window.getWidth() - 100, window.getHeight() - 150, 100, 150};
     text.render(r);
 
+    static Sound mud_splash("../media/sounds/mud_splash.wav");
+    static bool played = false;
+
     if (target->isBlinded()) {
+        if (!played)
+            mud_splash.play();
         SDL_Rect r = {0, 0, window.getWidth(), window.getHeight()};
         this->texture.render(r, 0);
+        played = true;
     }
 
     for (CameraWidget* widget: widgets)

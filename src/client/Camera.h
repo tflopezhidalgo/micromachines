@@ -6,6 +6,7 @@
 #include "Object.h"
 #include "Texture.h"
 #include "CameraWidget.h"
+#include "Text.h"
 
 class Car;
 
@@ -16,6 +17,7 @@ private:
     Texture& texture;
     SDL_Rect cameraInfo;
     int zoom;
+    Text text;
     std::vector<CameraWidget*> widgets;
 
 public:
