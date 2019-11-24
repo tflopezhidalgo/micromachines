@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label->setPixmap(img);
 }
 
+std::string& MainWindow::getLuaPath(){
+    return this->lua_path;
+}
 
 MainWindow::~MainWindow()
 {
@@ -47,6 +50,7 @@ void MainWindow::on_create_match_button_clicked() // Crear partida
             else{
                 this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
                 this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                this->lua_path = this->ui->lineEdit->text().toStdString();
                 full_screen = false;
                 std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
             }
@@ -77,6 +81,7 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
             else{
                 this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
                 this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                this->lua_path = this->ui->lineEdit->text().toStdString();
                 full_screen = false;
                 std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
             }
