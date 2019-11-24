@@ -68,9 +68,9 @@ int main(int argc, char* argv[]) {
         Drawer drawer(*main, model, pv);
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
-
+        
         if (w.isLuaPlayer()) {
-            event_handler = new LuaPlayer(q, model, w.getPlayerID(), LUA_PLAYER);
+            event_handler = new LuaPlayer(q, model, w.getPlayerID(), w.getLuaPath());
             recHandle.startRecorder();
         } else {
             event_handler = new EventListener(w.getPlayerID(), q, recHandle);
