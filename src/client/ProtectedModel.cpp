@@ -44,8 +44,17 @@ void ProtectedModel::initialize(nlohmann::json data) {
     for (auto &grandstandData : data["grandstandsData"]) {
         int x = grandstandData[0].get<int>();
         int y = grandstandData[1].get<int>();
+        bool horizontal_enable = grandstandData[2].get<bool>();
+        bool vertical_enable = grandstandData[3].get<bool>();
+        int angle = 0;
+        if (!horizontal_enable && !vertical_enable)       // Traduzo booleanos a angulos
+            angle = 3.1415 / 2 * SERIALIZING_RESCAILING;
+        else if(!horizontal_enable && vertical_enable)
+            angle = - 3.1415 / 2 * SERIALIZING_RESCAILING;
+        else if(horizontal_enable && !vertical_enable)
+            angle = 3.1415 * SERIALIZING_RESCAILING;
         this->objects[UP_LIMT] = factory.generateObject(GRANDSTAND);
-        this->objects[UP_LIMT++]->setPosition(x * cam.getZoom(), y * cam.getZoom());
+        this->objects[UP_LIMT++]->setPosition(x * cam.getZoom(), y * cam.getZoom(), angle);
     }
 
     cam.setOnTarget(this->entities[this->playerID]);
@@ -78,7 +87,7 @@ void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, E
         this->objects[id] = factory.generateObject(type);
     }
 
-    this->objects[id]->setPosition(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000);
+    this->objects[id]->setPosition(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000, 0);
     this->objects[id]->setState(state);
     if (state == DEAD){
         delete this->objects[id];
@@ -154,3 +163,4 @@ ProtectedModel::~ProtectedModel(){
     for (auto& object : objects)
         delete object.second;
 }
+
