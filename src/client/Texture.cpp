@@ -23,6 +23,15 @@ Texture::Texture(Texture&& other) :
         this->textureInfo = other.textureInfo;
 }
 
+Texture& Texture::operator=(Texture&& other){
+    SDL_DestroyTexture(this->texture);         // Libero la que estoy pisando
+    window = other.window;
+    textureInfo = other.textureInfo;
+    texture = other.texture;
+    other.texture = NULL;
+    return *this;
+}
+
 void Texture::render(SDL_Rect& src, int angle) {
     this->window.render(this->texture,
                         this->textureInfo,
@@ -37,3 +46,4 @@ void Texture::setRect(SDL_Rect& r){
 Texture::~Texture() {
     SDL_DestroyTexture(this->texture);
 }
+

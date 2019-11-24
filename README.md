@@ -8,16 +8,22 @@ Instalar las dependencias necesarias:
 sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev 
                                                 libgles2-mesa-dev  
                                                 libsdl2-dev 
-                                                libsdl2-image-dev 
+                                                libsdl2-image-dev
+						                        mesa-common-dev
+                        						libglu1-mesa-dev 
+                                                freeglut3-dev
                                                 nlohmann-json-dev 
-                  			  	                lua5.3
-						                        liblua5.3-dev
+                                          		lua5.3 
+                				                liblua5.3-dev
                                                 qt5-default
+                                                libsdl2-mixer-dev
                                                 libavutil-dev
                                                 libswresample-dev
                                                 libavformat-dev
                                                 libavcodec-dev
                                                 libswscale-dev
+                                                libsdl2-ttf-dev
+
 ``` 
 # Reglas para el repo
 

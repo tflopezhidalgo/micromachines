@@ -1,15 +1,26 @@
 #include "Camera.h"
-#include "Entity.h"
+#include "Object.h"
 #include "Window.h"
 #include "../common/Constants.h"
 #include "Car.h"
+#include "Text.h"
+#include <SDL2/SDL_ttf.h>
 
 Camera::Camera(Window& w, Texture& texture) :
     window(w),
-    texture(texture) {
+    texture(texture),
+    text(this->window, "../media/fonts/myFont.TTF", 80){
+    SDL_Color color = {230, 210, 20};
+    text.setColor(color);
+    SDL_Rect r = {window.getWidth() - 100, window.getHeight() - 150, 100, 150};
+    text.setPositionAndSize(r);
     this->cameraInfo = {0, 0, 0, 0};
     target = NULL;
 	this->zoom = MtoP;
+}
+
+void Camera::addWidget(CameraWidget* widget) {
+    this->widgets.push_back(widget);
 }
 
 void Camera::setOnTarget(Car* e) {
@@ -49,10 +60,23 @@ void Camera::update() {
 }
 
 void Camera::render() {
+    std::string text_msg(std::to_string(target->getLapsDone()));
+    text.setText(text_msg);
+    text.render();
+
+    static Sound mud_splash("../media/sounds/mud_splash.wav");
+    static bool played = false;
+
     if (target->isBlinded()) {
+        if (!played)
+            mud_splash.play();
         SDL_Rect r = {0, 0, window.getWidth(), window.getHeight()};
         this->texture.render(r, 0);
+        played = true;
     }
+
+    for (CameraWidget* widget: widgets)
+        widget->OnRender();
 }
 
 int Camera::getZoom() {

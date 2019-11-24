@@ -16,7 +16,7 @@ onFlySprite(onFlySprite){
     this->y = y;
 }
 
-void Throwable::setPos(int x, int y) {
+void Throwable::setPosition(int x, int y) {
     this->x = x;
     this->y = y;
 }

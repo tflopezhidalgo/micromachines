@@ -18,6 +18,7 @@ class Receiver: public Thread {
         explicit Receiver(ProtectedModel& model);
         void run();
         void stop();
+        ~Receiver();
 
 };
 

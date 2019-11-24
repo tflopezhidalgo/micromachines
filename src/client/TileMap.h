@@ -2,7 +2,7 @@
 #define MICROMACHINES_TILEMAP_H
 
 #include "Tile.h"
-#include "Entity.h"
+#include "Object.h"
 #include <vector>
 #include <fstream>
 #include <string>
@@ -25,7 +25,7 @@
 #define TILE_13 "../media/tiles/13_Road.png"
 #define TILE_14 "../media/tiles/14_Road.png"
 
-class TileMap: public Entity{
+class TileMap {
     private:
         std::vector<Tile> tiles;
         Window& window;

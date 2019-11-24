@@ -1,9 +1,12 @@
 #ifndef MICROMACHINES_CAMERA_H
 #define MICROMACHINES_CAMERA_H
 
+#include <vector>
 #include "Window.h"
-#include "Entity.h"
+#include "Object.h"
 #include "Texture.h"
+#include "CameraWidget.h"
+#include "Text.h"
 
 class Car;
 
@@ -14,9 +17,12 @@ private:
     Texture& texture;
     SDL_Rect cameraInfo;
     int zoom;
+    Text text;
+    std::vector<CameraWidget*> widgets;
 
 public:
     Camera(Window& w, Texture& texture);
+    void addWidget(CameraWidget* widget);
     void setOnTarget(Car* e);
     SDL_Rect translate(SDL_Rect& origin);
     bool collideWith(SDL_Rect& obj_dimensions);

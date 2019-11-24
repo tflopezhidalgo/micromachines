@@ -7,7 +7,7 @@
 #include "lua/LuaScript.h"
 #include "Thread.h"
 
-class LuaPlayer: public Thread {
+class LuaPlayer : public Thread{
 private:
     ProtectedQueue<Event>& q;
     ProtectedModel& model;
@@ -17,7 +17,7 @@ private:
 public:
     LuaPlayer(ProtectedQueue<Event>& q, ProtectedModel& model,
             std::string playerId, std::string scriptFile);
-    void run();
+    void run() override;
     void stop();
     ~LuaPlayer() {}
 };

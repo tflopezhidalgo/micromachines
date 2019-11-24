@@ -16,13 +16,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QObject::connect(this, &MainWindow::waitStatus, this, &MainWindow::handleResponseStatus);
+
     this->proxy = NULL;
     this->luaPlayer = false;
+    this->screen_h = 0;
+    this->screen_w = 0;
+    this->full_screen = false;
+    this->valid_data = false;
+
     ui->stackedWidget->setCurrentIndex(0);
     QPixmap img("../src/client/qt/header.jpg");
     ui->label->setPixmap(img);
 }
 
+std::string& MainWindow::getLuaPath(){
+    return this->lua_path;
+}
 
 MainWindow::~MainWindow()
 {
@@ -35,6 +44,19 @@ void MainWindow::on_create_match_button_clicked() // Crear partida
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
     try {
+        if (ui->screen_mode_combo_box->currentIndex() == 1)
+            if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
+                throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
+            else{
+                this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
+                this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                this->lua_path = this->ui->lineEdit->text().toStdString();
+                full_screen = false;
+                std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
+            }
+        else
+            full_screen = true;
+
         Socket socket(hostName.c_str(), serviceName.c_str());
         proxy = new Proxy(std::move(socket));
         ui->stackedWidget->setCurrentIndex(2);
@@ -53,6 +75,19 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
     try {
+        if (ui->screen_mode_combo_box->currentIndex() == 1)
+            if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
+                throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
+            else{
+                this->screen_h = this->ui->height_line->text().toInt(NULL, 10);
+                this->screen_w = this->ui->width_line->text().toInt(NULL, 10);
+                this->lua_path = this->ui->lineEdit->text().toStdString();
+                full_screen = false;
+                std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
+            }
+        else
+            full_screen = true;
+
         Socket socket(hostName.c_str(), serviceName.c_str());
 
         proxy = new Proxy(std::move(socket));
@@ -78,8 +113,8 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
         for (nlohmann::json::iterator it = j.begin(); it != j.end(); ++it) {
             std::string matchName = it.key();
             std::string mapName = it.value()[0].get<std::string>();
-            int playersAmount = it.value()[1].get<int>();
-            int laps = it.value()[2].get<int>();
+            int laps = it.value()[1].get<int>();
+            int playersAmount = it.value()[2].get<int>();
 
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
 
@@ -144,6 +179,21 @@ bool MainWindow::isLuaPlayer() {
     return luaPlayer;
 }
 
+int MainWindow::getWidthSelected() {
+    return this->screen_w;
+}
+
+int MainWindow::getHeightSelected() {
+    return this->screen_h;
+}
+
+bool MainWindow::isFullScreen(){
+    return this->full_screen;
+}
+
+bool MainWindow::isValidUser() {
+    return valid_data;
+}
 
 void MainWindow::on_buttonBox_accepted() // Accept en crear partida
 {
@@ -213,8 +263,8 @@ void MainWindow::handleResponseStatus(){
     QMessageBox m;
     switch(j["status"].get<int>()) {
         case VALID:
-            this->ui->stackedWidget->setCurrentWidget(ui->waitingPlayersScreen);
-            waitForInitialPosition();
+            this->close();
+            valid_data = true;
             break;
         case MATCH_HAS_STARTED:
             m.setText("La partida está en progreso");
@@ -227,15 +277,9 @@ void MainWindow::handleResponseStatus(){
         case CLIENT_EQUAL_NAMED:
             m.setText("Ya existe un cliente con ese nombre");
             m.exec();
+            this->ui->stackedWidget->setCurrentWidget(this->ui->createScreen);
             break;
     }
-}
-
-void MainWindow::waitForInitialPosition(){
-    std::string j(proxy->receiveMessage());
-    std::cout << "LOG - INITIAL DATA: " << j << std::endl;
-    initialData = nlohmann::json::parse(j);
-    this->close();
 }
 
 nlohmann::json& MainWindow::getInitialData(){
@@ -256,8 +300,24 @@ void MainWindow::on_playerSelectComboBox_currentIndexChanged(int index) // Selec
         this->luaPlayer = true;
 }
 
-
-void MainWindow::on_MainWindow_destroyed()
+void MainWindow::on_screen_mode_combo_box_highlighted(int index)
 {
-    std::cout << "Se cerro aplicacion\n";
+    if (index == 0){
+        this->ui->height_line->setEnabled(false);
+        this->ui->width_line->setEnabled(false);
+    } else if (index == 1){
+        this->ui->height_line->setEnabled(true);
+        this->ui->width_line->setEnabled(true);
+    }
+}
+
+void MainWindow::on_screen_mode_combo_box_currentIndexChanged(int index)
+{
+    if (index == 0){
+        this->ui->height_line->setEnabled(false);
+        this->ui->width_line->setEnabled(false);
+    } else if (index == 1){
+        this->ui->height_line->setEnabled(true);
+        this->ui->width_line->setEnabled(true);
+    }
 }
