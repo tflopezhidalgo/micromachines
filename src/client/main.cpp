@@ -18,6 +18,7 @@
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Audio.h"
+#include "RecordingWidget.h"
 
 #define LUA_PLAYER "player.lua"
 
@@ -61,6 +62,9 @@ int main(int argc, char* argv[]) {
         RecorderHandle recHandle(pv, main->getWidth(), main->getHeight());
         av_register_all();
 
+        RecordingWidget widget(*main, recHandle);
+        cam.addWidget(&widget);
+
         Drawer drawer(*main, model, pv);
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
@@ -71,18 +75,20 @@ int main(int argc, char* argv[]) {
         } else {
             event_handler = new EventListener(w.getPlayerID(), q, recHandle);
         }
+
         drawer.start();
         receiver.start();
         dispatcher.start();
 
         event_handler->run();
-        
-        drawer.stop();
+
         dispatcher.stop();
         receiver.stop();
+        drawer.stop();
         recHandle.stopRecorder();
+
     } catch(std::runtime_error &e) {
-        // Avisar al server que catchee esta exception
+        // Principalmente por inicializaciones
         std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
         return 1;
     }

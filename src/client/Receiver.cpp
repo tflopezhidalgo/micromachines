@@ -12,7 +12,11 @@ Receiver::Receiver(ProtectedModel& model,
 
 void Receiver::run() {
 
-    Sound count_sound("../media/sounds/counting_sound_2.wav");
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+
+    Sound count_sound("../media/sounds/count_sound.wav");
+    Sound power_up("../media/sounds/power_up_sound.wav");
+    Sound crash("../media/sounds/bump_sound.wav");
 
     nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
 
@@ -43,11 +47,13 @@ void Receiver::run() {
                 int lapsDone = car[5].get<int>();
                 bool onExploding = car[6].get<bool>();
                 int velocity = car[7].get<int>();
-                bool field1 = car[8].get<bool>(); // Agarró power-up
+                bool field1 = car[8].get<bool>(); // CHOQUE
                 bool field2 = car[9].get<bool>();
                 this->model.updateCar(key, x, y, angle, health, lapsDone, onExploding);
                 if (field1)
-                    count_sound.play();
+                    crash.play();
+                if (field2)
+                    power_up.play();
 
             }
 

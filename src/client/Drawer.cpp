@@ -30,6 +30,7 @@ void Drawer::run() {
 
         main.setTarget(videoTexture);
 
+        this->main.clear();
         this->model.renderAll();
         // Obtengo los bytes de la textura en el buffer
         int res = SDL_RenderReadPixels(main.getRenderer(), NULL,
@@ -44,8 +45,10 @@ void Drawer::run() {
         main.setTarget(NULL);
         std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        if (duration.count() < fixed_time)
+
+        if (duration.count() < fixed_time) {
             std::this_thread::sleep_for(std::chrono::milliseconds(fixed_time - duration.count()));
+        }
     }
 
     SDL_DestroyTexture(videoTexture);

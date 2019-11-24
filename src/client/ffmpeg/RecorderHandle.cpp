@@ -33,11 +33,13 @@ void RecorderHandle::stopRecorder() {
 }
 
 RecorderHandle::~RecorderHandle() {
-    for (auto th: recorders) {
+   for (auto th: recorders) {
         if (th->isAlive()) {
             th->stop();
             th->join();
         }
         recording = false;
     }
+
+    recording = false;
 }

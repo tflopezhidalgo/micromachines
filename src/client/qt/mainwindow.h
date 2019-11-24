@@ -22,6 +22,7 @@ public:
     int getWidthSelected();
     int getHeightSelected();
     bool isFullScreen();
+    std::string& getLuaPath();
     bool isLuaPlayer();
     bool isValidUser();
     ~MainWindow();
@@ -63,6 +64,7 @@ private:
     int screen_w;
     int screen_h;
     bool full_screen;
+    std::string lua_path;
     bool valid_data;
 };
 
