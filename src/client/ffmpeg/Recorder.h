@@ -25,6 +25,8 @@ public:
 
     virtual void run() override;
 
+    bool isAlive();
+
     void stop();
 
     ~Recorder();

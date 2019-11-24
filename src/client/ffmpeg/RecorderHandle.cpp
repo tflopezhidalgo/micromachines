@@ -2,21 +2,19 @@
 
 #define EXTENSION ".mpeg"
 
-RecorderHandle::RecorderHandle(ProtectedVector& pv) :
+RecorderHandle::RecorderHandle(ProtectedVector& pv, int w, int h) :
         recording(false),
         pv(pv),
-        counter(0) {}
-
-bool RecorderHandle::isRecording() {
-    return recording;
-}
+        counter(0),
+        width(w),
+        height(h) {}
 
 void RecorderHandle::startRecorder() {
     if (!recording) {
         recording = true;
         pv.open();
         std::string fileName = std::string(GAME_NAME) + std::to_string(counter) + std::string(EXTENSION);
-        recorders.push_back(new Recorder(WINDOW_WIDTH, WINDOW_HEIGHT, pv, fileName));
+        recorders.push_back(new Recorder(width, height, pv, fileName));
         recorders[counter]->start();
     }
 }
@@ -31,12 +29,12 @@ void RecorderHandle::stopRecorder() {
 }
 
 RecorderHandle::~RecorderHandle() {
-    while(recorders.size()) {
-        Recorder* aux = recorders.back();
-        aux->stop();
-        recorders.pop_back();
-        std::cout << "Valor de aux: " << aux << std::endl;
-        delete aux;
+   for (auto th: recorders) {
+        if (th->isAlive()) {
+            th->stop();
+            th->join();
+        }
+        recording = false;
     }
 
     recording = false;

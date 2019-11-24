@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
         ProtectedModel model(*main, cam, w.getPlayerID());
         ProtectedQueue<Event> q;
         ProtectedVector pv;
-        RecorderHandle recHandle(pv);
+        RecorderHandle recHandle(pv, main->getWidth(), main->getHeight());
         av_register_all();
 
         RecordingWidget widget(*main, recHandle);

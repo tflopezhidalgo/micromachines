@@ -13,12 +13,12 @@ private:
     std::vector<Recorder*> recorders;
     ProtectedVector &pv;
     int counter;
+    int width;
+    int height;
 public:
-    explicit RecorderHandle(ProtectedVector& pv);
+    explicit RecorderHandle(ProtectedVector& pv, int w, int h);
 
     void startRecorder();
-
-    bool isRecording();
 
     void stopRecorder();
 

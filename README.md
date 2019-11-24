@@ -8,7 +8,9 @@ Instalar las dependencias necesarias:
 sudo apt-get update && sudo apt-get install -y  libegl1-mesa-dev 
                                                 libgles2-mesa-dev  
                                                 libsdl2-dev 
-                                                libsdl2-image-dev 
+                                                libsdl2-image-dev
+						mesa-common-dev
+						libglu1-mesa-dev freeglut3-dev
                                                 nlohmann-json-dev 
                                   		lua5.3 
 				                liblua5.3-dev

@@ -12,7 +12,6 @@ void LuaPlayer::run() {
     while (!model.isInitialized()){
         usleep(10);
     }
-    std::cout << "Corriendo lua...\n";
     script.createMap(model.getMap());
 
     SDL_Event e;
@@ -24,7 +23,6 @@ void LuaPlayer::run() {
         }
 
         usleep(10000);
-        std::cout << "Pidiendo posiciones de entidades... \n";
         script.setEntities(model.getEntitiesPos());
         std::vector<int> state = std::move(model.getActualState());
         Event e(std::move(script.getEvent(state[0], state[1], state[2])));
