@@ -37,7 +37,6 @@ class ProtectedQueue {
         }
 
         ~ProtectedQueue() {
-
         }
 };
 #endif

@@ -12,6 +12,7 @@
 #include "Identifiers.h"
 #include "Counter.h"
 #include "Music.h"
+#include "WinnerAnnunciator.h"
 
 class ProtectedModel {
 private:
@@ -26,7 +27,7 @@ private:
     Texture waiting_players_screen;
     Counter counter;
     bool finished;
-    std::vector<std::string> podium;
+    WinnerAnnunciator annunciator;
 
 public:
     ProtectedModel(Window& w, Camera& cam, std::string& player);

@@ -67,4 +67,6 @@ void EventListener::stop() {
     alive = false;
 }
 
-EventListener::~EventListener() = default;
+EventListener::~EventListener() {
+
+}

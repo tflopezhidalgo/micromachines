@@ -8,19 +8,24 @@
 class Text {
 private:
     Window& w;
-    SDL_Texture* texture;
+    Texture text_texture;
     TTF_Font* font;
     SDL_Color actualColor;
     std::string text;
+    SDL_Rect position;
 
 public:
     Text(Window& w, const std::string &font_path, int size);
 
-    void render(SDL_Rect r);
+    Text(Text&& other);
+
+    void render();
 
     void setColor(SDL_Color& c);
 
-    void setText(std::string &text);
+    void setText(const std::string &text);
+
+    void setPositionAndSize(SDL_Rect& r);
 
     ~Text();
 };
