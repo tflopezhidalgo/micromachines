@@ -9,6 +9,10 @@ RecorderHandle::RecorderHandle(ProtectedVector& pv, int w, int h) :
         width(w),
         height(h) {}
 
+bool RecorderHandle::isRecording() {
+    return recording;
+}
+
 void RecorderHandle::startRecorder() {
     if (!recording) {
         recording = true;
