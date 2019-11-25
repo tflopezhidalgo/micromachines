@@ -63,6 +63,16 @@ floor_id = {
         ["name"] = "DOWN_WITH_CHECKPOINT_TRACK",
         ["safe"] = true,
         ["direction"] = 0
+    },
+    [13] = {
+        ["name"] = "DOWN_WITH_POSITIONS_TRACK",
+        ["safe"] = true,
+        ["direction"] = 0
+    },
+    [14] = {
+        ["name"] = "DOWN_WITH_FLAG_TRACK",
+        ["safe"] = true,
+        ["direction"] = 0
     }
 }
 
