@@ -17,6 +17,8 @@ void Receiver::run() {
     Sound count_sound("../media/sounds/count_sound.wav");
     Sound power_up("../media/sounds/power_up_sound.wav");
     Sound crash("../media/sounds/bump_sound.wav");
+    Sound brake("../media/sounds/not_accelerating.wav");
+    Sound accelerating("../media/sounds/accelerating_sound.wav");
 
     try {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
@@ -50,6 +52,14 @@ void Receiver::run() {
                     bool field1 = car[8].get<bool>(); // CHOQUE
                     bool field2 = car[9].get<bool>();
                     this->model.updateCar(key, x, y, angle, health, lapsDone, onExploding);
+                    if (velocity == 0) {
+                        accelerating.stop();
+                        brake.play(-1);
+                    }
+                    if (velocity > 0) {
+                        brake.stop();
+                        accelerating.play(-1);
+                    }
                     if (field1)
                         crash.play();
                     if (field2)

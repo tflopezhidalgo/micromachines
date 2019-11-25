@@ -7,11 +7,13 @@
 class Sound {
 private:
     Mix_Chunk* chunk;
+    int channel;
 
 public:
     explicit Sound(const std::string& file);
     void setVolume(int volume);
     void play(int loops = 0);
+    void stop();
     ~Sound();
 
 };

@@ -26,16 +26,11 @@ void ProtectedModel::initialize(nlohmann::json data) {
     std::unique_lock<std::mutex> lck(m);
 
     std::vector<std::string> car_sprites_options;
-    car_sprites_options.emplace_back("../media/sprites/pitstop_car_7.png");
-    car_sprites_options.emplace_back("../media/sprites/pitstop_car_4.png");
-    car_sprites_options.emplace_back("../media/sprites/pitstop_car_10.png");
     car_sprites_options.emplace_back("../media/sprites/pitstop_car_5.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_4.png");
     car_sprites_options.emplace_back("../media/sprites/pitstop_car_2.png");
-    car_sprites_options.emplace_back("../media/sprites/pitstop_car_9.png");
     car_sprites_options.emplace_back("../media/sprites/pitstop_car_6.png");
     car_sprites_options.emplace_back("../media/sprites/pitstop_car_1.png");
-    car_sprites_options.emplace_back("../media/sprites/pitstop_car_11.png");
-    car_sprites_options.emplace_back("../media/sprites/pitstop_car_8.png");
     car_sprites_options.emplace_back("../media/sprites/pitstop_car_3.png");
 
     this->map = new TileMap(this->main, data);

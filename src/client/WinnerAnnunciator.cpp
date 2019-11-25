@@ -4,7 +4,6 @@ WinnerAnnunciator::WinnerAnnunciator(Window &w) :
 w(w) { }
 
 void WinnerAnnunciator::setWinners(std::vector<std::string> &winners) {
-    std::cout << "Se llama a set winner " << std::endl;
     int h = -650;
     Text text_winners(this->w, "../media/fonts/myFont.TTF", 60);
     SDL_Rect r = {(w.getWidth() - 650) / 2, (w.getHeight() + h) / 2, 650, 200};
