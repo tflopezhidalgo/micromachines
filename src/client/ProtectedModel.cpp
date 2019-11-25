@@ -18,7 +18,9 @@ waiting_players_screen(std::move(main.createTextureFrom("../media/sprites/waitin
 counter(w),
 finished(false),
 initialized(false),
-annunciator(w) { }
+annunciator(w) {
+    this->map = NULL;
+}
 
 void ProtectedModel::initialize(nlohmann::json data) {
     std::unique_lock<std::mutex> lck(m);
@@ -167,7 +169,8 @@ std::vector<std::vector<int>>& ProtectedModel::getMap() {
 
 ProtectedModel::~ProtectedModel(){
     TTF_Quit();
-    delete map;
+    if (map)
+        delete map;
     for (auto& car : entities)
         delete car.second;
     for (auto& object : objects)
