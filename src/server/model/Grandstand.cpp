@@ -36,17 +36,19 @@ void Grandstand::throwProjectiles(EntitiesManager& entitiesManager) {
             lo = x_pos - float(GRANDSTAND_WIDTH)/2;
             hi = x_pos + float(GRANDSTAND_WIDTH)/2;
             xPos = lo + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hi-lo)));
-            yPos = y_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
-            if (!positiveOrientation) {
-                yPos = yPos * -1;
+            if (positiveOrientation) {
+                yPos = y_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
+            } else {
+                yPos = y_pos - GRANDSTAND_HEIGHT/2.f - PROJECTILE_INITIAL_DISTANCE;
             }
         } else {
             lo = y_pos - float(GRANDSTAND_WIDTH)/2;
             hi = y_pos + float(GRANDSTAND_WIDTH)/2;
-            xPos = x_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
             yPos = lo + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(hi-lo)));
-            if (!positiveOrientation) {
-                xPos = xPos * -1;
+            if (positiveOrientation) {
+                xPos = x_pos + GRANDSTAND_HEIGHT/2.f + PROJECTILE_INITIAL_DISTANCE;
+            } else {
+                xPos = x_pos - GRANDSTAND_HEIGHT/2.f - PROJECTILE_INITIAL_DISTANCE;
             }
         }
 
