@@ -5,9 +5,11 @@ Client::Client(Proxy proxy, std::string clientId, ProtectedQueue<Event>& eventsQ
         proxy(std::move(proxy)),
         clientId(clientId),
         eventsQueue(eventsQueue),
-        finished(false) {}
+        finished(false),
+        started(false) {}
 
 void Client::run() {
+    started = true;
     while (!finished) {
         try {
             std::string eventDumped = proxy.receiveMessage();
@@ -18,6 +20,10 @@ void Client::run() {
         }
     }
 }
+
+bool Client::hasStarted() {
+    return started;
+};
 
 void Client::sendMessage(std::string& message) {
     proxy.sendMessage(message);

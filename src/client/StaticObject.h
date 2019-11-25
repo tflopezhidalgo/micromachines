@@ -8,11 +8,12 @@ class StaticObject : public Object {
 private:
     int x;
     int y;
+    int angle;
     Sprite sprite;
 
 public:
     explicit StaticObject(Sprite sprite);
-    void setPosition(int x, int y) override;
+    void setPosition(int x, int y, int angle) override;
     void render(Camera& camera) override;
     void setState(EntityStatus state) override;
     int getXPos() override;

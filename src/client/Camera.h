@@ -14,14 +14,13 @@ class Camera {
 private:
     Car* target;
     Window& window;
-    Texture& texture;
     SDL_Rect cameraInfo;
     int zoom;
     Text text;
     std::vector<CameraWidget*> widgets;
 
 public:
-    Camera(Window& w, Texture& texture);
+    explicit Camera(Window& w);
     void addWidget(CameraWidget* widget);
     void setOnTarget(Car* e);
     SDL_Rect translate(SDL_Rect& origin);
@@ -29,7 +28,6 @@ public:
     void update();
     void render();
     int getZoom();
-    bool targetSet();
 
 };
 #endif

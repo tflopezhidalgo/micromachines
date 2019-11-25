@@ -4,6 +4,7 @@
 #include <mutex>
 #include <map>
 #include <string>
+#include <condition_variable>
 #include "Object.h"
 #include "Window.h"
 #include "Camera.h"
@@ -12,6 +13,7 @@
 #include "Identifiers.h"
 #include "Counter.h"
 #include "Music.h"
+#include "WinnerAnnunciator.h"
 
 class ProtectedModel {
 private:
@@ -26,7 +28,8 @@ private:
     Texture waiting_players_screen;
     Counter counter;
     bool finished;
-    std::vector<std::string> podium;
+    WinnerAnnunciator annunciator;
+    std::condition_variable cv;
 
 public:
     ProtectedModel(Window& w, Camera& cam, std::string& player);
@@ -36,7 +39,6 @@ public:
     void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();
     void setFinishedGame(std::vector<std::string>& podium);
-    bool isInitialized();
     std::vector<int> getActualState();
     std::vector<std::vector<int>> getEntitiesPos();
     std::vector<std::vector<int>>& getMap();

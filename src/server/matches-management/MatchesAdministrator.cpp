@@ -122,8 +122,10 @@ void MatchesAdministrator::stop() {
 
 MatchesAdministrator::~MatchesAdministrator() {
     for (auto & match : matches) {
-        match.second->stop();
-        match.second->join();
+        if (match.second->hasStarted()) {
+            match.second->stop();
+            match.second->join();
+        }
         delete (match.second);
     }
 }

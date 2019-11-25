@@ -12,12 +12,9 @@ private:
     Window& w;
 
 public:
-    Health(Window& w);
-
+    explicit Health(Window& w);
     void setActualHealth(int actualHealth);
-
     void renderAt(int x, int y, Camera& cam);
-
     int getHealth();
 };
 

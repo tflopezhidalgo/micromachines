@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 
-class Texture;  //TODO: Solucionar esto
+class Texture;
 
 class Window {
     private:
@@ -16,8 +16,8 @@ class Window {
         int w;
 
     public:
-        explicit Window(std::string title);
-        Window(std::string title, int w, int h);
+        explicit Window(const std::string& title);
+        Window(const std::string& title, int w, int h);
         Texture& createTextureFrom(const std::string& img);
         void render(SDL_Texture *texture,
                     SDL_Rect& textureInfo,

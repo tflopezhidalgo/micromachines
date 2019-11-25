@@ -4,7 +4,7 @@
 
 // Client constants
 #define GAME_NAME "Micromachines"
-#define MtoP 7     // Relación metros a píxeles
+#define MtoP 5     // Relación metros a píxeles
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 600
 
@@ -44,19 +44,16 @@
 #define OIL_RADIUS 9.f
 #define BOOSTERS_RADIUS 8.f
 #define EDGE_THICKNESS 0.5f
-#define TILE_WIDTH 50
-#define TILE_HEIGHT 50
+#define TILE_WIDTH 70
+#define TILE_HEIGHT 70
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
-#define GRANDSTAND_ANGLE - 3.14f  // EN RADIANES
-#define GRANDSTAND_X 290
-#define GRANDSTAND_Y 0
 #define MUD_WIDTH 13
 #define MUD_HEIGHT 13
 #define PROJECTILE_RADIUS 2
 
 //Car constants
-#define MAX_DISTANCE_TO_TRACK 80
+#define MAX_DISTANCE_TO_TRACK 100
 
 
 //Config Keys

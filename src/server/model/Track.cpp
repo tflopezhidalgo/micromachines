@@ -8,16 +8,17 @@ Track::Track(b2Body* body, b2Vec2 position, int floorId, float friction) :
     position(position),
     floorId(floorId) {
 
-    if (floorId == LEFT_TRACK || floorId == LEFT_CHECKPOINTED_TRACK) {
+    if (floorId == LEFT_TRACK || floorId == LEFT_WITH_CHECKPOINT_TRACK) {
         angle = 90;
 
-    } else if (floorId == RIGHT_TRACK || floorId == RIGHT_CHECKPOINTED_TRACK) {
+    } else if (floorId == RIGHT_TRACK || floorId == RIGHT_WITH_CHECKPOINT_TRACK) {
         angle = -90;
 
-    } else if (floorId == UP_TRACK || floorId == UP_CHECKPOINTED_TRACK) {
+    } else if (floorId == UP_TRACK || floorId == UP_WITH_CHECKPOINT_TRACK) {
         angle = 180;
 
-    } else if (floorId == DOWN_TRACK || floorId == DOWN_CHECKPOINTED_TRACK) {
+    } else if (floorId == DOWN_TRACK || floorId == DOWN_WITH_CHECKPOINT_TRACK ||
+        floorId == DOWN_WITH_FLAG_TRACK || floorId == DOWN_WITH_POSITIONS_TRACK) {
         angle = 0;
 
     } else if (floorId == FIRST_QUAD_TRACK) {

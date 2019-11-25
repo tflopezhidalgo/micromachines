@@ -1,16 +1,15 @@
 #ifndef MICROMACHINES_EVENTLISTENER_H
 #define MICROMACHINES_EVENTLISTENER_H
 
-#include <SDL2/SDL_events.h>
-#include "../common/Thread.h"
+#include "Thread.h"
 #include "ProtectedQueue.h"
-#include "../common/Event.h"
+#include "Event.h"
 #include "ffmpeg/RecorderHandle.h"
 #include <string>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL.h>
 #include <zconf.h>
 #include <Constants.h>
-
 
 class EventListener : public Thread{
 private:
@@ -21,7 +20,7 @@ private:
 	RecorderHandle& recorderHandle;
 
 public:
-    EventListener(std::string playerID, 
+    EventListener(std::string& playerID,
 				  ProtectedQueue<Event>& e,
 				  RecorderHandle& recorderHandle);
     void run() override;

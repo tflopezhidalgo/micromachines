@@ -69,8 +69,10 @@ void Match::sendMessageToClients(std::string& message) {
             clientsIt->second->sendMessage(message);
             clientsIt++;
         } catch (const SocketException& e) {
-            clientsIt->second->stop();
-            clientsIt->second->join();
+            if (clientsIt->second->hasStarted()) {
+                clientsIt->second->stop();
+                clientsIt->second->join();
+            }
             delete clientsIt->second;
             clientsIt = clients.erase(clientsIt);
         }
@@ -135,8 +137,10 @@ void Match::sendMatchDataToClients() {
 
 Match::~Match() {
     for (auto & client : clients) {
-        client.second->stop();
-        client.second->join();
+        if (client.second->hasStarted()) {
+            client.second->stop();
+            client.second->join();
+        }
         delete (client.second);
     }
 }

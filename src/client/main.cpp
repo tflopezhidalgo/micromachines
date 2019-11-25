@@ -1,26 +1,21 @@
-#include "../common/Event.h"
+#include <QApplication>
 #include "EventListener.h"
-#include <iostream>
-#include <zconf.h>
 #include "ProtectedQueue.h"
 #include "Camera.h"
-#include <vector>
 #include "Drawer.h"
 #include "ProtectedModel.h"
 #include "Receiver.h"
 #include "Proxy.h"
 #include "Dispatcher.h"
-#include <nlohmann/json.hpp>
-#include <QApplication>
-#include <SDL2/SDL_ttf.h>
 #include "ffmpeg/RecorderHandle.h"
 #include "mainwindow.h"
 #include "ffmpeg/Recorder.h"
 #include "LuaPlayer.h"
 #include "Audio.h"
 #include "RecordingWidget.h"
-
-#define LUA_PLAYER "player.lua"
+#include "MudSplashWidget.h"
+#include <SDL2/SDL_ttf.h>
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
@@ -55,7 +50,7 @@ int main(int argc, char* argv[]) {
         else
             main = new Window(GAME_NAME, w.getWidthSelected(), w.getHeightSelected());
 
-        Camera cam(*main, main->createTextureFrom("../media/sprites/mud_screen_sprite.png"));
+        Camera cam(*main);
         ProtectedModel model(*main, cam, w.getPlayerID());
         ProtectedQueue<Event> q;
         ProtectedVector pv;
@@ -64,6 +59,9 @@ int main(int argc, char* argv[]) {
 
         RecordingWidget widget(*main, recHandle);
         cam.addWidget(&widget);
+
+        MudSplashWidget mud_widget(*main);
+        cam.addWidget(&mud_widget);
 
         Drawer drawer(*main, model, pv);
         Receiver receiver(model, *proxy);
@@ -81,15 +79,13 @@ int main(int argc, char* argv[]) {
         dispatcher.start();
 
         event_handler->run();
-
+        
         dispatcher.stop();
         receiver.stop();
         drawer.stop();
         recHandle.stopRecorder();
 
     } catch(std::runtime_error &e) {
-        // Principalmente por inicializaciones
-        std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
         return 1;
     }
 
