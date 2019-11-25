@@ -13,9 +13,13 @@ main(other.main),
 recorder(other.recorder) { }
 
 
-void RecordingWidget::OnRender() {
+void RecordingWidget::onRender() {
     if (recorder.isRecording()) {
-        SDL_Rect r = {0, 0, 100, 100};
+        SDL_Rect r = { 0, 0, 100, 100};
         texture.render(r, 0);
     }
+}
+
+void RecordingWidget::onAdded(Car *target) {
+    return;
 }

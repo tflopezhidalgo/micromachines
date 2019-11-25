@@ -6,8 +6,8 @@
 #include <Identifiers.h>
 
 TileMap::TileMap(Window& window, const nlohmann::json& map) :
-window(window){
-    this->numbers = map["tiles"].get<std::vector<std::vector<int>>>();
+window(window),
+numbers(map["tiles"].get<std::vector<std::vector<int>>>()){
     int sized = map["tiles"].size();
     int x, y = - (sized - 1) * TILE_HEIGHT * MtoP / 2;
 
@@ -76,6 +76,4 @@ std::vector<std::vector<int>>& TileMap::getTileNumbers() {
     return this->numbers;
 }
 
-TileMap::~TileMap() {
-    std::cout << "Se van a borrar " << this->tiles.size() << std::endl;
-}
+TileMap::~TileMap() { }

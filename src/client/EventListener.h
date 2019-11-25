@@ -21,7 +21,7 @@ private:
 	RecorderHandle& recorderHandle;
 
 public:
-    EventListener(std::string playerID, 
+    EventListener(std::string& playerID,
 				  ProtectedQueue<Event>& e,
 				  RecorderHandle& recorderHandle);
     void run() override;

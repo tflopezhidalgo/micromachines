@@ -16,7 +16,7 @@ private:
     int counter;
 
 public:
-    Counter(Window& window);
+    explicit Counter(Window& window);
     void count();
     void render(int x, int y);
 };

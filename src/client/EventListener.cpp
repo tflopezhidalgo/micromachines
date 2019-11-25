@@ -1,6 +1,6 @@
 #include "EventListener.h"
 
-EventListener::EventListener(std::string playerID, 
+EventListener::EventListener(std::string& playerID,
 							 ProtectedQueue<Event>& q,
 							 RecorderHandle& recorderHandle):
 							 alive(true),

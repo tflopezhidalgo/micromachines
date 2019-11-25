@@ -6,9 +6,8 @@
 #include "Text.h"
 #include <SDL2/SDL_ttf.h>
 
-Camera::Camera(Window& w, Texture& texture) :
+Camera::Camera(Window& w) :
     window(w),
-    texture(texture),
     text(this->window, "../media/fonts/myFont.TTF", 80){
     SDL_Color color = {230, 210, 20};
     text.setColor(color);
@@ -20,10 +19,13 @@ Camera::Camera(Window& w, Texture& texture) :
 }
 
 void Camera::addWidget(CameraWidget* widget) {
+    widget->onAdded(this->target);
     this->widgets.push_back(widget);
 }
 
 void Camera::setOnTarget(Car* e) {
+    for (CameraWidget* widget: widgets)
+        widget->onAdded(e);
     this->target = e;
 }
 
@@ -64,25 +66,10 @@ void Camera::render() {
     text.setText(text_msg);
     text.render();
 
-    static Sound mud_splash("../media/sounds/mud_splash.wav");
-    static bool played = false;
-
-    if (target->isBlinded()) {
-        if (!played)
-            mud_splash.play();
-        SDL_Rect r = {0, 0, window.getWidth(), window.getHeight()};
-        this->texture.render(r, 0);
-        played = true;
-    }
-
     for (CameraWidget* widget: widgets)
-        widget->OnRender();
+        widget->onRender();
 }
 
 int Camera::getZoom() {
     return zoom;
-}
-
-bool Camera::targetSet() {
-    return (target != NULL);
 }

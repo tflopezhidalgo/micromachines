@@ -10,7 +10,7 @@ private:
     Window& w;
 
 public:
-    WinnerAnnunciator(Window& w);
+    explicit WinnerAnnunciator(Window& w);
     void setWinners(std::vector<std::string>& winners);
     void render();
 };

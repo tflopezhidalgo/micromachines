@@ -14,7 +14,8 @@ private:
 public:
     RecordingWidget(Window& main, RecorderHandle& recorder);
     RecordingWidget(RecordingWidget&& other);
-    void OnRender() override ;
+    void onRender() override;
+    void onAdded(Car* target) override;
 };
 
 
