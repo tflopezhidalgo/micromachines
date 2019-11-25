@@ -19,28 +19,47 @@ window(window) {;
             this->tiles.emplace_back(std::move(Tile(window, TILE_0, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             if (j == THIRD_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_1, x, y,  TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == SECOND_QUAD_TRACK) {
+
+            } else if (j == SECOND_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_2, x, y, TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == FOURTH_QUAD_TRACK) {
+
+            } else if (j == FOURTH_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_3, x, y, TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == FIRST_QUAD_TRACK) {
+
+            } else if (j == FIRST_QUAD_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_4, x, y,  TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == LEFT_TRACK) {
+
+            } else if (j == LEFT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_5, x, y,  TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == RIGHT_TRACK) {
+
+            } else if (j == RIGHT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_6, x, y,  TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == UP_TRACK) {
+
+            } else if (j == UP_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_7, x, y,  TILE_HEIGHT, TILE_WIDTH)));
-            }
-            else if (j == DOWN_TRACK) {
+
+            } else if (j == DOWN_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_8, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == LEFT_WITH_CHECKPOINT_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_13, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == RIGHT_WITH_CHECKPOINT_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_12, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == UP_WITH_CHECKPOINT_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_11, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == DOWN_WITH_CHECKPOINT_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_10, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == DOWN_WITH_POSITIONS_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_14, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == DOWN_WITH_FLAG_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_9, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
+
             x += (MtoP * TILE_WIDTH);
         }
         y += (MtoP * TILE_HEIGHT);

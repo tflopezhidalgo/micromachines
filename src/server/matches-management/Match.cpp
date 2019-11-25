@@ -135,8 +135,10 @@ void Match::sendMatchDataToClients() {
 
 Match::~Match() {
     for (auto & client : clients) {
-        client.second->stop();
-        client.second->join();
+        if (client.second->hasStarted()) {
+            client.second->stop();
+            client.second->join();
+        }
         delete (client.second);
     }
 }
