@@ -56,18 +56,20 @@ void StageBuilder::addRaceSurface(World& world, std::vector<Track*>& tracks,
             } else if (floorId == LEFT_TRACK || floorId == RIGHT_TRACK ||
                 floorId == UP_TRACK || floorId == DOWN_TRACK ||
                 floorId == THIRD_QUAD_TRACK || floorId == SECOND_QUAD_TRACK ||
-                floorId == FIRST_QUAD_TRACK || floorId == FOURTH_QUAD_TRACK) {
+                floorId == FIRST_QUAD_TRACK || floorId == FOURTH_QUAD_TRACK ||
+                floorId == DOWN_WITH_POSITIONS_TRACK) {
 
                 tracks.push_back(world.addTrack(w + i, h + j, floorId, trackFriction));
 
-            } else if (floorId == LEFT_CHECKPOINTED_TRACK || floorId == RIGHT_CHECKPOINTED_TRACK) {
+            } else if (floorId == LEFT_WITH_CHECKPOINT_TRACK || floorId == RIGHT_WITH_CHECKPOINT_TRACK) {
 
                 tracks.push_back(world.addTrack(w + i, h + j, floorId, trackFriction));
                 checkpoints.push_back(world.addCheckpoint(w + i,h + j,
                         false, checkpointsOrder[idx], raceJudge));
                 idx++;
 
-            } else if (floorId == UP_CHECKPOINTED_TRACK || floorId == DOWN_CHECKPOINTED_TRACK) {
+            } else if (floorId == UP_WITH_CHECKPOINT_TRACK || floorId == DOWN_WITH_CHECKPOINT_TRACK ||
+                    floorId == DOWN_WITH_FLAG_TRACK) {
 
                 tracks.push_back(world.addTrack(w + i, h + j, floorId, trackFriction));
                 checkpoints.push_back(world.addCheckpoint(w + i, h + j,

@@ -8,6 +8,8 @@
 #include <SocketException.h>
 #include <FileReadingException.h>
 
+void closeThreads(MatchesAdministrator& matchesAdministrator, LobbyClientAcceptor& acceptor);
+
 int main(int argc, char* argv[]) {
 
     if (argc != 2) {
@@ -15,9 +17,10 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    MatchesAdministrator matchesAdministrator(CONFIG_PATH);
+    LobbyClientAcceptor acceptor(BACKLOG, argv[1], matchesAdministrator);
+
     try {
-        MatchesAdministrator matchesAdministrator(CONFIG_PATH);
-        LobbyClientAcceptor acceptor(BACKLOG, argv[1], matchesAdministrator);
         acceptor.start();
         matchesAdministrator.start();
 
@@ -26,22 +29,28 @@ int main(int argc, char* argv[]) {
             std::cin >> c;
         }
 
-        matchesAdministrator.stop();
-        matchesAdministrator.join();
-        acceptor.stop();
-        acceptor.join();
-
+        closeThreads(matchesAdministrator, acceptor);
         return 0;
 
     } catch (const SocketException& e) {
         std::cout << e.what() << std::endl;
+        closeThreads(matchesAdministrator, acceptor);
         return 1;
     } catch (const FileReadingException& e) {
         std::cout << e.what() << std::endl;
+        closeThreads(matchesAdministrator, acceptor);
         return 1;
     } catch (...) {
         std::cout << "Unexpected error happened" << std::endl;
+        closeThreads(matchesAdministrator, acceptor);
         return 1;
     }
 
+}
+
+void closeThreads(MatchesAdministrator& matchesAdministrator, LobbyClientAcceptor& acceptor) {
+    matchesAdministrator.stop();
+    matchesAdministrator.join();
+    acceptor.stop();
+    acceptor.join();
 }

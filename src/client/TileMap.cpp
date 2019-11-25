@@ -41,18 +41,23 @@ window(window) {;
             } else if (j == DOWN_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_8, x, y,  TILE_HEIGHT, TILE_WIDTH)));
 
-            } else if (j == LEFT_CHECKPOINTED_TRACK) {
+            } else if (j == LEFT_WITH_CHECKPOINT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_13, x, y,  TILE_HEIGHT, TILE_WIDTH)));
 
-            } else if (j == RIGHT_CHECKPOINTED_TRACK) {
+            } else if (j == RIGHT_WITH_CHECKPOINT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_12, x, y,  TILE_HEIGHT, TILE_WIDTH)));
 
-            } else if (j == UP_CHECKPOINTED_TRACK) {
+            } else if (j == UP_WITH_CHECKPOINT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_11, x, y,  TILE_HEIGHT, TILE_WIDTH)));
 
-            } else if (j == DOWN_CHECKPOINTED_TRACK) {
+            } else if (j == DOWN_WITH_CHECKPOINT_TRACK) {
                 this->tiles.emplace_back(std::move(Tile(window, TILE_10, x, y,  TILE_HEIGHT, TILE_WIDTH)));
 
+            } else if (j == DOWN_WITH_POSITIONS_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_14, x, y,  TILE_HEIGHT, TILE_WIDTH)));
+
+            } else if (j == DOWN_WITH_FLAG_TRACK) {
+                this->tiles.emplace_back(std::move(Tile(window, TILE_9, x, y,  TILE_HEIGHT, TILE_WIDTH)));
             }
 
             x += (MtoP * TILE_WIDTH);
