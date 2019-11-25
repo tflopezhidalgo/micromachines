@@ -48,15 +48,12 @@
 #define TILE_HEIGHT 50
 #define GRANDSTAND_WIDTH 50
 #define GRANDSTAND_HEIGHT 50
-#define GRANDSTAND_ANGLE - 3.14f  // EN RADIANES
-#define GRANDSTAND_X 290
-#define GRANDSTAND_Y 0
 #define MUD_WIDTH 13
 #define MUD_HEIGHT 13
 #define PROJECTILE_RADIUS 2
 
 //Car constants
-#define MAX_DISTANCE_TO_TRACK 80
+#define MAX_DISTANCE_TO_TRACK 70
 
 
 //Config Keys
