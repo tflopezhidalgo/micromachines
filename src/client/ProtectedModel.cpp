@@ -48,7 +48,7 @@ void ProtectedModel::initialize(nlohmann::json data) {
         int lapsDone = carData[5].get<int>();
         bool state = carData[6].get<bool>();
 
-        this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health,
+        this->entities[carData[0]]->setState(x * cam.getZoom() / SERIALIZING_RESCAILING, y * cam.getZoom() / SERIALIZING_RESCAILING, angle, health,
                                              lapsDone, state);
         std::cout << "LOG - Creando auto" << carData << std::endl;
         ++car_it;
