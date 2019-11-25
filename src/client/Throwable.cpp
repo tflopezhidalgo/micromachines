@@ -6,6 +6,7 @@ onFlySprite(std::move(other.onFlySprite)){
     this->state = other.state;
     this->x = other.x;
     this->y = other.y;
+    this->angle = other.angle;
 }
 
 Throwable::Throwable(Sprite sprite, Sprite onFlySprite, EntityStatus state, int x, int y) :
@@ -14,11 +15,13 @@ onFlySprite(onFlySprite){
     this->state = state;
     this->x = x;
     this->y = y;
+    this->angle = 0;
 }
 
-void Throwable::setPosition(int x, int y) {
+void Throwable::setPosition(int x, int y, int angle) {
     this->x = x;
     this->y = y;
+    this->angle = 0;
 }
 
 void Throwable::setState(EntityStatus state) {
