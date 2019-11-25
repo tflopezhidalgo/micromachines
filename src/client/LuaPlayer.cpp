@@ -9,10 +9,9 @@ LuaPlayer::LuaPlayer(ProtectedQueue<Event> &q, ProtectedModel &model,
     script(playerId, scriptFile) {}
 
 void LuaPlayer::run() {
-    while (!model.isInitialized()){
-        usleep(10);
-    }
     script.createMap(model.getMap());
+
+    std::cout << "LOG - Corriendo lua player\n";
 
     SDL_Event e;
     while (alive) {

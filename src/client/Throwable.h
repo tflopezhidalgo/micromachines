@@ -10,13 +10,14 @@ private:
     EntityStatus state;
     Sprite sprite;
     Sprite onFlySprite;
+    int angle;
     int x;
     int y;
 
 public:
     Throwable(Sprite sprite, Sprite onFlySprite, EntityStatus state, int x, int y);
     Throwable(Throwable&& other);
-    void setPosition(int x, int y) override;
+    void setPosition(int x, int y, int angle) override;
     int getXPos() override;
     int getYPos() override;
     void setState(EntityStatus state) override;

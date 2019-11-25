@@ -44,17 +44,29 @@ void ProtectedModel::initialize(nlohmann::json data) {
     for (auto &grandstandData : data["grandstandsData"]) {
         int x = grandstandData[0].get<int>();
         int y = grandstandData[1].get<int>();
+        bool horizontal_enable = grandstandData[2].get<bool>();
+        bool vertical_enable = grandstandData[3].get<bool>();
+        int angle = 0;
+        if (!horizontal_enable && !vertical_enable)       // Traduzo booleanos a angulos
+            angle = 3.1415 / 2 * SERIALIZING_RESCAILING;
+        else if(!horizontal_enable && vertical_enable)
+            angle = - 3.1415 / 2 * SERIALIZING_RESCAILING;
+        else if(horizontal_enable && !vertical_enable)
+            angle = 3.1415 * SERIALIZING_RESCAILING;
         this->objects[UP_LIMT] = factory.generateObject(GRANDSTAND);
-        this->objects[UP_LIMT++]->setPosition(x * cam.getZoom(), y * cam.getZoom());
+        this->objects[UP_LIMT++]->setPosition(x * cam.getZoom(), y * cam.getZoom(), angle);
     }
 
     cam.setOnTarget(this->entities[this->playerID]);
 
     this->initialized = true;
+    cv.notify_all();
 }
 
 void ProtectedModel::count() {
     std::unique_lock<std::mutex> lck(m);
+    while (!initialized)
+        cv.wait(lck);
     this->counter.count();
 }
 
@@ -66,19 +78,23 @@ void ProtectedModel::updateCar(std::string& id,
                                   int lapsDone,
                                   bool blinded) {
     std::unique_lock<std::mutex> lck(m);
+    while (!initialized)
+        cv.wait(lck);
 
     entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, lapsDone, blinded);
 }
 
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
     std::unique_lock<std::mutex> lck(m);
+    while (!initialized)
+        cv.wait(lck);
 
     if (objects[id] == NULL) {
         ObjectFactory factory(this->main);
         this->objects[id] = factory.generateObject(type);
     }
 
-    this->objects[id]->setPosition(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000);
+    this->objects[id]->setPosition(x * cam.getZoom() / 1000 , y * cam.getZoom() / 1000, 0);
     this->objects[id]->setState(state);
     if (state == DEAD){
         delete this->objects[id];
@@ -108,18 +124,17 @@ void ProtectedModel::renderAll() {
 
 void ProtectedModel::setFinishedGame(std::vector<std::string>& winner) {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     this->finished = true;
     cam.setOnTarget(this->entities[winner[0]]);
     this->annunciator.setWinners(winner);
 }
 
-bool ProtectedModel::isInitialized() {
-    std::unique_lock<std::mutex> lck(this->m);
-    return this->initialized;
-}
-
 std::vector<int> ProtectedModel::getActualState() {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     std::vector<int> state;
     state.push_back(this->entities[playerID]->getAngle());
     state.push_back(this->entities[playerID]->getXPos());
@@ -130,6 +145,8 @@ std::vector<int> ProtectedModel::getActualState() {
 
 std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     std::vector<std::vector<int>> entities_buf;
     for (auto& object : objects) {
         std::vector<int> entity_buf;
@@ -143,6 +160,8 @@ std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
 
 std::vector<std::vector<int>>& ProtectedModel::getMap() {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     return map->getTileNumbers();
 }
 
@@ -154,3 +173,4 @@ ProtectedModel::~ProtectedModel(){
     for (auto& object : objects)
         delete object.second;
 }
+
