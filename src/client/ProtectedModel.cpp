@@ -60,10 +60,13 @@ void ProtectedModel::initialize(nlohmann::json data) {
     cam.setOnTarget(this->entities[this->playerID]);
 
     this->initialized = true;
+    cv.notify_all();
 }
 
 void ProtectedModel::count() {
     std::unique_lock<std::mutex> lck(m);
+    while (!initialized)
+        cv.wait(lck);
     this->counter.count();
 }
 
@@ -75,12 +78,16 @@ void ProtectedModel::updateCar(std::string& id,
                                   int lapsDone,
                                   bool blinded) {
     std::unique_lock<std::mutex> lck(m);
+    while (!initialized)
+        cv.wait(lck);
 
     entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, lapsDone, blinded);
 }
 
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
     std::unique_lock<std::mutex> lck(m);
+    while (!initialized)
+        cv.wait(lck);
 
     if (objects[id] == NULL) {
         ObjectFactory factory(this->main);
@@ -117,18 +124,17 @@ void ProtectedModel::renderAll() {
 
 void ProtectedModel::setFinishedGame(std::vector<std::string>& winner) {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     this->finished = true;
     cam.setOnTarget(this->entities[winner[0]]);
     this->annunciator.setWinners(winner);
 }
 
-bool ProtectedModel::isInitialized() {
-    std::unique_lock<std::mutex> lck(this->m);
-    return this->initialized;
-}
-
 std::vector<int> ProtectedModel::getActualState() {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     std::vector<int> state;
     state.push_back(this->entities[playerID]->getAngle());
     state.push_back(this->entities[playerID]->getXPos());
@@ -139,6 +145,8 @@ std::vector<int> ProtectedModel::getActualState() {
 
 std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     std::vector<std::vector<int>> entities_buf;
     for (auto& object : objects) {
         std::vector<int> entity_buf;
@@ -152,6 +160,8 @@ std::vector<std::vector<int>> ProtectedModel::getEntitiesPos() {
 
 std::vector<std::vector<int>>& ProtectedModel::getMap() {
     std::unique_lock<std::mutex> lock(m);
+    while (!initialized)
+        cv.wait(lock);
     return map->getTileNumbers();
 }
 

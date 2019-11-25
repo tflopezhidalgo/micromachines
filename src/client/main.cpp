@@ -81,15 +81,13 @@ int main(int argc, char* argv[]) {
         dispatcher.start();
 
         event_handler->run();
-
+        
         dispatcher.stop();
         receiver.stop();
         drawer.stop();
         recHandle.stopRecorder();
 
     } catch(std::runtime_error &e) {
-        // Principalmente por inicializaciones
-        std::cout << "ocurrio una excepcion :( " << e.what() << std::endl;
         return 1;
     }
 
