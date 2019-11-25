@@ -4,7 +4,7 @@
 
 // Client constants
 #define GAME_NAME "Micromachines"
-#define MtoP 10     // Relación metros a píxeles
+#define MtoP 5     // Relación metros a píxeles
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 600
 

@@ -1,11 +1,11 @@
 #ifndef MICROMACHINES_TILE_H
 #define MICROMACHINES_TILE_H
 
+#include "Texture.h"
+#include "Camera.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdexcept>
-#include "Texture.h"
-#include "Camera.h"
 
 class Tile {
     private:

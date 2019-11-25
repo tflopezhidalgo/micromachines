@@ -33,7 +33,7 @@
   "carsStartingPositions" : [[641.5, 94.0, 0.0], [618.5, 85.0, 0.0], [641.5, 72.0, 0.0], [618.5, 62.0, 0.0],
    [641.5, 51.0, 0.0], [618.5, 42.0, 0.0]],
 
-  "grandstandsData" : [[290.0, 0.0, false, true]],
+  "grandstandsData" : [[600.0, 95.0, true, true]],
 
   "checkpointsOrder" : [0]
 

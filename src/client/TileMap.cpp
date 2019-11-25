@@ -1,7 +1,6 @@
 #include "TileMap.h"
 #include "Window.h"
 #include "Constants.h"
-#include "Car.h"
 #include <nlohmann/json.hpp>
 #include <Identifiers.h>
 

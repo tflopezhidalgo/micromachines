@@ -25,11 +25,27 @@ annunciator(w) {
 void ProtectedModel::initialize(nlohmann::json data) {
     std::unique_lock<std::mutex> lck(m);
 
+    std::vector<std::string> car_sprites_options;
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_7.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_4.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_10.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_5.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_2.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_9.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_6.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_1.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_11.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_8.png");
+    car_sprites_options.emplace_back("../media/sprites/pitstop_car_3.png");
+
     this->map = new TileMap(this->main, data);
 
+    auto car_it = car_sprites_options.begin();
+
     for (auto &carData : data["carsData"]) {
-        std::cout << "LOG - Creando auto" << carData << std::endl;
-        this->entities[carData[0]] = new Car("../media/sprites/pitstop_car_1.png", main);
+        if (car_it == car_sprites_options.end())
+            car_it = car_sprites_options.begin();
+        this->entities[carData[0]] = new Car(*car_it, main);
         int x = carData[1].get<int>();
         int y = carData[2].get<int>();
         int angle = carData[3].get<int>();
@@ -39,6 +55,8 @@ void ProtectedModel::initialize(nlohmann::json data) {
 
         this->entities[carData[0]]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health,
                                              lapsDone, state);
+        std::cout << "LOG - Creando auto" << carData << std::endl;
+        ++car_it;
     }
 
     ObjectFactory factory(main);
@@ -113,13 +131,11 @@ void ProtectedModel::renderAll() {
     }
     map->render(cam);
     cam.update();
-    for (auto &object : objects) {
+    for (auto &object : objects)
        object.second->render(cam);
-    }
-    for (auto& car : entities) {
+    for (auto& car : entities)
         car.second->render(cam);
-    }
-    counter.render(0, 0);
+    counter.render();
     cam.render();
     annunciator.render();
 }

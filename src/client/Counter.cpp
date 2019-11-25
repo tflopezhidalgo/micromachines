@@ -1,6 +1,4 @@
 #include "Counter.h"
-#include "TextureRepository.h"
-#include "Texture.h"
 
 #define SEM_INIT "../media/sprites/sem_1_red.png"
 #define SEM_READY "../media/sprites/sem_2_red.png"
@@ -19,8 +17,8 @@ void Counter::count() {
     counter++;
 }
 
-void Counter::render(int x, int y){
-    SDL_Rect r = {x, y, 200, 200};
+void Counter::render(){
+    SDL_Rect r = {(window.getWidth() / 2) - 100, 0, 200, 200};
     switch(counter){
         case 0:
             ready.render(r, 0);

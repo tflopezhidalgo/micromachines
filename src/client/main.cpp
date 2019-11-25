@@ -1,6 +1,5 @@
 #include <QApplication>
 #include "EventListener.h"
-#include <iostream>
 #include "ProtectedQueue.h"
 #include "Camera.h"
 #include "Drawer.h"

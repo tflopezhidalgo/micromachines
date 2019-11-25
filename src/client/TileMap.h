@@ -2,7 +2,6 @@
 #define MICROMACHINES_TILEMAP_H
 
 #include "Tile.h"
-#include "Object.h"
 #include <vector>
 #include <fstream>
 #include <string>
