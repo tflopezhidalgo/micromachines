@@ -87,6 +87,11 @@ int main(int argc, char* argv[]) {
         recHandle.stopRecorder();
 
     } catch(std::runtime_error &e) {
+        SDL_Quit();
+        TTF_Quit();
+        a.quit();
+        delete event_handler;
+        delete main;
         return 1;
     }
 
