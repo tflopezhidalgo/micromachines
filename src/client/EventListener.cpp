@@ -1,4 +1,5 @@
 #include "EventListener.h"
+#include "Sound.h"
 
 EventListener::EventListener(std::string& playerID,
 							 ProtectedQueue<Event>& q,
@@ -6,7 +7,9 @@ EventListener::EventListener(std::string& playerID,
 							 alive(true),
                              q(q),
                              playerID(playerID),
-                             recorderHandle(recorderHandle) {}
+                             recorderHandle(recorderHandle),
+                             accelerating("../media/sounds/accelerating_sound.wav"),
+                             brake("../media/sounds/brake_sound.wav") {}
 
 void EventListener::run() {
     SDL_Event e;
@@ -26,33 +29,49 @@ void EventListener::run() {
 }
 
 void EventListener::detectEvent(SDL_Event& e) {
-    if (e.type == SDL_KEYDOWN)
+    if (e.type == SDL_KEYDOWN) {
         keysHeld[e.key.keysym.sym] = true;
+        if (e.key.keysym.sym == SDLK_w)
+            accelerating.play();
+        if (e.key.keysym.sym == SDLK_s)
+            brake.play();
+    }
 
-    if (e.type == SDL_KEYUP)
+    if (e.type == SDL_KEYUP) {
         keysHeld[e.key.keysym.sym] = false;
+        if (e.key.keysym.sym == SDLK_w)
+            accelerating.stop();
+        if (e.key.keysym.sym == SDLK_s)
+            brake.stop();
+    }
 }
 
 std::vector<char> EventListener::createActionList() {
     std::vector<char> actions;
 
-    if (this->keysHeld[SDLK_w])
+    if (this->keysHeld[SDLK_w]) {
         actions.push_back(FORWARD);
+    }
 
-    if (this->keysHeld[SDLK_s])
+    if (this->keysHeld[SDLK_s]) {
         actions.push_back(BACKWARD);
+    }
 
-    if (this->keysHeld[SDLK_d])
+    if (this->keysHeld[SDLK_d]) {
         actions.push_back(RIGHT);
+    }
 
-    if (this->keysHeld[SDLK_a])
+    if (this->keysHeld[SDLK_a]) {
         actions.push_back(LEFT);
+    }
 
-    if (this->keysHeld[SDLK_f])
+    if (this->keysHeld[SDLK_f]) {
         recorderHandle.stopRecorder();
+    }
 
-    if (this->keysHeld[SDLK_g])
+    if (this->keysHeld[SDLK_g]) {
         recorderHandle.startRecorder();
+    }
 
     if (this->keysHeld[SDLK_q]) {
         actions.clear();
