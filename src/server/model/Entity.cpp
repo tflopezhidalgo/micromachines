@@ -27,6 +27,7 @@ bool Entity::isDead() {
 
 void Entity::die() {
     status = DEAD;
+    body->GetWorld()->DestroyBody(body);
 }
 
 void Entity::move(b2Vec2 position, float angle) {
@@ -35,6 +36,4 @@ void Entity::move(b2Vec2 position, float angle) {
     body->SetTransform(position, angle);
 }
 
-Entity::~Entity() {
-    body->GetWorld()->DestroyBody(body);
-}
+Entity::~Entity() {}
