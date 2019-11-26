@@ -61,7 +61,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="selectTypeScreen">
        <property name="sizePolicy">
@@ -566,6 +566,11 @@
               <item>
                <property name="text">
                 <string extracomment="Simple">simple</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>complex</string>
                </property>
               </item>
              </widget>

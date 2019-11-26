@@ -15,7 +15,7 @@ recorder(other.recorder) { }
 
 void RecordingWidget::onRender() {
     if (recorder.isRecording()) {
-        SDL_Rect r = { 0, 0, 100, 100};
+        SDL_Rect r = { 10, 10, 100, 100};
         texture.render(r, 0);
     }
 }

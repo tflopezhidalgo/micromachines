@@ -44,7 +44,7 @@ void MainWindow::on_create_match_button_clicked() // Crear partida
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
     try {
-        if (ui->screen_mode_combo_box->currentIndex() == 1)
+        if (ui->screen_mode_combo_box->currentIndex() == 1){
             if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
                 throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
             else{
@@ -54,9 +54,10 @@ void MainWindow::on_create_match_button_clicked() // Crear partida
                 full_screen = false;
                 std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
             }
-        else
+        } else {
             full_screen = true;
-
+            this->lua_path = this->ui->lineEdit->text().toStdString();
+        }
         Socket socket(hostName.c_str(), serviceName.c_str());
         proxy = new Proxy(std::move(socket));
         ui->stackedWidget->setCurrentIndex(2);
@@ -75,7 +76,7 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
     std::string serviceName = ui->serviceNameField->text().toStdString();
 
     try {
-        if (ui->screen_mode_combo_box->currentIndex() == 1)
+        if (ui->screen_mode_combo_box->currentIndex() == 1){
             if (ui->width_line->text().isEmpty() || ui->height_line->text().isEmpty())
                 throw std::runtime_error("No puede estar vacio alguno de los tamaños de pantalla");
             else{
@@ -85,9 +86,10 @@ void MainWindow::on_join_match_button_clicked() // Unirse a partida
                 full_screen = false;
                 std::cout << "LOG - Seleccionada configuracion " << screen_h << " por " << screen_w << std::endl;
             }
-        else
+        } else {
             full_screen = true;
-
+            this->lua_path = this->ui->lineEdit->text().toStdString();
+        }
         Socket socket(hostName.c_str(), serviceName.c_str());
 
         proxy = new Proxy(std::move(socket));

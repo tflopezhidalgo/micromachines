@@ -35,7 +35,7 @@ public:
     ProtectedModel(Window& w, Camera& cam, std::string& player);
     void initialize(nlohmann::json data);
     void count();
-    void updateCar(std::string& id, int x, int y, int angle, int health, int lapsDone, bool blinded);
+    void updateCar(std::string& id, int x, int y, int angle, int health, int lapsDone, bool blinded, int velocity);
     void updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state);
     void renderAll();
     void setFinishedGame(std::vector<std::string>& podium);

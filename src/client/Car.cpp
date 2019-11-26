@@ -16,10 +16,11 @@ Car::Car(const std::string &file, Window& win) :
         this->y = 0;
         this->angle = 0;
         this->lapsDone = 0;
+        this->velocity = 0;
         this->blinded = false;
     }
 
-void Car::setState(int x, int y, int angle, int health, int lapsDone, bool blinded) {
+void Car::setState(int x, int y, int angle, int health, int lapsDone, bool blinded, int velocity) {
     this->x = x;
     this->y = y;
     this->angle = angle;
@@ -28,6 +29,7 @@ void Car::setState(int x, int y, int angle, int health, int lapsDone, bool blind
     }
     this->health.setActualHealth(health);
     this->lapsDone = lapsDone;
+    this->velocity = velocity;
     this->blinded = blinded;
 }
 
@@ -49,6 +51,10 @@ bool Car::isBlinded() {
 
 int Car::getLapsDone() {
     return lapsDone;
+}
+
+int Car::getVelocity() {
+    return velocity;
 }
 
 void Car::render(Camera& cam) {

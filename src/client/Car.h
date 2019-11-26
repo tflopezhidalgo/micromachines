@@ -21,16 +21,18 @@ private:
     int y;
     int angle;
     int lapsDone;
+    int velocity;
     bool blinded;
 
 public:
     Car(const std::string& file, Window& win);
-    void setState(int x, int y, int angle, int health, int lapsDone, bool blinded);
+    void setState(int x, int y, int angle, int health, int lapsDone, bool blinded, int velocity);
     int getAngle();
     int getXPos();
     int getYPos();
     bool isBlinded();
     int getLapsDone();
+    int getVelocity();
     void render(Camera& cam);
     ~Car();
 };
