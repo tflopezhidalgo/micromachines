@@ -34,7 +34,8 @@
    [641.5, 51.0, 0.0], [618.5, 42.0, 0.0]],
 
   "grandstandsData" : [[525.0, 300.0, false, true], [410, 385, true, true], [215, 175, true, true],
-   [4, 520, true, false], [-286, 660, true, false], [-460, 236, false, false]],
+   [4, 520, true, false], [-286, 660, true, false], [-460, 240, false, false], [-730, -130, false, true],
+   [-336, 100, true, false], [170, -41, false, false], [105, -600, true, true], [730, -322.167, false, false]],
 
   "checkpointsOrder" : [0]
 
