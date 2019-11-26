@@ -105,6 +105,4 @@ void Tire::setTransform(b2Vec2 position, float angle) {
     body->SetTransform(position, angle);
 }
 
-Tire::~Tire() {
-    body->GetWorld()->DestroyBody(body);
-}
+Tire::~Tire() {}

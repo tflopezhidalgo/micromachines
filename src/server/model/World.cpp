@@ -282,13 +282,5 @@ void World::step() {
 }
 
 World::~World() {
-    if (world) {
-        b2Body* bodies = world->GetBodyList();
-        while (bodies) {
-            b2Body* actualBody = bodies;
-            bodies = bodies->GetNext();
-            world->DestroyBody(actualBody);
-        }
-        delete world;
-    }
+    delete world;
 }
