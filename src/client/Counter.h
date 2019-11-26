@@ -7,6 +7,7 @@
 class Counter {
 private:
     Window& window;
+    Texture& preReady;
     Texture& ready;
     Texture& set;
     Texture& go;

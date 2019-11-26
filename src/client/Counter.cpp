@@ -7,10 +7,11 @@
 
 Counter::Counter(Window& window) :
 window(window),
+preReady(window.createTextureFrom(SEM_INIT)),
 ready(window.createTextureFrom(SEM_READY)),
 set(window.createTextureFrom(SEM_SET)),
 go(window.createTextureFrom(SEM_GO)),
-counter(0){
+counter(-1){
 }
 
 void Counter::count() {

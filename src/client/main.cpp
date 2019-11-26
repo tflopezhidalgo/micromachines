@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
         Receiver receiver(model, *proxy);
         Dispatcher dispatcher(q, *proxy);
         
+        std::cout << w.getLuaPath();
         if (w.isLuaPlayer()) {
             event_handler = new LuaPlayer(q, model, w.getPlayerID(), w.getLuaPath());
             recHandle.startRecorder();

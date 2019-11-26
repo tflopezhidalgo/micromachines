@@ -35,6 +35,9 @@ void Receiver::run() {
         proxy.receiveMessage();
         model.count();
         count_sound.play();
+        proxy.receiveMessage();
+        model.count();
+        count_sound.play();
 
         while (alive) {
                 nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
