@@ -12,7 +12,7 @@ next_position = {
 -- Depende el angulo tiene una direccion a seguir
 function getEvent(angle, pos_x, pos_y, real_pos_x, real_pos_y)
     if (pos_y < 12) then
-        pos_y = pos_y + 1
+       -- pos_y = pos_y + 1
     end
     return action(pos_x, pos_y)
 end
@@ -44,11 +44,11 @@ end
 
 function is_in_border_top(pos_x, pos_y)
     local border_x = false
-    if (pos_x <= 1) then
+    if (pos_x < 1) then
         border_x = true
     end
     local border_y = false
-    if (pos_y <= 1) then
+    if (pos_y < 1) then
         border_y = true
     end
     return border_x or border_y
