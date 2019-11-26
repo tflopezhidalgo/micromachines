@@ -1,6 +1,7 @@
 #include "Receiver.h"
 #include "Proxy.h"
 #include <nlohmann/json.hpp>
+#include <unistd.h>
 #include "SocketException.h"
 #include "Sound.h"
 Receiver::Receiver(ProtectedModel& model,
@@ -13,11 +14,9 @@ Receiver::Receiver(ProtectedModel& model,
 void Receiver::run() {
 
     Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
-
-    Sound count_sound("../media/sounds/count_sound.wav");
+    Sound count_sound("../media/sounds/counting_sound_2.wav");
     Sound power_up("../media/sounds/power_up_sound.wav");
     Sound crash("../media/sounds/bump_sound.wav");
-    Sound brake("../media/sounds/not_accelerating.wav");
 
     try {
         nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
@@ -25,7 +24,8 @@ void Receiver::run() {
         model.initialize(j);
 
         std::cout << "LOG - InitialData: " << j.dump() << std::endl;
-
+        model.count();
+        count_sound.play();
         proxy.receiveMessage();
         model.count();
         count_sound.play();
@@ -41,7 +41,6 @@ void Receiver::run() {
 
         while (alive) {
                 nlohmann::json j = nlohmann::json::parse(proxy.receiveMessage());
-
                 for (auto &car : j["carsData"]) {
                     std::string key = car[0].get<std::string>();
                     int x = car[1].get<int>();
@@ -53,15 +52,7 @@ void Receiver::run() {
                     int velocity = car[7].get<int>();
                     bool field1 = car[8].get<bool>(); // CHOQUE
                     bool field2 = car[9].get<bool>();
-                    this->model.updateCar(key, x, y, angle, health, lapsDone, onExploding);
-                    /*if (velocity == 0) {
-                        accelerating.stop();
-                        brake.play(-1);
-                    }
-                    if (velocity > 0) {
-                        brake.stop();
-                        accelerating.play(-1);
-                    }*/
+                    this->model.updateCar(key, x, y, angle, health, lapsDone, onExploding, velocity);
                     if (field1)
                         crash.play();
                     if (field2)

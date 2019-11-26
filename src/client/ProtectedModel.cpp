@@ -49,7 +49,7 @@ void ProtectedModel::initialize(nlohmann::json data) {
         bool state = carData[6].get<bool>();
 
         this->entities[carData[0]]->setState(x * cam.getZoom() / SERIALIZING_RESCAILING, y * cam.getZoom() / SERIALIZING_RESCAILING, angle, health,
-                                             lapsDone, state);
+                                             lapsDone, state, 0);
         std::cout << "LOG - Creando auto" << carData << std::endl;
         ++car_it;
     }
@@ -91,12 +91,13 @@ void ProtectedModel::updateCar(std::string& id,
                                   int angle,
                                   int health,
                                   int lapsDone,
-                                  bool blinded) {
+                                  bool blinded,
+                                  int velocity) {
     std::unique_lock<std::mutex> lck(m);
     while (!initialized)
         cv.wait(lck);
 
-    entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, lapsDone, blinded);
+    entities[id]->setState(x * cam.getZoom() / 1000, y * cam.getZoom() / 1000, angle, health, lapsDone, blinded, velocity);
 }
 
 void ProtectedModel::updateObject(int id, EntityIdentifier type, int x, int y, EntityStatus state) {
