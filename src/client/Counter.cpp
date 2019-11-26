@@ -7,26 +7,32 @@
 
 Counter::Counter(Window& window) :
 window(window),
+preReady(window.createTextureFrom(SEM_INIT)),
 ready(window.createTextureFrom(SEM_READY)),
 set(window.createTextureFrom(SEM_SET)),
 go(window.createTextureFrom(SEM_GO)),
-counter(0){
+counter(-1){
 }
 
 void Counter::count() {
-    counter++;
+    if (counter > 3)
+        counter = 4;
+    counter = counter + 1;
 }
 
 void Counter::render(){
     SDL_Rect r = {(window.getWidth() / 2) - 100, 0, 200, 200};
     switch(counter){
         case 0:
-            ready.render(r, 0);
+            preReady.render(r,0);
             break;
         case 1:
-            set.render(r, 0);
+            ready.render(r, 0);
             break;
         case 2:
+            set.render(r, 0);
+            break;
+        case 3:
             go.render(r, 0);
             break;
 

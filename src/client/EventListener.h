@@ -5,6 +5,7 @@
 #include "ProtectedQueue.h"
 #include "Event.h"
 #include "ffmpeg/RecorderHandle.h"
+#include "Sound.h"
 #include <string>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL.h>
@@ -18,6 +19,8 @@ private:
     ProtectedQueue<Event>& q;
 	std::string playerID;
 	RecorderHandle& recorderHandle;
+	Sound accelerating;
+	Sound brake;
 
 public:
     EventListener(std::string& playerID,

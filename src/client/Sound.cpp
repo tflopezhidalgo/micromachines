@@ -6,7 +6,8 @@ Sound::Sound(const std::string &file) {
 }
 
 void Sound::play(int loops) {
-    this->channel = Mix_PlayChannel(-1, this->chunk, loops);
+    if (!Mix_Playing(this->channel))
+        this->channel = Mix_PlayChannel(-1, this->chunk, loops);
 }
 
 void Sound::setVolume(int volume) {
@@ -14,7 +15,7 @@ void Sound::setVolume(int volume) {
 }
 
 void Sound::stop() {
-    Mix_HaltChannel(this->channel);
+    Mix_FadeOutChannel(this->channel, 1000);
 }
 
 Sound::~Sound() {

@@ -17,6 +17,7 @@ private:
     SDL_Rect cameraInfo;
     int zoom;
     Text text;
+    Text velocimeter;
     std::vector<CameraWidget*> widgets;
 
 public:

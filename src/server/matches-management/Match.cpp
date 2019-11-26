@@ -128,6 +128,10 @@ void Match::startCountdown() {
     go["message"] = GO;
     std::string goDump = go.dump();
     sendMessageToClients(goDump);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+    sendMessageToClients(goDump);
 }
 
 void Match::sendMatchDataToClients() {
