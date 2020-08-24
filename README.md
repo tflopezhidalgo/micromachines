@@ -1,11 +1,24 @@
-# Status ![Build EntityStatus](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
-
-# Micromachines
+# Micromachines         ![Build EntityStatus](https://travis-ci.com/tomasLopezHidalgo/micromachines.svg?token=oxmxJLZdAcWRA9wdCzqo&branch=master)
 
 Desarrollo del clásico juego "Micromachines" en versión online multijugador y con la posibilidad de crear varias salas de partidas.
 
+--- 
+
 # Instalación
 
+Para compilar e instalar las dependencias correr el script `./install.sh` 
+
+---
+
+# Controles
+
+`W`: Adelante
+`A`: Izquierda
+`D`: Derecha
+`S`: Freno
+
+`G`: Iniciar grabación de la partida
+`Q`: Salir del juego
 
 ---
 
