@@ -5,7 +5,6 @@ find_package(Lua REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 message("LUA_FOUND: ${LUA_FOUND}")
-message("LUA_LIBRARIES: ${LUA_INCLUDE_DIR}")
 message("LUA_INCLUDE_DIR: ${LUA_INCLUDE_DIR}")
 message("LUA_VERSION_STRING: ${LUA_VERSION_STRING}")
 
@@ -40,7 +39,6 @@ set(SOURCE CMAKE_SOURCE_DIR)
 
 
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
-install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/player.lua DESTINATION ${CMAKE_BINARY_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/src/client/lua/floor_ids.lua DESTINATION ${CMAKE_BINARY_DIR})
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/client/lua DESTINATION ${CMAKE_BINARY_DIR})
@@ -48,8 +46,6 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/client/lua DESTINATION ${CMAKE_BINAR
 add_executable(Client src/client/main.cpp ${CLIENT_SRC_FILES} ${COMMON_SRC_FILES} ${LUA_SRC_FILES}
         ${UIS_HDRS} ${FFMPEG_SRC_FILES} src/client/qt/mainwindow.cpp)
 target_link_libraries(Client SDL2 SDL2_image SDL2_ttf SDL2_mixer pthread lua5.3 m dl Qt5::Widgets avformat avcodec avutil swscale)
-
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/server/model ${PROJECT_SOURCE_DIR}/build/Box2D-build) #Box2D library building
 
 add_executable(Server src/server/main.cpp ${MATCHES_MANAGEMENT_SRC_FILES}
         ${COMMON_SRC_FILES} ${MODEL_SRC_FILES} ${PLUGINS_MANAGEMENT_SRC_FILES})
