@@ -10,7 +10,7 @@ World::World(float height, float width, std::map<std::string, float> &config, st
     timeStep(1.f / config.find(FPS_KEY)->second),
     config(config),
     timedEvents(timedEvents) {
-    world = new b2World({0.f, 0.f}, false);
+    world = new b2World({0.f, 0.f});
     world->SetContactListener(&collisionsProcessor);
 
     //edges addition

@@ -35,16 +35,16 @@ void Tire::updateFriction() {
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
     if (impulse.Length() > maxLateralImpulse)
         impulse *= maxLateralImpulse / impulse.Length();
-    body->ApplyLinearImpulse(impulse, body->GetWorldCenter());
+    body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
 
     //angular velocity
-    body->ApplyAngularImpulse(0.1f * body->GetInertia() * -body->GetAngularVelocity());
+    body->ApplyAngularImpulse(0.1f * body->GetInertia() * -body->GetAngularVelocity(), true);
 
     //forward linear velocity
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -actualFriction * currentForwardSpeed;
-    body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter());
+    body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::updateDrive(std::vector<char>& actions) {
@@ -76,7 +76,7 @@ void Tire::updateDrive(std::vector<char>& actions) {
     else
         return;
 
-    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter());
+    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::setFriction(float newFriction) {

@@ -13,7 +13,7 @@ void Projectile::beginCollision(Entity* entity) {}
 void Projectile::endCollision(Entity* entity) {}
 
 void Projectile::applyForce(b2Vec2& force) {
-    body->ApplyForce(force, body->GetWorldCenter());
+    body->ApplyForce(force, body->GetWorldCenter(), true);
 }
 
 b2Vec2 Projectile::getForwardVelocity() {
@@ -30,7 +30,7 @@ void Projectile::updateFriction() {
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -PROJECTILE_FRICTION * currentForwardSpeed;
-    body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter());
+    body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 bool Projectile::isStill() {
