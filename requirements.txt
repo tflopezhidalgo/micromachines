@@ -1,6 +1,8 @@
 libegl1-mesa-dev 
 libgles2-mesa-dev
-libsdl2-dev libsdl2-image-dev
+libsdl2-dev 
+libsdl2-image-dev
+libbox2d-dev
 nlohmann-json-dev
 lua5.3
 liblua5.3-dev
