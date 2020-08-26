@@ -13,6 +13,9 @@ EventListener::EventListener(std::string& playerID,
 
 void EventListener::run() {
     SDL_Event e;
+
+    std::vector<char> lastActions;
+
     while (alive) {
         // Mejor : 15000
         usleep(15000);
@@ -21,9 +24,20 @@ void EventListener::run() {
             detectEvent(e);
 
         std::vector<char> actions = std::move(createActionList());
-        if (!actions.empty()) {
-            Event event(this->playerID, std::move(actions));
+
+        if (actions == lastActions)
+            continue;
+
+        if (actions.empty() && lastActions.size()){
+            Event event(this->playerID, {'E'});
             q.push(std::move(event));
+            lastActions = std::move(actions);
+        }
+
+        if (!actions.empty()) {
+            Event event(this->playerID, actions);
+            q.push(std::move(event));
+            lastActions = std::move(actions);
         }
     }
 }

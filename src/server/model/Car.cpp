@@ -40,7 +40,18 @@ void Car::updateFriction() {
     }
 }
 
+std::vector<char> lastActions;
+
 void Car::update(std::vector<char>& actions) {
+    
+    if (actions.size())
+        lastActions = actions;
+
+    if (actions.size() && actions[0] == 'E')
+        lastActions.clear();
+
+    actions = lastActions;
+
     colliding = false;
     catchingBooster = false;
 

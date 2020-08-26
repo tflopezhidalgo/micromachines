@@ -40,14 +40,19 @@ void Match::run() {
     startCountdown();
     startClientsThread();
 
+    std::string previousStatus;
+
     while (!dead) {
 
         auto initial = std::chrono::high_resolution_clock::now();
         std::vector<Event> events = eventsQueue.emptyQueue();
         raceManager.updateModel(events);
 
-        std::string modelStatus = std::move(raceManager.getRaceStatus());
-        sendMessageToClients(modelStatus);
+        std::string currentStatus = std::move(raceManager.getRaceStatus());
+        if (previousStatus != currentStatus)
+            sendMessageToClients(currentStatus);
+
+        previousStatus = std::move(currentStatus);
 
         if (raceManager.raceFinished()) {
             dead = true;

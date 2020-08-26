@@ -8,18 +8,25 @@ std::string StatusSerializer::getClientsModelSerialization(
 
     nlohmann::json data;
 
+    int x_position = 0, y_position = 0, angle = 0;
+
     nlohmann::json carsData = nlohmann::json::array();
     for (auto &car : cars) {
         std::string carId = car.first;
+
+        x_position = int(car.second->getPosition().x * SERIALIZING_RESCAILING);
+        y_position = int(car.second->getPosition().y * SERIALIZING_RESCAILING);
+        angle = int(car.second->getAngle() * SERIALIZING_RESCAILING);
+
         carsData.push_back({
             carId,
-            int(car.second->getPosition().x * SERIALIZING_RESCAILING),
-            int(car.second->getPosition().y * SERIALIZING_RESCAILING),
-            int(car.second->getAngle() * SERIALIZING_RESCAILING),
+            x_position - (x_position % 100),
+            y_position - (y_position % 100),
+            angle,
             car.second->getHealth(),
             raceJudge.getLapsDone(carId),
             car.second->hasReducedVision(),
-            car.second->getForwardSpeed(),
+            int(car.second->getForwardSpeed()),
             car.second->isColliding(),
             car.second->isCatchingBooster()
         });

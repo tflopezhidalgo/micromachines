@@ -1,6 +1,7 @@
 #include <arpa/inet.h>
 #include <vector>
 #include "Proxy.h"
+#include <iostream>
 
 #define UINT32_SIZE 4
 
@@ -24,6 +25,7 @@ std::string Proxy::receiveMessage() {
 void Proxy::sendMessage(std::string& msg) {
     uint32_t length = htonl(msg.length());
     socket.sendMessage((char*)&length, UINT32_SIZE);
+    std::cout << "Sending msg: " << msg << std::endl;
     socket.sendMessage(msg.c_str(), msg.length());
 }
 

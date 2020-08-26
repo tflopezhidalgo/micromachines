@@ -8,7 +8,7 @@ DEFAULT="\033[0m"
 
 echo -e "${YELLOW}Instalando dependencias necesarias ... ${DEFAULT}"
 
-sudo apt-get update && sudo apt-get install $(cat requirements.txt) -y 
+apt-get update && apt-get install $(cat requirements.txt) -y 
 
 if [[ $? > 0 ]]
 then
