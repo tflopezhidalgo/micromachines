@@ -13,11 +13,17 @@ Para compilar e instalar las dependencias correr el script `./install.sh`
 # Controles
 
 `W`: Adelante
+
 `A`: Izquierda
+
 `D`: Derecha
+
 `S`: Freno
 
 `G`: Iniciar grabación de la partida
+
+`F`: Finalizar grabación de la partida
+
 `Q`: Salir del juego
 
 ---
